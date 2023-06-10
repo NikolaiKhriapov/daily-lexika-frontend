@@ -1,4 +1,4 @@
-package my.project.fraud_check;
+package my.project.fraudcheck;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

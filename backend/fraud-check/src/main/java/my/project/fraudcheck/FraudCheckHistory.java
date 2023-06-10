@@ -1,4 +1,4 @@
-package my.project.fraud_check;
+package my.project.fraudcheck;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

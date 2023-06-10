@@ -1,4 +1,4 @@
-package my.project.application_user;
+package my.project.applicationuser;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package my.project.fraud_check;
+package my.project.fraudcheck;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

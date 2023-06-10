@@ -1,4 +1,4 @@
-package my.project.fraud_check;
+package my.project.clients.fraudcheck;
 
 public record FraudCheckResponse(
         Boolean isFraudster

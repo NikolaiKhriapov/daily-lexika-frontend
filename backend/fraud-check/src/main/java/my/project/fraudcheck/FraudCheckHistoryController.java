@@ -1,6 +1,7 @@
-package my.project.fraud_check;
+package my.project.fraudcheck;
 
 import lombok.RequiredArgsConstructor;
+import my.project.clients.fraudcheck.FraudCheckResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

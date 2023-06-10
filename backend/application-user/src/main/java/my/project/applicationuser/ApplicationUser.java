@@ -1,4 +1,4 @@
-package my.project.application_user;
+package my.project.applicationuser;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
