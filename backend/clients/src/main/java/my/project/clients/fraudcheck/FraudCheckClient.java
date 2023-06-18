@@ -9,5 +9,4 @@ public interface FraudCheckClient {
 
     @GetMapping("api/v1/fraud-check/{applicationUserId}")
     FraudCheckResponse isFraudster(@PathVariable("applicationUserId") Long applicationUserId);
-
 }
