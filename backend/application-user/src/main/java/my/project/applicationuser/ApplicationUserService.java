@@ -1,9 +1,9 @@
 package my.project.applicationuser;
 
 import lombok.RequiredArgsConstructor;
+import my.project.amqp.RabbitMQMessageProducer;
 import my.project.clients.fraudcheck.FraudCheckClient;
 import my.project.clients.fraudcheck.FraudCheckResponse;
-import my.project.clients.notification.NotificationClient;
 import my.project.clients.notification.NotificationRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class ApplicationUserService {
 
     private final ApplicationUserRepository applicationUserRepository;
     private final FraudCheckClient fraudCheckClient;
-    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
     public void registerUser(ApplicationUserRegistrationRequest applicationUserRegistrationRequest) {
         ApplicationUser applicationUser = new ApplicationUser(
@@ -33,13 +33,15 @@ public class ApplicationUserService {
             throw new IllegalStateException("Fraudster");
         }
 
-        // TODO: make it async, i.e. add to queue
-        notificationClient.sendNotification(
-                new NotificationRequest(
-                        applicationUser.getId(),
-                        applicationUser.getEmail(),
-                        "Hi, %s, welcome to Chinese Learning App!".formatted(applicationUser.getName())
-                )
+        NotificationRequest notificationRequest = new NotificationRequest(
+                applicationUser.getId(),
+                applicationUser.getEmail(),
+                "Hi, %s, welcome to Chinese Learning App!".formatted(applicationUser.getName())
+        );
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
         );
     }
 }

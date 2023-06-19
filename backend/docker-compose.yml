@@ -27,9 +27,100 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    # username: guest
+    # password: guest
+    networks:
+      - spring
+
+  eureka-server:
+    image: kolyakhryapov/chinese-learning-app-backend-eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+  api-gateway:
+    image: kolyakhryapov/chinese-learning-app-backend-api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - eureka-server
+
+  application-user:
+    image: kolyakhryapov/chinese-learning-app-backend-application-user:latest
+    container_name: application-user
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - eureka-server
+      - postgres
+      - rabbitmq
+  fraud-check:
+    image: kolyakhryapov/chinese-learning-app-backend-fraud-check:latest
+    container_name: fraud-check
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - eureka-server
+      - postgres
+      - rabbitmq
+  notification:
+    image: kolyakhryapov/chinese-learning-app-backend-notification:latest
+    container_name: notification
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - eureka-server
+      - postgres
+      - rabbitmq
+
+  vocabulary:
+    image: kolyakhryapov/chinese-learning-app-backend-vocabulary:latest
+    container_name: vocabulary
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - eureka-server
+      - postgres
+      - rabbitmq
 
 networks:
   postgres:
+    driver: bridge
+  spring:
     driver: bridge
 
 volumes:
