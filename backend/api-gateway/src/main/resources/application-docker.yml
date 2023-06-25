@@ -11,6 +11,10 @@ spring:
           uri: lb://APPLICATION-USER
           predicates:
             - Path=/api/v1/application-users/**
+        - id: vocabulary
+          uri: lb://VOCABULARY
+          predicates:
+            - Path=/api/v1/vocabulary/**
 
 eureka:
   client:
