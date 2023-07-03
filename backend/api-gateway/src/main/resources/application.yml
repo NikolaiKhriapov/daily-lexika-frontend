@@ -13,12 +13,23 @@ spring:
             - Path=/api/v1/auth/**
           filters:
             - AuthenticationFilter
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
+
         - id: vocabulary
           uri: lb://VOCABULARY
           predicates:
             - Path=/api/v1/vocabulary/**
           filters:
             - AuthenticationFilter
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
 
 eureka:
   client:
