@@ -11,10 +11,14 @@ spring:
           uri: lb://APPLICATION-USER
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - AuthenticationFilter
         - id: vocabulary
           uri: lb://VOCABULARY
           predicates:
             - Path=/api/v1/vocabulary/**
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:
