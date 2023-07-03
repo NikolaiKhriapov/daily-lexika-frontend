@@ -1,11 +1,12 @@
 import React from 'react';
 import {
     IconButton, Avatar, Box, CloseButton, Flex, HStack, Icon, useColorModeValue, Drawer, DrawerContent, Text,
-    useDisclosure, Menu, MenuButton, Link, VStack,
+    useDisclosure, Menu, MenuButton, Link, VStack, MenuItem, MenuList, MenuDivider,
 } from '@chakra-ui/react';
 import {
     FiMenu, FiBell, FiChevronDown,
 } from 'react-icons/fi';
+import {useAuth} from "../components/context/AuthContext.jsx";
 
 const LinkItems = [
     {name: 'WordPacks', route: '/word-packs', icon: FiMenu},
@@ -71,35 +72,37 @@ const SidebarContent = ({onClose, ...rest}) => {
 const NavItem = ({icon, route, children, ...rest}) => {
     return (
         <Link href={route} style={{textDecoration: 'none'}} _focus={{boxShadow: 'none'}}>
-        <Flex
-            align="center"
-            p="4"
-            mx="4"
-            borderRadius="lg"
-            role="group"
-            cursor="pointer"
-            _hover={{
-                bg: 'red.400',
-                color: 'white',
-            }}
-            {...rest}>
-            {icon && (
-                <Icon
-                    mr="4"
-                    fontSize="16"
-                    _groupHover={{
-                        color: 'white',
-                    }}
-                    as={icon}
-                />
-            )}
-            {children}
-        </Flex>
+            <Flex
+                align="center"
+                p="4"
+                mx="4"
+                borderRadius="lg"
+                role="group"
+                cursor="pointer"
+                _hover={{
+                    bg: 'red.400',
+                    color: 'white',
+                }}
+                {...rest}>
+                {icon && (
+                    <Icon
+                        mr="4"
+                        fontSize="16"
+                        _groupHover={{
+                            color: 'white',
+                        }}
+                        as={icon}
+                    />
+                )}
+                {children}
+            </Flex>
         </Link>
     );
 };
 
 const MobileNav = ({onOpen, ...rest}) => {
+
+    const {logout, applicationUser} = useAuth();
 
     return (
         <Flex
@@ -146,12 +149,29 @@ const MobileNav = ({onOpen, ...rest}) => {
                                     size={'sm'}
                                     src={''}
                                 />
-                                <VStack/>
+                                <VStack
+                                    display={{base: 'none', md: 'flex'}}
+                                    alignItems="flex-start"
+                                    spacing="1px"
+                                    ml="2">
+                                    <Text fontSize="sm">{applicationUser?.username}</Text>
+                                </VStack>
                                 <Box display={{base: 'none', md: 'flex'}}>
                                     <FiChevronDown/>
                                 </Box>
                             </HStack>
                         </MenuButton>
+                        <MenuList
+                            bg={useColorModeValue('white', 'gray.900')}
+                            borderColor={useColorModeValue('gray.200', 'gray.700')}>
+                            <MenuItem>Profile</MenuItem>
+                            <MenuItem>Settings</MenuItem>
+                            <MenuItem>Billing</MenuItem>
+                            <MenuDivider/>
+                            <MenuItem onClick={logout}>
+                                Log Out
+                            </MenuItem>
+                        </MenuList>
                     </Menu>
                 </Flex>
             </HStack>
