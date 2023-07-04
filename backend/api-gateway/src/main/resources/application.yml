@@ -30,7 +30,6 @@ spring:
               allowedMethods: '*'
               allowedHeaders: '*'
 
-
 eureka:
   client:
     service-url:
