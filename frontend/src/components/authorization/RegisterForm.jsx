@@ -1,15 +1,15 @@
 import {Formik, Form, useField} from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {register} from "../services/client.js";
-import {successNotification, errorNotification} from "../services/notification.js";
+import {register} from "../../services/authorization.js";
+import {successNotification, errorNotification} from "../../services/notification.js";
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
     return (
         <Box>
             <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
-            <Input className="text-input" {...field} {...props} />
+            <Input className="text-input" {...field} {...props}/>
             {meta.touched && meta.error ? (
                 <Alert className="error" status={"error"} mt={2}>
                     <AlertIcon/>
@@ -103,7 +103,7 @@ const RegisterForm = ({onSuccess}) => {
                                 label="Surname"
                                 name="surname"
                                 type="text"
-                                placeholder="Formik"
+                                placeholder="Formika"
                             />
 
                             <MyTextInput

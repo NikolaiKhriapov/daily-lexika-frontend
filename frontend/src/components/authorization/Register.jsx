@@ -2,7 +2,7 @@ import {Flex, Heading, Image, Link, Stack} from "@chakra-ui/react";
 import {useAuth} from "../context/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import CreateApplicationUserForm from "../../shared/RegisterForm.jsx";
+import CreateApplicationUserForm from "./RegisterForm.jsx";
 
 const Register = () => {
     const {applicationUser, setApplicationUserFromToken} = useAuth();

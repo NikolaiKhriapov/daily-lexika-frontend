@@ -10,7 +10,18 @@ spring:
         - id: application-user
           uri: lb://APPLICATION-USER
           predicates:
-            - Path=/api/v1/**
+            - Path=/api/v1/auth/**
+          filters:
+            - AuthenticationFilter
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
+        - id: application-user
+          uri: lb://APPLICATION-USER
+          predicates:
+            - Path=/api/v1/application-user/**
           filters:
             - AuthenticationFilter
           metadata:

@@ -6,10 +6,10 @@ import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import WordPack from "./WordPack.jsx";
 import Review from "./Review.jsx";
 import Account from "./Account.jsx";
-import Login from "./components/login/Login.jsx";
+import Login from "./components/authorization/Login.jsx";
 import AuthProvider from "./components/context/AuthContext.jsx";
 import ProtectedRoute from "./shared/ProtectedRoute.js";
-import Register from "./components/register/Register.jsx";
+import Register from "./components/authorization/Register.jsx";
 
 const {ToastContainer} = createStandaloneToast()
 

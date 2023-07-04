@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     IconButton, Avatar, Box, CloseButton, Flex, HStack, Icon, useColorModeValue, Drawer, DrawerContent, Text,
-    useDisclosure, Menu, MenuButton, Link, VStack, MenuItem, MenuList, MenuDivider,
+    useDisclosure, Menu, MenuButton, Link, VStack, MenuItem, MenuList, MenuDivider, Button, useColorMode,
 } from '@chakra-ui/react';
 import {
     FiMenu, FiBell, FiChevronDown,
 } from 'react-icons/fi';
 import {useAuth} from "../components/context/AuthContext.jsx";
+import {MoonIcon, SunIcon} from "@chakra-ui/icons";
+import {showAccount} from "../services/application-user.js";
+import {errorNotification} from "../services/notification.js";
 
 const LinkItems = [
-    {name: 'WordPacks', route: '/word-packs', icon: FiMenu},
     {name: 'Reviews', route: '/reviews', icon: FiMenu},
+    {name: 'WordPacks', route: '/word-packs', icon: FiMenu},
     {name: 'Account', route: '/account', icon: FiMenu},
 ];
 
@@ -102,7 +105,30 @@ const NavItem = ({icon, route, children, ...rest}) => {
 
 const MobileNav = ({onOpen, ...rest}) => {
 
+    const {colorMode, toggleColorMode} = useColorMode();
     const {logout, applicationUser} = useAuth();
+    const [account, setAccount] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const fetchAccount = () => {
+        setLoading(true);
+        showAccount().then(response => {
+            setAccount(response.data.data.applicationUserDTO)
+        }).catch(error => {
+            setError((error.response.data.message))
+            errorNotification(
+                error.code,
+                error.response.data.message
+            )
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
+
+    useEffect(() => {
+        fetchAccount();
+    }, [])
 
     return (
         <Flex
@@ -138,6 +164,11 @@ const MobileNav = ({onOpen, ...rest}) => {
                     aria-label="open menu"
                     icon={<FiBell/>}
                 />
+
+                <Button onClick={toggleColorMode}>
+                    {colorMode === 'light' ? <MoonIcon/> : <SunIcon/>}
+                </Button>
+
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
@@ -147,7 +178,7 @@ const MobileNav = ({onOpen, ...rest}) => {
                             <HStack>
                                 <Avatar
                                     size={'sm'}
-                                    src={''}
+                                    src={account.profilePhoto} //TODO: finish
                                 />
                                 <VStack
                                     display={{base: 'none', md: 'flex'}}
@@ -164,13 +195,11 @@ const MobileNav = ({onOpen, ...rest}) => {
                         <MenuList
                             bg={useColorModeValue('white', 'gray.900')}
                             borderColor={useColorModeValue('gray.200', 'gray.700')}>
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>Settings</MenuItem>
-                            <MenuItem>Billing</MenuItem>
+                            <MenuItem>Option 1</MenuItem>
+                            <MenuItem>Option 2</MenuItem>
+                            <MenuItem>Option 3</MenuItem>
                             <MenuDivider/>
-                            <MenuItem onClick={logout}>
-                                Log Out
-                            </MenuItem>
+                            <MenuItem onClick={logout}>Log Out</MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>
