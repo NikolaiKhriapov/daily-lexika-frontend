@@ -1,6 +1,5 @@
 import {
-    Badge,
-    Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerOverlay, useDisclosure
+    Badge, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerOverlay, useDisclosure
 } from "@chakra-ui/react";
 import {CopyIcon} from "@chakra-ui/icons";
 

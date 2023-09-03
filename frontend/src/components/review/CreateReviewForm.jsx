@@ -20,7 +20,7 @@ const MyTextInput = ({label, ...props}) => {
     );
 };
 
-const CreateReviewForm = ({ name, fetchAllWordPacks }) => {
+const CreateReviewForm = ({name, fetchAllWordPacks}) => {
     return (
         <>
             <Formik
@@ -49,16 +49,17 @@ const CreateReviewForm = ({ name, fetchAllWordPacks }) => {
                                 `${name} was successfully saved`
                             )
                             fetchAllWordPacks();
-                        }).catch((error) => {
-                        console.log(error)
-                        errorNotification(
-                            error.code,
-                            error.response.data.message
-                        )
-
-                    }).finally(() => {
-                        setSubmitting(false);
-                    })
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            errorNotification(
+                                error.code,
+                                error.response.data.message
+                            )
+                        })
+                        .finally(() => {
+                            setSubmitting(false);
+                        })
                 }}
             >
                 {({isValid, isSubmitting}) => (

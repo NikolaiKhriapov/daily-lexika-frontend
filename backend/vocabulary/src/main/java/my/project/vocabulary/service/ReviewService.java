@@ -2,6 +2,7 @@ package my.project.vocabulary.service;
 
 import lombok.RequiredArgsConstructor;
 import my.project.vocabulary.exception.ResourceNotFoundException;
+import my.project.vocabulary.exception.ReviewAlreadyExistsException;
 import my.project.vocabulary.mapper.ReviewMapper;
 import my.project.vocabulary.model.dto.ReviewDTO;
 import my.project.vocabulary.model.entity.Review;
@@ -39,6 +40,14 @@ public class ReviewService {
 
     @Transactional
     public void createReview(ReviewDTO newReviewDTO) {
+
+        List<Review> existingReviews = reviewRepository.findAll();
+        if (existingReviews
+                .stream().map(review -> review.getWordPack().getName()).toList()
+                .contains(newReviewDTO.wordPackName())) {
+            throw new ReviewAlreadyExistsException("Review '" + newReviewDTO.wordPackName() + "' already exists");
+        }
+
         Review newReview = reviewMapper.toEntity(newReviewDTO);
         reviewRepository.save(newReview);
     }

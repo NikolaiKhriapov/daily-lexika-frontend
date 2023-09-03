@@ -24,6 +24,19 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(apiErrorWrapper, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ReviewAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorWrapper> handleException(ReviewAlreadyExistsException e, HttpServletRequest request) {
+        ApiErrorWrapper apiErrorWrapper = new ApiErrorWrapper(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT,
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiErrorWrapper, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorWrapper> handleException(Exception e, HttpServletRequest request) {
         ApiErrorWrapper apiErrorWrapper = new ApiErrorWrapper(

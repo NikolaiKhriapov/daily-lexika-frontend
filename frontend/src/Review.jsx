@@ -14,7 +14,7 @@ const Review = () => {
     const fetchAllReviews = () => {
         setLoading(true);
         getAllReviews().then(response => {
-            setAllReviews(response.data.data.allReviews);
+            setAllReviews(response.data.data.allReviews)
         }).catch(error => {
             setError((error.response.data.message))
             errorNotification(
