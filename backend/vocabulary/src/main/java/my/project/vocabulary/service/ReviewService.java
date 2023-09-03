@@ -39,9 +39,7 @@ public class ReviewService {
 
     @Transactional
     public void createReview(ReviewDTO newReviewDTO) {
-
         Review newReview = reviewMapper.toEntity(newReviewDTO);
-
         reviewRepository.save(newReview);
     }
 
@@ -57,7 +55,6 @@ public class ReviewService {
                         "exception.review.notFound", null, Locale.getDefault())));
     }
 
-    //TODO::: test
     @Transactional
     public void processReviewAction(Long reviewId, String answer) {
         if (answer != null) {
@@ -102,19 +99,20 @@ public class ReviewService {
     }
 
     private static void updateWordForYesAnswer(Word thisWord, List<Word> listOfWords) {
-        if (thisWord.getOccurrence() >= 1) {
-            if (thisWord.getCurrentStreak() == 3) {
-                thisWord.setTotalStreak(thisWord.getTotalStreak() + 1);
-                if (thisWord.getTotalStreak() >= 5) {
-                    thisWord.setStatus(Status.KNOWN);
-                    thisWord.setCurrentStreak(0);
-                    thisWord.setOccurrence(0);
-                    listOfWords.remove(thisWord);
-                }
-            } else if (thisWord.getCurrentStreak() < 3) {
-                thisWord.setCurrentStreak(thisWord.getCurrentStreak() + 1);
-            }
-            Collections.rotate(listOfWords, -1); // Rotate the list
+        if (thisWord.getCurrentStreak() < 3) {
+            thisWord.setCurrentStreak(thisWord.getCurrentStreak() + 1);
         }
+
+        if (thisWord.getCurrentStreak() == 3) {
+            thisWord.setTotalStreak(thisWord.getTotalStreak() + 1);
+            if (thisWord.getTotalStreak() >= 5) {
+                thisWord.setStatus(Status.KNOWN);
+            }
+            thisWord.setCurrentStreak(0);
+            thisWord.setOccurrence(0);
+            listOfWords.remove(thisWord);
+        }
+
+        Collections.rotate(listOfWords, -1);
     }
 }

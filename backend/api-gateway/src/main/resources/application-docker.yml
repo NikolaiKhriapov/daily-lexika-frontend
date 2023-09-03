@@ -1,25 +1,3 @@
-server:
-  port: 8080
-
-spring:
-  application:
-    name: api-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: user
-          uri: lb://USER
-          predicates:
-            - Path=/api/v1/auth/**
-          filters:
-            - AuthenticationFilter
-        - id: vocabulary
-          uri: lb://VOCABULARY
-          predicates:
-            - Path=/api/v1/vocabulary/**
-          filters:
-            - AuthenticationFilter
-
 eureka:
   client:
     service-url:
