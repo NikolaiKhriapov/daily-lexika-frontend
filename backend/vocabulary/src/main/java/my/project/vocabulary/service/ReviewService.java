@@ -103,18 +103,6 @@ public class ReviewService {
         existingReviews.forEach(oneReview -> reviewRepository.save(reviewMapper.toEntity(reviewMapper.toDTO(oneReview))));
     }
 
-    private static void updateWordForNoAnswer(Word thisWord, List<Word> listOfWords) {
-        if (thisWord.getStatus().equals(NEW)) {
-            thisWord.setStatus(IN_REVIEW);
-        }
-
-        thisWord.setTotalStreak(0);
-        thisWord.setCurrentStreak(0);
-        thisWord.setStatus(IN_REVIEW);
-        listOfWords.remove(0);
-        listOfWords.add(3, thisWord);
-    }
-
     private static void updateWordForYesAnswer(Word thisWord, List<Word> listOfWords) {
         if (thisWord.getStatus().equals(NEW) || thisWord.getStatus().equals(KNOWN)) {
             thisWord.setStatus(KNOWN);
@@ -141,5 +129,17 @@ public class ReviewService {
         }
 
         Collections.rotate(listOfWords, -1);
+    }
+
+    private static void updateWordForNoAnswer(Word thisWord, List<Word> listOfWords) {
+        if (thisWord.getStatus().equals(NEW)) {
+            thisWord.setStatus(IN_REVIEW);
+        }
+
+        thisWord.setTotalStreak(0);
+        thisWord.setCurrentStreak(0);
+        thisWord.setStatus(IN_REVIEW);
+        listOfWords.remove(0);
+        listOfWords.add(Math.min(listOfWords.size(), 3), thisWord);
     }
 }
