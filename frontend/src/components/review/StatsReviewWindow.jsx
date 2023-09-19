@@ -4,7 +4,7 @@ import {
     Progress, CircularProgress, CircularProgressLabel, Box, useDisclosure
 } from '@chakra-ui/react';
 import {AiOutlineQuestionCircle} from "react-icons/ai";
-import ReviewWordPackDrawer from "../word-pack/ReviewWordPackDrawer.jsx";
+import ReviewWordPackWindow from "../word-pack/ReviewWordPackWindow.jsx";
 
 const StatsReviewWindow = ({isOpen, onClose, reviewDTO, reviewStatisticsDTO, wordPackDTO}) => {
 
@@ -16,14 +16,14 @@ const StatsReviewWindow = ({isOpen, onClose, reviewDTO, reviewStatisticsDTO, wor
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
             <ModalOverlay/>
-            <ModalContent>
+            <ModalContent rounded={'lg'}>
                 <ModalHeader>{reviewDTO.wordPackName}</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
-                    <div style={{border: "1px solid #ccc", borderRadius: "5px", padding: "10px", marginBottom: "10px"}}>
+                    <div style={{border: "1px solid #ccc", borderRadius: "10px", padding: "15px", marginBottom: "15px", paddingTop: "10px"}}>
                         <Flex justifyContent="space-between" alignItems="baseline">
                             <StatLabel fontSize={'2xl'}>Pack Progress</StatLabel>
-                            <ReviewWordPackDrawer
+                            <ReviewWordPackWindow
                                 button={(<AiOutlineQuestionCircle size="1em" onClick={onOpenDrawer}/>)}
                                 isOpen={isOpenDrawer}
                                 onClose={onCloseDrawer}
@@ -39,14 +39,14 @@ const StatsReviewWindow = ({isOpen, onClose, reviewDTO, reviewStatisticsDTO, wor
                                 {reviewStatisticsDTO.wordsKnown}/{reviewStatisticsDTO.wordsTotal}
                             </StatLabel>
                         </Flex>
-                        <Progress color='blue' size='md' value={wordsKnownPercentage}/>
+                        <Progress value={wordsKnownPercentage} color='blue' size='md' rounded={'md'}/>
                     </div>
-                    <div style={{border: "1px solid #ccc", borderRadius: "5px", padding: "10px", marginBottom: "10px"}}>
+                    <div style={{border: "1px solid #ccc", borderRadius: "10px", padding: "15px", marginBottom: "15px"}}>
                         <Flex justifyContent="space-between" alignItems="baseline">
                             <StatLabel fontSize={'2xl'}>Review Status</StatLabel>
                         </Flex>
                         <Flex>
-                            <CircularProgress value={wordsKnownPercentage} size='175px' thickness='6px' color='blue'>
+                            <CircularProgress value={wordsKnownPercentage} color='blue' size='175px' thickness='6px'>
                                 <CircularProgressLabel>{wordsInReviewPercentage}%
                                     <div style={{fontSize: '14px', fontWeight: 'medium'}}> In Review</div>
                                 </CircularProgressLabel>
@@ -64,7 +64,6 @@ const StatsReviewWindow = ({isOpen, onClose, reviewDTO, reviewStatisticsDTO, wor
                             </Box>
                         </Flex>
                     </div>
-                    <br/>
                 </ModalBody>
             </ModalContent>
         </Modal>

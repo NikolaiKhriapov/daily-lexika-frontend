@@ -1,10 +1,10 @@
-import {Badge, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay} from "@chakra-ui/react";
+import {Badge, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay} from "@chakra-ui/react";
 import {CopyIcon} from "@chakra-ui/icons";
 import {useEffect, useState, useRef} from "react";
 import {getAllWordsForWordPack} from "../../services/word-pack.js";
 import {errorNotification} from "../../services/notification.js";
 
-const ReviewWordPackDrawer = ({button, isOpen, onClose, wordPackDTO}) => {
+const ReviewWordPackWindow = ({button, isOpen, onClose, wordPackDTO}) => {
 
     const [allWordsForWordPackDTO, setAllWordsForWordPackDTO] = useState([]);
     const [visibleWords, setVisibleWords] = useState(50);
@@ -39,22 +39,23 @@ const ReviewWordPackDrawer = ({button, isOpen, onClose, wordPackDTO}) => {
     return (
         <>
             {button}
-            <Drawer isOpen={isOpen} onClose={onClose} size={"md"}>
-                <DrawerOverlay/>
-                <DrawerContent>
-                    <DrawerCloseButton/>
-                    <DrawerBody>
+            <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} isCentered>
+                <ModalOverlay/>
+                <ModalContent rounded={'lg'}>
+                    <ModalCloseButton/>
+                    <ModalBody>
                         <div style={{margin: "15px 0", fontSize: "20px", fontWeight: "bold"}}>{wordPackDTO.name}</div>
                         <div style={{margin: "10px 0"}}><CopyIcon/>{wordPackDTO.totalWords}</div>
                         <div style={{margin: "10px 0 30px 0"}}>{wordPackDTO.description}</div>
-                        <div ref={containerRef} style={{maxHeight: "81vh", overflowY: "auto"}} onScroll={handleScroll}>
+                        <div ref={containerRef} style={{maxHeight: "65vh", overflowY: "auto", marginBottom: "20px"}}
+                             onScroll={handleScroll}>
                             {allWordsForWordPackDTO.slice(0, visibleWords).map((wordDTO, index) => (
                                 <div key={index}
                                      style={{
                                          border: "1px solid #ccc",
-                                         borderRadius: "5px",
+                                         borderRadius: "10px",
                                          padding: "10px",
-                                         marginBottom: "10px"
+                                         marginBottom: "5px"
                                      }}>
                                     <div style={{display: "flex"}}>
                                         <div style={{flex: "1 1 auto", minWidth: 0}}>
@@ -68,11 +69,11 @@ const ReviewWordPackDrawer = ({button, isOpen, onClose, wordPackDTO}) => {
                                 </div>
                             ))}
                         </div>
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     );
 };
 
-export default ReviewWordPackDrawer;
+export default ReviewWordPackWindow;

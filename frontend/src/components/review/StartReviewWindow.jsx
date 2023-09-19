@@ -37,7 +37,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button}) => {
 
     const forgotButton = (
         <Button
-            bg={"grey"} color={"white"} rounded={"base"} size={"lg"}
+            bg={"grey"} color={"white"} rounded={"lg"} size={"lg"}
             _hover={{bg: "red", transform: "translateY(-2px)", boxShadow: "lg"}}
             onClick={() => pressButton("no")}
         >
@@ -46,7 +46,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button}) => {
     )
     const rememberedButton = (
         <Button
-            ml={5} bg={"grey"} color={"white"} rounded={"base"} size={"lg"}
+            ml={5} bg={"grey"} color={"white"} rounded={"lg"} size={"lg"}
             _hover={{bg: "green", transform: "translateY(-2px)", boxShadow: "lg"}}
             onClick={() => pressButton("yes")} disabled={!reviewWordDTO}
         >
@@ -59,7 +59,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button}) => {
             {button}
             <Modal isOpen={isOpen} onClose={onClose} size={"6xl"} isCentered>
                 <ModalOverlay/>
-                <ModalContent maxH="80vh" minH="80vh">
+                <ModalContent maxH="80vh" minH="80vh" minW="80vh" maxW="80vh" rounded={'lg'}>
                     <ModalCloseButton/>
                     <ModalBody display="flex" flexDirection="column" justifyContent="center">
                         {!isFormVisible && isReviewComplete ? (

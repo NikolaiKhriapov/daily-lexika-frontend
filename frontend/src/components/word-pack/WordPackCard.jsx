@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {errorNotification} from '../../services/notification.js';
 import CreateReviewWindow from "../review/CreateReviewWindow.jsx";
 import {CopyIcon} from "@chakra-ui/icons";
-import ReviewWordPackDrawer from "./ReviewWordPackDrawer.jsx";
+import ReviewWordPackWindow from "./ReviewWordPackWindow.jsx";
 import {getAllReviews} from "../../services/review.js";
 
 export default function WordPackCard({wordPackDTO, fetchAllWordPacksDTO}) {
@@ -20,7 +20,7 @@ export default function WordPackCard({wordPackDTO, fetchAllWordPacksDTO}) {
 
     useEffect(() => {
         fetchAllReviewsDTO();
-    });
+    }, []);
 
     const isReviewExists = allReviewsDTO.some(review => review.wordPackName === wordPackDTO.name);
     const {colorMode} = useColorMode();
@@ -49,7 +49,7 @@ export default function WordPackCard({wordPackDTO, fetchAllWordPacksDTO}) {
             <Flex
                 justify="center" align="center" minH={'250px'} maxW={'225px'} minW={'225px'} w={'full'} m={2}
                 bg={isReviewExists ? (colorMode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.6)') : 'black'}
-                color={'white'} boxShadow={'l'} rounded={'md'} overflow={'hidden'}
+                color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
                 style={{pointerEvents: isReviewExists ? 'none' : 'auto'}}
             >
                 <Box p={6} align={'center'}>
@@ -60,7 +60,7 @@ export default function WordPackCard({wordPackDTO, fetchAllWordPacksDTO}) {
                     <Stack spacing={2} mb={30}>
                         <Text color={'gray.500'}>{wordPackDTO.description}</Text>
                     </Stack>
-                    <ReviewWordPackDrawer
+                    <ReviewWordPackWindow
                         button={previewButton}
                         isOpen={isOpenPreviewButton}
                         onClose={onClosePreviewButton}

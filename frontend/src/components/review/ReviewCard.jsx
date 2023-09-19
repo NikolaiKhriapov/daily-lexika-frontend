@@ -37,7 +37,7 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
         <Center py={6}>
             <Flex
                 justify="center" align="center" minH={'250px'} maxW={'225px'} minW={'225px'} w={'full'} m={2}
-                bg={'black'} color={'white'} boxShadow={'l'} rounded={'md'} overflow={'hidden'}
+                bg={'black'} color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
             >
                 <Box p={6}>
                     <Stack spacing={2} align={'center'} mb={30}>

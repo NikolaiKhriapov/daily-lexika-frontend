@@ -55,7 +55,7 @@ export default function StatsReviewCard({reviewDTO}) {
                         {reviewStatisticsDTO.wordsKnown}/{reviewStatisticsDTO.wordsTotal}
                     </StatLabel>
                 </Flex>
-                <Progress colorScheme='blue' size='sm' value={wordsKnownPercentage}/>
+                <Progress colorScheme='blue' size='sm' rounded={'md'} value={wordsKnownPercentage}/>
             </Stat>
         </Box>
     );

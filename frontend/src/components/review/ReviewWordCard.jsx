@@ -12,7 +12,7 @@ export default function ReviewWordCard({reviewWordDTO}) {
         <Center py={6}>
             <Flex
                 justify="center" align="center" maxH={'500px'} minH={'500px'} maxW={'400px'} minW={'400px'}
-                w={'full'} m={2} bg={'black'} color={'white'} boxShadow={'l'} rounded={'md'} overflow={'hidden'}
+                w={'full'} m={2} bg={'black'} color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
                 onClick={handleFlip}
                 style={{
                     transform: isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)', transition: 'transform 0.5s'

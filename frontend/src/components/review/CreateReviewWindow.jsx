@@ -30,7 +30,7 @@ const CreateReviewWindow = ({button, isOpen, onClose, wordPackDTO, fetchAllWordP
         {button}
         <Modal isOpen={isOpen} onClose={onClose} size={"md"} isCentered>
             <ModalOverlay/>
-            <ModalContent>
+            <ModalContent rounded={'lg'}>
                 <ModalCloseButton/>
                 <ModalBody>
                     <div style={{margin: '15px 0', fontSize: '20px', fontWeight: 'bold'}}>{wordPackDTO.name}</div>
@@ -54,9 +54,9 @@ const CreateReviewWindow = ({button, isOpen, onClose, wordPackDTO, fetchAllWordP
                                     .max(50, 'Must be less than 50')
                                     .required('Required'),
                             })}
-                            onSubmit={(review, {setSubmitting}) => {
+                            onSubmit={(reviewDTO, {setSubmitting}) => {
                                 setSubmitting(true);
-                                createReview(review)
+                                createReview(reviewDTO)
                                     .then(() => {
                                         successNotification("Review saved", `${wordPackDTO.name} was successfully saved`)
                                         fetchAllReviewsDTO()
