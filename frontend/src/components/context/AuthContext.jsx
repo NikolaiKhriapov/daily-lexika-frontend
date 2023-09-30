@@ -12,9 +12,7 @@ const AuthProvider = ({children}) => {
         let token = localStorage.getItem("access_token");
         if (token) {
             token = jwtDecode(token);
-            setUser({
-                username: token.sub,
-            })
+            setUser({username: token.sub})
         }
     }
 
@@ -30,9 +28,7 @@ const AuthProvider = ({children}) => {
 
                 const decodedToken = jwtDecode(jwtToken);
 
-                setUser({
-                    username: decodedToken.sub,
-                })
+                setUser({username: decodedToken.sub})
                 resolve(response);
             }).catch(error => {
                 reject(error);

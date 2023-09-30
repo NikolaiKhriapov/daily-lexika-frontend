@@ -28,19 +28,11 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String name;
 
-    private String surname;
-
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    private String profilePhoto;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

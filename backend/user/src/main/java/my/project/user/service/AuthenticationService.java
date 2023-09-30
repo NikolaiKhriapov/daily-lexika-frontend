@@ -41,10 +41,8 @@ public class AuthenticationService {
 
         User user = User.builder()
                 .name(registrationRequest.name())
-                .surname(registrationRequest.surname())
                 .email(registrationRequest.email().toLowerCase())
                 .password(passwordEncoder.encode(registrationRequest.password()))
-                .gender(registrationRequest.gender())
                 .userRole(UserRole.USER)
                 .currentStreak(0L)
                 .dateOfLastStreak(LocalDate.now().minusDays(1))

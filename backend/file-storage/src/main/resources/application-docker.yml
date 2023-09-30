@@ -1,6 +1,6 @@
-file-storage:
-  profile-photo-directory: "static/images/user-%s/profile-photo/"
-  profile-photo-name: "%s-profile-photo%s"
+#file-storage:
+#  profile-photo-directory: "static/images/user-%s/profile-photo/"
+#  profile-photo-name: "%s-profile-photo%s"
 
 eureka:
   client:

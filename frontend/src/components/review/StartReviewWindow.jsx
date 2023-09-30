@@ -4,7 +4,7 @@ import {
 import React, {useEffect, useState} from "react";
 import {processReviewAction} from "../../services/review.js";
 import {updateUserStreak} from "../../services/user.js";
-import {errorNotification} from "../../services/notification.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 import ReviewWordCard from "./ReviewWordCard.jsx";
 
 const StartReviewWindow = ({reviewId, isOpen, onClose, button}) => {
@@ -14,6 +14,13 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button}) => {
     const [isReviewComplete, setIsReviewComplete] = useState(false)
 
     const fetchReviewAction = (answer) => {
+        if (((reviewWordDTO.status === 'NEW') || (reviewWordDTO.status === 'IN_REVIEW' && reviewWordDTO.totalStreak === 4))
+            && answer === 'yes') {
+            successNotification(
+                `${reviewWordDTO.nameChineseSimplified} is a known word.`,
+                "This word will still be shown occasionally during reviews"
+            )
+        }
         processReviewAction(reviewId, answer)
             .then((response) => {
                 if (response.data.data != null) {

@@ -10,22 +10,15 @@ const ReviewWordPackWindow = ({button, isOpen, onClose, wordPackDTO}) => {
     const [visibleWords, setVisibleWords] = useState(50);
     const containerRef = useRef(null);
 
-    const fetchAllWordsForWordPackDTO = () => {
+    useEffect(() => {
         getAllWordsForWordPack(wordPackDTO.name)
             .then((response) => setAllWordsForWordPackDTO(response.data.data.allWordsForWordPackDTO))
             .catch((error) => errorNotification(error.code, error.response.data.message))
-    };
-
-    useEffect(() => {
-        fetchAllWordsForWordPackDTO();
-    }, []);
+    }, [wordPackDTO.name]);
 
     const getStatusColor = (status) => {
-        if (status === "KNOWN") {
-            return "green";
-        } else if (status === "NEW") {
-            return "red";
-        }
+        if (status === "KNOWN") return "green"
+        else if (status === "NEW") return "red"
         return "gray";
     };
 
@@ -63,7 +56,22 @@ const ReviewWordPackWindow = ({button, isOpen, onClose, wordPackDTO}) => {
                                             <div>{wordDTO.nameEnglish}</div>
                                         </div>
                                         <div style={{flex: "0 0 auto", minWidth: "fit-content"}}>
-                                            <Badge colorScheme={getStatusColor(wordDTO.status)}>{wordDTO.status}</Badge>
+                                            {wordDTO.status === "IN_REVIEW"
+                                                ? (
+                                                    Array.from({ length: wordDTO.totalStreak }).map((_, i) => (
+                                                        <Badge
+                                                            key={i}
+                                                            style={{
+                                                                width: "10px",
+                                                                height: "10px",
+                                                                backgroundColor: "rgba(0, 128, 0, 0.5)",
+                                                                borderRadius: "50%",
+                                                                marginRight: "3px",
+                                                            }}
+                                                        />
+                                                    ))
+                                                )
+                                                : (<Badge colorScheme={getStatusColor(wordDTO.status)}>{wordDTO.status}</Badge>)}
                                         </div>
                                     </div>
                                 </div>

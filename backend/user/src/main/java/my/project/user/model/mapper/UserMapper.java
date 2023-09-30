@@ -1,9 +1,6 @@
 package my.project.user.model.mapper;
 
 import lombok.RequiredArgsConstructor;
-import my.project.clients.filestorage.FileStorageClient;
-import my.project.clients.filestorage.GetPhotoRequest;
-import my.project.clients.filestorage.GetPhotoResponse;
 import my.project.user.model.entity.User;
 import my.project.user.model.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,24 +12,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserMapper implements Mapper<User, UserDTO> {
 
-    private final FileStorageClient fileStorageClient;
-
     @Override
     public UserDTO toDTO(User user) {
-        byte[] profilePhoto = null;
-        if (user.getProfilePhoto() != null) {
-            GetPhotoResponse getPhotoResponse = fileStorageClient.getPhoto(new GetPhotoRequest(user.getProfilePhoto()));
-            profilePhoto = getPhotoResponse.photo();
-        }
-
         return new UserDTO(
                 user.getId(),
                 user.getName(),
-                user.getSurname(),
                 user.getEmail(),
                 null,
-                user.getGender(),
-                profilePhoto,
                 user.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
@@ -45,9 +31,6 @@ public class UserMapper implements Mapper<User, UserDTO> {
 
     public UserDTO toDTOStatistics(User user) {
         return new UserDTO(
-                null,
-                null,
-                null,
                 null,
                 null,
                 null,
