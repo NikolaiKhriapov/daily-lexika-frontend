@@ -1,29 +1,29 @@
 import {
     Heading, Box, Center, Flex, Text, Stack, Tag, Button, useDisclosure, AlertDialog, AlertDialogOverlay,
-    AlertDialogHeader, AlertDialogContent, AlertDialogBody, AlertDialogFooter
+    AlertDialogHeader, AlertDialogContent, AlertDialogBody, AlertDialogFooter, Badge
 } from '@chakra-ui/react'
 import {useEffect, useRef, useState} from "react"
 import {errorNotification, successNotification} from "../../services/popup-notification.js"
-import {deleteReview, getWordsForReview} from "../../services/review.js"
+import {removeReview, getWordsForReview} from "../../services/review.js"
 import {CopyIcon} from "@chakra-ui/icons"
 import StartReviewWindow from "./StartReviewWindow.jsx"
 
 export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
 
     const [wordsForReviewDTO, setWordsForReviewDTO] = useState([])
+    const [reviewRemoved, setReviewRemoved] = useState(false)
     const {isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton} = useDisclosure()
     const {isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton} = useDisclosure()
-    const [reviewRemoved, setReviewRemoved] = useState(false)
     const cancelRef = useRef()
 
-    const fetchWordsForReviewDTO = (reviewDTO) => {
-        getWordsForReview(reviewDTO.id)
+    const fetchWordsForReviewDTO = (reviewId) => {
+        getWordsForReview(reviewId)
             .then(response => setWordsForReviewDTO(response.data.data.wordsForReviewDTO))
             .catch(error => errorNotification(error.code, error.response.data.message))
     }
     useEffect(() => {
         if (!reviewRemoved) {
-            fetchWordsForReviewDTO(reviewDTO)
+            fetchWordsForReviewDTO(reviewDTO.id)
         }
     }, [wordsForReviewDTO])
 
@@ -53,6 +53,16 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
                 bg={'black'} color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
             >
                 <Box p={6}>
+                    {new Date(reviewDTO.dateLastCompleted).toDateString() === new Date().toDateString()
+                        ? (
+                            <Flex justifyContent={'right'}>
+                                <Badge position="absolute" mt={"-25px"} mr={"-15px"}
+                                       color={"green"} backgroundColor="black" border={'1px'} fontSize={'9'}>
+                                    Completed
+                                </Badge>
+                            </Flex>)
+                        : null
+                    }
                     <Stack spacing={2} align={'center'} mb={30}>
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                             {reviewDTO.wordPackName}
@@ -97,11 +107,11 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
                                                 <Button ref={cancelRef} onClick={onCloseRemoveButton}>Cancel</Button>
                                                 <Button colorScheme='red' onClick={() => {
                                                     setReviewRemoved(true)
-                                                    deleteReview(reviewDTO.id)
+                                                    removeReview(reviewDTO.id)
                                                         .then(() => {
                                                             successNotification(
-                                                                "Review deleted successfully",
-                                                                `${reviewDTO.wordPackName} deleted successfully`
+                                                                "Review removed successfully",
+                                                                `${reviewDTO.wordPackName} removed successfully`
                                                             )
                                                             fetchAllReviewsDTO()
                                                         })

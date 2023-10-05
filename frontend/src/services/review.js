@@ -29,7 +29,7 @@ export const createReview = async (review) => {
     }
 }
 
-export const deleteReview = async (reviewId) => {
+export const removeReview = async (reviewId) => {
     try {
         return await axios.delete(
             `${import.meta.env.VITE_API_BASE_URL}/api/v1/chinese-flashcards/reviews/${reviewId}`,
