@@ -4,13 +4,14 @@ import {
 } from '@chakra-ui/react'
 import {useEffect, useRef, useState} from "react"
 import {errorNotification, successNotification} from "../../services/popup-notification.js"
-import {removeReview, getWordsForReview} from "../../services/review.js"
+import {removeReview, getWordsForReview, getReview} from "../../services/review.js"
 import {CopyIcon} from "@chakra-ui/icons"
 import StartReviewWindow from "./StartReviewWindow.jsx"
 
 export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
 
     const [wordsForReviewDTO, setWordsForReviewDTO] = useState([])
+    const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO)
     const [reviewRemoved, setReviewRemoved] = useState(false)
     const {isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton} = useDisclosure()
     const {isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton} = useDisclosure()
@@ -21,9 +22,15 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
             .then(response => setWordsForReviewDTO(response.data.data.wordsForReviewDTO))
             .catch(error => errorNotification(error.code, error.response.data.message))
     }
+    const fetchReviewDTO = (reviewId) => {
+        getReview(reviewId)
+            .then(response => setUpdatedReviewDTO(response.data.data.reviewDTO))
+            .catch(error => errorNotification(error.code, error.response.data.message))
+    }
     useEffect(() => {
         if (!reviewRemoved) {
             fetchWordsForReviewDTO(reviewDTO.id)
+            fetchReviewDTO(reviewDTO.id)
         }
     }, [wordsForReviewDTO])
 
@@ -53,7 +60,7 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
                 bg={'black'} color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
             >
                 <Box p={6}>
-                    {new Date(reviewDTO.dateLastCompleted).toDateString() === new Date().toDateString()
+                    {new Date(updatedReviewDTO.dateLastCompleted).toDateString() === new Date().toDateString()
                         ? (
                             <Flex justifyContent={'right'}>
                                 <Badge position="absolute" mt={"-25px"} mr={"-15px"}

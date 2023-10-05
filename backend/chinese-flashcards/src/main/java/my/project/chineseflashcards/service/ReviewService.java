@@ -49,6 +49,10 @@ public class ReviewService {
         return allReviewDTOs;
     }
 
+    public ReviewDTO getReviewById(Long reviewId) {
+        return reviewMapper.toDTO(getReview(reviewId));
+    }
+
     public void createReview(ReviewDTO newReviewDTO, Long userId) {
         List<Review> existingReviews = reviewRepository.findAllByUserId(userId);
         if (existingReviews
