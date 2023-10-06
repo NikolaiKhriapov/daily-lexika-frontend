@@ -1,5 +1,5 @@
 import {
-    Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Progress, Stack, Text,
+    Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Progress, Stack,
     useColorModeValue
 } from "@chakra-ui/react"
 import React, {useEffect, useState} from "react"
@@ -79,7 +79,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}
                     <ModalCloseButton/>
                     <ModalBody display="flex" flexDirection="column" justifyContent="center">
                         {!isFormVisible && isReviewComplete ? (
-                            <Text fontSize="xl" textAlign="center">Daily Review Complete</Text>
+                            onClose()
                         ) : (
                             <>
                                 <Stack spacing={2} mb={90} ml={10} mr={10}>
