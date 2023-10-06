@@ -44,7 +44,10 @@ const Statistics = () => {
     const fetchAllReviewsDTO = () => {
         setLoading(true);
         getAllReviews()
-            .then(response => setAllReviewsDTO(response.data.data.allReviewsDTO.sort((a, b) => a.id - b.id)))
+            .then(response => {
+                const allReviewsDTO = response.data.data.allReviewsDTO
+                setAllReviewsDTO(allReviewsDTO.sort((a, b) => a.wordPackName.localeCompare(b.wordPackName)));
+            })
             .catch(error => {
                 setError((error.response.data.message))
                 errorNotification(error.code, error.response.data.message)
