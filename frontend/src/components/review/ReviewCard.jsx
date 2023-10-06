@@ -49,7 +49,7 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
 
     const startButton = (
         <Button
-            rounded={"lg"} size={"sm"} background={'gray.200'}
+            rounded={"lg"} size={"sm"} background={'gray.200'} color={'black'}
             borderColor={useColorModeValue('gray.400', 'gray.500')} borderWidth={'0.5px'}
             _hover={{bg: 'gray.400', borderColor: 'gray.500'}}
             onClick={() => isDateLastCompletedToday ? requestRefreshReview(reviewDTO.id) : onOpenStartButton()}

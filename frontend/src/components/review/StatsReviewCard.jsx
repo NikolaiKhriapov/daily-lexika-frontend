@@ -12,8 +12,8 @@ export default function StatsReviewCard({reviewDTO}) {
     const [wordPackDTO, setWordPackDTO] = useState([]);
     const {isOpen, onOpen, onClose} = useDisclosure()
 
-    const fetchWordPackDTO = () => {
-        getWordPack(reviewDTO.wordPackName)
+    const fetchWordPackDTO = (wordPackName) => {
+        getWordPack(wordPackName)
             .then(response => setWordPackDTO(response.data.data.wordPackDTO))
             .catch(error => errorNotification(error.code, error.response.data.message))
     }
@@ -25,7 +25,7 @@ export default function StatsReviewCard({reviewDTO}) {
 
     useEffect(() => {
         fetchReviewStatisticsDTO()
-        fetchWordPackDTO()
+        fetchWordPackDTO(reviewDTO.wordPackName)
     }, [])
 
     const wordsKnownPercentage = Math.round(reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal * 100)
