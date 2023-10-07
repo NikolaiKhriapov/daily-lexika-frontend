@@ -1,11 +1,12 @@
 import {
-    Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Progress, Stack, Text
-} from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
-import {processReviewAction} from "../../services/review.js";
-import {updateUserStreak} from "../../services/user.js";
-import {errorNotification, successNotification} from "../../services/popup-notification.js";
-import ReviewWordCard from "./ReviewWordCard.jsx";
+    Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Progress, Stack,
+    useColorModeValue
+} from "@chakra-ui/react"
+import React, {useEffect, useState} from "react"
+import {processReviewAction} from "../../services/review.js"
+import {updateUserStreak} from "../../services/user.js"
+import {errorNotification, successNotification} from "../../services/popup-notification.js"
+import ReviewWordCard from "./ReviewWordCard.jsx"
 
 const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}) => {
 
@@ -13,6 +14,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}
     const [reviewUpdatedSize, setReviewUpdatedSize] = useState([])
     const [isFormVisible, setIsFormVisible] = useState(true)
     const [isReviewComplete, setIsReviewComplete] = useState(false)
+    const [isFlipped, setIsFlipped] = useState(false);
 
     const fetchReviewAction = (answer) => {
         if (((reviewWordDTO.status === 'NEW') || (reviewWordDTO.status === 'IN_REVIEW' && reviewWordDTO.totalStreak === 4))
@@ -40,24 +42,34 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}
         fetchReviewAction(null);
     }, [reviewId]);
 
+    useEffect(() => {
+        if (!isFormVisible && isReviewComplete) {
+            onClose()
+        }
+    }, [isFormVisible, isReviewComplete])
+
     const pressButton = (answer) => {
         fetchReviewAction(answer);
+        setIsFlipped(false)
     };
 
     const forgotButton = (
         <Button
-            bg={"grey"} color={"white"} rounded={"lg"} size={"lg"}
-            _hover={{bg: "red", transform: "translateY(-2px)", boxShadow: "lg"}}
+            rounded={"lg"} shadow={'2xl'}
+            color={useColorModeValue('black', 'white')}
+            bg={useColorModeValue('gray.300', 'rgba(60,60,60)')}
+            _hover={{bg: useColorModeValue('red.300', 'red.400')}}
             onClick={() => pressButton("no")}
         >
             Forgot
         </Button>
     )
     const rememberedButton = (
-        <Button
-            ml={5} bg={"grey"} color={"white"} rounded={"lg"} size={"lg"}
-            _hover={{bg: "green", transform: "translateY(-2px)", boxShadow: "lg"}}
-            onClick={() => pressButton("yes")} disabled={!reviewWordDTO}
+        <Button rounded={"lg"} shadow={'2xl'} ml={5}
+                color={useColorModeValue('black', 'white')}
+                bg={useColorModeValue('gray.300', 'rgba(60,60,60)')}
+                _hover={{bg: useColorModeValue('gray.400', 'rgba(80,80,80)')}}
+                onClick={() => pressButton("yes")} disabled={!reviewWordDTO}
         >
             Remembered
         </Button>
@@ -70,18 +82,26 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}
             {button}
             <Modal isOpen={isOpen} onClose={onClose} size={"6xl"} isCentered>
                 <ModalOverlay/>
-                <ModalContent maxH="80vh" minH="80vh" minW="80vh" maxW="80vh" rounded={'lg'}>
+                <ModalContent shadow={'2xl'} border={'1px solid'} rounded={'lg'} width="80vh" height="80vh" p={6}
+                              align={'center'}
+                              borderColor={useColorModeValue('gray.400', 'rgba(80,80,80)')}
+                              bg={useColorModeValue('gray.100', 'rgba(40,40,40)')}
+                >
                     <ModalCloseButton/>
                     <ModalBody display="flex" flexDirection="column" justifyContent="center">
-                        {!isFormVisible && isReviewComplete ? (
-                            <Text fontSize="xl" textAlign="center">Daily Review Complete</Text>
-                        ) : (
+                        {!isFormVisible && isReviewComplete ? null : (
                             <>
                                 <Stack spacing={2} mb={90} ml={10} mr={10}>
-                                    <Progress colorScheme='gray' size='sm' rounded={'md'} value={reviewProgress}/>
+                                    <Progress value={reviewProgress} size='sm' rounded={'md'}
+                                              colorScheme={useColorModeValue('gray', 'gray')}
+                                              bg={useColorModeValue('gray.200', 'rgba(80,80,80)')}/>
                                 </Stack>
-                                <ReviewWordCard reviewWordDTO={reviewWordDTO}/>
-                                <Stack spacing={2} align={"center"} mb={90}>
+                                <ReviewWordCard
+                                    reviewWordDTO={reviewWordDTO}
+                                    isFlipped={isFlipped}
+                                    setIsFlipped={setIsFlipped}
+                                />
+                                <Stack align={"center"}>
                                     <Flex>
                                         {forgotButton}
                                         {rememberedButton}
@@ -90,6 +110,7 @@ const StartReviewWindow = ({reviewId, isOpen, onClose, button, totalReviewWords}
                             </>
                         )}
                     </ModalBody>
+                    <ModalFooter height={90}/>
                 </ModalContent>
             </Modal>
         </>

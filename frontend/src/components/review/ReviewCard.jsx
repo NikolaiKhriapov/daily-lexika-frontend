@@ -1,12 +1,12 @@
 import {
-    Heading, Box, Center, Flex, Text, Stack, Tag, Button, useDisclosure, AlertDialog, AlertDialogOverlay,
-    AlertDialogHeader, AlertDialogContent, AlertDialogBody, AlertDialogFooter, Badge
+    Heading, Box, Flex, Button, useDisclosure, AlertDialog, AlertDialogOverlay, AlertDialogHeader, AlertDialogContent,
+    AlertDialogBody, AlertDialogFooter, Badge, useColorModeValue, Stat, StatNumber, StatLabel
 } from '@chakra-ui/react'
-import {useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {errorNotification, successNotification} from "../../services/popup-notification.js"
 import {removeReview, getWordsForReview, getReview, refreshReview} from "../../services/review.js"
-import {CopyIcon} from "@chakra-ui/icons"
 import StartReviewWindow from "./StartReviewWindow.jsx"
+import {AiOutlineCloseCircle} from "react-icons/ai";
 
 export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
 
@@ -49,84 +49,62 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
 
     const startButton = (
         <Button
-            bg={"grey"} color={"white"} rounded={"full"}
-            _hover={{transform: 'translateY(-2px)', boxShadow: 'lg'}}
+            rounded={"lg"} size={"sm"}
+            color={useColorModeValue('black', 'white')}
+            bg={useColorModeValue('gray.300', 'rgba(60,60,60)')}
+            _hover={{
+                bg: useColorModeValue('gray.400', 'rgba(80,80,80)'),
+            }}
+            shadow={'2xl'}
             onClick={() => isDateLastCompletedToday ? requestRefreshReview(reviewDTO.id) : onOpenStartButton()}
         >
             {!isDateLastCompletedToday ? 'Start' : 'Refresh'}
         </Button>
     )
-    const removeButton = (
-        <Button
-            bg={"red.400"} color={"white"} rounded={"full"}
-            _hover={{transform: 'translateY(-2px)', boxShadow: 'lg'}}
-            onClick={onOpenRemoveButton}
-        >
-            Remove
-        </Button>
-    )
 
     return (
-        <Center py={6}>
-            <Flex
-                justify="center" align="center" minH={'250px'} maxW={'225px'} minW={'225px'} w={'full'} m={2}
-                bg={'black'} color={'white'} boxShadow={'l'} rounded={'lg'} overflow={'hidden'}
+        <Box m={'5px'} mt='50px'>
+            <Stat
+                shadow={'2xl'} border={'1px solid'} rounded={'lg'} width="220px" height="270px" p={6} align={'center'}
+                borderColor={useColorModeValue('gray.400', 'rgba(80,80,80)')}
+                bg={useColorModeValue('gray.100', 'rgba(40,40,40)')}
             >
-                <Box p={6}>
-                    {isDateLastCompletedToday
-                        ? (
-                            <Flex justifyContent={'right'}>
-                                <Badge position="absolute" mt={"-25px"} mr={"-15px"}
-                                       color={"green"} backgroundColor="black" border={'1px'} fontSize={'9'}>
+                <Flex justifyContent={"space-between"}>
+                    <Flex justifyContent="left" height="15px" ml={'-30px'} mt={'-3px'} mb={'3px'}>
+                        {isDateLastCompletedToday
+                            ? (
+                                <Badge color={"green"} border={'1px'} fontSize={'9'}
+                                       style={{transform: 'rotate(-45deg)'}}>
                                     Completed
-                                </Badge>
-                            </Flex>)
-                        : null
-                    }
-                    <Stack spacing={2} align={'center'} mb={30}>
-                        <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                            {reviewDTO.wordPackName}
-                        </Heading>
-                    </Stack>
-                    <Stack spacing={2} align={'left'} mb={30}>
-                        <Text color={'gray.500'}>
-                            New Words: <Tag borderRadius={'full'}><CopyIcon/>
-                            {wordsForReviewDTO.filter((wordDTO) => wordDTO.status === "NEW").length}</Tag>
-                        </Text>
-                        <Text color={'gray.500'}>
-                            Review Words: <Tag borderRadius={'full'}><CopyIcon/>
-                            {wordsForReviewDTO.filter((wordDTO) => wordDTO.status === "IN_REVIEW" || wordDTO.status === "KNOWN").length}
-                        </Tag>
-                        </Text>
-                    </Stack>
-                    <Stack spacing={2} align={'center'}>
-                        <Flex>
-                            <Stack>
-                                <StartReviewWindow
-                                    reviewId={reviewDTO.id}
-                                    isOpen={isOpenStartButton}
-                                    onClose={onCloseStartButton}
-                                    button={startButton}
-                                    totalReviewWords={reviewDTO.listOfWordId.length}
-                                />
-                            </Stack>
-                            <Stack ml={5}>
-                                {removeButton}
-                                <AlertDialog
-                                    isOpen={isOpenRemoveButton}
-                                    onClose={onCloseRemoveButton}
-                                    leastDestructiveRef={cancelRef}>
-                                    <AlertDialogOverlay>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>Remove
-                                                Review</AlertDialogHeader>
-                                            <AlertDialogBody>
-                                                Are you sure you want to remove '{reviewDTO.wordPackName}'?
-                                                You can't undo this action.
-                                            </AlertDialogBody>
-                                            <AlertDialogFooter>
-                                                <Button ref={cancelRef} onClick={onCloseRemoveButton}>Cancel</Button>
-                                                <Button colorScheme='red' onClick={() => {
+                                </Badge>)
+                            : null
+                        }
+                    </Flex>
+                    <Flex justifyContent="left" height="15px" mr={'-15px'} mt={'-15px'} mb={'15px'}>
+                        <AiOutlineCloseCircle onClick={onOpenRemoveButton} cursor={'pointer'}/>
+                        <AlertDialog
+                            isOpen={isOpenRemoveButton}
+                            onClose={onCloseRemoveButton}
+                            leastDestructiveRef={cancelRef}>
+                            <AlertDialogOverlay>
+                                <AlertDialogContent bg={useColorModeValue('gray.100', 'rgba(40,40,40)')}>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>Remove Review</AlertDialogHeader>
+                                    <AlertDialogBody>
+                                        Are you sure you want to remove '{reviewDTO.wordPackName}'?
+                                        You can't undo this action.
+                                    </AlertDialogBody>
+                                    <AlertDialogFooter>
+                                        <Button rounded={"lg"} shadow={'2xl'} ml={5}
+                                                color={useColorModeValue('black', 'white')}
+                                                bg={useColorModeValue('gray.300', 'rgba(60,60,60)')}
+                                                _hover={{bg: useColorModeValue('gray.400', 'rgba(80,80,80)')}}
+                                                ref={cancelRef} onClick={onCloseRemoveButton}
+                                        >Cancel</Button>
+                                        <Button rounded={"lg"} shadow={'2xl'}
+                                                color={useColorModeValue('black', 'white')}
+                                                bg={useColorModeValue('gray.300', 'rgba(60,60,60)')}
+                                                _hover={{bg: useColorModeValue('red.300', 'red.400')}}
+                                                onClick={() => {
                                                     setReviewRemoved(true)
                                                     removeReview(reviewDTO.id)
                                                         .then(() => {
@@ -139,18 +117,43 @@ export default function ReviewCard({reviewDTO, fetchAllReviewsDTO}) {
                                                         .catch(error =>
                                                             errorNotification(error.code, error.response.data.message))
                                                         .finally(() => onCloseRemoveButton())
-                                                }} ml={3}>
-                                                    Remove
-                                                </Button>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialogOverlay>
-                                </AlertDialog>
-                            </Stack>
-                        </Flex>
-                    </Stack>
-                </Box>
-            </Flex>
-        </Center>
+                                                }} ml={3}
+                                        >Remove</Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </Flex>
+                </Flex>
+                <Flex justifyContent="center">
+                    <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>{reviewDTO.wordPackName}</Heading>
+                </Flex>
+                <Flex justifyContent="center" height="150px" flexDirection="column">
+                    <Flex alignItems="baseline" justifyContent="center">
+                        <StatNumber fontSize={'2xl'}>
+                            {wordsForReviewDTO.filter((wordDTO) => wordDTO.status === "NEW").length}
+                        </StatNumber>
+                        <span>&nbsp;</span>
+                        <StatLabel fontWeight={'medium'}>New Words</StatLabel>
+                    </Flex>
+                    <Flex alignItems="baseline" justifyContent="center">
+                        <StatNumber fontSize={'2xl'}>
+                            {wordsForReviewDTO.filter((wordDTO) => wordDTO.status === "IN_REVIEW" || wordDTO.status === "KNOWN").length}
+                        </StatNumber>
+                        <span>&nbsp;</span>
+                        <StatLabel fontWeight={'medium'}>Review Words</StatLabel>
+                    </Flex>
+                </Flex>
+                <Flex justifyContent="center">
+                    <StartReviewWindow
+                        reviewId={reviewDTO.id}
+                        isOpen={isOpenStartButton}
+                        onClose={onCloseStartButton}
+                        button={startButton}
+                        totalReviewWords={reviewDTO.listOfWordId.length}
+                    />
+                </Flex>
+            </Stat>
+        </Box>
     )
 }

@@ -12,8 +12,8 @@ export default function StatsReviewCard({reviewDTO}) {
     const [wordPackDTO, setWordPackDTO] = useState([]);
     const {isOpen, onOpen, onClose} = useDisclosure()
 
-    const fetchWordPackDTO = () => {
-        getWordPack(reviewDTO.wordPackName)
+    const fetchWordPackDTO = (wordPackName) => {
+        getWordPack(wordPackName)
             .then(response => setWordPackDTO(response.data.data.wordPackDTO))
             .catch(error => errorNotification(error.code, error.response.data.message))
     }
@@ -25,19 +25,21 @@ export default function StatsReviewCard({reviewDTO}) {
 
     useEffect(() => {
         fetchReviewStatisticsDTO()
-        fetchWordPackDTO()
+        fetchWordPackDTO(reviewDTO.wordPackName)
     }, [])
 
     const wordsKnownPercentage = Math.round(reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal * 100)
 
     return (
-        <Box width="220px">
+        <Box>
             <Stat
-                px={'4'} py={'3.5'} shadow={'xl'} border={'1px solid'} rounded={'lg'}
-                borderColor={useColorModeValue('gray.800', 'gray.500')}>
+                shadow={'2xl'} border={'1px solid'} rounded={'lg'} px={{md: 4}} py={'3.5'} width="220px"
+                borderColor={useColorModeValue('gray.400', 'rgba(80,80,80)')}
+                bg={useColorModeValue('gray.100', 'rgba(40,40,40)')}
+            >
                 <Flex justifyContent="space-between" alignItems="center">
                     <StatLabel fontSize={'large'} fontWeight={'bold'}>{reviewDTO.wordPackName}</StatLabel>
-                    <AiOutlineQuestionCircle size="1em" onClick={onOpen}/>
+                    <AiOutlineQuestionCircle size="1em" onClick={onOpen} cursor={'pointer'}/>
                     <StatsReviewWindow
                         isOpen={isOpen}
                         onClose={onClose}
