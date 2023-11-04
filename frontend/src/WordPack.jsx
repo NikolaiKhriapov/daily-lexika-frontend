@@ -1,9 +1,9 @@
 import {Wrap, WrapItem, Spinner, chakra} from '@chakra-ui/react'
 import SidebarWithHeader from "./shared/SideBar.jsx";
 import {useEffect, useState} from "react";
-import {errorNotification} from "./services/popup-notification.js";
+import {errorNotification} from "./services/popup-notification.ts";
 import WordPackCard from "./components/word-pack/WordPackCard.jsx";
-import {getAllWordPacks} from "./services/word-pack.js";
+import {getAllWordPacks} from "./services/word-packs.ts";
 
 const WordPack = () => {
 

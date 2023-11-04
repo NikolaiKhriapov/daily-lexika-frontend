@@ -5,9 +5,9 @@ import {
 } from "@chakra-ui/react";
 import {Form, Formik, useField} from "formik";
 import * as Yup from "yup";
-import {errorNotification, successNotification} from "../../services/popup-notification.js";
+import {errorNotification, successNotification} from "../../services/popup-notification.ts";
 import React, {useRef} from "react";
-import {deleteAccount, updateUserInfo} from "../../services/user.js";
+import {deleteAccount, updateUserInfo} from "../../services/user.ts";
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);

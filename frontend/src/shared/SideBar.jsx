@@ -7,10 +7,10 @@ import {
 import {FiBell, FiMenu} from 'react-icons/fi'
 import {useAuth} from "../components/context/AuthContext.jsx"
 import {MoonIcon, SunIcon} from "@chakra-ui/icons"
-import {showUserAccount} from "../services/user.js"
-import {errorNotification} from "../services/popup-notification.js"
+import {showUserAccount} from "../services/user.ts"
+import {errorNotification} from "../services/popup-notification.ts"
 import UserAccountWindow from "../components/user/UserAccountWindow.jsx"
-import {getAllNotifications, readNotification} from "../services/notification.js"
+import {getAllNotifications, readNotification} from "../services/notifications.ts"
 import NotificationWindow from "../components/notification/NotificationWindow.jsx"
 
 const LinkItems = [

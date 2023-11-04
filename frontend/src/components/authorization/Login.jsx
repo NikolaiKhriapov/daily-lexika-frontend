@@ -5,7 +5,7 @@ import {
 import { Form, Formik, useField } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../context/AuthContext.jsx';
-import { errorNotification } from '../../services/popup-notification.js';
+import { errorNotification } from '../../services/popup-notification.ts';
 import { useNavigate } from 'react-router-dom';
 
 const MyTextInput = ({ label, ...props }) => {

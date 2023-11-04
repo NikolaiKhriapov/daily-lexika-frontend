@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 /frontend/node_modules/
+/frontend/.env
 /backend/chinese-flashcards/src/main/resources/static/data/Data.xlsx
 /backend/file-storage/src/main/resources/static/

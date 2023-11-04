@@ -6,8 +6,8 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { Form, Formik, useField } from 'formik';
 import * as Yup from 'yup';
-import { register } from '../../services/authorization.js';
-import { errorNotification, successNotification } from '../../services/popup-notification.js';
+import { register } from '../../services/authorization.ts';
+import { errorNotification, successNotification } from '../../services/popup-notification.ts';
 
 const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);

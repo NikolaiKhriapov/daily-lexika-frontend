@@ -3,8 +3,8 @@ import {
 } from "@chakra-ui/react";
 import {CopyIcon} from "@chakra-ui/icons";
 import {useEffect, useState, useRef} from "react";
-import {getAllWordsForWordPack} from "../../services/word-pack.js";
-import {errorNotification} from "../../services/popup-notification.js";
+import {getAllWordsForWordPack} from "../../services/word-packs.ts";
+import {errorNotification} from "../../services/popup-notification.ts";
 
 const ReviewWordPackWindow = ({button, isOpen, onClose, wordPackDTO}) => {
 

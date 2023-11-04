@@ -1,7 +1,12 @@
 {
   "semi": true,
-  "trailingComma": "all",
+  "trailingComma": "es5",
   "singleQuote": true,
   "tabWidth": 4,
-  "useTabs": false
+  "useTabs": false,
+  "import": {
+    "spacing": "always"
+  },
+  "printWidth": 120,
+  "comma-dangle": [2, "always-multiline"]
 }

@@ -1,9 +1,9 @@
 import {Heading, Box, Flex, Text, Button, useDisclosure, useColorModeValue, Stat} from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react';
-import {errorNotification} from '../../services/popup-notification.js';
+import {errorNotification} from '../../services/popup-notification.ts';
 import CreateReviewWindow from "../review/CreateReviewWindow.jsx";
 import ReviewWordPackWindow from "./ReviewWordPackWindow.jsx";
-import {getAllReviews} from "../../services/review.js";
+import {getAllReviews} from "../../services/reviews.ts";
 import {AiOutlineQuestionCircle} from "react-icons/ai";
 import {TbCards} from "react-icons/tb";
 import {FaCheck} from "react-icons/fa";

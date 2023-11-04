@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { ApiEndpointsWords } from '../API/apiMethods';
 
 const getAuthConfig = () => ({
     headers: {
@@ -10,10 +9,7 @@ const getAuthConfig = () => ({
 
 export const getWordStatistics = async () => {
     try {
-        return await axios.get(
-            `${BASE_URL}/chinese-flashcards/words/statistics`,
-            getAuthConfig(),
-        );
+        return await axios.get(ApiEndpointsWords.getWordStatistics(), getAuthConfig());
     } catch (error) {
         throw error;
     }

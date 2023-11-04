@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "unused-imports",
+    "react",
+    "prettier"
+  ],
+  "root": true,
+  "rules": {
+    "no-multi-spaces": "error",
+    "no-multiple-empty-lines": "error",
+    "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "max-len": "off",
+    "no-useless-catch": "off",
+    "react/jsx-indent": "off",
+    "object-curly-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "@typescript-eslint/indent": "off",
+    "react/jsx-indent-props": "off",
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": 0,
+    "operator-linebreak": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "react-hooks/exhaustive-deps": "off"
+  }
+}

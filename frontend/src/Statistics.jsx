@@ -3,11 +3,11 @@ import {BsFire} from 'react-icons/bs';
 import {ImFire} from 'react-icons/im';
 import StatsCard from "./components/review/StatsCard.jsx";
 import SidebarWithHeader from "./shared/SideBar.jsx";
-import {errorNotification} from "./services/popup-notification.js";
+import {errorNotification} from "./services/popup-notification.ts";
 import {useEffect, useState} from "react";
-import {getUserStatistics} from "./services/user.js";
-import {getWordStatistics} from "./services/word.js";
-import {getAllReviews} from "./services/review.js";
+import {getUserStatistics} from "./services/user.ts";
+import {getWordStatistics} from "./services/words.ts";
+import {getAllReviews} from "./services/reviews.ts";
 import StatsReviewCard from "./components/review/StatsReviewCard.jsx";
 import {GiYinYang} from "react-icons/gi";
 
