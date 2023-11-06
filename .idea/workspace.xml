@@ -4,168 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def86328-47f3-4b37-aafc-6953948d871e" name="Changes" comment="Task #65: Migration to TS">
+    <list default="true" id="def86328-47f3-4b37-aafc-6953948d871e" name="Changes" comment="Changes for deploying to AWS">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/amqp/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/amqp/src/main/java/my/project/amqp/RabbitMQConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/amqp/src/main/java/my/project/amqp/RabbitMQMessageProducer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/java/my/project/apigateway/ApiGatewayApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/java/my/project/apigateway/config/MessageSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/java/my/project/apigateway/jwt/AuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/java/my/project/apigateway/jwt/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/java/my/project/apigateway/jwt/RouteValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api-gateway/src/main/resources/exceptions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/ChineseFlashcardsApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/config/MessageSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/controller/ReviewController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/controller/WordController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/controller/WordPackController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/data/ExcelDataHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/data/WordsLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/exception/ApiErrorDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/exception/DefaultExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/exception/ReviewAlreadyExistsException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/ResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/ReviewDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/ReviewStatisticsDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/WordDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/WordPackDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/dto/WordStatisticsDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/ChineseCharacter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/Review.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/Word.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/WordData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/entity/WordPack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/mapper/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/mapper/ReviewMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/mapper/WordMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/model/mapper/WordPackMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/rabbitmq/AmqpConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/rabbitmq/AmqpConsumer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/repository/ReviewRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/repository/WordDataRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/repository/WordPackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/repository/WordRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/service/ChineseFlashcardsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/service/ReviewService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/service/WordDataService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/service/WordPackService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/java/my/project/chineseflashcards/service/WordService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/exceptions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/messages.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/chinese-flashcards/src/main/resources/responses.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/chineseflashcards/DeleteChineseFlashcardsRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/DeletePhotoRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/FileStorageClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/GetPhotoRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/GetPhotoResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/PutProfilePhotoRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/filestorage/PutProfilePhotoResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/fraudcheck/FraudCheckClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/fraudcheck/FraudCheckResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/clients/src/main/java/my/project/clients/notification/NotificationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/eureka-server/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/eureka-server/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/eureka-server/src/main/java/my/project/eurekaserver/EurekaServerApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/eureka-server/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/eureka-server/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/FileStorageApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/FileStorageController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/FileStorageProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/FileStorageService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/exception/ApiErrorWrapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/exception/DefaultExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/java/my/project/filestorage/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/file-storage/src/main/resources/exceptions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/java/my/project/fraudcheck/FraudCheckApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/java/my/project/fraudcheck/FraudCheckHistory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/java/my/project/fraudcheck/FraudCheckHistoryController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/java/my/project/fraudcheck/FraudCheckHistoryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/java/my/project/fraudcheck/FraudCheckHistoryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fraud-check/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/NotificationApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/config/MessageSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/controller/NotificationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/exception/ApiErrorDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/exception/DefaultExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/model/dto/NotificationDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/model/dto/ResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/model/entity/Notification.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/model/mapper/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/model/mapper/NotificationMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/rabbitmq/AmqpConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/rabbitmq/AmqpConsumer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/repository/NotificationRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification/service/NotificationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/resources/exceptions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/notification/src/main/resources/responses.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/UserApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/config/MessageSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/controller/AuthenticationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/controller/UserAccountController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/controller/UserStatisticsController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/exception/ApiErrorDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/exception/DefaultExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/exception/UserAlreadyExistsException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/dto/AuthenticationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/dto/AuthenticationResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/dto/RegistrationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/dto/ResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/dto/UserDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/entity/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/entity/UserRole.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/mapper/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/model/mapper/UserMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/UserUserDetailsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/config/CorsConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/config/SecurityFilterChainConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/jwt/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/security/jwt/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/service/AuthenticationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/service/UserAccountService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/java/my/project/user/service/UserStatisticsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/application-docker.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/exceptions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/extensions.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/user/src/main/resources/responses.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/my/project/config/datahandler/ExcelDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/my/project/config/datahandler/ExcelDataHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/my/project/config/datahandler/WordsLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/my/project/config/datahandler/WordsLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application-docker.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application-docker.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -245,70 +93,71 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Docker.backend.api-gateway: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.chinese-flashcards: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.eureka-server: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.file-storage: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.fraud-check: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.notification: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.pgadmin: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.postgres: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.rabbitmq: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.backend.user: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ReviewServiceTest.testGenerateListOfWordsForReview.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.backend [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.backend [install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.backend [package].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ChineseFlashcardsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FileStorageApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FraudCheckApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.NotificationApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.UserApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.VocabularyApplication.executor&quot;: &quot;Run&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-20&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/Nikolai/Documents/JavaWorkspaces/MyWorkspace/chinese-learning-app/backend/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.26666668&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;7753581d93688bb05adb0c263d4ae1f5&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/Nikolai/Applications/JetBrains Toolbox/IntelliJ IDEA Ultimate.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Docker.backend.api-gateway: Compose Deployment.executor": "Run",
+    "Docker.backend.chinese-flashcards: Compose Deployment.executor": "Run",
+    "Docker.backend.eureka-server: Compose Deployment.executor": "Run",
+    "Docker.backend.file-storage: Compose Deployment.executor": "Run",
+    "Docker.backend.fraud-check: Compose Deployment.executor": "Run",
+    "Docker.backend.notification: Compose Deployment.executor": "Run",
+    "Docker.backend.pgadmin: Compose Deployment.executor": "Run",
+    "Docker.backend.postgres: Compose Deployment.executor": "Run",
+    "Docker.backend.rabbitmq: Compose Deployment.executor": "Run",
+    "Docker.backend.user: Compose Deployment.executor": "Run",
+    "JUnit.ReviewServiceTest.testGenerateListOfWordsForReview.executor": "Run",
+    "Maven.backend [clean].executor": "Run",
+    "Maven.backend [install].executor": "Run",
+    "Maven.backend [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ApiGatewayApplication.executor": "Run",
+    "Spring Boot.ChineseFlashcardsApplication.executor": "Run",
+    "Spring Boot.EurekaServerApplication.executor": "Run",
+    "Spring Boot.FileStorageApplication.executor": "Run",
+    "Spring Boot.FraudCheckApplication.executor": "Run",
+    "Spring Boot.NotificationApplication.executor": "Run",
+    "Spring Boot.UserApplication.executor": "Run",
+    "Spring Boot.VocabularyApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "jdk.selected.JAVA_MODULE": "openjdk-20",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/Nikolai/Documents/JavaWorkspaces/MyWorkspace/chinese-learning-app/frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.26666668",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "spring.configuration.checksum": "7753581d93688bb05adb0c263d4ae1f5",
+    "ts.external.directory.path": "/Users/Nikolai/Applications/JetBrains Toolbox/IntelliJ IDEA Ultimate.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;redshift&quot;,
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "redshift",
+      "postgresql"
     ],
-    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactBuddySettings">
     <option name="extensionsIgnore" value="true" />
   </component>
@@ -331,15 +180,15 @@
       <recent name="my.project.user" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/backend" />
       <recent name="$PROJECT_DIR$/backend/src/main/resources" />
       <recent name="$PROJECT_DIR$/frontend-react/public" />
-      <recent name="$PROJECT_DIR$/backend/user" />
-      <recent name="$PROJECT_DIR$/backend/notification/src/main/resources" />
-      <recent name="$PROJECT_DIR$/backend/notification/src/main/java/my/project/notification" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/backend" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/backend" />
       <recent name="$PROJECT_DIR$/backend/src/main/java/my/project/chineseflashcards" />
       <recent name="$PROJECT_DIR$/backend/src/main/java/my/project/fraudcheck/dto" />
       <recent name="$PROJECT_DIR$/backend/src/main/java/my/project/notification/model/dto" />
@@ -373,7 +222,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ChineseLearningApp">
+  <component name="RunManager" selected="Docker.docker-compose2.yml.frontend: Compose Deployment">
     <configuration name="backend [install]" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -449,19 +298,6 @@
         <ENTRIES>
           <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ChineseLearningApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="backend" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="my.project.ChineseLearningApp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="my.project.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -594,6 +430,19 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose2.yml.frontend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="frontend" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose2.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -602,25 +451,12 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml.eureka-server: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+    <configuration name="docker-compose.yml.backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="services">
             <list>
-              <option value="eureka-server" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker-compose.yml.fraud-check: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="fraud-check" />
+              <option value="backend" />
             </list>
           </option>
           <option name="sourceFilePath" value="docker-compose.yml" />
@@ -641,13 +477,21 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="frontend/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="frontend/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.ChineseLearningApp" />
+        <item itemvalue="Docker.docker-compose2.yml.frontend: Compose Deployment" />
+        <item itemvalue="Docker.frontend/Dockerfile" />
+        <item itemvalue="Docker.docker-compose.yml.backend: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.postgres: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.fraud-check: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.eureka-server: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -767,6 +611,9 @@
       <workItem from="1698989679869" duration="5497000" />
       <workItem from="1699021224370" duration="20386000" />
       <workItem from="1699104600034" duration="165000" />
+      <workItem from="1699110832008" duration="8256000" />
+      <workItem from="1699181723043" duration="481000" />
+      <workItem from="1699192570602" duration="30616000" />
     </task>
     <task id="LOCAL-00001" summary="1. Created microservice 'user';&#10;2. Created microservice 'vocabulary';&#10;3. Created class User.">
       <created>1686398009783</created>
@@ -823,22 +670,6 @@
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
       <updated>1687198037845</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Task #28: logic for CurrentStreak and RecordStreak">
-      <option name="closed" value="true" />
-      <created>1694321385792</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1694321385792</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Task #28: logic for CurrentStreak and RecordStreak">
-      <option name="closed" value="true" />
-      <created>1694321405203</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1694321405203</updated>
     </task>
     <task id="LOCAL-00038" summary="Task #28: logic for CurrentStreak and RecordStreak">
       <option name="closed" value="true" />
@@ -1152,7 +983,23 @@
       <option name="project" value="LOCAL" />
       <updated>1699100816377</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Changes for deploying to AWS">
+      <option name="closed" value="true" />
+      <created>1699232281597</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1699232281598</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Changes for deploying to AWS">
+      <option name="closed" value="true" />
+      <created>1699239206361</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1699239206361</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1182,7 +1029,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Task #41: Progress bar during review." />
     <MESSAGE value="Task #25: Notifications." />
     <MESSAGE value="Task #46: On the Review cards, display remaining 'New Words' and 'Review Words'." />
     <MESSAGE value="Task #46: tmp commit" />
@@ -1207,6 +1053,7 @@
     <MESSAGE value="Task #55: Changed badge 'Completed' to an icon" />
     <MESSAGE value="docker-compose" />
     <MESSAGE value="Task #65: Migration to TS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Task #65: Migration to TS" />
+    <MESSAGE value="Changes for deploying to AWS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes for deploying to AWS" />
   </component>
 </project>

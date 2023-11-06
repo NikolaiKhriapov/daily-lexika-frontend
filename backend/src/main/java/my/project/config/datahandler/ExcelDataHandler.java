@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +43,7 @@ public class ExcelDataHandler {
 
     public List<WordPack> getWordPacksFromExcel(String file, String fileSheet) {
         try (FileInputStream is = new FileInputStream(file)) {
-            Workbook workbook = new XSSFWorkbook(is);
+            Workbook workbook = new SXSSFWorkbook(new XSSFWorkbook(is));
             Sheet sheet = workbook.getSheet(fileSheet);
             Iterator<Row> rows = sheet.iterator();
 
@@ -83,7 +84,7 @@ public class ExcelDataHandler {
 
     public List<WordData> getWordsFromExcel(String file, String fileSheet) {
         try (FileInputStream is = new FileInputStream(file)) {
-            Workbook workbook = new XSSFWorkbook(is);
+            Workbook workbook = new SXSSFWorkbook(new XSSFWorkbook(is));
             Sheet sheet = workbook.getSheet(fileSheet);
             Iterator<Row> rows = sheet.iterator();
 
@@ -192,7 +193,7 @@ public class ExcelDataHandler {
 //
 //    public List<WordData> getWordsFromDict(String file, String fileSheet) {
 //        try (FileInputStream is = new FileInputStream(file)) {
-//            Workbook workbook = new XSSFWorkbook(is);
+//            Workbook workbook = new SXSSFWorkbook(new XSSFWorkbook(is));
 //            Sheet sheet = workbook.getSheet(fileSheet);
 //            Iterator<Row> rows = sheet.iterator();
 //

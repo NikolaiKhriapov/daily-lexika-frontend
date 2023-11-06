@@ -33,3 +33,8 @@ build/
 .vscode/
 /frontend/node_modules/
 /backend/src/main/resources/static/data/Data.xlsx
+/docker-compose2.yml
+/frontend/.env
+/frontend/.env.production
+/frontend/.idea
+/frontend/.nvmrc

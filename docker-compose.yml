@@ -13,155 +13,24 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-  rabbitmq:
-    image: rabbitmq:3.9.11-management-alpine
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    # username: guest
-    # password: guest
-    networks:
-      - spring
-
-  eureka-server:
-#    build:
-#      context: ./eureka-server
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/eureka-server:0.0.20231014
-    container_name: eureka-server
-    platform: linux/amd64
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-  api-gateway:
-#    build:
-#      context: ./api-gateway
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/api-gateway:0.0.20231014
-    container_name: api-gateway
+  backend:
+    build:
+      context: ./backend/
+      dockerfile: ./Dockerfile
+    image: kolyakhryapov/chinese-learning-app-backend:0.0.20231105
+    container_name: chinese-learning-app-backend
     platform: linux/amd64
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
-      - spring
-    depends_on:
-      - eureka-server
-
-  fraud-check:
-#    build:
-#      context: ./fraud-check/
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/fraud-check:0.0.20231014
-    container_name: fraud-check
-    platform: linux/amd64
-    ports:
-      - "8082:8082"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - eureka-server
-      - postgres
-      - rabbitmq
-      - api-gateway
-  notification:
-#    build:
-#      context: ./notification/
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/notification:0.0.20231014
-    platform: linux/amd64
-    container_name: notification
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
       - postgres
     depends_on:
       - postgres
-      - rabbitmq
-      - eureka-server
-      - api-gateway
-  file-storage:
-#    build:
-#      context: ./file-storage/
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/file-storage:0.0.20231014
-    container_name: file-storage
-    platform: linux/amd64
-    ports:
-      - "8084:8084"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - postgres
-      - rabbitmq
-      - eureka-server
-      - api-gateway
-
-  user:
-#    build:
-#      context: ./user/
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/user:0.0.20231014
-    container_name: user
-    platform: linux/amd64
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - postgres
-      - rabbitmq
-      - eureka-server
-      - api-gateway
-      - fraud-check
-      - notification
-      - file-storage
-
-  chinese-flashcards:
-#    build:
-#      context: ./chinese-flashcards/
-#      dockerfile: ./Dockerfile
-    image: kolyakhryapov/chinese-flashcards:0.0.20231014
-    container_name: chinese-flashcards
-    platform: linux/amd64
-    ports:
-      - "8085:8085"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - postgres
-      - rabbitmq
-      - eureka-server
-      - api-gateway
-      - fraud-check
-      - notification
-      - file-storage
-      - user
 
 networks:
   postgres:
-    driver: bridge
-  spring:
     driver: bridge
 
 volumes:
