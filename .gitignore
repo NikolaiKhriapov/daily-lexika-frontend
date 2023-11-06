@@ -38,3 +38,4 @@ build/
 /frontend/.env.production
 /frontend/.idea
 /frontend/.nvmrc
+.idea
