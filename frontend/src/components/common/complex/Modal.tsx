@@ -41,11 +41,16 @@ const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode }>`
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
+  min-width: 90%;
   max-width: 90% !important;
   max-height: 90vh;
   width: fit-content !important;
   overflow-y: auto;
   ${hiddenScrollbar};
+  
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    min-width: 450px;
+  }
 `;
 
 const ModalHeaderStyled = styled(ModalHeader)`
