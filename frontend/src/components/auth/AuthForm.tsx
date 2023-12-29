@@ -100,20 +100,15 @@ export default function AuthForm(props: Props) {
 }
 
 const BoxStyled = styled(Box)<{ $colorMode: ColorMode }>`
-  width: 250px;
-  max-width: 80%;
+  width: 320px;
+  max-width: 90%;
   padding: 20px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    width: 310px;
-    padding: 30px;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    width: 370px;
+    width: 350px;
     padding: 30px;
   }
 `;

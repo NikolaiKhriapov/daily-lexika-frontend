@@ -5,7 +5,7 @@ import { updateUserStreak } from '../../services/user';
 import { errorNotification, successNotification } from '../../services/popup-notification';
 import ReviewWordCard from './ReviewWordCard';
 import { Status, WordDTO } from '../../utils/types';
-import { Breakpoint, ButtonType, Size } from '../../utils/constants';
+import { Breakpoint, ButtonType } from '../../utils/constants';
 import Modal from '../common/complex/Modal';
 import ButtonsContainer from '../common/complex/ButtonsContainer';
 import ProgressBar from '../common/basic/ProgressBar';
@@ -95,13 +95,11 @@ export default function StartReviewWindow(props: Props) {
                   <Button
                     buttonText='Forgot'
                     buttonType={ButtonType.BUTTON_RED}
-                    size={{ base: Size.SM, md: Size.MD }}
                     onClick={() => pressButton('no')}
                   />
                   <Button
                     buttonText='Remembered'
                     buttonType={ButtonType.BUTTON}
-                    size={{ base: Size.SM, md: Size.MD }}
                     onClick={() => pressButton('yes')}
                     isDisabled={!reviewWordDTO}
                   />

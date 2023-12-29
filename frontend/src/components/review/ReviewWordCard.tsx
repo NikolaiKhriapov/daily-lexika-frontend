@@ -83,6 +83,11 @@ const Container = styled.div<{
     : css`rotateY(0deg)`
   )};
 
+  ${mediaBreakpointUp('400px')} {
+    height: 370px;
+    width: calc(375px / 1.3);
+  }
+
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 400px;
     height: calc(400px * 1.3);

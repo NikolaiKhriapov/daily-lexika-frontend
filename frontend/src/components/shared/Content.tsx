@@ -18,7 +18,7 @@ export default function Content(props: Props) {
 }
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 40px;
   display: flex;
   justify-content: center;
   margin-top: 50px;
