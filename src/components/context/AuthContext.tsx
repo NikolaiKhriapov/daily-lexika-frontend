@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { login as performLogin } from '../../services/authorization';
 import { AuthenticatedUser, AuthenticationRequest } from '../../utils/types';
-import { LocalStorage } from '../../utils/constants';
+import { LocalStorage, RoleName } from '../../utils/constants';
 
 type Props = {
   user: AuthenticatedUser | null;
@@ -11,6 +11,10 @@ type Props = {
   isUserAuthenticated: () => boolean;
   setUserFromToken: () => void;
 };
+
+interface CustomJwtPayload extends JwtPayload {
+  role: RoleName;
+}
 
 const AuthContext = createContext<Props>({
   user: null,
@@ -31,8 +35,8 @@ function AuthProvider({ children }: {
   const setUserFromToken = () => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
     if (token) {
-      const jwtToken: JwtPayload = jwtDecode(token);
-      setUser({ username: jwtToken.sub! });
+      const jwtToken: CustomJwtPayload = jwtDecode(token);
+      setUser({ username: jwtToken.sub!, role: jwtToken.role });
     }
   };
 
@@ -49,7 +53,7 @@ function AuthProvider({ children }: {
 
           jwtToken = jwtDecode(jwtToken);
 
-          setUser({ username: jwtToken.sub });
+          setUser({ username: jwtToken.sub, role: jwtToken.role });
           resolve();
         })
         .catch((error) => reject(error));

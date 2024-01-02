@@ -5,7 +5,7 @@ import { errorNotification, successNotification } from '../../services/popup-not
 import { getReview, getWordsForReview, refreshReview, removeReview } from '../../services/reviews';
 import StartReviewWindow from './StartReviewWindow';
 import { ReviewDTO, Status, WordDTO } from '../../utils/types';
-import { ButtonType, FontWeight, Size } from '../../utils/constants';
+import { ButtonType, FontWeight, RoleName, Size } from '../../utils/constants';
 import AlertDialog from '../common/complex/AlertDialog';
 import Text from '../common/basic/Text';
 import CloseButton from '../common/basic/CloseButton';
@@ -14,6 +14,7 @@ import ButtonsContainer from '../common/complex/ButtonsContainer';
 import { theme } from '../../utils/theme';
 import { borderStyles } from '../../utils/functions';
 import Button from '../common/basic/Button';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   reviewDTO: ReviewDTO;
@@ -23,6 +24,7 @@ type Props = {
 export default function ReviewCard(props: Props) {
   const { reviewDTO, fetchAllReviewsDTO } = props;
 
+  const { user } = useAuth();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
@@ -98,9 +100,9 @@ export default function ReviewCard(props: Props) {
         </CloseButtonContainer>
       </CompletedIconAndCloseButtonContainer>
       <WordPackNameContainer>
-        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD}>{reviewDTO.wordPackName}</Text>
+        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{reviewDTO.wordPackName}</Text>
       </WordPackNameContainer>
-      <WordsCountContainer>
+      <WordsCountContainer $height={user?.role === RoleName.USER_CHINESE ? '140px' : '105px'}>
         <WordsContainer>
           <Text size={Size.XXL}>{totalNewWords}</Text>
           <Text size={Size.SM}>{' New Words'}</Text>
@@ -165,11 +167,11 @@ const WordPackNameContainer = styled.div`
   justify-content: center;
 `;
 
-const WordsCountContainer = styled.div`
+const WordsCountContainer = styled.div<{ $height: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 140px;
+    height: ${({ $height }) => $height};
 `;
 
 const WordsContainer = styled.div`

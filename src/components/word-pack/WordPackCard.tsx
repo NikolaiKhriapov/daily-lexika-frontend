@@ -7,7 +7,7 @@ import CreateReviewWindow from '../review/CreateReviewWindow';
 import ReviewWordPackWindow from './ReviewWordPackWindow';
 import { getAllReviews } from '../../services/reviews';
 import { ReviewDTO, WordPackDTO } from '../../utils/types';
-import { ButtonType, FontWeight, Size } from '../../utils/constants';
+import { ButtonType, FontWeight, RoleName, Size } from '../../utils/constants';
 import InfoButton from '../common/basic/InfoButton';
 import Text from '../common/basic/Text';
 import ButtonsContainer from '../common/complex/ButtonsContainer';
@@ -15,6 +15,7 @@ import { theme } from '../../utils/theme';
 import SignAdded from '../common/complex/SignAdded';
 import { borderStyles } from '../../utils/functions';
 import Button from '../common/basic/Button';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   wordPackDTO: WordPackDTO;
@@ -24,6 +25,7 @@ type Props = {
 export default function WordPackCard(props: Props) {
   const { wordPackDTO, fetchAllWordPacksDTO } = props;
 
+  const { user } = useAuth();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
@@ -53,13 +55,13 @@ export default function WordPackCard(props: Props) {
         />
       </InfoButtonContainer>
       <WordPackNameContainer>
-        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD}>{wordPackDTO.name}</Text>
+        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{wordPackDTO.name}</Text>
       </WordPackNameContainer>
       <WordsCountContainer>
         <TbCards />
         <Text size={Size.MD}>{wordPackDTO.totalWords}</Text>
       </WordsCountContainer>
-      <DescriptionContainer>
+      <DescriptionContainer $height={user?.role === RoleName.USER_CHINESE ? '120px' : '85px'}>
         <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} isCentered>{wordPackDTO.description}</Text>
       </DescriptionContainer>
       <ButtonsContainer>
@@ -118,9 +120,9 @@ const WordsCountContainer = styled.div`
   align-items: center;
 `;
 
-const DescriptionContainer = styled.div`
+const DescriptionContainer = styled.div<{ $height: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 115px;
+  height: ${({ $height }) => $height};
 `;

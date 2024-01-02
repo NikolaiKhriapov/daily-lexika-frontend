@@ -11,7 +11,8 @@ import Text from '../common/basic/Text';
 import BadgeStreakCount from '../common/complex/BadgeStreakCount';
 import { theme } from '../../utils/theme';
 import { borderStyles } from '../../utils/functions';
-import { Size } from '../../utils/constants';
+import { RoleName, Size } from '../../utils/constants';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   button: any;
@@ -23,6 +24,7 @@ type Props = {
 export default function ReviewWordPackWindow(props: Props) {
   const { button, isOpen, onClose, wordPackDTO } = props;
 
+  const { user } = useAuth();
   const { colorMode } = useColorMode();
   const [allWordsForWordPackDTO, setAllWordsForWordPackDTO] = useState<[WordDTO]>();
   const [visibleWords, setVisibleWords] = useState(50);
@@ -72,10 +74,18 @@ export default function ReviewWordPackWindow(props: Props) {
             <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
               {allWordsForWordPackDTO?.slice(0, visibleWords).map((wordDTO) => (
                 <WordInfo $colorMode={colorMode} key={wordDTO.id}>
-                  <CharacterAndPinyinAndTranslation>
-                    <Text>{wordDTO.nameChineseSimplified}&nbsp;&nbsp;{wordDTO.pinyin}</Text>
-                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordDTO.nameEnglish}</Text>
-                  </CharacterAndPinyinAndTranslation>
+                  {user?.role === RoleName.USER_CHINESE && (
+                    <CharacterAndPinyinAndTranslation>
+                      <Text>{wordDTO.nameChineseSimplified}&nbsp;&nbsp;{wordDTO.pinyin}</Text>
+                      <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordDTO.nameEnglish}</Text>
+                    </CharacterAndPinyinAndTranslation>
+                  )}
+                  {user?.role === RoleName.USER_ENGLISH && (
+                    <CharacterAndPinyinAndTranslation>
+                      <Text>{wordDTO.nameEnglish}</Text>
+                      <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordDTO.nameRussian}</Text>
+                    </CharacterAndPinyinAndTranslation>
+                  )}
                   <BadgeOrStreakCount>
                     {wordDTO.status.toString() === Status[Status.IN_REVIEW] ? (
                       Array.from({ length: wordDTO.totalStreak }).map(() => (
@@ -117,7 +127,7 @@ const WordInfo = styled.div<{ $colorMode: ColorMode }>`
   padding: 10px;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  max-width: 800px;
+  width: 800px;
 `;
 
 const CharacterAndPinyinAndTranslation = styled.div`

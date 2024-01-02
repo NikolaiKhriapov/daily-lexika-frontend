@@ -12,7 +12,7 @@ export const ApiEndpointsNotifications = {
   readNotification: (notificationId: number) => `${URL_NOTIFICATIONS}/read/${notificationId}`,
 };
 
-const URL_REVIEWS = `${BASE_URL}/chinese-flashcards/reviews`;
+const URL_REVIEWS = `${BASE_URL}/flashcards/reviews`;
 export const ApiEndpointsReviews = {
   getAllReviews: () => `${URL_REVIEWS}`,
   getReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
@@ -33,14 +33,14 @@ export const ApiEndpointsUsers = {
   updateUserStreak: () => `${URL_USERS}/statistics/streak`,
 };
 
-const URL_WORD_PACKS = `${BASE_URL}/chinese-flashcards/word-packs`;
+const URL_WORD_PACKS = `${BASE_URL}/flashcards/word-packs`;
 export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   getAllWordsForWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}/words`,
 };
 
-const URL_WORDS = `${BASE_URL}/chinese-flashcards/words`;
+const URL_WORDS = `${BASE_URL}/flashcards/words`;
 export const ApiEndpointsWords = {
   getWordStatistics: () => `${URL_WORDS}/statistics`,
 };

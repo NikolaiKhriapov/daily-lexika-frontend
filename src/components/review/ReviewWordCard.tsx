@@ -2,11 +2,12 @@ import { ColorMode, useColorMode } from '@chakra-ui/react';
 import styled, { css } from 'styled-components/macro';
 import React from 'react';
 import { Status, WordDTO } from '../../utils/types';
-import { Breakpoint, Size } from '../../utils/constants';
+import { Breakpoint, RoleName, Size } from '../../utils/constants';
 import Text from '../common/basic/Text';
 import StatusBadge from '../common/basic/StatusBadge';
 import { theme } from '../../utils/theme';
 import { borderStyles, mediaBreakpointUp } from '../../utils/functions';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   reviewWordDTO: WordDTO;
@@ -17,11 +18,12 @@ type Props = {
 export default function ReviewWordCard(props: Props) {
   const { reviewWordDTO, isFlipped, setIsFlipped } = props;
 
+  const { user } = useAuth();
   const { colorMode } = useColorMode();
   const handleFlip = () => setIsFlipped(!isFlipped);
   const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
 
-  const wordData = {
+  const wordDataCh = {
     pinyin: {
       text: reviewWordDTO.pinyin,
       size: { base: Size.XXL, md: Size.XXXL, xl: Size.XXXL },
@@ -36,6 +38,17 @@ export default function ReviewWordCard(props: Props) {
     },
   };
 
+  const wordDataEn = {
+    nameEnglish: {
+      text: reviewWordDTO.nameEnglish,
+      size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
+    },
+    nameRussian: {
+      text: reviewWordDTO.nameRussian,
+      size: { base: Size.LG, md: Size.XXL, xl: Size.XXL },
+    },
+  };
+
   return (
     <Container
       $colorMode={colorMode}
@@ -43,17 +56,26 @@ export default function ReviewWordCard(props: Props) {
       $isFlipped={isFlipped}
       onClick={handleFlip}
     >
-      {isNewStatus && <StatusBadge text={reviewWordDTO.status} colorScheme='red' isInTopRight />}
-      <ContentsContainer>
-        <Text size={isFlipped ? wordData.pinyin.size : wordData.nameChineseSimplified.size}>
-          {isFlipped ? wordData.pinyin.text : wordData.nameChineseSimplified.text}
-        </Text>
-        {isFlipped && (
-          <Text size={wordData.nameEnglish.size}>
-            {wordData.nameEnglish.text}
+      {isNewStatus && <StatusBadge text={reviewWordDTO.status} colorScheme="red" isInTopRight />}
+      {user?.role === RoleName.USER_CHINESE && (
+        <ContentsContainer>
+          <Text size={isFlipped ? wordDataCh.pinyin.size : wordDataCh.nameChineseSimplified.size}>
+            {isFlipped ? wordDataCh.pinyin.text : wordDataCh.nameChineseSimplified.text}
           </Text>
-        )}
-      </ContentsContainer>
+          {isFlipped && (
+            <Text size={wordDataCh.nameEnglish.size}>
+              {wordDataCh.nameEnglish.text}
+            </Text>
+          )}
+        </ContentsContainer>
+      )}
+      {user?.role === RoleName.USER_ENGLISH && (
+        <ContentsContainer>
+          <Text size={isFlipped ? wordDataEn.nameRussian.size : wordDataEn.nameEnglish.size}>
+            {isFlipped ? wordDataEn.nameRussian.text : wordDataEn.nameEnglish.text}
+          </Text>
+        </ContentsContainer>
+      )}
     </Container>
   );
 }
