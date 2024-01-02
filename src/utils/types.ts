@@ -1,16 +1,21 @@
+import { Platform, RoleName } from './constants';
+
 export interface AuthenticatedUser {
   username: string;
+  role: RoleName;
 }
 
 export interface RegistrationRequest {
   name: string;
   email: string;
   password: string;
+  platform: Platform;
 }
 
 export interface AuthenticationRequest {
   email: string;
   password: string;
+  platform: Platform;
 }
 
 export interface UserDTO {
@@ -18,6 +23,7 @@ export interface UserDTO {
   name?: string;
   email?: string;
   password?: string;
+  role?: string;
   roles?: string[];
   currentStreak?: number;
   dateOfLastStreak?: string;
@@ -90,10 +96,16 @@ export enum Status {
 }
 
 export enum Category {
-  HSK,
-  WORK,
-  NEWS,
-  SPORT,
-  FOOD,
-  TRAVEL,
+  HSK = 'HSK',
+  WORK = 'Work',
+  NEWS = 'News',
+  SPORT = 'Sport',
+  FOOD = 'Food',
+  TRAVEL = 'Travel',
+
+  SPEAKOUT_STARTER = 'Speakout Starter',
+  SPEAKOUT_ELEMENTARY = 'Speakout Elementary',
+  SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
+  SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
+  SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
 }

@@ -3,18 +3,18 @@ import { ImFire } from 'react-icons/im';
 import { GiYinYang } from 'react-icons/gi';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
-import StatsCard from '../../components/review/StatsCard';
+import StatsCard from '../review/StatsCard';
 import { errorNotification } from '../../services/popup-notification';
 import { getUserStatistics } from '../../services/user';
 import { getWordStatistics } from '../../services/words';
 import { getAllReviews } from '../../services/reviews';
-import StatsReviewCard from '../../components/review/StatsReviewCard';
+import StatsReviewCard from '../review/StatsReviewCard';
 import { ReviewDTO, UserDTO, WordStatisticsDTO } from '../../utils/types';
 import PageLayout from '../../shared/PageLayout';
-import ErrorComponent from '../../components/common/complex/ErrorComponent';
-import Spinner from '../../components/common/basic/Spinner';
-import Heading from '../../components/common/basic/Heading';
-import Text from '../../components/common/basic/Text';
+import ErrorComponent from '../common/complex/ErrorComponent';
+import Spinner from '../common/basic/Spinner';
+import Heading from '../common/basic/Heading';
+import Text from '../common/basic/Text';
 import { Size } from '../../utils/constants';
 
 export default function Statistics() {

@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useAuth } from '../../components/context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { AuthFormType, Breakpoint, LocalStorage, Page, Size } from '../../utils/constants';
-import AuthForm from '../../components/auth/AuthForm';
+import AuthForm from './AuthForm';
 import { mediaBreakpointUp } from '../../utils/functions';
-import Link from '../../components/common/basic/Link';
-import Heading from '../../components/common/basic/Heading';
+import Link from '../common/basic/Link';
+import Heading from '../common/basic/Heading';
 import { theme } from '../../utils/theme';
 
 export default function AuthPage() {

@@ -1,6 +1,12 @@
 export enum LocalStorage {
-  COLOR_MODE = 'chakra-ui-color-mode',
   ACCESS_TOKEN = 'access-token',
+  COLOR_MODE = 'chakra-ui-color-mode',
+}
+
+export enum RoleName {
+  ADMIN = 'ADMIN',
+  USER_CHINESE = 'USER_CHINESE',
+  USER_ENGLISH = 'USER_ENGLISH',
 }
 
 export enum Breakpoint {
@@ -18,6 +24,11 @@ export enum Page {
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',
   STATISTICS = '/statistics',
+}
+
+export enum Platform {
+  CHINESE = 'CHINESE',
+  ENGLISH = 'ENGLISH',
 }
 
 export enum AuthFormType {

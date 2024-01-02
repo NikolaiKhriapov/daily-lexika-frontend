@@ -48,7 +48,7 @@ export default function StatsReviewCard(props: Props) {
   return (
     <Container $colorMode={colorMode} shadow='2xl'>
       <WordPackNameAndInfoButton>
-        <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{reviewDTO.wordPackName}</Text>
+        <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{reviewDTO.wordPackName}</Text>
         <InfoButton onClick={onOpen} />
         {isOpen && (
           <StatsReviewWindow
@@ -62,7 +62,7 @@ export default function StatsReviewCard(props: Props) {
       </WordPackNameAndInfoButton>
       <Stats>
         <Percentage>
-          <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{`${wordsKnownPercentage}%`}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{`${wordsKnownPercentage}%`}</Text>
           <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
         </Percentage>
         <Text fontWeight={FontWeight.SEMIBOLD}>
@@ -89,6 +89,7 @@ const WordPackNameAndInfoButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+    height: 35px;
 `;
 
 const Stats = styled.div`

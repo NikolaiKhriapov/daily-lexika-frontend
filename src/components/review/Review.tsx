@@ -4,12 +4,12 @@ import PageLayout from '../../shared/PageLayout';
 import { errorNotification } from '../../services/popup-notification';
 import { getAllReviews } from '../../services/reviews';
 import { ReviewDTO } from '../../utils/types';
-import ErrorComponent from '../../components/common/complex/ErrorComponent';
-import Spinner from '../../components/common/basic/Spinner';
-import Heading from '../../components/common/basic/Heading';
-import ReviewCard from '../../components/review/ReviewCard';
-import IndexPageContainer from '../../components/common/complex/IndexPageContainer';
-import Text from '../../components/common/basic/Text';
+import ErrorComponent from '../common/complex/ErrorComponent';
+import Spinner from '../common/basic/Spinner';
+import Heading from '../common/basic/Heading';
+import ReviewCard from './ReviewCard';
+import IndexPageContainer from '../common/complex/IndexPageContainer';
+import Text from '../common/basic/Text';
 import { Size } from '../../utils/constants';
 
 export default function Review() {

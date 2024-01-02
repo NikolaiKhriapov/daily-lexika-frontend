@@ -1,16 +1,18 @@
-import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
 import styled from 'styled-components/macro';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register } from '../../services/authorization';
 import { errorNotification, successNotification } from '../../services/popup-notification';
 import TextInput from '../common/complex/TextInput';
-import { AuthFormType, Breakpoint, Page } from '../../utils/constants';
+import { AuthFormType, Breakpoint, Page, Platform } from '../../utils/constants';
 import { AuthenticationRequest, RegistrationRequest } from '../../utils/types';
 import InputFieldsWithButton from '../common/complex/InputFieldsWithButton';
 import { borderStyles, mediaBreakpointUp } from '../../utils/functions';
 import { theme } from '../../utils/theme';
+import Select from '../common/complex/Select';
 
 type Props = {
   formType: AuthFormType;
@@ -23,6 +25,7 @@ export default function AuthForm(props: Props) {
   const { login } = useAuth();
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform>();
 
   const authFormMapping = {
     [AuthFormType.LOGIN]: {
@@ -39,7 +42,7 @@ export default function AuthForm(props: Props) {
       }),
       handleOnSubmit: (values: RegistrationRequest | AuthenticationRequest, { setSubmitting }: any) => {
         setSubmitting(true);
-        login(values)
+        login({ ...values, platform: selectedPlatform! })
           .then(() => navigate(Page.REVIEWS))
           .catch((error: any) => errorNotification(error.code, error.response.data.message))
           .finally(() => setSubmitting(false));
@@ -62,15 +65,13 @@ export default function AuthForm(props: Props) {
       }),
       handleOnSubmit: (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
-        register(values)
+        register({ ...values, platform: selectedPlatform })
           .then((response: any) => {
             successNotification('User registered', `${values.name} was successfully registered`);
             onSuccess(response.data.data.authenticationResponse.token);
           })
           .catch((error: any) => errorNotification(error.code, error.response.data.message))
-          .finally(() => {
-            setSubmitting(false);
-          });
+          .finally(() => setSubmitting(false));
       },
     },
   };
@@ -91,6 +92,17 @@ export default function AuthForm(props: Props) {
             )}
             <TextInput label='Email' name='email' type='email' placeholder='Email address' />
             <TextInput label='Password' name='password' type='password' placeholder='Password' />
+            <Select
+              name="platform"
+              label="Platform"
+              placeholder="Select platform"
+              value={selectedPlatform}
+              onChange={(e) => setSelectedPlatform(e.target.value as Platform)}
+              isRequired
+            >
+              <option value={Platform.ENGLISH}>English</option>
+              <option value={Platform.CHINESE}>Chinese</option>
+            </Select>
           </InputElements>
         )}
         buttonText='Submit'
