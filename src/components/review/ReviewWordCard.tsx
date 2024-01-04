@@ -12,15 +12,15 @@ import { useAuth } from '../context/AuthContext';
 type Props = {
   reviewWordDTO: WordDTO;
   isFlipped: boolean;
-  setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWordDTO, isFlipped, setIsFlipped } = props;
+  const { reviewWordDTO, isFlipped, setFlipped } = props;
 
   const { user } = useAuth();
   const { colorMode } = useColorMode();
-  const handleFlip = () => setIsFlipped(!isFlipped);
+  const handleFlip = () => setFlipped(!isFlipped);
   const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
 
   const wordDataCh = {

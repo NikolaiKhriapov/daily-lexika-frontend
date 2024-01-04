@@ -10,31 +10,54 @@ import StatusBadge from '../common/basic/StatusBadge';
 import Text from '../common/basic/Text';
 import BadgeStreakCount from '../common/complex/BadgeStreakCount';
 import { theme } from '../../utils/theme';
-import { borderStyles } from '../../utils/functions';
-import { RoleName, Size } from '../../utils/constants';
+import { borderStyles, mediaBreakpointUp } from '../../utils/functions';
+import { Breakpoint, RoleName, Size } from '../../utils/constants';
 import { useAuth } from '../context/AuthContext';
+import Spinner from '../common/basic/Spinner';
 
 type Props = {
-  button: any;
   isOpen: boolean;
   onClose: any;
   wordPackDTO: WordPackDTO;
 };
 
 export default function ReviewWordPackWindow(props: Props) {
-  const { button, isOpen, onClose, wordPackDTO } = props;
+  const { isOpen, onClose, wordPackDTO } = props;
 
   const { user } = useAuth();
   const { colorMode } = useColorMode();
-  const [allWordsForWordPackDTO, setAllWordsForWordPackDTO] = useState<[WordDTO]>();
-  const [visibleWords, setVisibleWords] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleWords, setVisibleWords] = useState<WordDTO[]>([]);
+  const [page, setPage] = useState(0);
+  const pageSize = 20;
+  const [isWordInfoLoading, setWordInfoLoading] = useState(false);
+
+  const fetchAllWordsForWordPack = () => {
+    setWordInfoLoading(true);
+    getAllWordsForWordPack(wordPackDTO.name, page, pageSize)
+      .then((response) => {
+        const data: WordDTO[] = response.data.data.allWordsForWordPackDTO;
+        setVisibleWords((prevData) => {
+          if (page === 0) {
+            return data;
+          }
+          return [...prevData, ...data];
+        });
+      })
+      .catch((error) => errorNotification(error.code, error.response.data.message))
+      .finally(() => setWordInfoLoading(false));
+  };
 
   useEffect(() => {
-    getAllWordsForWordPack(wordPackDTO.name)
-      .then((response) => setAllWordsForWordPackDTO(response.data.data.allWordsForWordPackDTO))
-      .catch((error) => errorNotification(error.code, error.response.data.message));
-  }, [wordPackDTO.name]);
+    fetchAllWordsForWordPack();
+  }, [wordPackDTO.name, page, pageSize]);
+
+  const handleScroll = () => {
+    const container = containerRef.current;
+    if (container && container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
+      setPage((prevPage) => prevPage + 1); // Fetch next page on scrolling to the bottom
+    }
+  };
 
   const getStatusColor = (status: Status) => {
     switch (status.toString()) {
@@ -47,32 +70,25 @@ export default function ReviewWordPackWindow(props: Props) {
     }
   };
 
-  const handleScroll = () => {
-    const container = containerRef.current;
-    if (container && container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
-      setVisibleWords((prevVisibleWords) => prevVisibleWords + 50);
-    }
-  };
-
   return (
-    <>
-      {button}
-      <Modal
-        size={Size.XXXL}
-        isOpen={isOpen}
-        onClose={onClose}
-        header={wordPackDTO.name}
-        body={(
-          <Container>
-            <TotalWords>
-              <CopyIcon />
-              <Text>{wordPackDTO.totalWords}</Text>
-            </TotalWords>
-            <Description>
-              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPackDTO.description}</Text>
-            </Description>
-            <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
-              {allWordsForWordPackDTO?.slice(0, visibleWords).map((wordDTO) => (
+    <Modal
+      size={Size.XXXL}
+      isOpen={isOpen}
+      onClose={onClose}
+      header={wordPackDTO.name}
+      body={(
+        <Container>
+          <TotalWords>
+            <CopyIcon />
+            <Text>{wordPackDTO.totalWords}</Text>
+          </TotalWords>
+          <Description>
+            <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPackDTO.description}</Text>
+          </Description>
+          <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
+            {isWordInfoLoading && page === 0
+              ? <SpinnerContainer><Spinner /></SpinnerContainer>
+              : visibleWords?.slice(0, visibleWords.length).map((wordDTO) => (
                 <WordInfo $colorMode={colorMode} key={wordDTO.id}>
                   {user?.role === RoleName.USER_CHINESE && (
                     <CharacterAndPinyinAndTranslation>
@@ -97,11 +113,10 @@ export default function ReviewWordPackWindow(props: Props) {
                   </BadgeOrStreakCount>
                 </WordInfo>
               ))}
-            </WordInfoContainer>
-          </Container>
-        )}
-      />
-    </>
+          </WordInfoContainer>
+        </Container>
+      )}
+    />
   );
 }
 
@@ -115,9 +130,18 @@ const WordInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-
-  max-height: 65vh;
+  height: 60vh;
   overflow-y: auto;
+  max-width: 800px;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 800px;
+  }
+`;
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const WordInfo = styled.div<{ $colorMode: ColorMode }>`
@@ -127,7 +151,6 @@ const WordInfo = styled.div<{ $colorMode: ColorMode }>`
   padding: 10px;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  width: 800px;
 `;
 
 const CharacterAndPinyinAndTranslation = styled.div`

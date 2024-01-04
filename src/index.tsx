@@ -7,9 +7,9 @@ import ProtectedRoute from './shared/ProtectedRoute';
 import { Page } from './utils/constants';
 import AuthPage from './components/auth/AuthPage';
 import { theme } from './utils/theme';
-import ReviewIndex from './pages/chinese/reviews/ReviewIndex';
-import WordPackIndex from './pages/chinese/word-packs/WordPackIndex';
-import StatisticsIndex from './pages/chinese/statistics/StatisticsIndex';
+import ReviewIndex from './pages/reviews/ReviewIndex';
+import WordPackIndex from './pages/word-packs/WordPackIndex';
+import StatisticsIndex from './pages/statistics/StatisticsIndex';
 
 const { ToastContainer } = createStandaloneToast();
 

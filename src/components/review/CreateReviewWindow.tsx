@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components/macro';
+import React from 'react';
 import { createReview } from '../../services/reviews';
 import { errorNotification, successNotification } from '../../services/popup-notification';
 import { ReviewDTO, WordPackDTO } from '../../utils/types';
@@ -11,16 +12,15 @@ import Modal from '../common/complex/Modal';
 import { Size } from '../../utils/constants';
 
 type Props = {
-  button: any;
   isOpen: boolean;
-  onClose: any;
+  onClose: () => void;
   wordPackDTO: WordPackDTO;
-  fetchAllWordPacksDTO: any;
-  fetchAllReviewsDTO: any;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  isButtonDisabled: boolean;
 };
 
 export default function CreateReviewWindow(props: Props) {
-  const { button, isOpen, onClose, wordPackDTO, fetchAllWordPacksDTO, fetchAllReviewsDTO } = props;
+  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled } = props;
 
   const initialValues = {
     maxNewWordsPerDay: 5,
@@ -44,57 +44,54 @@ export default function CreateReviewWindow(props: Props) {
     createReview(reviewDTO)
       .then(() => {
         successNotification('Review saved', `${wordPackDTO.name} was successfully saved`);
-        fetchAllReviewsDTO();
-        fetchAllWordPacksDTO();
+        setReload(true);
       })
       .catch((error) => errorNotification(error.code, error.response.data.message))
       .finally(() => setSubmitting(false));
   };
 
   return (
-    <>
-      {button}
-      <Modal
-        size={Size.MD}
-        isOpen={isOpen}
-        onClose={onClose}
-        header={wordPackDTO.name}
-        body={(
-          <>
-            <TotalWords>
-              <TbCards />
-              <Text>{wordPackDTO.totalWords}</Text>
-            </TotalWords>
-            <Description>
-              <Text>{wordPackDTO.description}</Text>
-            </Description>
-            <InputFieldsWithButton
-              validateOnMount
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              inputElements={(
-                <>
-                  <TextInput
-                    label='Max New Words Per Day'
-                    name='maxNewWordsPerDay'
-                    type='number'
-                    placeholder='1'
-                  />
-                  <TextInput
-                    label='Max Review Words Per Day'
-                    name='maxReviewWordsPerDay'
-                    type='number'
-                    placeholder='1'
-                  />
-                </>
-              )}
-              buttonText='Submit'
-              onSubmit={handleOnSubmit}
-            />
-          </>
-        )}
-      />
-    </>
+    <Modal
+      size={Size.MD}
+      isOpen={isOpen}
+      onClose={onClose}
+      header={wordPackDTO.name}
+      body={(
+        <>
+          <TotalWords>
+            <TbCards />
+            <Text>{wordPackDTO.totalWords}</Text>
+          </TotalWords>
+          <Description>
+            <Text>{wordPackDTO.description}</Text>
+          </Description>
+          <InputFieldsWithButton
+            validateOnMount
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            inputElements={(
+              <>
+                <TextInput
+                  label="Max New Words Per Day"
+                  name="maxNewWordsPerDay"
+                  type="number"
+                  placeholder="1"
+                />
+                <TextInput
+                  label="Max Review Words Per Day"
+                  name="maxReviewWordsPerDay"
+                  type="number"
+                  placeholder="1"
+                />
+              </>
+            )}
+            buttonText="Submit"
+            onSubmit={handleOnSubmit}
+            isButtonDisabled={isButtonDisabled}
+          />
+        </>
+      )}
+    />
   );
 }
 

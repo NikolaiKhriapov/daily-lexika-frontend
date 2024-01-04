@@ -19,9 +19,7 @@ export const ApiEndpointsReviews = {
   createReview: () => `${URL_REVIEWS}`,
   refreshReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
   removeReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
-  processReviewAction: (reviewId: number, answer: string | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
-  getWordsForReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}/words`,
-  getReviewStatistics: (reviewId: number) => `${URL_REVIEWS}/statistics/${reviewId}`,
+  processReviewAction: (reviewId: number, answer: boolean | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
 };
 
 const URL_USERS = `${BASE_URL}/user`;
@@ -29,18 +27,16 @@ export const ApiEndpointsUsers = {
   showUserAccount: () => `${URL_USERS}/account`,
   updateUserInfo: () => `${URL_USERS}/account/info`,
   deleteAccount: () => `${URL_USERS}/account`,
-  getUserStatistics: () => `${URL_USERS}/statistics`,
-  updateUserStreak: () => `${URL_USERS}/statistics/streak`,
+};
+
+const URL_STATISTICS = `${BASE_URL}/statistics`;
+export const ApiEndpointsStatistics = {
+  getStatistics: () => `${URL_STATISTICS}`,
 };
 
 const URL_WORD_PACKS = `${BASE_URL}/flashcards/word-packs`;
 export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
-  getAllWordsForWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}/words`,
-};
-
-const URL_WORDS = `${BASE_URL}/flashcards/words`;
-export const ApiEndpointsWords = {
-  getWordStatistics: () => `${URL_WORDS}/statistics`,
+  getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
 };

@@ -1,12 +1,10 @@
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components/macro';
-import { errorNotification } from '../../services/popup-notification';
+import { useEffect, useState } from 'react';
 import CreateReviewWindow from '../review/CreateReviewWindow';
 import ReviewWordPackWindow from './ReviewWordPackWindow';
-import { getAllReviews } from '../../services/reviews';
-import { ReviewDTO, WordPackDTO } from '../../utils/types';
+import { WordPackDTO } from '../../utils/types';
 import { ButtonType, FontWeight, RoleName, Size } from '../../utils/constants';
 import InfoButton from '../common/basic/InfoButton';
 import Text from '../common/basic/Text';
@@ -16,43 +14,50 @@ import SignAdded from '../common/complex/SignAdded';
 import { borderStyles } from '../../utils/functions';
 import Button from '../common/basic/Button';
 import { useAuth } from '../context/AuthContext';
+import { getWordPack } from '../../services/word-packs';
+import { errorNotification } from '../../services/popup-notification';
 
 type Props = {
   wordPackDTO: WordPackDTO;
-  fetchAllWordPacksDTO: any;
 };
 
 export default function WordPackCard(props: Props) {
-  const { wordPackDTO, fetchAllWordPacksDTO } = props;
+  const { wordPackDTO } = props;
 
   const { user } = useAuth();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
-  const [allReviewsDTO, setAllReviewsDTO] = useState<[ReviewDTO]>();
+  const [updatedWordPackDTO, setUpdatedWordPackDTO] = useState(wordPackDTO);
+  const [reload, setReload] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
-  const isReviewExists = allReviewsDTO?.some((review: ReviewDTO) => review.wordPackName === wordPackDTO.name);
-
-  const fetchAllReviewsDTO = () => {
-    getAllReviews()
-      .then((response) => setAllReviewsDTO(response.data.data.allReviewsDTO))
-      .catch((error) => errorNotification(error.code, error.response.data.message));
+  const fetchWordPackDTO = (wordPackName: string) => {
+    setButtonDisabled(true);
+    getWordPack(wordPackName)
+      .then((response) => setUpdatedWordPackDTO(response.data.data.wordPackDTO))
+      .catch((e) => errorNotification(e.code, e.response.data.message))
+      .finally(() => setButtonDisabled(false));
   };
 
   useEffect(() => {
-    fetchAllReviewsDTO();
-  }, []);
+    if (reload) {
+      fetchWordPackDTO(wordPackDTO.name);
+      setReload(false);
+    }
+  }, [reload]);
 
   return (
     <Container $colorMode={colorMode}>
       <InfoButtonContainer>
         <InfoButton onClick={onOpenPreviewButton} />
-        <ReviewWordPackWindow
-          button={null}
-          isOpen={isOpenPreviewButton}
-          onClose={onClosePreviewButton}
-          wordPackDTO={wordPackDTO}
-        />
+        {isOpenPreviewButton && (
+          <ReviewWordPackWindow
+            isOpen={isOpenPreviewButton}
+            onClose={onClosePreviewButton}
+            wordPackDTO={updatedWordPackDTO}
+          />
+        )}
       </InfoButtonContainer>
       <WordPackNameContainer>
         <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{wordPackDTO.name}</Text>
@@ -65,24 +70,24 @@ export default function WordPackCard(props: Props) {
         <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} isCentered>{wordPackDTO.description}</Text>
       </DescriptionContainer>
       <ButtonsContainer>
-        {isReviewExists
+        {updatedWordPackDTO.reviewId !== undefined
           ? <SignAdded />
           : (
-            <CreateReviewWindow
-              isOpen={isOpenCreateButton}
-              onClose={onCloseCreateButton}
-              wordPackDTO={wordPackDTO}
-              fetchAllWordPacksDTO={fetchAllWordPacksDTO}
-              fetchAllReviewsDTO={fetchAllReviewsDTO}
-              button={(
-                <Button
-                  buttonText='Create Daily Review'
-                  buttonType={ButtonType.BUTTON}
-                  size={Size.SM}
-                  onClick={onOpenCreateButton}
-                />
-              )}
-            />
+            <>
+              <Button
+                buttonText="Create Daily Review"
+                buttonType={ButtonType.BUTTON}
+                size={Size.SM}
+                onClick={onOpenCreateButton}
+              />
+              <CreateReviewWindow
+                isOpen={isOpenCreateButton}
+                onClose={onCloseCreateButton}
+                wordPackDTO={wordPackDTO}
+                setReload={setReload}
+                isButtonDisabled={isButtonDisabled}
+              />
+            </>
           )}
       </ButtonsContainer>
     </Container>

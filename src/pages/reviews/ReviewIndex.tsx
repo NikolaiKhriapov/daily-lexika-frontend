@@ -1,4 +1,4 @@
-import Review from '../../../components/review/Review';
+import Review from '../../components/review/Review';
 
 export default function ReviewIndex() {
   return (

@@ -64,7 +64,6 @@ export default function WordPack() {
                 <WordPackCard
                   key={wordPackDTO.name}
                   wordPackDTO={wordPackDTO}
-                  fetchAllWordPacksDTO={fetchAllWordPacksDTO}
                 />
               ))}
             </WordPacksContainer>

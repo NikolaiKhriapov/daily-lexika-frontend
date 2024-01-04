@@ -1,10 +1,5 @@
 import { Platform, RoleName } from './constants';
 
-export interface AuthenticatedUser {
-  username: string;
-  role: RoleName;
-}
-
 export interface RegistrationRequest {
   name: string;
   email: string;
@@ -16,6 +11,11 @@ export interface AuthenticationRequest {
   email: string;
   password: string;
   platform: Platform;
+}
+
+export interface AuthenticatedUser {
+  username: string;
+  role: RoleName;
 }
 
 export interface UserDTO {
@@ -30,22 +30,26 @@ export interface UserDTO {
   recordStreak?: number;
 }
 
+export interface NotificationDTO {
+  notificationId: number;
+  toUserId: number;
+  toUserEmail: string;
+  sender: string;
+  subject: string;
+  message: string;
+  sentAt: string;
+  isRead: boolean;
+}
+
 export interface ReviewDTO {
   id?: number;
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
   wordPackName: string;
-  listOfWordId?: number[];
+  listOfWordDTO?: WordDTO[];
   dateLastCompleted?: string;
   dateGenerated?: string;
-}
-
-export interface ReviewStatisticsDTO {
-  wordsNew: number;
-  wordsInReview: number;
-  wordsKnown: number;
-  wordsTotal: number;
 }
 
 export interface WordDTO {
@@ -60,7 +64,6 @@ export interface WordDTO {
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfReviewId: number[];
   listOfChineseCharacterId: number[];
   listOfWordPackNames: string[];
 }
@@ -70,23 +73,25 @@ export interface WordPackDTO {
   description: string;
   category: Category;
   totalWords: number;
+  reviewId?: number;
 }
 
-export interface WordStatisticsDTO {
+export interface StatisticsDTO {
+  currentStreak?: number;
+  recordStreak?: number;
   wordsKnown: number;
   // charactersKnown: number;
   // idiomsKnown: number;
+  listOfReviewStatisticsDTO: ReviewStatisticsDTO[];
 }
 
-export interface NotificationDTO {
-  notificationId: number;
-  toUserId: number;
-  toUserEmail: string;
-  sender: string;
-  subject: string;
-  message: string;
-  sentAt: string;
-  isRead: boolean;
+export interface ReviewStatisticsDTO {
+  id: number;
+  wordPackName: string;
+  wordsNew: number;
+  wordsInReview: number;
+  wordsKnown: number;
+  wordsTotal: number;
 }
 
 export enum Status {
