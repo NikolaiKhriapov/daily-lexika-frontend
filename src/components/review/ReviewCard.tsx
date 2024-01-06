@@ -48,9 +48,12 @@ export default function ReviewCard(props: Props) {
     setButtonDisabled(true);
     setReviewRefreshed(true);
     refreshReview(reviewId)
-      .then(() => fetchAllReviewsDTO())
+      .then(() => fetchReviewDTO(reviewId))
       .catch((e) => errorNotification(e.code, e.response.data.message))
-      .finally(() => setButtonDisabled(true));
+      .finally(() => {
+        setReviewRefreshed(false);
+        setButtonDisabled(false);
+      });
   };
 
   useEffect(() => {

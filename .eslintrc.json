@@ -48,6 +48,7 @@
     "@typescript-eslint/no-use-before-define": "off",
     "import/no-extraneous-dependencies": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "no-nested-ternary": "off"
   }
 }
