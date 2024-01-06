@@ -3,6 +3,7 @@ import { IoStatsChart } from 'react-icons/io5';
 import { TbCards } from 'react-icons/tb';
 import { LuCalendarCheck } from 'react-icons/lu';
 import styled from 'styled-components/macro';
+import { Link } from 'react-router-dom';
 import { Breakpoint, Page, Size } from '../../utils/constants';
 import { borderStyles, mediaBreakpointUp } from '../../utils/functions';
 import { theme } from '../../utils/theme';
@@ -20,7 +21,7 @@ export default function Sidebar() {
   return (
     <Container $colorMode={colorMode}>
       {sidebarItems.map((item) => (
-        <Item key={item.name} href={item.route} $colorMode={colorMode}>
+        <Item key={item.name} to={item.route} $colorMode={colorMode}>
           <Icon as={item.icon} />
           <Text size={Size.MD} display={{ base: 'none', md: 'unset' }}>{item.name}</Text>
         </Item>
@@ -54,7 +55,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   }
 `;
 
-const Item = styled.a<{ $colorMode: ColorMode }>`
+const Item = styled(Link)<{ $colorMode: ColorMode }>`
   display: flex;
   flex-direction: row;
   gap: 20px;

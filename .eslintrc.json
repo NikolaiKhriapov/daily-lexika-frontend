@@ -47,6 +47,7 @@
     "@typescript-eslint/no-duplicate-enum-values": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "import/no-extraneous-dependencies": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "no-trailing-spaces": "off"
   }
 }

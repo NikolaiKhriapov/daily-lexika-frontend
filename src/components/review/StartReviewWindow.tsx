@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { processReviewAction } from '../../services/reviews';
-import { updateUserStreak } from '../../services/user';
 import { errorNotification, successNotification } from '../../services/popup-notification';
 import ReviewWordCard from './ReviewWordCard';
 import { Status, WordDTO } from '../../utils/types';
@@ -15,28 +14,31 @@ import { mediaBreakpointUp } from '../../utils/functions';
 type Props = {
   reviewId: number;
   isOpen: boolean;
-  onClose: any;
+  onClose: () => void;
   totalReviewWords: number;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function StartReviewWindow(props: Props) {
-  const { reviewId, isOpen, onClose, totalReviewWords } = props;
+  const { reviewId, isOpen, onClose, totalReviewWords, setReload } = props;
 
   const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
   const [reviewUpdatedSize, setReviewUpdatedSize] = useState<number>(0);
-  const [isFormVisible, setIsFormVisible] = useState(true);
-  const [isReviewComplete, setIsReviewComplete] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFormVisible, setFormVisible] = useState(true);
+  const [isReviewComplete, setReviewComplete] = useState(false);
+  const [isFlipped, setFlipped] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
-  const fetchReviewAction = (answer: string | null) => {
-    if ((answer === 'yes' && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
+  const fetchReviewAction = (answer: boolean | null) => {
+    setButtonDisabled(true);
+    if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
       || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
       successNotification(
         `${reviewWordDTO.nameChineseSimplified} is a known word.`,
         'This word will still be shown occasionally during reviews',
       );
     }
-    if (answer === 'no' && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
+    if (answer === false && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
       successNotification(
         `Keep reviewing ${reviewWordDTO.nameChineseSimplified}`,
         'This word will be shown more frequently so that you can relearn it',
@@ -48,10 +50,11 @@ export default function StartReviewWindow(props: Props) {
           setReviewWordDTO(response.data.data.reviewWordDTO);
           setReviewUpdatedSize(response.data.data.reviewUpdatedSize);
         } else {
-          updateUserStreak();
-          setIsFormVisible(false);
-          setIsReviewComplete(true);
+          setFormVisible(false);
+          setReviewComplete(true);
         }
+        setReload(true);
+        setButtonDisabled(false);
       })
       .catch((error) => errorNotification(error.code, error.response.data.message));
   };
@@ -66,9 +69,9 @@ export default function StartReviewWindow(props: Props) {
     }
   }, [isFormVisible, isReviewComplete]);
 
-  const pressButton = (answer: string | null) => {
+  const pressButton = (answer: boolean | null) => {
     fetchReviewAction(answer);
-    setIsFlipped(false);
+    setFlipped(false);
   };
 
   const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
@@ -89,19 +92,20 @@ export default function StartReviewWindow(props: Props) {
                 <ReviewWordCard
                   reviewWordDTO={reviewWordDTO!}
                   isFlipped={isFlipped}
-                  setIsFlipped={setIsFlipped}
+                  setFlipped={setFlipped}
                 />
                 <ButtonsContainer>
                   <Button
                     buttonText='Forgot'
                     buttonType={ButtonType.BUTTON_RED}
-                    onClick={() => pressButton('no')}
+                    onClick={() => pressButton(false)}
+                    isDisabled={isButtonDisabled}
                   />
                   <Button
                     buttonText='Remembered'
                     buttonType={ButtonType.BUTTON}
-                    onClick={() => pressButton('yes')}
-                    isDisabled={!reviewWordDTO}
+                    onClick={() => pressButton(true)}
+                    isDisabled={isButtonDisabled}
                   />
                 </ButtonsContainer>
               </CardContainer>

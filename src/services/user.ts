@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { UserDTO } from '../utils/types';
-import { ApiEndpointsUsers } from '../API/apiMethods';
+import { ApiEndpointsStatistics, ApiEndpointsUsers } from '../API/apiMethods';
 import { LocalStorage } from '../utils/constants';
 
 const getAuthConfig = () => ({
@@ -36,18 +36,9 @@ export const deleteAccount = async () => {
   }
 };
 
-export const getUserStatistics = async () => {
+export const getStatistics = async () => {
   try {
-    return await axios.get(ApiEndpointsUsers.getUserStatistics(), getAuthConfig());
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const updateUserStreak = async () => {
-  try {
-    await axios.get(ApiEndpointsUsers.updateUserStreak(), getAuthConfig());
+    return await axios.get(ApiEndpointsStatistics.getStatistics(), getAuthConfig());
   } catch (error) {
     console.error(error);
     throw error;

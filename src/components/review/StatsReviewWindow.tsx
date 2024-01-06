@@ -1,7 +1,8 @@
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import styled from 'styled-components/macro';
+import { useEffect, useState } from 'react';
 import ReviewWordPackWindow from '../word-pack/ReviewWordPackWindow';
-import { ReviewDTO, ReviewStatisticsDTO, WordPackDTO } from '../../utils/types';
+import { ReviewStatisticsDTO, WordPackDTO } from '../../utils/types';
 import Modal from '../common/complex/Modal';
 import Text from '../common/basic/Text';
 import ProgressBar from '../common/basic/ProgressBar';
@@ -10,67 +11,76 @@ import { theme } from '../../utils/theme';
 import InfoButton from '../common/basic/InfoButton';
 import { borderStyles, mediaBreakpointUp } from '../../utils/functions';
 import { Breakpoint, FontWeight, Size } from '../../utils/constants';
+import { getWordPack } from '../../services/word-packs';
+import { errorNotification } from '../../services/popup-notification';
 
 type Props = {
   isOpen: boolean;
-  onClose: any;
-  reviewDTO: ReviewDTO;
+  onClose: () => void;
   reviewStatisticsDTO: ReviewStatisticsDTO;
-  wordPackDTO: WordPackDTO;
+  wordsPercentage: { inReview: number, known: number };
 };
 
 export default function StatsReviewWindow(props: Props) {
-  const { isOpen, onClose, reviewDTO, reviewStatisticsDTO, wordPackDTO } = props;
+  const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
+  const [wordPackDTO, setWordPackDTO] = useState<WordPackDTO>();
 
-  const wordsKnownPercentage = Math.round(reviewStatisticsDTO
-    && (reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal) * 100);
-  const wordsInReviewPercentage = Math.round(reviewStatisticsDTO
-    && (reviewStatisticsDTO.wordsInReview / reviewStatisticsDTO.wordsTotal) * 100);
+  const fetchWordPackDTO = (wordPackName: string) => {
+    getWordPack(wordPackName)
+      .then((response) => setWordPackDTO(response.data.data.wordPackDTO))
+      .catch((e) => errorNotification(e.code, e.response.data.message));
+  };
+
+  useEffect(() => {
+    fetchWordPackDTO(reviewStatisticsDTO.wordPackName);
+  }, []);
 
   return (
     <Modal
       size={Size.XL}
       isOpen={isOpen}
       onClose={onClose}
-      header={reviewDTO.wordPackName}
+      header={reviewStatisticsDTO.wordPackName}
       body={(
         <>
           <PackProgress $colorMode={colorMode}>
             <WordPackNameAndInfoButton>
               <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Pack Progress</Text>
-              <ReviewWordPackWindow
-                button={<InfoButton onClick={onOpenDrawer} />}
-                isOpen={isOpenDrawer}
-                onClose={onCloseDrawer}
-                wordPackDTO={wordPackDTO}
-              />
+              <InfoButton onClick={onOpenDrawer} />
+              {isOpenDrawer && (
+                <ReviewWordPackWindow
+                  isOpen={isOpenDrawer}
+                  onClose={onCloseDrawer}
+                  wordPackDTO={wordPackDTO!}
+                />
+              )}
             </WordPackNameAndInfoButton>
             <StatsRow>
               <Percentage>
                 <Text size={{ base: Size.MD, md: Size.XL, xl: Size.XL }} fontWeight={FontWeight.SEMIBOLD}>
-                  {`${wordsKnownPercentage}%`}
+                  {`${wordsPercentage.known}%`}
                 </Text>
                 <Text size={{ base: Size.XS, md: Size.SM, xl: Size.SM }} fontWeight={FontWeight.SEMIBOLD}>
                   {' known'}
                 </Text>
               </Percentage>
               <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
-                {reviewStatisticsDTO && `${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
+                {`${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
               </Text>
             </StatsRow>
-            <ProgressBar value={wordsKnownPercentage} />
+            <ProgressBar value={wordsPercentage.known} />
           </PackProgress>
           <ReviewStatus $colorMode={colorMode}>
             <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Review Status</Text>
             <StatsContainer>
-              <ProgressCircular value={wordsInReviewPercentage + wordsKnownPercentage} text='In Review' />
+              <ProgressCircular value={wordsPercentage.inReview + wordsPercentage.known} text='In Review' />
               <StatsColumn>
                 <Stat>
                   <Text size={{ base: Size.XL, md: Size.XXXL, xl: Size.XXXL }}>
-                    {reviewStatisticsDTO && (reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown)}
+                    {reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown}
                   </Text>
                   <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
                     Words In Review
@@ -78,7 +88,7 @@ export default function StatsReviewWindow(props: Props) {
                 </Stat>
                 <Stat>
                   <Text size={{ base: Size.XL, md: Size.XXXL, xl: Size.XXXL }}>
-                    {reviewStatisticsDTO && reviewStatisticsDTO.wordsNew}
+                    {reviewStatisticsDTO.wordsNew}
                   </Text>
                   <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
                     Unseen Words

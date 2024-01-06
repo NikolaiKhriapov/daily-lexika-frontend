@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import styled from 'styled-components/macro';
 import { errorNotification, successNotification } from '../../services/popup-notification';
-import { getReview, getWordsForReview, refreshReview, removeReview } from '../../services/reviews';
+import { getReview, refreshReview, removeReview } from '../../services/reviews';
 import StartReviewWindow from './StartReviewWindow';
-import { ReviewDTO, Status, WordDTO } from '../../utils/types';
-import { ButtonType, FontWeight, Size } from '../../utils/constants';
+import { ReviewDTO, Status } from '../../utils/types';
+import { ButtonType, FontWeight, RoleName, Size } from '../../utils/constants';
 import AlertDialog from '../common/complex/AlertDialog';
 import Text from '../common/basic/Text';
 import CloseButton from '../common/basic/CloseButton';
@@ -14,6 +14,7 @@ import ButtonsContainer from '../common/complex/ButtonsContainer';
 import { theme } from '../../utils/theme';
 import { borderStyles } from '../../utils/functions';
 import Button from '../common/basic/Button';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   reviewDTO: ReviewDTO;
@@ -23,23 +24,19 @@ type Props = {
 export default function ReviewCard(props: Props) {
   const { reviewDTO, fetchAllReviewsDTO } = props;
 
+  const { user } = useAuth();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
-  const [wordsForReviewDTO, setWordsForReviewDTO] = useState<WordDTO[]>([]);
   const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO);
   const [reviewRemoved, setReviewRemoved] = useState(false);
-  const [refreshed, setRefreshed] = useState(false);
+  const [reviewRefreshed, setReviewRefreshed] = useState(false);
+  const [reload, setReload] = useState<boolean>(false);
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const isDateLastCompletedToday = () =>
     new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getDate();
-
-  const fetchWordsForReviewDTO = (reviewId: number) => {
-    getWordsForReview(reviewId)
-      .then((response) => setWordsForReviewDTO(response.data.data.wordsForReviewDTO))
-      .catch((e) => errorNotification(e.code, e.response.data.message));
-  };
 
   const fetchReviewDTO = (reviewId: number) => {
     getReview(reviewId)
@@ -48,20 +45,23 @@ export default function ReviewCard(props: Props) {
   };
 
   const requestRefreshReview = (reviewId: number) => {
-    setRefreshed(true);
+    setButtonDisabled(true);
+    setReviewRefreshed(true);
     refreshReview(reviewId)
       .then(() => fetchAllReviewsDTO())
-      .catch((e) => errorNotification(e.code, e.response.data.message));
+      .catch((e) => errorNotification(e.code, e.response.data.message))
+      .finally(() => setButtonDisabled(true));
   };
 
   useEffect(() => {
-    if (!reviewRemoved && !refreshed) {
-      fetchWordsForReviewDTO(reviewDTO.id!);
+    if (!reviewRemoved && !reviewRefreshed && reload) {
       fetchReviewDTO(reviewDTO.id!);
+      setReload(false);
     }
-  }, [wordsForReviewDTO]);
+  }, [reload]);
 
   const handleRemoveReview = () => {
+    setButtonDisabled(true);
     setReviewRemoved(true);
     removeReview(reviewDTO.id!)
       .then(() => {
@@ -72,11 +72,14 @@ export default function ReviewCard(props: Props) {
         fetchAllReviewsDTO();
       })
       .catch((e) => errorNotification(e.code, e.response.data.message))
-      .finally(() => onCloseRemoveButton());
+      .finally(() => {
+        onCloseRemoveButton();
+        setButtonDisabled(false);
+      });
   };
 
-  const totalNewWords = wordsForReviewDTO.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
-  const totalReviewWords = wordsForReviewDTO.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
+  const totalNewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
+  const totalInReviewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
 
   return (
     <Container $colorMode={colorMode}>
@@ -94,19 +97,20 @@ export default function ReviewCard(props: Props) {
             header='Remove Review'
             body={`Are you sure you want to delete daily review? You can't undo this action.`}
             deleteButtonText='Delete'
+            isButtonDisabled={isButtonDisabled}
           />
         </CloseButtonContainer>
       </CompletedIconAndCloseButtonContainer>
       <WordPackNameContainer>
-        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD}>{reviewDTO.wordPackName}</Text>
+        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{reviewDTO.wordPackName}</Text>
       </WordPackNameContainer>
-      <WordsCountContainer>
+      <WordsCountContainer $height={user?.role === RoleName.USER_CHINESE ? '140px' : '105px'}>
         <WordsContainer>
           <Text size={Size.XXL}>{totalNewWords}</Text>
           <Text size={Size.SM}>{' New Words'}</Text>
         </WordsContainer>
         <WordsContainer>
-          <Text size={Size.XXL}>{totalReviewWords}</Text>
+          <Text size={Size.XXL}>{totalInReviewWords}</Text>
           <Text size={Size.SM}>{' Review Words'}</Text>
         </WordsContainer>
       </WordsCountContainer>
@@ -116,13 +120,15 @@ export default function ReviewCard(props: Props) {
           buttonType={ButtonType.BUTTON}
           size={Size.SM}
           onClick={() => (!isDateLastCompletedToday() ? onOpenStartButton() : requestRefreshReview(reviewDTO.id!))}
+          isDisabled={isButtonDisabled}
         />
         {isOpenStartButton && (
           <StartReviewWindow
             reviewId={reviewDTO.id!}
             isOpen={isOpenStartButton}
             onClose={onCloseStartButton}
-            totalReviewWords={reviewDTO.listOfWordId!.length}
+            totalReviewWords={reviewDTO.listOfWordDTO!.length}
+            setReload={setReload}
           />
         )}
       </ButtonsContainer>
@@ -165,11 +171,11 @@ const WordPackNameContainer = styled.div`
   justify-content: center;
 `;
 
-const WordsCountContainer = styled.div`
+const WordsCountContainer = styled.div<{ $height: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 140px;
+    height: ${({ $height }) => $height};
 `;
 
 const WordsContainer = styled.div`

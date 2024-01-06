@@ -18,7 +18,7 @@ export default function StatusBadge(props: Props) {
         $isInTopRight={isInTopRight || false}
         colorScheme={colorScheme}
       >
-        <Text size={{ base: Size.XXS, md: Size.SM, xl: Size.SM }}>{text}</Text>
+        <Text size={{ base: Size.XXS, md: Size.XS, xl: Size.XS }}>{text}</Text>
       </StyledBadge>
     </Component>
   );

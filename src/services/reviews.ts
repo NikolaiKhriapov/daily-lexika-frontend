@@ -54,27 +54,9 @@ export const removeReview = async (reviewId: number) => {
   }
 };
 
-export const processReviewAction = async (reviewId: number, answer: string | null = null) => {
+export const processReviewAction = async (reviewId: number, answer: boolean | null = null) => {
   try {
     return await axios.get(ApiEndpointsReviews.processReviewAction(reviewId, answer), getAuthConfig());
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const getWordsForReview = async (reviewId: number) => {
-  try {
-    return await axios.get(ApiEndpointsReviews.getWordsForReview(reviewId), getAuthConfig());
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export const getReviewStatistics = async (reviewId: number) => {
-  try {
-    return await axios.get(ApiEndpointsReviews.getReviewStatistics(reviewId), getAuthConfig());
   } catch (error) {
     console.error(error);
     throw error;

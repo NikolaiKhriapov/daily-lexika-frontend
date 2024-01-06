@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
 import styled from 'styled-components/macro';
-import { errorNotification } from '../../services/popup-notification';
-import { getReviewStatistics } from '../../services/reviews';
 import StatsReviewWindow from './StatsReviewWindow';
-import { getWordPack } from '../../services/word-packs';
-import { ReviewDTO, ReviewStatisticsDTO, WordPackDTO } from '../../utils/types';
+import { ReviewStatisticsDTO } from '../../utils/types';
 import Text from '../common/basic/Text';
 import ProgressBar from '../common/basic/ProgressBar';
 import InfoButton from '../common/basic/InfoButton';
@@ -14,62 +10,44 @@ import { borderStyles } from '../../utils/functions';
 import { FontWeight, Size } from '../../utils/constants';
 
 type Props = {
-  reviewDTO: ReviewDTO;
+  reviewStatisticsDTO: ReviewStatisticsDTO;
 };
 
 export default function StatsReviewCard(props: Props) {
-  const { reviewDTO } = props;
+  const { reviewStatisticsDTO } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [reviewStatisticsDTO, setReviewStatisticsDTO] = useState<ReviewStatisticsDTO>();
-  const [wordPackDTO, setWordPackDTO] = useState<WordPackDTO>();
 
-  const fetchWordPackDTO = (wordPackName: string) => {
-    getWordPack(wordPackName)
-      .then((response) => setWordPackDTO(response.data.data.wordPackDTO))
-      .catch((e) => errorNotification(e.code, e.response.data.message));
+  const wordsPercentage = {
+    inReview: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsInReview / reviewStatisticsDTO.wordsTotal) * 100),
+    known: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal) * 100),
   };
-
-  const fetchReviewStatisticsDTO = () => {
-    getReviewStatistics(reviewDTO.id!)
-      .then((response) => setReviewStatisticsDTO(response.data.data.reviewStatisticsDTO))
-      .catch((e) => errorNotification(e.code, e.response.data.message));
-  };
-
-  useEffect(() => {
-    fetchReviewStatisticsDTO();
-    fetchWordPackDTO(reviewDTO.wordPackName);
-  }, []);
-
-  const wordsKnownPercentage = reviewStatisticsDTO
-    && Math.round((reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal) * 100);
 
   return (
     <Container $colorMode={colorMode} shadow='2xl'>
       <WordPackNameAndInfoButton>
-        <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{reviewDTO.wordPackName}</Text>
+        <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{reviewStatisticsDTO.wordPackName}</Text>
         <InfoButton onClick={onOpen} />
         {isOpen && (
           <StatsReviewWindow
             isOpen={isOpen}
             onClose={onClose}
-            reviewDTO={reviewDTO}
-            reviewStatisticsDTO={reviewStatisticsDTO!}
-            wordPackDTO={wordPackDTO!}
+            reviewStatisticsDTO={reviewStatisticsDTO}
+            wordsPercentage={wordsPercentage}
           />
         )}
       </WordPackNameAndInfoButton>
       <Stats>
         <Percentage>
-          <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{`${wordsKnownPercentage}%`}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{`${wordsPercentage.known}%`}</Text>
           <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
         </Percentage>
         <Text fontWeight={FontWeight.SEMIBOLD}>
-          {reviewStatisticsDTO && `${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
+          {`${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
         </Text>
       </Stats>
-      <ProgressBar value={wordsKnownPercentage || 0} />
+      <ProgressBar value={wordsPercentage.known || 0} />
     </Container>
   );
 }
@@ -89,6 +67,7 @@ const WordPackNameAndInfoButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+    height: 35px;
 `;
 
 const Stats = styled.div`

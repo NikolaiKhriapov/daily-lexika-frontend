@@ -1,16 +1,21 @@
-export interface AuthenticatedUser {
-  username: string;
-}
+import { Platform, RoleName } from './constants';
 
 export interface RegistrationRequest {
   name: string;
   email: string;
   password: string;
+  platform: Platform;
 }
 
 export interface AuthenticationRequest {
   email: string;
   password: string;
+  platform: Platform;
+}
+
+export interface AuthenticatedUser {
+  username: string;
+  role: RoleName;
 }
 
 export interface UserDTO {
@@ -18,10 +23,22 @@ export interface UserDTO {
   name?: string;
   email?: string;
   password?: string;
+  role?: string;
   roles?: string[];
   currentStreak?: number;
   dateOfLastStreak?: string;
   recordStreak?: number;
+}
+
+export interface NotificationDTO {
+  notificationId: number;
+  toUserId: number;
+  toUserEmail: string;
+  sender: string;
+  subject: string;
+  message: string;
+  sentAt: string;
+  isRead: boolean;
 }
 
 export interface ReviewDTO {
@@ -30,16 +47,9 @@ export interface ReviewDTO {
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
   wordPackName: string;
-  listOfWordId?: number[];
+  listOfWordDTO?: WordDTO[];
   dateLastCompleted?: string;
   dateGenerated?: string;
-}
-
-export interface ReviewStatisticsDTO {
-  wordsNew: number;
-  wordsInReview: number;
-  wordsKnown: number;
-  wordsTotal: number;
 }
 
 export interface WordDTO {
@@ -54,7 +64,6 @@ export interface WordDTO {
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfReviewId: number[];
   listOfChineseCharacterId: number[];
   listOfWordPackNames: string[];
 }
@@ -64,23 +73,25 @@ export interface WordPackDTO {
   description: string;
   category: Category;
   totalWords: number;
+  reviewId?: number;
 }
 
-export interface WordStatisticsDTO {
+export interface StatisticsDTO {
+  currentStreak?: number;
+  recordStreak?: number;
   wordsKnown: number;
   // charactersKnown: number;
   // idiomsKnown: number;
+  listOfReviewStatisticsDTO: ReviewStatisticsDTO[];
 }
 
-export interface NotificationDTO {
-  notificationId: number;
-  toUserId: number;
-  toUserEmail: string;
-  sender: string;
-  subject: string;
-  message: string;
-  sentAt: string;
-  isRead: boolean;
+export interface ReviewStatisticsDTO {
+  id: number;
+  wordPackName: string;
+  wordsNew: number;
+  wordsInReview: number;
+  wordsKnown: number;
+  wordsTotal: number;
 }
 
 export enum Status {
@@ -90,10 +101,16 @@ export enum Status {
 }
 
 export enum Category {
-  HSK,
-  WORK,
-  NEWS,
-  SPORT,
-  FOOD,
-  TRAVEL,
+  HSK = 'HSK',
+  WORK = 'Work',
+  NEWS = 'News',
+  SPORT = 'Sport',
+  FOOD = 'Food',
+  TRAVEL = 'Travel',
+
+  SPEAKOUT_STARTER = 'Speakout Starter',
+  SPEAKOUT_ELEMENTARY = 'Speakout Elementary',
+  SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
+  SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
+  SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
 }

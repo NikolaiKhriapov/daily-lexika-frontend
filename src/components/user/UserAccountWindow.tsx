@@ -1,6 +1,6 @@
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import * as Yup from 'yup';
-import { RefObject, useRef } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 import { errorNotification, successNotification } from '../../services/popup-notification';
 import { deleteAccount, updateUserInfo } from '../../services/user';
@@ -27,6 +27,7 @@ export default function UserAccountWindow(props: Props) {
   const {
     isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton,
   } = useDisclosure();
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDTO, setSubmitting: any) => {
     updateUserInfo(userUpdatedInfoDTO)
@@ -43,6 +44,7 @@ export default function UserAccountWindow(props: Props) {
   };
 
   const handleDeleteAccount = () => {
+    setButtonDisabled(true);
     deleteAccount()
       .then(() => {
         successNotification('Account deleted successfully', '');
@@ -51,7 +53,8 @@ export default function UserAccountWindow(props: Props) {
       })
       .catch((error) => {
         errorNotification(error.code, error.response.data.message);
-      });
+      })
+      .finally(() => setButtonDisabled(false));
   };
 
   const userAccountWindowData = {
@@ -151,6 +154,7 @@ export default function UserAccountWindow(props: Props) {
                 header='Delete Account'
                 body={`Are you sure you want to delete account? You can't undo this action.`}
                 deleteButtonText='Delete'
+                isButtonDisabled={isButtonDisabled}
               />
             </Stack>
           </ButtonsContainer>

@@ -12,10 +12,15 @@ type Props = {
   onSubmit: any;
   inputElements: React.ReactNode;
   buttonText: string;
+  isButtonDisabled?: boolean;
+};
+
+InputFieldsWithButton.defaultProps = {
+  isButtonDisabled: false,
 };
 
 export default function InputFieldsWithButton(props: Props) {
-  const { validateOnMount, initialValues, validationSchema, onSubmit, inputElements, buttonText } = props;
+  const { validateOnMount, initialValues, validationSchema, onSubmit, inputElements, buttonText, isButtonDisabled } = props;
 
   return (
     <Formik
@@ -30,7 +35,7 @@ export default function InputFieldsWithButton(props: Props) {
           <Button
             buttonText={buttonText}
             buttonType={ButtonType.SUBMIT}
-            isDisabled={!(isValid) || isSubmitting}
+            isDisabled={!(isValid) || isSubmitting || isButtonDisabled}
           />
         </FormStyled>
       )}

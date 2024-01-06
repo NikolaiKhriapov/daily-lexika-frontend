@@ -17,10 +17,11 @@ type Props = {
   header: string;
   body: string;
   deleteButtonText: string;
+  isButtonDisabled: boolean;
 };
 
 export default function AlertDialog(props: Props) {
-  const { isOpenDeleteButton, onCloseDeleteButton, cancelRef, handleDelete, header, body, deleteButtonText } = props;
+  const { isOpenDeleteButton, onCloseDeleteButton, cancelRef, handleDelete, header, body, deleteButtonText, isButtonDisabled } = props;
 
   const { colorMode } = useColorMode();
 
@@ -40,11 +41,13 @@ export default function AlertDialog(props: Props) {
               buttonText='Cancel'
               buttonType={ButtonType.BUTTON}
               onClick={onCloseDeleteButton}
+              isDisabled={isButtonDisabled}
             />
             <Button
               buttonText={deleteButtonText}
               buttonType={ButtonType.BUTTON_RED}
               onClick={handleDelete}
+              isDisabled={isButtonDisabled}
             />
           </AlertDialogFooterStyled>
         </AlertDialogContentStyled>
