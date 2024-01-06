@@ -1,6 +1,7 @@
-import { ColorMode, useColorMode } from '@chakra-ui/react';
-import styled, { css } from 'styled-components/macro';
-import React from 'react';
+import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
+import styled from 'styled-components/macro';
+import React, { useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { Status, WordDTO } from '../../utils/types';
 import { Breakpoint, RoleName, Size } from '../../utils/constants';
 import Text from '../common/basic/Text';
@@ -13,24 +14,49 @@ type Props = {
   reviewWordDTO: WordDTO;
   isFlipped: boolean;
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  isThrown: boolean;
+  pressButton: any;
+  answer: boolean | null;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWordDTO, isFlipped, setFlipped } = props;
+  const { reviewWordDTO, isFlipped, setFlipped, isThrown, pressButton, answer } = props;
 
   const { user } = useAuth();
   const { colorMode } = useColorMode();
-  const handleFlip = () => setFlipped(!isFlipped);
-  const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
+  const [deltaX, setDeltaX] = useState(0);
+  const [deltaY, setDeltaY] = useState(0);
+  const [isFollowingSwipe, setFollowingSwipe] = useState(false);
+
+  const swipeDistance = useBreakpointValue({ base: 150, md: 400, xl: 700 });
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: (eventData) => {
+      if (eventData.absX > swipeDistance!) pressButton(false);
+    },
+    onSwipedRight: (eventData) => {
+      if (eventData.absX > swipeDistance!) pressButton(true);
+    },
+    delta: 1,
+    onSwipeStart: () => setFollowingSwipe(true),
+    onSwiping: (eventData) => {
+      setDeltaX(eventData.deltaX);
+      setDeltaY(eventData.deltaY);
+    },
+    onTouchEndOrOnMouseUp: () => {
+      setFollowingSwipe(false);
+      setDeltaX(0);
+      setDeltaY(0);
+    },
+  });
 
   const wordDataCh = {
     pinyin: {
       text: reviewWordDTO.pinyin,
-      size: { base: Size.XXL, md: Size.XXXL, xl: Size.XXXL },
+      size: { base: Size.XL, md: Size.XXL, xl: Size.XXXL },
     },
     nameChineseSimplified: {
       text: reviewWordDTO.nameChineseSimplified,
-      size: { base: Size.XXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+      size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
     },
     nameEnglish: {
       text: reviewWordDTO.nameEnglish,
@@ -49,12 +75,34 @@ export default function ReviewWordCard(props: Props) {
     },
   };
 
+  const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
+
+  const isThrownDistance = useBreakpointValue({ base: '350px', md: '550px', xl: '700px' });
+  const dynamicStyles = {
+    transform: `${isFollowingSwipe
+      ? isFlipped
+        ? `rotateY(180deg) scaleX(-1) translateX(${deltaX}px) translateY(${deltaY}px)`
+        : `rotateY(0deg) translateX(${deltaX}px) translateY(${deltaY}px)`
+      : isFlipped
+        ? `rotateY(180deg) scaleX(-1)`
+        : `rotateY(0deg)`
+    } ${isThrown 
+      ? answer
+        ? `rotateY(0deg) translateX(${isThrownDistance}) translateY(0px)`
+        : `rotateY(0deg) translateX(-${isThrownDistance}) translateY(0px)`
+      : ''
+    }`,
+    transition: `${isFollowingSwipe ? 'transform 0s' : 'transform 0.3s'}
+     ${isThrown ? 'transform 0.6s' : ''}`,
+  };
+
   return (
     <Container
+      style={dynamicStyles}
       $colorMode={colorMode}
       $isNewStatus={isNewStatus}
-      $isFlipped={isFlipped}
-      onClick={handleFlip}
+      {...swipeHandlers}
+      onClick={() => setFlipped(!isFlipped)}
     >
       {isNewStatus && <StatusBadge text={reviewWordDTO.status} colorScheme="red" isInTopRight />}
       {user?.role === RoleName.USER_CHINESE && (
@@ -80,11 +128,7 @@ export default function ReviewWordCard(props: Props) {
   );
 }
 
-const Container = styled.div<{
-  $colorMode: ColorMode;
-  $isNewStatus: boolean;
-  $isFlipped: boolean;
-}>`
+const Container = styled.div<{ $colorMode: ColorMode, $isNewStatus: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,12 +141,6 @@ const Container = styled.div<{
   border-radius: ${theme.stylesToDelete.borderRadius};
   border-color: ${({ $colorMode, $isNewStatus }) => ($isNewStatus
           && theme.colors[$colorMode].reviewWordCardBadgeRedColor
-  )};
-
-  transition: transform 0.3s;
-  transform: ${({ $isFlipped }) => ($isFlipped
-    ? css`rotateY(180deg) scaleX(-1);`
-    : css`rotateY(0deg)`
   )};
 
   ${mediaBreakpointUp('400px')} {

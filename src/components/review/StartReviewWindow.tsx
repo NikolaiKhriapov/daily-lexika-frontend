@@ -27,7 +27,9 @@ export default function StartReviewWindow(props: Props) {
   const [isFormVisible, setFormVisible] = useState(true);
   const [isReviewComplete, setReviewComplete] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
+  const [isThrown, setThrown] = useState(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [isAnswerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
 
   const fetchReviewAction = (answer: boolean | null) => {
     setButtonDisabled(true);
@@ -55,6 +57,7 @@ export default function StartReviewWindow(props: Props) {
         }
         setReload(true);
         setButtonDisabled(false);
+        setThrown(false);
       })
       .catch((error) => errorNotification(error.code, error.response.data.message));
   };
@@ -72,6 +75,8 @@ export default function StartReviewWindow(props: Props) {
   const pressButton = (answer: boolean | null) => {
     fetchReviewAction(answer);
     setFlipped(false);
+    setThrown(true);
+    setAnswerCorrect(answer);
   };
 
   const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
@@ -93,6 +98,9 @@ export default function StartReviewWindow(props: Props) {
                   reviewWordDTO={reviewWordDTO!}
                   isFlipped={isFlipped}
                   setFlipped={setFlipped}
+                  isThrown={isThrown}
+                  pressButton={pressButton}
+                  answer={isAnswerCorrect}
                 />
                 <ButtonsContainer>
                   <Button
@@ -122,6 +130,8 @@ const Container = styled.div`
   flex-direction: column;
   gap: 30px;
   width: 80vw;
+  overflow-x: hidden;
+  overflow-y: hidden;
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 100px;
