@@ -1,9 +1,9 @@
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import Content from 'src/components/shared/Content';
-import styled from 'styled-components/macro';
+import Content from 'components/shared/Content';
+import styled from 'styled-components';
 import React from 'react';
-import Sidebar from '../components/shared/Sidebar';
-import Navbar from '../components/shared/Navbar';
+import Sidebar from 'components/shared/Sidebar';
+import Navbar from 'components/shared/Navbar';
 import { theme } from '../utils/theme';
 
 type Props = {

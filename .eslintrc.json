@@ -1,5 +1,7 @@
 {
   "extends": [
+    "next/core-web-vitals",
+    "next",
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -50,5 +52,6 @@
     "react/jsx-props-no-spreading": "off",
     "no-trailing-spaces": "off",
     "no-nested-ternary": "off"
-  }
+  },
+  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js", "jest.config.js"]
 }

@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_BASE_URL as string;
+const BASE_URL = process.env.NEXT_PUBLIC_URL as string;
 
 const URL_AUTH = `${BASE_URL}/auth`;
 export const ApiEndpointsAuthorization = {

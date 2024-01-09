@@ -20,7 +20,7 @@ export enum Breakpoint {
 
 export enum Page {
   REGISTER = '/register',
-  LOGIN = '/login',
+  LOGIN = '/',
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',
   STATISTICS = '/statistics',
