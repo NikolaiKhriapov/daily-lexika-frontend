@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../components/context/AuthContext';
+import { useAuth } from '@components/context/AuthContext';
 import { Page } from '../utils/constants';
 
 function ProtectedRoute({ children }: { children: any }) {
