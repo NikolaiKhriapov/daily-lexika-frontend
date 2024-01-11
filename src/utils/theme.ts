@@ -58,6 +58,7 @@ const theme = extendTheme({
   fontSizes: {},
   breakpoints: customBreakpoints,
   stylesToDelete,
+  initialColorMode: 'system',
 });
 
 export { theme };

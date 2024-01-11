@@ -88,37 +88,39 @@ export default function StartReviewWindow(props: Props) {
       header={null}
       body={(
         <Container>
-          {isFormVisible && !isReviewComplete && reviewWordDTO && (
-            <>
-              <ProgressBarContainer>
-                <ProgressBar value={reviewProgress} />
-              </ProgressBarContainer>
-              <CardContainer>
-                <ReviewWordCard
-                  reviewWordDTO={reviewWordDTO!}
-                  isFlipped={isFlipped}
-                  setFlipped={setFlipped}
-                  isThrown={isThrown}
-                  pressButton={pressButton}
-                  answer={isAnswerCorrect}
-                />
-                <ButtonsContainer>
-                  <Button
-                    buttonText='Forgot'
-                    buttonType={ButtonType.BUTTON_RED}
-                    onClick={() => pressButton(false)}
-                    isDisabled={isButtonDisabled}
+          {(isFormVisible && !isReviewComplete && reviewWordDTO)
+            ? (
+              <>
+                <ProgressBarContainer>
+                  <ProgressBar value={reviewProgress} />
+                </ProgressBarContainer>
+                <CardContainer>
+                  <ReviewWordCard
+                    reviewWordDTO={reviewWordDTO!}
+                    isFlipped={isFlipped}
+                    setFlipped={setFlipped}
+                    isThrown={isThrown}
+                    pressButton={pressButton}
+                    answer={isAnswerCorrect}
                   />
-                  <Button
-                    buttonText='Remembered'
-                    buttonType={ButtonType.BUTTON}
-                    onClick={() => pressButton(true)}
-                    isDisabled={isButtonDisabled}
-                  />
-                </ButtonsContainer>
-              </CardContainer>
-            </>
-          )}
+                  <ButtonsContainer>
+                    <Button
+                      buttonText='Forgot'
+                      buttonType={ButtonType.BUTTON_RED}
+                      onClick={() => pressButton(false)}
+                      isDisabled={isButtonDisabled}
+                    />
+                    <Button
+                      buttonText='Remembered'
+                      buttonType={ButtonType.BUTTON}
+                      onClick={() => pressButton(true)}
+                      isDisabled={isButtonDisabled}
+                    />
+                  </ButtonsContainer>
+                </CardContainer>
+              </>
+            )
+            : <Placeholder />}
         </Container>
       )}
     />
@@ -141,6 +143,22 @@ const Container = styled.div`
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 1000px;
   }
+`;
+
+const Placeholder = styled.div`
+  width: 80vh;
+    height: 460px;
+
+    ${mediaBreakpointUp('400px')} {
+        height: 518px;
+    }
+
+    ${mediaBreakpointUp(Breakpoint.TABLET)} {
+        height: 738px;
+    }
+    ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+        width: 1000px;
+    }
 `;
 
 const ProgressBarContainer = styled.div`

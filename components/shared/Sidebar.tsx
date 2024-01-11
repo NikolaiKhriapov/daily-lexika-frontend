@@ -84,4 +84,5 @@ const Icon = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     font-size: 16px;
+  }
 `;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import PageLayout from '../../src/shared/PageLayout';
 import { errorNotification } from '../../src/services/popup-notification';
 import { getAllReviews } from '../../src/services/reviews';
 import { ReviewDTO } from '../../src/utils/types';
@@ -12,7 +11,7 @@ import IndexPageContainer from '../common/complex/IndexPageContainer';
 import Text from '../common/basic/Text';
 import { Size } from '../../src/utils/constants';
 
-export default function Review() {
+export default function ReviewsContent() {
   const [allReviewsDTO, setAllReviewsDTO] = useState<ReviewDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +35,7 @@ export default function Review() {
   }, []);
 
   if (loading) {
-    return <PageLayout><Spinner /></PageLayout>;
+    return <Spinner />;
   }
 
   if (error) {
@@ -45,33 +44,29 @@ export default function Review() {
 
   if (allReviewsDTO.length <= 0) {
     return (
-      <PageLayout>
-        <IndexPageContainer>
-          <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
-          <Text size={Size.LG} isCentered>
-            Add a word pack to create a daily review and start growing your vocabulary
-          </Text>
-        </IndexPageContainer>
-      </PageLayout>
+      <IndexPageContainer>
+        <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
+        <Text size={Size.LG} isCentered>
+          Add a word pack to create a daily review and start growing your vocabulary
+        </Text>
+      </IndexPageContainer>
     );
   }
 
   return (
-    <PageLayout>
-      <ReviewContainer>
-        {allReviewsDTO.map((reviewDTO) => (
-          <ReviewCard
-            key={reviewDTO.id}
-            reviewDTO={reviewDTO}
-            fetchAllReviewsDTO={fetchAllReviewsDTO}
-          />
-        ))}
-      </ReviewContainer>
-    </PageLayout>
+    <Container>
+      {allReviewsDTO.map((reviewDTO) => (
+        <ReviewCard
+          key={reviewDTO.id}
+          reviewDTO={reviewDTO}
+          fetchAllReviewsDTO={fetchAllReviewsDTO}
+        />
+      ))}
+    </Container>
   );
 }
 
-const ReviewContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

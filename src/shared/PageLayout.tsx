@@ -1,26 +1,37 @@
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import Content from 'components/shared/Content';
 import styled from 'styled-components';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Sidebar from 'components/shared/Sidebar';
 import Navbar from 'components/shared/Navbar';
+import Head from 'next/head';
 import { theme } from '../utils/theme';
+import { AppInfo } from '../utils/constants';
 
 type Props = {
-  children: React.ReactNode;
+  title: string;
+  description: string;
+  children: ReactNode;
 };
 
 export default function PageLayout(props: Props) {
-  const { children } = props;
+  const { title, description, children } = props;
 
   const { colorMode } = useColorMode();
 
   return (
-    <Container $colorMode={colorMode}>
-      <Navbar />
-      <Content>{children}</Content>
-      <Sidebar />
-    </Container>
+    <>
+      <Head>
+        <title>{title || AppInfo.NAME}</title>
+        <meta name="description" content={description || AppInfo.DESCRIPTION} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no" />
+      </Head>
+      <Container $colorMode={colorMode}>
+        <Navbar />
+        <Sidebar />
+        <Content>{children}</Content>
+      </Container>
+    </>
   );
 }
 

@@ -5,13 +5,12 @@ import ErrorComponent from '../common/complex/ErrorComponent';
 import Heading from '../common/basic/Heading';
 import Spinner from '../common/basic/Spinner';
 import IndexPageContainer from '../common/complex/IndexPageContainer';
-import PageLayout from '../../src/shared/PageLayout';
 import { Category, WordPackDTO } from '../../src/utils/types';
 import { getAllWordPacks } from '../../src/services/word-packs';
 import { errorNotification } from '../../src/services/popup-notification';
 import { Size } from '../../src/utils/constants';
 
-export default function WordPack() {
+export default function WordPacksContent() {
   const [allWordPacksDTO, setAllWordPacksDTO] = useState<WordPackDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +35,7 @@ export default function WordPack() {
     .filter((wordPackDTO) => wordPackDTO.category === category);
 
   if (loading) {
-    return <PageLayout><Spinner /></PageLayout>;
+    return <Spinner />;
   }
 
   if (error) {
@@ -45,32 +44,28 @@ export default function WordPack() {
 
   if (allWordPacksDTO.length <= 0) {
     return (
-      <PageLayout>
-        <IndexPageContainer>
-          <Heading size={Size.LG} isCentered>No Word Packs available</Heading>
-        </IndexPageContainer>
-      </PageLayout>
+      <IndexPageContainer>
+        <Heading size={Size.LG} isCentered>No Word Packs available</Heading>
+      </IndexPageContainer>
     );
   }
 
   return (
-    <PageLayout>
-      <Container>
-        {wordPackCategories.map((wordPackCategory) => (
-          <Section key={wordPackCategory}>
-            <Heading size={Size.LG}>{Category[wordPackCategory as keyof typeof Category]}</Heading>
-            <WordPacksContainer>
-              {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
-                <WordPackCard
-                  key={wordPackDTO.name}
-                  wordPackDTO={wordPackDTO}
-                />
-              ))}
-            </WordPacksContainer>
-          </Section>
-        ))}
-      </Container>
-    </PageLayout>
+    <Container>
+      {wordPackCategories.map((wordPackCategory) => (
+        <Section key={wordPackCategory}>
+          <Heading size={Size.LG}>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+          <WordPacksContainer>
+            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+              <WordPackCard
+                key={wordPackDTO.name}
+                wordPackDTO={wordPackDTO}
+              />
+            ))}
+          </WordPacksContainer>
+        </Section>
+      ))}
+    </Container>
   );
 }
 
