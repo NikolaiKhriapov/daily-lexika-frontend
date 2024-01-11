@@ -39,6 +39,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   justify-content: space-evenly;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
+  z-index: 1000;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 70px;

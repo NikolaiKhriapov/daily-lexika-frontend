@@ -1,6 +1,6 @@
 {
   "name": "Chinese Learning App",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "/",
   "icons": [
     {

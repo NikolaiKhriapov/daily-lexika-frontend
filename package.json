@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "sudo npm install --omit=dev && next build",
-    "build-dev": "sudo npm install && next build",
+    "build": "npm install --omit=dev && next build",
+    "build-dev": "next build",
     "start": "next start -p 3000",
     "lint": "next lint"
   },
