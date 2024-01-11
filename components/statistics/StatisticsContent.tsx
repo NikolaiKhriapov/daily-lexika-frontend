@@ -8,14 +8,13 @@ import { errorNotification } from '../../src/services/popup-notification';
 import { getStatistics } from '../../src/services/user';
 import StatsReviewCard from '../review/StatsReviewCard';
 import { StatisticsDTO } from '../../src/utils/types';
-import PageLayout from '../../src/shared/PageLayout';
 import ErrorComponent from '../common/complex/ErrorComponent';
 import Spinner from '../common/basic/Spinner';
 import Heading from '../common/basic/Heading';
 import Text from '../common/basic/Text';
 import { Size } from '../../src/utils/constants';
 
-export default function Statistics() {
+export default function StatisticsContent() {
   const [statisticsDTO, setStatisticsDTO] = useState<StatisticsDTO>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +35,7 @@ export default function Statistics() {
   }, []);
 
   if (loading) {
-    return <PageLayout><Spinner /></PageLayout>;
+    return <Spinner />;
   }
 
   if (error) {
@@ -44,42 +43,40 @@ export default function Statistics() {
   }
 
   return (
-    <PageLayout>
-      <StatisticsContainer>
-        <Section>
-          <Heading size={Size.LG}>Daily Streak</Heading>
-          <CardsContainer>
-            <StatsCard title='Current Streak' stat={statisticsDTO?.currentStreak} icon={<BsFire size='45px' />} />
-            <StatsCard title='Record Streak' stat={statisticsDTO?.recordStreak} icon={<ImFire size='45px' />} />
-          </CardsContainer>
-        </Section>
-        <Section>
-          <Heading size={Size.LG}>Vocabulary</Heading>
-          <CardsContainer>
-            <StatsCard title='Words Known' stat={statisticsDTO?.wordsKnown} icon={<GiYinYang size='45px' />} />
-            <StatsCard title='Characters Known' icon={<GiYinYang size='45px' />} />
-            <StatsCard title='Idioms Known' icon={<GiYinYang size='45px' />} />
-          </CardsContainer>
-        </Section>
-        <Section>
-          <Heading size={Size.LG}>Daily Reviews</Heading>
-          <CardsContainer>
-            {statisticsDTO?.listOfReviewStatisticsDTO && statisticsDTO?.listOfReviewStatisticsDTO.length > 0
-              ? (statisticsDTO?.listOfReviewStatisticsDTO.map((reviewStatisticsDTO, index) => (
-                <StatsReviewCard
-                  key={index}
-                  reviewStatisticsDTO={reviewStatisticsDTO}
-                />
-              )))
-              : <Text size={Size.LG}>You do not have any daily reviews</Text>}
-          </CardsContainer>
-        </Section>
-      </StatisticsContainer>
-    </PageLayout>
+    <Container>
+      <Section>
+        <Heading size={Size.LG}>Daily Streak</Heading>
+        <CardsContainer>
+          <StatsCard title="Current Streak" stat={statisticsDTO?.currentStreak} icon={<BsFire size="45px" style={{ width: '45px', height: '45px' }} />} />
+          <StatsCard title="Record Streak" stat={statisticsDTO?.recordStreak} icon={<ImFire size="45px" style={{ width: '45px', height: '45px' }} />} />
+        </CardsContainer>
+      </Section>
+      <Section>
+        <Heading size={Size.LG}>Vocabulary</Heading>
+        <CardsContainer>
+          <StatsCard title="Words Known" stat={statisticsDTO?.wordsKnown} icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+          <StatsCard title="Characters Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+          <StatsCard title="Idioms Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+        </CardsContainer>
+      </Section>
+      <Section>
+        <Heading size={Size.LG}>Daily Reviews</Heading>
+        <CardsContainer>
+          {statisticsDTO?.listOfReviewStatisticsDTO && statisticsDTO?.listOfReviewStatisticsDTO.length > 0
+            ? (statisticsDTO?.listOfReviewStatisticsDTO.map((reviewStatisticsDTO, index) => (
+              <StatsReviewCard
+                key={index}
+                reviewStatisticsDTO={reviewStatisticsDTO}
+              />
+            )))
+            : <Text size={Size.LG}>You do not have any daily reviews</Text>}
+        </CardsContainer>
+      </Section>
+    </Container>
   );
 }
 
-const StatisticsContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

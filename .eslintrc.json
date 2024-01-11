@@ -53,5 +53,5 @@
     "no-trailing-spaces": "off",
     "no-nested-ternary": "off"
   },
-  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js", "jest.config.js"]
+  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js"]
 }

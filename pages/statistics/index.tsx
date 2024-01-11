@@ -1,7 +1,10 @@
-import Statistics from '../../components/statistics/Statistics';
+import StatisticsContent from '@components/statistics/StatisticsContent';
+import PageLayout from '../../src/shared/PageLayout';
 
 export default function StatisticsIndex() {
   return (
-    <Statistics />
+    <PageLayout title="Statistics" description="Statistics">
+      <StatisticsContent />
+    </PageLayout>
   );
 }
