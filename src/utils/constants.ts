@@ -1,6 +1,8 @@
 export enum AppInfo {
   NAME = 'Chinese Learning App',
   DESCRIPTION = 'Chinese Learning App',
+  EMAIL = 'nikolai.khriapov@icloud.com',
+  APP_VERSION = '2024.2.0',
 }
 
 export enum LocalStorage {

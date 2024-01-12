@@ -5,6 +5,7 @@ import React, { ReactNode } from 'react';
 import Sidebar from 'components/shared/Sidebar';
 import Navbar from 'components/shared/Navbar';
 import Head from 'next/head';
+import Footer from '@components/shared/Footer';
 import { theme } from '../utils/theme';
 import { AppInfo } from '../utils/constants';
 
@@ -30,6 +31,7 @@ export default function PageLayout(props: Props) {
         <Navbar />
         <Sidebar />
         <Content>{children}</Content>
+        <Footer email={false} appVersion />
       </Container>
     </>
   );

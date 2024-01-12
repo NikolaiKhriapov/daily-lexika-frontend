@@ -71,6 +71,6 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-content: baseline;
   gap: 40px;
 `;
