@@ -31,6 +31,8 @@ const Container = styled.div`
   }
   
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    min-height: calc(100vh - 70px - 70px);
     margin-left: 210px;
+    margin-bottom: 0;
   }
 `;

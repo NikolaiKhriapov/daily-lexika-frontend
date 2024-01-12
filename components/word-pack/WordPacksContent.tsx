@@ -70,19 +70,19 @@ export default function WordPacksContent() {
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: baseline;
+  gap: 40px;
 `;
 
 const Section = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
 const WordPacksContainer = styled.div`
