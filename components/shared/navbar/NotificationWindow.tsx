@@ -15,6 +15,7 @@ export default function NotificationWindow(props: Props) {
   return (
     <Modal
       size={Size.XXL}
+      width='800px'
       isOpen={selectedNotification}
       onClose={handleCloseNotificationModal}
       header={(
@@ -23,7 +24,7 @@ export default function NotificationWindow(props: Props) {
           <Text size={Size.XS}>{formattedDateTime(selectedNotification.sentAt)}</Text>
         </Container>
       )}
-      body={<Text>{selectedNotification.message}</Text>}
+      body={<Text dangerouslySetInnerHTML={{ __html: selectedNotification.message.replaceAll('\n', '<br/>') }} />}
     />
   );
 }

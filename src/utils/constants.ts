@@ -1,6 +1,6 @@
 export enum AppInfo {
-  NAME = 'Chinese Learning App',
-  DESCRIPTION = 'Chinese Learning App',
+  NAME = 'Daily Lexika',
+  DESCRIPTION = 'Language Learning Application',
   EMAIL = 'nikolai.khriapov@icloud.com',
   APP_VERSION = '2024.2.0',
 }

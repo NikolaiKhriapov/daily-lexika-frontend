@@ -18,15 +18,19 @@ import { Breakpoint, Size } from '../../../src/utils/constants';
 interface Props extends Omit<ModalProps, 'children'> {
   header: React.ReactNode;
   body: React.ReactNode;
+  width?: string;
 }
 
-export default function Modal({ header, body, ...rest }: Props) {
+Modal.defaultProps = {
+  width: '90%',
+};
+export default function Modal({ header, body, width, ...rest }: Props) {
   const { colorMode } = useColorMode();
 
   return (
     <ChakraModal isCentered {...rest} size={Size.XXXL}>
       <ModalOverlay />
-      <ModalContentStyled $colorMode={colorMode}>
+      <ModalContentStyled $colorMode={colorMode} $width={width}>
         <ModalCloseButton />
         <ModalHeaderStyled fontSize={Size.XL}>{header}</ModalHeaderStyled>
         <ModalBodyStyled>{body}</ModalBodyStyled>
@@ -36,15 +40,15 @@ export default function Modal({ header, body, ...rest }: Props) {
   );
 }
 
-const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode }>`
+const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width: string | undefined }>`
   padding: 6px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   min-width: 90%;
+  width: ${({ $width }) => ($width || 'fit-content')} !important;
   max-width: 90% !important;
   max-height: 90vh;
-  width: fit-content !important;
   overflow-y: auto;
   ${hiddenScrollbar};
   

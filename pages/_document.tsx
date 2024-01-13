@@ -8,7 +8,7 @@ export default function MyDocument() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" type="image/svg+xml" href="/icon.jpeg" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
