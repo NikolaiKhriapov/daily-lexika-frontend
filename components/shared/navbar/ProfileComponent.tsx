@@ -47,9 +47,9 @@ export default function ProfileComponent() {
           />
         )}
         <MenuDivider />
-        <MenuItem>
-          <LinkStyled href={`mailto:${AppInfo.EMAIL}`} $colorMode={colorMode}>Contact Us</LinkStyled>
-        </MenuItem>
+        <LinkStyled href={`mailto:${AppInfo.EMAIL}`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
+          <MenuItem>Contact Us</MenuItem>
+        </LinkStyled>
         <MenuDivider />
         <MenuItem onClick={logout}>Log Out</MenuItem>
       </MenuList>
@@ -70,5 +70,4 @@ const AvatarStyled = styled(Avatar)`
 
 const LinkStyled = styled(Link)<{ $colorMode: ColorMode }>`
     color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor} !important;
-    text-decoration: none;
 `;

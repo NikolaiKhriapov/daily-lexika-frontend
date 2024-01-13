@@ -151,7 +151,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 6px;
+  padding-left: 0;
 `;
 
 const NotificationContainer = styled.div`
