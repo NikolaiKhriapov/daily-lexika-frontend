@@ -26,8 +26,7 @@ export enum Breakpoint {
 }
 
 export enum Page {
-  LOGIN = '/',
-  REGISTER = '/register',
+  AUTH = '/',
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',
   STATISTICS = '/statistics',
@@ -74,4 +73,5 @@ export enum ButtonType {
   BUTTON_RED = 'redOnHover',
   SUBMIT = 'submit',
   RESET = 'reset',
+  LINK = 'link',
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
-import { ColorModeScript } from '@chakra-ui/react';
-import { theme } from 'src/utils/theme';
 import { ServerStyleSheet } from 'styled-components';
+import { ColorModeScript } from '@chakra-ui/react';
+import { theme } from '@utils/theme';
 
 export default function MyDocument() {
   return (

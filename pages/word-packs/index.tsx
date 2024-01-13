@@ -1,10 +1,10 @@
-import WordPacksContent from '@components/word-pack/WordPacksContent';
-import PageLayout from '../../src/shared/PageLayout';
+import PageLayout from '@components/shared/layout/PageLayout';
+import WordPacksPageContent from '@components/word-pack/WordPacksPageContent';
 
 export default function WordPacksIndex() {
   return (
     <PageLayout title='Word Packs' description='Word Packs'>
-      <WordPacksContent />
+      <WordPacksPageContent />
     </PageLayout>
   );
 }

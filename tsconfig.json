@@ -10,7 +10,7 @@
     "typeRoots": [
       "./node_modules/@types",
       "./*",
-      "./components/*"
+      "./src/components/*"
     ],
 
     /* Projects */
@@ -48,9 +48,21 @@
       "@public/*": [
         "public/*"
       ],
-      "@components/*": [
-        "components/*"
+      "@API/*": [
+        "src/API/*"
       ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@context/*": [
+        "src/context/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

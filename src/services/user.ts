@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { UserDTO } from '../utils/types';
-import { ApiEndpointsStatistics, ApiEndpointsUsers } from '../API/apiMethods';
-import { LocalStorage } from '../utils/constants';
+import { ApiEndpointsStatistics, ApiEndpointsUsers } from '@API/apiMethods';
+import { LocalStorage } from '@utils/constants';
+import { UserDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
@@ -14,7 +14,6 @@ export const showUserAccount = async () => {
     return await axios.get(ApiEndpointsUsers.showUserAccount(), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -23,7 +22,6 @@ export const updateUserInfo = async (userDTO: UserDTO) => {
     return await axios.patch(ApiEndpointsUsers.updateUserInfo(), userDTO, getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -32,7 +30,6 @@ export const deleteAccount = async () => {
     return await axios.delete(ApiEndpointsUsers.deleteAccount(), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -41,6 +38,5 @@ export const getStatistics = async () => {
     return await axios.get(ApiEndpointsStatistics.getStatistics(), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
