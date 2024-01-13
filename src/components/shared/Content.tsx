@@ -1,0 +1,38 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Breakpoint } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function Content(props: Props) {
+  const { children } = props;
+
+  return (
+    <Container>
+      {children}
+    </Container>
+  );
+}
+
+const Container = styled.div`
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    padding: 50px;
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }
+  
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    min-height: calc(100vh - 70px - 70px);
+    margin-left: 210px;
+    margin-bottom: 0;
+  }
+`;

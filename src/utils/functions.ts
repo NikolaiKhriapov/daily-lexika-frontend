@@ -1,6 +1,6 @@
 import { ColorMode } from '@chakra-ui/react';
-import { Breakpoint } from './constants';
-import { theme } from './theme';
+import { Breakpoint } from '@utils/constants';
+import { theme } from '@utils/theme';
 
 export const mediaBreakpointUp: (breakpoint: Breakpoint | string) => string = (breakpoint) =>
   `@media (min-width: ${breakpoint})`;

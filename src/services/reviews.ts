@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ApiEndpointsReviews } from '../API/apiMethods';
-import { ReviewDTO } from '../utils/types';
-import { LocalStorage } from '../utils/constants';
+import { ApiEndpointsReviews } from '@API/apiMethods';
+import { LocalStorage } from '@utils/constants';
+import { ReviewDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
@@ -14,7 +14,6 @@ export const getAllReviews = async () => {
     return await axios.get(ApiEndpointsReviews.getAllReviews(), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -23,7 +22,6 @@ export const getReview = async (reviewId: number) => {
     return await axios.get(ApiEndpointsReviews.getReview(reviewId), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -32,7 +30,6 @@ export const createReview = async (reviewDTO: ReviewDTO) => {
     return await axios.post(ApiEndpointsReviews.createReview(), reviewDTO, getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -41,7 +38,6 @@ export const refreshReview = async (reviewId: number) => {
     return await axios.patch(ApiEndpointsReviews.refreshReview(reviewId), '', getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -50,7 +46,6 @@ export const removeReview = async (reviewId: number) => {
     return await axios.delete(ApiEndpointsReviews.removeReview(reviewId), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
 
@@ -59,6 +54,5 @@ export const processReviewAction = async (reviewId: number, answer: boolean | nu
     return await axios.get(ApiEndpointsReviews.processReviewAction(reviewId, answer), getAuthConfig());
   } catch (error) {
     console.error(error);
-    throw error;
   }
 };
