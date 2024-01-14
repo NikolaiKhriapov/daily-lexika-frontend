@@ -34,7 +34,7 @@ export default function WordPackCard(props: Props) {
   const fetchWordPackDTO = (wordPackName: string) => {
     setButtonDisabled(true);
     getWordPack(wordPackName)
-      .then((response) => setUpdatedWordPackDTO(response?.data.data.wordPackDTO))
+      .then((response) => setUpdatedWordPackDTO(response.data.data.wordPackDTO))
       .catch((error) => console.error(error.code, error.response.data.message))
       .finally(() => setButtonDisabled(false));
   };

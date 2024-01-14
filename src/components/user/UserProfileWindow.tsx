@@ -18,13 +18,12 @@ type Props = {
   isOpen: boolean;
   onClose: any;
   userDTO: UserDTO;
-  updateUserAndName: any;
 };
 
 export default function UserProfileWindow(props: Props) {
-  const { isOpen, onClose, userDTO, updateUserAndName } = props;
+  const { isOpen, onClose, userDTO } = props;
 
-  const { logout } = useContext(AuthContext);
+  const { setUser, logout } = useContext(AuthContext);
   const cancelRef: RefObject<HTMLButtonElement> = useRef(null);
   const {
     isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton,
@@ -64,7 +63,7 @@ export default function UserProfileWindow(props: Props) {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
         const updatedUserDTO = { ...userDTO, name: userUpdatedInfoDTO.name };
-        updateUserAndName(updatedUserDTO);
+        setUser(updatedUserDTO);
         onClose();
       },
       inputElement: <TextInput label='Name' name='name' type='text' placeholder='Name' />,

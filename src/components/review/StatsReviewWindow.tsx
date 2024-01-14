@@ -29,7 +29,7 @@ export default function StatsReviewWindow(props: Props) {
 
   const fetchWordPackDTO = (wordPackName: string) => {
     getWordPack(wordPackName)
-      .then((response) => setWordPackDTO(response?.data.data.wordPackDTO))
+      .then((response) => setWordPackDTO(response.data.data.wordPackDTO))
       .catch((e) => console.error(e.code, e.response.data.message));
   };
 

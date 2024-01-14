@@ -49,7 +49,7 @@ export default function StartReviewWindow(props: Props) {
     }
     processReviewAction(reviewId, answer)
       .then((response) => {
-        if (response?.data.data != null) {
+        if (response.data.data != null) {
           setReviewWordDTO(response.data.data.reviewWordDTO);
           setReviewUpdatedSize(response.data.data.reviewUpdatedSize);
         } else {
