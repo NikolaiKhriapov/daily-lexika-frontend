@@ -21,7 +21,7 @@ export default function StatisticsPageContent() {
   const fetchStatisticsDTO = () => {
     setLoading(true);
     getStatistics()
-      .then((response) => setStatisticsDTO(response?.data.data.statisticsDTO))
+      .then((response) => setStatisticsDTO(response.data.data.statisticsDTO))
       .catch((e) => {
         setError((e.response.data.message));
         console.error(e.code, e.response.data.message);

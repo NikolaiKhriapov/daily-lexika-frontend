@@ -2,15 +2,17 @@ import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { login as performLogin } from '@services/authorization';
+import { errorNotification } from '@services/popup-notification';
 import { LocalStorage, Page } from '@utils/constants';
-import { AuthenticatedUser, AuthenticationRequest, CustomJwtPayload } from '@utils/types';
+import { AuthenticationRequest, CustomJwtPayload, UserDTO } from '@utils/types';
 
 type Props = {
-  user: AuthenticatedUser | null;
+  user: UserDTO | null;
   login: (authenticationRequest: AuthenticationRequest) => Promise<void>;
   logout: () => void;
   isUserAuthenticated: () => boolean;
   setUserFromToken: () => void;
+  setUser: (user: UserDTO) => void;
 };
 
 const AuthContext = createContext<Props>({
@@ -22,17 +24,23 @@ const AuthContext = createContext<Props>({
   isUserAuthenticated: () => false,
   setUserFromToken: () => {
   },
+  setUser: () => {
+  },
 });
 
 function AuthProvider({ children }: { children: any }) {
   const router = useRouter();
-  const [user, setUser] = useState<AuthenticatedUser | null>(null);
+  const [user, setUser] = useState<UserDTO | null>(null);
 
   const setUserFromToken = () => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
     if (token) {
-      const jwtToken: CustomJwtPayload = jwtDecode(token);
-      setUser({ username: jwtToken.sub!, name: jwtToken.name, role: jwtToken.role });
+      try {
+        const jwtToken: CustomJwtPayload = jwtDecode(token);
+        setUser({ ...user, email: jwtToken.sub!, name: jwtToken.name, role: jwtToken.role });
+      } catch (error) {
+        console.error('Error decoding JWT token');
+      }
     }
     if (!token && window.location.pathname !== Page.AUTH) {
       router.push(Page.AUTH);
@@ -47,13 +55,16 @@ function AuthProvider({ children }: { children: any }) {
     new Promise((resolve, reject) => {
       performLogin(authenticationRequest)
         .then((response) => {
-          let jwtToken = response?.data.data.authenticationResponse.token;
+          let jwtToken = response.data.data.authenticationResponse.token;
           localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtToken);
           jwtToken = jwtDecode(jwtToken);
-          setUser({ username: jwtToken.sub, name: jwtToken.name, role: jwtToken.role });
+          setUser({ ...user, email: jwtToken.sub, name: jwtToken.name, role: jwtToken.role });
           resolve();
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          errorNotification(error.code, error.response.data.message);
+          reject(error);
+        });
     });
 
   const logout = () => {
@@ -76,7 +87,7 @@ function AuthProvider({ children }: { children: any }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isUserAuthenticated, setUserFromToken }}>
+    <AuthContext.Provider value={{ user, login, logout, isUserAuthenticated, setUserFromToken, setUser }}>
       {children}
     </AuthContext.Provider>
   );

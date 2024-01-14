@@ -17,7 +17,7 @@ export default function WordPacksPageContent() {
   const fetchAllWordPacksDTO = () => {
     setLoading(true);
     getAllWordPacks()
-      .then((response) => setAllWordPacksDTO(response?.data.data.allWordPacksDTO))
+      .then((response) => setAllWordPacksDTO(response.data.data.allWordPacksDTO))
       .catch((e) => {
         setError((e.response.data.message));
         console.error(e.code, e.response.data.message);
@@ -29,7 +29,7 @@ export default function WordPacksPageContent() {
     fetchAllWordPacksDTO();
   }, []);
 
-  const wordPackCategories = Array.from(new Set(allWordPacksDTO.map((wordPackDTO) => wordPackDTO.category)));
+  const wordPackCategories = Array.from(new Set(allWordPacksDTO?.map((wordPackDTO) => wordPackDTO.category)));
   const wordPacksDTOByCategory = (category: Category) => allWordPacksDTO
     .filter((wordPackDTO) => wordPackDTO.category === category);
 
@@ -41,7 +41,7 @@ export default function WordPacksPageContent() {
     return <ErrorComponent />;
   }
 
-  if (allWordPacksDTO.length <= 0) {
+  if (allWordPacksDTO?.length <= 0) {
     return (
       <IndexPageContainer>
         <Heading size={Size.LG} isCentered>No Word Packs available</Heading>

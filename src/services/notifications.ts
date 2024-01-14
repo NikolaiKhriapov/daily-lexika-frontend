@@ -13,6 +13,7 @@ export const getAllNotifications = async () => {
     return await axios.get(ApiEndpointsNotifications.getAllNotifications(), getAuthConfig());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -21,5 +22,6 @@ export const readNotification = async (notificationId: number) => {
     return await axios.patch(ApiEndpointsNotifications.readNotification(notificationId), '', getAuthConfig());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

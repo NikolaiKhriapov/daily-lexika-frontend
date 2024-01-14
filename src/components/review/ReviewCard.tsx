@@ -40,7 +40,7 @@ export default function ReviewCard(props: Props) {
 
   const fetchReviewDTO = (reviewId: number) => {
     getReview(reviewId)
-      .then((response) => setUpdatedReviewDTO(response?.data.data.reviewDTO))
+      .then((response) => setUpdatedReviewDTO(response.data.data.reviewDTO))
       .catch((error) => console.error(error.code, error.response.data.message));
   };
 

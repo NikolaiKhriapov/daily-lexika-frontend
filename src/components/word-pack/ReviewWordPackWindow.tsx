@@ -35,7 +35,7 @@ export default function ReviewWordPackWindow(props: Props) {
     setWordInfoLoading(true);
     getAllWordsForWordPack(wordPackDTO.name, page, pageSize)
       .then((response) => {
-        const data: WordDTO[] = response?.data.data.allWordsForWordPackDTO;
+        const data: WordDTO[] = response.data.data.allWordsForWordPackDTO;
         setVisibleWords((prevData) => {
           if (page === 0) {
             return data;

@@ -19,7 +19,7 @@ export default function ReviewsPageContent() {
     setLoading(true);
     getAllReviews()
       .then((response) => {
-        const data: ReviewDTO[] = response?.data.data.allReviewsDTO;
+        const data: ReviewDTO[] = response.data.data.allReviewsDTO;
         setAllReviewsDTO(data.sort((a, b) => a.wordPackName.localeCompare(b.wordPackName)));
       })
       .catch((e) => {

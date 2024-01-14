@@ -13,6 +13,7 @@ export const getAllWordPacks = async () => {
     return await axios.get(ApiEndpointsWordPacks.getAllWordPacks(), getAuthConfig());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -21,6 +22,7 @@ export const getWordPack = async (wordPackName: string) => {
     return await axios.get(ApiEndpointsWordPacks.getWordPack(wordPackName), getAuthConfig());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -29,5 +31,6 @@ export const getAllWordsForWordPack = async (wordPackName: string, page: number,
     return await axios.get(ApiEndpointsWordPacks.getAllWordsForWordPack(wordPackName, page, size), getAuthConfig());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

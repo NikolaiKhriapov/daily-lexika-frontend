@@ -43,7 +43,7 @@ export default function AuthPageContent() {
           setSubmitting(true);
           login({ ...values, platform: selectedPlatform! })
             .then(() => router.push(Page.REVIEWS))
-            .catch((error: any) => console.error(error.code, error.response.data.message))
+            .catch((error) => console.error(error.code, error.response.data.message))
             .finally(() => setSubmitting(false));
         },
       },
@@ -70,7 +70,7 @@ export default function AuthPageContent() {
           register({ ...values, platform: selectedPlatform })
             .then((response) => {
               successNotification('User registered', `${values.name} was successfully registered`);
-              global.localStorage.setItem(LocalStorage.ACCESS_TOKEN, response?.data.data.authenticationResponse.token);
+              global.localStorage.setItem(LocalStorage.ACCESS_TOKEN, response.data.data.authenticationResponse.token);
               setUserFromToken();
               router.push(Page.REVIEWS);
             })

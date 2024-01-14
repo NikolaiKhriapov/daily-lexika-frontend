@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { getAllNotifications, readNotification } from '@services/notifications';
+import { NotificationsContext } from '@context/NotificationsContext';
+import { readNotification } from '@services/notifications';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -18,22 +19,9 @@ import NotificationWindow from '@components/shared/navbar/NotificationWindow';
 
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
+  const { allNotificationsDTO, setAllNotificationsDTO } = useContext(NotificationsContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [allNotificationsDTO, setAllNotificationsDTO] = useState<NotificationDTO[]>([]);
   const [selectedNotification, setSelectedNotification] = useState<NotificationDTO | null>(null);
-
-  const fetchAllNotificationsDTO = () => {
-    getAllNotifications()
-      .then((response) => {
-        const data: NotificationDTO[] = response?.data.data.allNotificationsDTO;
-        setAllNotificationsDTO(data.sort((a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()));
-      })
-      .catch((error) => console.error(error.code, error.response.data.message));
-  };
-
-  useEffect(() => {
-    fetchAllNotificationsDTO();
-  }, []);
 
   const handleNotificationClick = (notificationDTO: NotificationDTO) => {
     readNotification(notificationDTO.notificationId);

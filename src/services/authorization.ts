@@ -7,6 +7,7 @@ export const register = async (registrationRequest: RegistrationRequest) => {
     return await axios.post(ApiEndpointsAuthorization.register, registrationRequest);
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
@@ -15,5 +16,6 @@ export const login = async (authenticationRequest: AuthenticationRequest) => {
     return await axios.post(ApiEndpointsAuthorization.login, authenticationRequest);
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

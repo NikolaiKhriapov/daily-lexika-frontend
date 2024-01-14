@@ -3,7 +3,7 @@ import { AuthFormType } from '@utils/constants';
 
 type Props = {
   authFormType: AuthFormType;
-  setAuthFormType: Dispatch<SetStateAction<AuthFormType>>,
+  setAuthFormType: Dispatch<SetStateAction<AuthFormType>>;
 };
 
 const AuthPageContext = React.createContext<Props>({
