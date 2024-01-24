@@ -17,7 +17,7 @@ export default function WordPacksPageContent() {
   const fetchAllWordPacksDTO = () => {
     setLoading(true);
     getAllWordPacks()
-      .then((response) => setAllWordPacksDTO(response.data.data.allWordPacksDTO))
+      .then((response) => setAllWordPacksDTO(response.data))
       .catch((e) => {
         setError((e.response.data.message));
         console.error(e.code, e.response.data.message);

@@ -18,13 +18,12 @@ export const ApiEndpointsReviews = {
   getReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
   createReview: () => `${URL_REVIEWS}`,
   refreshReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
-  removeReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
+  deleteReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
   processReviewAction: (reviewId: number, answer: boolean | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
 };
 
 const URL_USERS = `${BASE_URL}/user`;
 export const ApiEndpointsUsers = {
-  showUserAccount: () => `${URL_USERS}/account`,
   updateUserInfo: () => `${URL_USERS}/account/info`,
   deleteAccount: () => `${URL_USERS}/account`,
 };

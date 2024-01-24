@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ApiEndpointsAuthorization } from '@API/apiMethods';
-import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
+import { AuthenticationRequest, AuthenticationResponse, RegistrationRequest } from '@utils/types';
 
-export const register = async (registrationRequest: RegistrationRequest) => {
+export const register = async (registrationRequest: RegistrationRequest): Promise<AxiosResponse<AuthenticationResponse>> => {
   try {
     return await axios.post(ApiEndpointsAuthorization.register, registrationRequest);
   } catch (error) {
@@ -11,7 +11,7 @@ export const register = async (registrationRequest: RegistrationRequest) => {
   }
 };
 
-export const login = async (authenticationRequest: AuthenticationRequest) => {
+export const login = async (authenticationRequest: AuthenticationRequest): Promise<AxiosResponse<AuthenticationResponse>> => {
   try {
     return await axios.post(ApiEndpointsAuthorization.login, authenticationRequest);
   } catch (error) {

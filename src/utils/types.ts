@@ -14,13 +14,11 @@ export interface AuthenticationRequest {
   platform: Platform;
 }
 
-export interface CustomJwtPayload extends JwtPayload {
-  name: string;
-  role: RoleName;
+export interface AuthenticationResponse {
+  token: string;
 }
 
-export interface AuthenticatedUser {
-  username: string;
+export interface CustomJwtPayload extends JwtPayload {
   name: string;
   role: RoleName;
 }
@@ -102,7 +100,6 @@ export interface ReviewStatisticsDTO {
   wordsNew: number;
   wordsInReview: number;
   wordsKnown: number;
-  wordsTotal: number;
 }
 
 export enum Status {

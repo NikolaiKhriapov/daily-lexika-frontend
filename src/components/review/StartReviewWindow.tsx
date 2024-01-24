@@ -49,9 +49,9 @@ export default function StartReviewWindow(props: Props) {
     }
     processReviewAction(reviewId, answer)
       .then((response) => {
-        if (response.data.data != null) {
-          setReviewWordDTO(response.data.data.reviewWordDTO);
-          setReviewUpdatedSize(response.data.data.reviewUpdatedSize);
+        if (response.data != null) {
+          setReviewWordDTO(response.data.reviewWordDTO);
+          setReviewUpdatedSize(response.data.reviewUpdatedSize);
         } else {
           setFormVisible(false);
           setReviewComplete(true);
