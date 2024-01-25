@@ -1,21 +1,53 @@
 import React from 'react';
-import { Head, Html, Main, NextScript } from 'next/document';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
+import { ColorModeScript } from '@chakra-ui/react';
+import { theme } from '@utils/theme';
 
 export default function MyDocument() {
   return (
-    <Html>
+    <Html lang="en">
       <Head>
-        <link rel="icon" type="image/svg+xml" href="/icon.jpeg" />
-        {/* <link rel="manifest" href="/site.webmanifest" /> */}
-        {/* <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" /> */}
+        <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* <meta name="google" content="notranslate" /> */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="theme-color" content={theme.colors.dark.background} />
+        <meta name="format-detection" content="telephone=no" />
       </Head>
       <body>
+        <ColorModeScript initialColorMode={theme.initialColorMode} />
         <Main />
         <NextScript />
       </body>
     </Html>
   );
 }
+
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const sheet = new ServerStyleSheet();
+  const originalRenderPage = ctx.renderPage;
+
+  try {
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) =>
+          sheet.collectStyles(<App {...props} />),
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          {sheet.getStyleElement()}
+        </>
+      ),
+    };
+  } finally {
+    sheet.seal();
+  }
+};

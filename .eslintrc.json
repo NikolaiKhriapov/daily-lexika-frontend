@@ -51,7 +51,45 @@
     "import/no-extraneous-dependencies": "off",
     "react/jsx-props-no-spreading": "off",
     "no-trailing-spaces": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "consistent-return": "off"
   },
-  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js", "jest.config.js"]
+  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js"],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              [
+                "^react",
+                "^next",
+                "^axios",
+                "^styled-components",
+                "^jwt-decode",
+                "^formik",
+                "^yup",
+                "^(@chakra-ui)(/.*|$)",
+                "^(@public)(/.*|$)",
+                "^(@context)(/.*|$)",
+                "^(@API)(/.*|$)",
+                "^(@services)(/.*|$)",
+                "^(@utils)(/.*|$)",
+                "^(@pages)(/.*|$)",
+                "^(@components)(/.*|$)",
+                "^@?\\w"
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

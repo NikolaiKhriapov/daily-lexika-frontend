@@ -1,4 +1,4 @@
-import { createStandaloneToast, AlertStatus } from '@chakra-ui/react';
+import { AlertStatus, createStandaloneToast } from '@chakra-ui/react';
 
 const { toast } = createStandaloneToast();
 
@@ -25,5 +25,6 @@ export const successNotification = (title: string, description: string) => {
 };
 
 export const errorNotification = (title: string, description: string) => {
-  popupNotification(title, description, 'error', 'red');
+  // popupNotification(title, description, 'error', 'red');
+  popupNotification(description, '', 'error', 'red');
 };

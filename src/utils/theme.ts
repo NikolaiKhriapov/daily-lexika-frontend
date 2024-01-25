@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { Breakpoint } from './constants';
+import { Breakpoint } from '@utils/constants';
 
 const customColors = {
   light: {
@@ -58,6 +58,7 @@ const theme = extendTheme({
   fontSizes: {},
   breakpoints: customBreakpoints,
   stylesToDelete,
+  initialColorMode: 'system',
 });
 
 export { theme };

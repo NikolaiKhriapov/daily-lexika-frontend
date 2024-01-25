@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { UserDTO } from '../utils/types';
-import { ApiEndpointsStatistics, ApiEndpointsUsers } from '../API/apiMethods';
-import { LocalStorage } from '../utils/constants';
+import { ApiEndpointsStatistics, ApiEndpointsUsers } from '@API/apiMethods';
+import { LocalStorage } from '@utils/constants';
+import { UserDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {

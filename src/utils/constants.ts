@@ -1,3 +1,10 @@
+export enum AppInfo {
+  NAME = 'Daily Lexika',
+  DESCRIPTION = 'Language Learning Application',
+  EMAIL = 'nikolai.khriapov@icloud.com',
+  APP_VERSION = '2024.2.0',
+}
+
 export enum LocalStorage {
   ACCESS_TOKEN = 'access-token',
   COLOR_MODE = 'chakra-ui-color-mode',
@@ -19,21 +26,20 @@ export enum Breakpoint {
 }
 
 export enum Page {
-  REGISTER = '/register',
-  LOGIN = '/',
+  AUTH = '/',
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',
   STATISTICS = '/statistics',
 }
 
 export enum Platform {
-  CHINESE = 'CHINESE',
   ENGLISH = 'ENGLISH',
+  CHINESE = 'CHINESE',
 }
 
 export enum AuthFormType {
-  REGISTER = 'register',
   LOGIN = 'login',
+  REGISTER = 'register',
 }
 
 export enum Size {
@@ -67,4 +73,5 @@ export enum ButtonType {
   BUTTON_RED = 'redOnHover',
   SUBMIT = 'submit',
   RESET = 'reset',
+  LINK = 'link',
 }

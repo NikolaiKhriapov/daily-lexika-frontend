@@ -1,7 +1,10 @@
-import Review from '../../components/review/Review';
+import ReviewsPageContent from '@components/review/ReviewsPageContent';
+import PageLayout from '@components/shared/layout/PageLayout';
 
 export default function ReviewsIndex() {
   return (
-    <Review />
+    <PageLayout title='Reviews' description='Reviews'>
+      <ReviewsPageContent />
+    </PageLayout>
   );
 }

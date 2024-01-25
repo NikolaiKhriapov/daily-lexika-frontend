@@ -1,0 +1,20 @@
+{
+  "name": "Daily Lexika",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "background_color": "white",
+  "theme_color": "white"
+}

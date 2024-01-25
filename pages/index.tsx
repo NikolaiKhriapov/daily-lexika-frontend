@@ -1,15 +1,15 @@
 import React from 'react';
-import AuthPage from '../components/auth/AuthPage';
-import { AuthFormType, Page } from '../src/utils/constants';
+import AuthPageProvider from '@context/AuthPageContext';
+import { AppInfo } from '@utils/constants';
+import AuthPageContent from '@components/auth/AuthPageContent';
+import AuthPageLayout from '@components/shared/layout/AuthPageLayout';
 
 export default function HomePage() {
   return (
-    <AuthPage
-      data={{
-        heading: 'Sign in to your account',
-        link: { href: Page.REGISTER, text: 'Don\'t have an account? Register now' },
-        authForm: { formType: AuthFormType.LOGIN, onSuccess: null },
-      }}
-    />
+    <AuthPageProvider>
+      <AuthPageLayout title={AppInfo.NAME} description={AppInfo.DESCRIPTION}>
+        <AuthPageContent />
+      </AuthPageLayout>
+    </AuthPageProvider>
   );
 }

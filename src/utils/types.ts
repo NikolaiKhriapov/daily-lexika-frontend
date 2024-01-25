@@ -1,4 +1,5 @@
-import { Platform, RoleName } from './constants';
+import { JwtPayload } from 'jwt-decode';
+import { Platform, RoleName } from '@utils/constants';
 
 export interface RegistrationRequest {
   name: string;
@@ -13,8 +14,14 @@ export interface AuthenticationRequest {
   platform: Platform;
 }
 
+export interface CustomJwtPayload extends JwtPayload {
+  name: string;
+  role: RoleName;
+}
+
 export interface AuthenticatedUser {
   username: string;
+  name: string;
   role: RoleName;
 }
 
@@ -24,10 +31,15 @@ export interface UserDTO {
   email?: string;
   password?: string;
   role?: string;
-  roles?: string[];
-  currentStreak?: number;
-  dateOfLastStreak?: string;
-  recordStreak?: number;
+  roleStatistics?: RoleStatisticsDTO[];
+}
+
+export interface RoleStatisticsDTO {
+  id: number;
+  roleName: string;
+  currentStreak: number;
+  dateOfLastStreak: string;
+  recordStreak: number;
 }
 
 export interface NotificationDTO {
@@ -64,7 +76,6 @@ export interface WordDTO {
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfChineseCharacterId: number[];
   listOfWordPackNames: string[];
 }
 

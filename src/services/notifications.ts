@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ApiEndpointsNotifications } from '../API/apiMethods';
-import { LocalStorage } from '../utils/constants';
+import { ApiEndpointsNotifications } from '@API/apiMethods';
+import { LocalStorage } from '@utils/constants';
 
 const getAuthConfig = () => ({
   headers: {

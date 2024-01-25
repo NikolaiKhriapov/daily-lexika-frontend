@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ApiEndpointsReviews } from '../API/apiMethods';
-import { ReviewDTO } from '../utils/types';
-import { LocalStorage } from '../utils/constants';
+import { ApiEndpointsReviews } from '@API/apiMethods';
+import { LocalStorage } from '@utils/constants';
+import { ReviewDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
