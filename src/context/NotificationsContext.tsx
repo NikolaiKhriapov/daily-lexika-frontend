@@ -21,10 +21,10 @@ function NotificationsProvider({ children }: { children: any }) {
   const fetchAllNotificationsDTO = () => {
     getAllNotifications()
       .then((response) => {
-        const data: NotificationDTO[] = response.data.data.allNotificationsDTO;
+        const { data } = response;
         setAllNotificationsDTO(data.sort((a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()));
       })
-      .catch((error) => console.error(error.code, error.response?.data.message));
+      .catch((error) => console.error(error.code, error.response.data.message));
   };
 
   useEffect(() => {

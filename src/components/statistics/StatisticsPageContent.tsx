@@ -3,7 +3,7 @@ import { BsFire } from 'react-icons/bs';
 import { GiYinYang } from 'react-icons/gi';
 import { ImFire } from 'react-icons/im';
 import styled from 'styled-components';
-import { getStatistics } from '@services/user';
+import { getStatistics } from '@services/statistics';
 import { Size } from '@utils/constants';
 import { StatisticsDTO } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
@@ -21,7 +21,7 @@ export default function StatisticsPageContent() {
   const fetchStatisticsDTO = () => {
     setLoading(true);
     getStatistics()
-      .then((response) => setStatisticsDTO(response.data.data.statisticsDTO))
+      .then((response) => setStatisticsDTO(response.data))
       .catch((e) => {
         setError((e.response.data.message));
         console.error(e.code, e.response.data.message);

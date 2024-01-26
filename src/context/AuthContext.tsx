@@ -55,9 +55,9 @@ function AuthProvider({ children }: { children: any }) {
     new Promise((resolve, reject) => {
       performLogin(authenticationRequest)
         .then((response) => {
-          let jwtToken = response.data.data.authenticationResponse.token;
-          localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtToken);
-          jwtToken = jwtDecode(jwtToken);
+          const jwtTokenString = response.data.token;
+          localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtTokenString);
+          const jwtToken: CustomJwtPayload = jwtDecode(jwtTokenString);
           setUser({ ...user, email: jwtToken.sub, name: jwtToken.name, role: jwtToken.role });
           resolve();
         })

@@ -19,9 +19,11 @@ export default function StatsReviewCard(props: Props) {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const wordsTotal = reviewStatisticsDTO.wordsNew + reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown;
+
   const wordsPercentage = {
-    inReview: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsInReview / reviewStatisticsDTO.wordsTotal) * 100),
-    known: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsKnown / reviewStatisticsDTO.wordsTotal) * 100),
+    inReview: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsInReview / wordsTotal) * 100),
+    known: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsKnown / wordsTotal) * 100),
   };
 
   return (
@@ -35,6 +37,7 @@ export default function StatsReviewCard(props: Props) {
             onClose={onClose}
             reviewStatisticsDTO={reviewStatisticsDTO}
             wordsPercentage={wordsPercentage}
+            wordsTotal={wordsTotal}
           />
         )}
       </WordPackNameAndInfoButton>
@@ -44,7 +47,7 @@ export default function StatsReviewCard(props: Props) {
           <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
         </Percentage>
         <Text fontWeight={FontWeight.SEMIBOLD}>
-          {`${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
+          {`${reviewStatisticsDTO.wordsKnown}/${wordsTotal}`}
         </Text>
       </Stats>
       <ProgressBar value={wordsPercentage.known || 0} />
