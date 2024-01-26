@@ -32,8 +32,8 @@ export default function ReviewCard(props: Props) {
   const [reviewRemoved, setReviewRemoved] = useState(false);
   const [reviewRefreshed, setReviewRefreshed] = useState(false);
   const [reload, setReload] = useState<boolean>(false);
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const isDateLastCompletedToday = () =>
     new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getDate();
