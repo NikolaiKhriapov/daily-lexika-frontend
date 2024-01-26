@@ -36,11 +36,11 @@ export default function ReviewCard(props: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   const isDateLastCompletedToday = () =>
-    new Date(updatedReviewDTO.dateLastCompleted!).getTime() === new Date().getTime() - new Date().getTimezoneOffset() * 60000;
+    new Date(updatedReviewDTO.dateLastCompleted!).getTime() === new Date().getTime();
 
   const fetchReviewDTO = (reviewId: number) => {
     console.log(new Date(updatedReviewDTO.dateLastCompleted!).getTime());
-    console.log(new Date().getTime() - new Date().getTimezoneOffset() * 60000);
+    console.log(new Date().getTime());
     getReview(reviewId)
       .then((response) => setUpdatedReviewDTO(response.data))
       .catch((error) => console.error(error.code, error.response.data.message));
