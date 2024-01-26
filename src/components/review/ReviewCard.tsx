@@ -39,6 +39,8 @@ export default function ReviewCard(props: Props) {
     new Date(updatedReviewDTO.dateLastCompleted!).getTime() === new Date().getTime() - new Date().getTimezoneOffset() * 60000;
 
   const fetchReviewDTO = (reviewId: number) => {
+    console.log(new Date(updatedReviewDTO.dateLastCompleted!).getTime());
+    console.log(new Date().getTime() - new Date().getTimezoneOffset() * 60000);
     getReview(reviewId)
       .then((response) => setUpdatedReviewDTO(response.data))
       .catch((error) => console.error(error.code, error.response.data.message));
