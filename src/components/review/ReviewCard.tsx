@@ -39,9 +39,6 @@ export default function ReviewCard(props: Props) {
     new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getUTCDate();
 
   const fetchReviewDTO = (reviewId: number) => {
-    console.log(new Date(updatedReviewDTO.dateLastCompleted!).getUTCDate());
-    console.log(new Date().getUTCDate());
-
     getReview(reviewId)
       .then((response) => setUpdatedReviewDTO(response.data))
       .catch((error) => console.error(error.code, error.response.data.message));
