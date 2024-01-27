@@ -17,7 +17,11 @@ export default function WordPacksPageContent() {
   const fetchAllWordPacksDTO = () => {
     setLoading(true);
     getAllWordPacks()
-      .then((response) => setAllWordPacksDTO(response.data.data.allWordPacksDTO))
+      .then((response) => {
+        const allWordPacksDTO = response.data;
+        const notEmptyWordPacksDTO = allWordPacksDTO.filter((wordPackDTO) => wordPackDTO.totalWords > 0);
+        setAllWordPacksDTO(notEmptyWordPacksDTO);
+      })
       .catch((e) => {
         setError((e.response.data.message));
         console.error(e.code, e.response.data.message);

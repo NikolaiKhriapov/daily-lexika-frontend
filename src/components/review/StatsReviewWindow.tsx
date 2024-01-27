@@ -18,10 +18,11 @@ type Props = {
   onClose: () => void;
   reviewStatisticsDTO: ReviewStatisticsDTO;
   wordsPercentage: { inReview: number, known: number };
+  wordsTotal: number;
 };
 
 export default function StatsReviewWindow(props: Props) {
-  const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage } = props;
+  const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage, wordsTotal } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
@@ -29,7 +30,7 @@ export default function StatsReviewWindow(props: Props) {
 
   const fetchWordPackDTO = (wordPackName: string) => {
     getWordPack(wordPackName)
-      .then((response) => setWordPackDTO(response.data.data.wordPackDTO))
+      .then((response) => setWordPackDTO(response.data))
       .catch((e) => console.error(e.code, e.response.data.message));
   };
 
@@ -67,7 +68,7 @@ export default function StatsReviewWindow(props: Props) {
                 </Text>
               </Percentage>
               <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
-                {`${reviewStatisticsDTO.wordsKnown}/${reviewStatisticsDTO.wordsTotal}`}
+                {`${reviewStatisticsDTO.wordsKnown}/${wordsTotal}`}
               </Text>
             </StatsRow>
             <ProgressBar value={wordsPercentage.known} />

@@ -37,19 +37,9 @@ export default function NotificationsComponent() {
   const handleCloseNotificationModal = () => setSelectedNotification(null);
 
   const formattedDate = (dateString: string) => {
+    const [year, month, day] = dateString as unknown as number[];
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const formattedDateTime = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(year, month - 1, day).toLocaleDateString(undefined, options);
   };
 
   const unreadNotifications = allNotificationsDTO
@@ -109,7 +99,7 @@ export default function NotificationsComponent() {
             )}
             {selectedNotification && (
               <NotificationWindow
-                formattedDateTime={formattedDateTime}
+                formattedDate={formattedDate}
                 handleCloseNotificationModal={handleCloseNotificationModal}
                 selectedNotification={selectedNotification}
               />

@@ -60,12 +60,14 @@ const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width:
 
 const ModalHeaderStyled = styled(ModalHeader)`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: baseline;
   margin-right: 30px;
   padding: 8px 12px !important;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    flex-direction: row;
     padding: 16px 24px !important;
   }
 `;

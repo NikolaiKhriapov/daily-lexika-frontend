@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
-import { getReview, refreshReview, removeReview } from '@services/reviews';
+import { getReview, refreshReview, deleteReview } from '@services/reviews';
 import { ButtonType, FontWeight, RoleName, Size } from '@utils/constants';
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -32,15 +32,15 @@ export default function ReviewCard(props: Props) {
   const [reviewRemoved, setReviewRemoved] = useState(false);
   const [reviewRefreshed, setReviewRefreshed] = useState(false);
   const [reload, setReload] = useState<boolean>(false);
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const isDateLastCompletedToday = () =>
-    new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getDate();
+    new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getUTCDate();
 
   const fetchReviewDTO = (reviewId: number) => {
     getReview(reviewId)
-      .then((response) => setUpdatedReviewDTO(response.data.data.reviewDTO))
+      .then((response) => setUpdatedReviewDTO(response.data))
       .catch((error) => console.error(error.code, error.response.data.message));
   };
 
@@ -66,7 +66,7 @@ export default function ReviewCard(props: Props) {
   const handleRemoveReview = () => {
     setButtonDisabled(true);
     setReviewRemoved(true);
-    removeReview(reviewDTO.id!)
+    deleteReview(reviewDTO.id!)
       .then(() => {
         successNotification('Review removed successfully', `${reviewDTO.wordPackName} removed successfully`);
         fetchAllReviewsDTO();
