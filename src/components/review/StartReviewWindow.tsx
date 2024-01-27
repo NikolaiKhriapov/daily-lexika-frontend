@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { successNotification } from '@services/popup-notification';
 import { processReviewAction } from '@services/reviews';
-import { Breakpoint, ButtonType } from '@utils/constants';
+import { Breakpoint, ButtonType, RoleName } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { Status, WordDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -11,6 +11,7 @@ import ProgressBar from '@components/common/basic/ProgressBar';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import Modal from '@components/common/complex/Modal';
 import ReviewWordCard from '@components/review/ReviewWordCard';
+import { AuthContext } from '@context/AuthContext';
 
 type Props = {
   reviewId: number;
@@ -23,6 +24,7 @@ type Props = {
 export default function StartReviewWindow(props: Props) {
   const { reviewId, isOpen, onClose, totalReviewWords, setReload } = props;
 
+  const { user } = useContext(AuthContext);
   const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
   const [reviewUpdatedSize, setReviewUpdatedSize] = useState<number>(0);
   const [isFormVisible, setFormVisible] = useState(true);
@@ -37,13 +39,13 @@ export default function StartReviewWindow(props: Props) {
     if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
       || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
       successNotification(
-        `${reviewWordDTO.nameChineseSimplified} is a known word.`,
+        `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
         'This word will still be shown occasionally during reviews',
       );
     }
     if (answer === false && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
       successNotification(
-        `Keep reviewing ${reviewWordDTO.nameChineseSimplified}`,
+        `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
         'This word will be shown more frequently so that you can relearn it',
       );
     }
@@ -78,6 +80,15 @@ export default function StartReviewWindow(props: Props) {
     setFlipped(false);
     setThrown(true);
     setAnswerCorrect(answer);
+  };
+
+  const getReviewWordName = (reviewWord: WordDTO): string => {
+    const map: Record<RoleName, string> = {
+      [RoleName.USER_ENGLISH]: reviewWord.nameEnglish,
+      [RoleName.USER_CHINESE]: reviewWord.nameChineseSimplified,
+      [RoleName.ADMIN]: '',
+    };
+    return map[user?.role!];
   };
 
   const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
