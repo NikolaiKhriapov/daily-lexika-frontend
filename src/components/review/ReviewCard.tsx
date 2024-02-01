@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
-import { getReview, refreshReview, deleteReview } from '@services/reviews';
+import { deleteReview, getReview, refreshReview } from '@services/reviews';
 import { ButtonType, FontWeight, RoleName, Size } from '@utils/constants';
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';

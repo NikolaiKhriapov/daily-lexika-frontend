@@ -1,15 +1,15 @@
 import React from 'react';
-import AuthPageProvider from '@context/AuthPageContext';
-import { AppInfo } from '@utils/constants';
-import AuthPageContent from '@components/auth/AuthPageContent';
-import AuthPageLayout from '@components/shared/layout/AuthPageLayout';
+import FloatingChatProvider from '@context/FloatingChatContext';
+import { LandingInfo } from '@utils/constantsLanding';
+import LandingPageContent from '@components/landing/content/LandingPageContent';
+import LandingLayout from '@components/landing/LandingLayout';
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
-    <AuthPageProvider>
-      <AuthPageLayout title={AppInfo.NAME} description={AppInfo.DESCRIPTION}>
-        <AuthPageContent />
-      </AuthPageLayout>
-    </AuthPageProvider>
+    <FloatingChatProvider>
+      <LandingLayout title={LandingInfo.TITLE} description={LandingInfo.DESCRIPTION}>
+        <LandingPageContent />
+      </LandingLayout>
+    </FloatingChatProvider>
   );
 }

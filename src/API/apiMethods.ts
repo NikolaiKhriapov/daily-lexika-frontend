@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_URL as string + "/api/v1";
+const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
 
 const URL_AUTH = `${BASE_URL}/auth`;
 export const ApiEndpointsAuthorization = {

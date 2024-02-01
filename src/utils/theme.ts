@@ -32,6 +32,8 @@ const customColors = {
     progressCircularColor: '#E4E8EE',
     alert: '#EF4444',
   },
+  telegramBlue: 'rgb(73,150,214)',
+  whatsAppGreen: 'rgb(100,205,110)',
 };
 
 const customBreakpoints = {

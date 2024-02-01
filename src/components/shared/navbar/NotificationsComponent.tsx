@@ -145,8 +145,10 @@ const NotificationContainer = styled.div`
 const MenuItemStyled = styled(MenuItem)`
   display: flex;
   flex-direction: column;
+  width: fit-content !important;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: 100% !important;
     flex-direction: row;
     justify-content: space-between;
   }

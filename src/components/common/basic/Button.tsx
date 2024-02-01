@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button as ChakraButton, ButtonProps, ColorMode, useColorMode } from '@chakra-ui/react';
-import { ButtonType, FontWeight } from '@utils/constants';
+import { Breakpoint, ButtonType, FontWeight } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 interface Props extends ButtonProps {
@@ -49,14 +50,24 @@ export default function Button({ buttonType, buttonText, ...rest }: Props) {
 }
 
 const ChakraButtonStyled = styled(ChakraButton)<{ $colorMode: ColorMode }>`
-  color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
-  
-  &.standard:hover {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
+  &.standard {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor} !important;
   }
 
-  &.redOnHover:hover {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor};
+  &.redOnHover {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor} !important;
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
+
+    &.standard:hover {
+      background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
+    }
+
+    &.redOnHover:hover {
+      background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor};
+    }
   }
 `;

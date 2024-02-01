@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@context/AuthContext';
 import { getAllNotifications } from '@services/notifications';
 import { NotificationDTO } from '@utils/types';
@@ -8,7 +8,7 @@ type Props = {
   setAllNotificationsDTO: Dispatch<SetStateAction<NotificationDTO[]>>;
 };
 
-const NotificationsContext = React.createContext<Props>({
+const NotificationsContext = createContext<Props>({
   allNotificationsDTO: [],
   setAllNotificationsDTO: () => {
   },
