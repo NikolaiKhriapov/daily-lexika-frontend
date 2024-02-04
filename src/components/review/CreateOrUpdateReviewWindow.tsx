@@ -17,15 +17,16 @@ type Props = {
   wordPackDTO: WordPackDTO;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   isButtonDisabled: boolean;
+  reviewDTO?: ReviewDTO;
 };
 
-export default function CreateReviewWindow(props: Props) {
-  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled } = props;
+export default function CreateOrUpdateReviewWindow(props: Props) {
+  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO } = props;
 
   const initialValues = {
-    maxNewWordsPerDay: 5,
-    maxReviewWordsPerDay: 20,
-    wordPackName: `${wordPackDTO.name}`,
+    maxNewWordsPerDay: reviewDTO ? reviewDTO.maxNewWordsPerDay : 5,
+    maxReviewWordsPerDay: reviewDTO ? reviewDTO.maxReviewWordsPerDay : 20,
+    wordPackDTO: wordPackDTO,
   };
 
   const validationSchema = Yup.object({

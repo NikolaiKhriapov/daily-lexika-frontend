@@ -13,7 +13,7 @@ import InfoButton from '@components/common/basic/InfoButton';
 import Text from '@components/common/basic/Text';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import SignAdded from '@components/common/complex/SignAdded';
-import CreateReviewWindow from '@components/review/CreateReviewWindow';
+import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewWindow';
 import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
 
 type Props = {
@@ -79,7 +79,7 @@ export default function WordPackCard(props: Props) {
                 size={Size.SM}
                 onClick={onOpenCreateButton}
               />
-              <CreateReviewWindow
+              <CreateOrUpdateReviewWindow
                 isOpen={isOpenCreateButton}
                 onClose={onCloseCreateButton}
                 wordPackDTO={wordPackDTO}

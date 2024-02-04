@@ -56,7 +56,7 @@ export interface ReviewDTO {
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
-  wordPackName: string;
+  wordPackDTO: WordPackDTO;
   listOfWordDTO?: WordDTO[];
   dateLastCompleted?: string;
   dateGenerated?: string;

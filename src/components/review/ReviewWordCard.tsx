@@ -136,16 +136,17 @@ export default function ReviewWordCard(props: Props) {
           )}
         </DetailsButtonContainer>
       )}
-      <ContentsContainer>
-        <Text size={isFlipped ? wordData[userRole]?.transcription.size : wordData[userRole]?.nameWord.size}>
-          {isFlipped ? wordData[userRole]?.transcription.text : wordData[userRole]?.nameWord.text}
-        </Text>
-        {isFlipped && (
-          <Text size={wordData[userRole]?.nameTranslation.size}>
-            {wordData[userRole]?.nameTranslation.text}
-          </Text>
-        )}
-      </ContentsContainer>
+      {!isFlipped && (
+        <ContentsContainer>
+          <Text size={wordData[userRole]?.nameWord.size}>{wordData[userRole]?.nameWord.text}</Text>
+        </ContentsContainer>
+      )}
+      {isFlipped && (
+        <ContentsContainer>
+          <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
+          <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
+        </ContentsContainer>
+      )}
     </Container>
   );
 }
