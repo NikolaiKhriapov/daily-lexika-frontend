@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { processReviewAction } from '@services/reviews';
 import { Breakpoint, ButtonType, RoleName } from '@utils/constants';
@@ -11,7 +12,6 @@ import ProgressBar from '@components/common/basic/ProgressBar';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import Modal from '@components/common/complex/Modal';
 import ReviewWordCard from '@components/review/ReviewWordCard';
-import { AuthContext } from '@context/AuthContext';
 
 type Props = {
   reviewId: number;
@@ -88,7 +88,7 @@ export default function StartReviewWindow(props: Props) {
       [RoleName.USER_CHINESE]: reviewWord.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
-    return map[user?.role!];
+    return map[user!.role!];
   };
 
   const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
@@ -155,18 +155,18 @@ const Container = styled.div`
 
 const Placeholder = styled.div`
   width: 80vh;
-    height: 460px;
+  height: 460px;
 
-    ${mediaBreakpointUp('400px')} {
-        height: 518px;
-    }
+  ${mediaBreakpointUp('400px')} {
+    height: 518px;
+  }
 
-    ${mediaBreakpointUp(Breakpoint.TABLET)} {
-        height: 738px;
-    }
-    ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-        width: 1000px;
-    }
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    height: 738px;
+  }
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 1000px;
+  }
 `;
 
 const ProgressBarContainer = styled.div`

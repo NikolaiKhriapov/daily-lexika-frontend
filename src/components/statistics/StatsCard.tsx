@@ -9,15 +9,17 @@ type Props = {
   icon: any;
   stat?: number;
   title: string;
+  isClickable?: boolean;
+  onOpen?: any;
 };
 
 export default function StatsCard(props: Props) {
-  const { icon, stat, title } = props;
+  const { icon, stat, title, isClickable = false, onOpen } = props;
 
   const { colorMode } = useColorMode();
 
   return (
-    <Container $colorMode={colorMode}>
+    <Container $colorMode={colorMode} $isClickable={isClickable} onClick={onOpen}>
       <Icon>{icon}</Icon>
       <Stats>
         <Text size={Size.XXL}>{stat}</Text>
@@ -29,9 +31,11 @@ export default function StatsCard(props: Props) {
 
 StatsCard.defaultProps = {
   stat: '–––',
+  isClickable: false,
+  onOpen: null,
 };
 
-const Container = styled.div<{ $colorMode: ColorMode }>`
+const Container = styled.div<{ $colorMode: ColorMode; $isClickable: boolean }>`
   width: 220px;
   height: 100px;
   padding: 15px;
@@ -44,6 +48,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
+  cursor: ${({ $isClickable }) => $isClickable && 'pointer'};
 `;
 
 const Icon = styled.div`

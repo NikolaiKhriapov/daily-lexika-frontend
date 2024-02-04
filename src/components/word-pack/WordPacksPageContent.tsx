@@ -18,8 +18,8 @@ export default function WordPacksPageContent() {
     setLoading(true);
     getAllWordPacks()
       .then((response) => {
-        const allWordPacksDTO = response.data;
-        const notEmptyWordPacksDTO = allWordPacksDTO.filter((wordPackDTO) => wordPackDTO.totalWords > 0);
+        const { data } = response;
+        const notEmptyWordPacksDTO = data.filter((wordPackDTO) => wordPackDTO.totalWords > 0);
         setAllWordPacksDTO(notEmptyWordPacksDTO);
       })
       .catch((e) => {
@@ -57,7 +57,7 @@ export default function WordPacksPageContent() {
     <Container>
       {wordPackCategories.map((wordPackCategory) => (
         <Section key={wordPackCategory}>
-          <Heading size={Size.LG}>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
           <WordPacksContainer>
             {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
               <WordPackCard

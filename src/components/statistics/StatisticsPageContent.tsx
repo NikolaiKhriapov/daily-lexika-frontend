@@ -1,22 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BsFire } from 'react-icons/bs';
 import { GiYinYang } from 'react-icons/gi';
 import { ImFire } from 'react-icons/im';
 import styled from 'styled-components';
+import { useDisclosure } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { getStatistics } from '@services/statistics';
-import { Size } from '@utils/constants';
+import { RoleName, Size } from '@utils/constants';
 import { StatisticsDTO } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
-import StatsCard from '@components/review/StatsCard';
-import StatsReviewCard from '@components/review/StatsReviewCard';
+import StatsCard from '@components/statistics/StatsCard';
+import StatsReviewCard from '@components/statistics/StatsReviewCard';
+import StatsWordsWindow from '@components/statistics/StatsWordsWindow';
 
 export default function StatisticsPageContent() {
+  const { user } = useContext(AuthContext);
   const [statisticsDTO, setStatisticsDTO] = useState<StatisticsDTO>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { isOpen: isOpenStatsWords, onOpen: onOpenStatsWords, onClose: onCloseStatsWords } = useDisclosure();
 
   const fetchStatisticsDTO = () => {
     setLoading(true);
@@ -53,8 +58,11 @@ export default function StatisticsPageContent() {
       <Section>
         <Heading size={Size.LG}>Vocabulary</Heading>
         <CardsContainer>
-          <StatsCard title="Words Known" stat={statisticsDTO?.wordsKnown} icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
-          <StatsCard title="Characters Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+          <StatsCard title="Words Known" stat={statisticsDTO?.wordsKnown} icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} isClickable onOpen={onOpenStatsWords} />
+          {isOpenStatsWords && (<StatsWordsWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
+          {user?.role === RoleName.USER_CHINESE && (
+            <StatsCard title="Characters Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+          )}
           <StatsCard title="Idioms Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
         </CardsContainer>
       </Section>

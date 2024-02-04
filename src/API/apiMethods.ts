@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_URL as string + "/api/v1";
+import { Status } from '@utils/types';
+
+const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
 
 const URL_AUTH = `${BASE_URL}/auth`;
 export const ApiEndpointsAuthorization = {
@@ -38,4 +40,10 @@ export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
+};
+
+const URL_WORDS = `${BASE_URL}/flashcards/words`;
+export const ApiEndpointsWords = {
+  getWord: (wordId: number) => `${URL_WORDS}/${wordId}`,
+  getAllWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
 };

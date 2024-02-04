@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
-import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { ColorMode, useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
-import { Breakpoint, RoleName, Size } from '@utils/constants';
+import { Breakpoint, ButtonType, RoleName, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Status, WordDTO } from '@utils/types';
-import StatusBadge from '@components/common/basic/StatusBadge';
+import Button from '@components/common/basic/Button';
 import Text from '@components/common/basic/Text';
+import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
   reviewWordDTO: WordDTO;
@@ -24,6 +26,7 @@ export default function ReviewWordCard(props: Props) {
 
   const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
+  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
@@ -49,30 +52,37 @@ export default function ReviewWordCard(props: Props) {
     },
   });
 
-  const wordDataCh = {
-    pinyin: {
-      text: reviewWordDTO.pinyin,
-      size: { base: Size.XL, md: Size.XXL, xl: Size.XXXL },
+  const userRole = user!.role!;
+  const wordData = {
+    [RoleName.USER_ENGLISH]: {
+      transcription: {
+        text: reviewWordDTO.transcription,
+        size: { base: Size.SM, md: Size.XL, xl: Size.XL },
+      },
+      nameWord: {
+        text: reviewWordDTO.nameEnglish,
+        size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
+      },
+      nameTranslation: {
+        text: reviewWordDTO.nameRussian,
+        size: { base: Size.LG, md: Size.XXL, xl: Size.XXL },
+      },
     },
-    nameChineseSimplified: {
-      text: reviewWordDTO.nameChineseSimplified,
-      size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+    [RoleName.USER_CHINESE]: {
+      transcription: {
+        text: reviewWordDTO.transcription,
+        size: { base: Size.XL, md: Size.XXL, xl: Size.XXXL },
+      },
+      nameWord: {
+        text: reviewWordDTO.nameChineseSimplified,
+        size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+      },
+      nameTranslation: {
+        text: reviewWordDTO.nameEnglish,
+        size: { base: Size.MD, md: Size.XL, xl: Size.XL },
+      },
     },
-    nameEnglish: {
-      text: reviewWordDTO.nameEnglish,
-      size: { base: Size.MD, md: Size.XL, xl: Size.XL },
-    },
-  };
-
-  const wordDataEn = {
-    nameEnglish: {
-      text: reviewWordDTO.nameEnglish,
-      size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
-    },
-    nameRussian: {
-      text: reviewWordDTO.nameRussian,
-      size: { base: Size.LG, md: Size.XXL, xl: Size.XXL },
-    },
+    [RoleName.ADMIN]: null,
   };
 
   const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
@@ -96,6 +106,11 @@ export default function ReviewWordCard(props: Props) {
      ${isThrown ? 'transform 0.6s' : ''}`,
   };
 
+  const onClickDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenDetails();
+  };
+
   return (
     <Container
       style={dynamicStyles}
@@ -104,26 +119,33 @@ export default function ReviewWordCard(props: Props) {
       {...swipeHandlers}
       onClick={() => setFlipped(!isFlipped)}
     >
-      {isNewStatus && <StatusBadge text={reviewWordDTO.status} colorScheme="red" isInTopRight />}
-      {user?.role === RoleName.USER_CHINESE && (
-        <ContentsContainer>
-          <Text size={isFlipped ? wordDataCh.pinyin.size : wordDataCh.nameChineseSimplified.size}>
-            {isFlipped ? wordDataCh.pinyin.text : wordDataCh.nameChineseSimplified.text}
-          </Text>
-          {isFlipped && (
-            <Text size={wordDataCh.nameEnglish.size}>
-              {wordDataCh.nameEnglish.text}
-            </Text>
+      {userRole === RoleName.USER_ENGLISH && (
+        <DetailsButtonContainer>
+          <Button
+            size={{ base: Size.SM, md: Size.MD }}
+            buttonType={ButtonType.BUTTON}
+            buttonText={<InfoOutlineIcon />}
+            onClick={onClickDetails}
+          />
+          {isOpenDetails && (
+            <WordDetailedInfo
+              isOpen={isOpenDetails}
+              onClose={onCloseDetails}
+              wordId={reviewWordDTO.id}
+            />
           )}
-        </ContentsContainer>
+        </DetailsButtonContainer>
       )}
-      {user?.role === RoleName.USER_ENGLISH && (
-        <ContentsContainer>
-          <Text size={isFlipped ? wordDataEn.nameRussian.size : wordDataEn.nameEnglish.size}>
-            {isFlipped ? wordDataEn.nameRussian.text : wordDataEn.nameEnglish.text}
+      <ContentsContainer>
+        <Text size={isFlipped ? wordData[userRole]?.transcription.size : wordData[userRole]?.nameWord.size}>
+          {isFlipped ? wordData[userRole]?.transcription.text : wordData[userRole]?.nameWord.text}
+        </Text>
+        {isFlipped && (
+          <Text size={wordData[userRole]?.nameTranslation.size}>
+            {wordData[userRole]?.nameTranslation.text}
           </Text>
-        </ContentsContainer>
-      )}
+        )}
+      </ContentsContainer>
     </Container>
   );
 }
@@ -152,6 +174,12 @@ const Container = styled.div<{ $colorMode: ColorMode, $isNewStatus: boolean }>`
     width: 400px;
     height: calc(400px * 1.3);
   }
+`;
+
+const DetailsButtonContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 const ContentsContainer = styled.div`

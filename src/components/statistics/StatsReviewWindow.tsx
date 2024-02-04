@@ -6,7 +6,7 @@ import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO, WordPackDTO } from '@utils/types';
-import InfoButton from '@components/common/basic/InfoButton';
+import ArrowRightButton from '@components/common/basic/ArrowRightButton';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import ProgressCircular from '@components/common/basic/ProgressCircular';
 import Text from '@components/common/basic/Text';
@@ -49,7 +49,7 @@ export default function StatsReviewWindow(props: Props) {
           <PackProgress $colorMode={colorMode}>
             <WordPackNameAndInfoButton>
               <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Pack Progress</Text>
-              <InfoButton onClick={onOpenDrawer} />
+              <ArrowRightButton onClick={onOpenDrawer} />
               {isOpenDrawer && (
                 <ReviewWordPackWindow
                   isOpen={isOpenDrawer}

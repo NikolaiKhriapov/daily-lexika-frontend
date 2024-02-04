@@ -4,10 +4,9 @@ import { FontWeight, Size } from '@utils/constants';
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO } from '@utils/types';
-import InfoButton from '@components/common/basic/InfoButton';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import Text from '@components/common/basic/Text';
-import StatsReviewWindow from '@components/review/StatsReviewWindow';
+import StatsReviewWindow from '@components/statistics/StatsReviewWindow';
 
 type Props = {
   reviewStatisticsDTO: ReviewStatisticsDTO;
@@ -27,31 +26,32 @@ export default function StatsReviewCard(props: Props) {
   };
 
   return (
-    <Container $colorMode={colorMode} shadow='2xl'>
-      <WordPackNameAndInfoButton>
-        <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{reviewStatisticsDTO.wordPackName}</Text>
-        <InfoButton onClick={onOpen} />
-        {isOpen && (
-          <StatsReviewWindow
-            isOpen={isOpen}
-            onClose={onClose}
-            reviewStatisticsDTO={reviewStatisticsDTO}
-            wordsPercentage={wordsPercentage}
-            wordsTotal={wordsTotal}
-          />
-        )}
-      </WordPackNameAndInfoButton>
-      <Stats>
-        <Percentage>
-          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{`${wordsPercentage.known}%`}</Text>
-          <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
-        </Percentage>
-        <Text fontWeight={FontWeight.SEMIBOLD}>
-          {`${reviewStatisticsDTO.wordsKnown}/${wordsTotal}`}
-        </Text>
-      </Stats>
-      <ProgressBar value={wordsPercentage.known || 0} />
-    </Container>
+    <>
+      <Container $colorMode={colorMode} shadow='2xl' onClick={onOpen}>
+        <WordPackNameAndInfoButton>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{reviewStatisticsDTO.wordPackName}</Text>
+        </WordPackNameAndInfoButton>
+        <Stats>
+          <Percentage>
+            <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{`${wordsPercentage.known}%`}</Text>
+            <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
+          </Percentage>
+          <Text fontWeight={FontWeight.SEMIBOLD}>
+            {`${reviewStatisticsDTO.wordsKnown}/${wordsTotal}`}
+          </Text>
+        </Stats>
+        <ProgressBar value={wordsPercentage.known || 0} />
+      </Container>
+      {isOpen && (
+        <StatsReviewWindow
+          isOpen={isOpen}
+          onClose={onClose}
+          reviewStatisticsDTO={reviewStatisticsDTO}
+          wordsPercentage={wordsPercentage}
+          wordsTotal={wordsTotal}
+        />
+      )}
+    </>
   );
 }
 
@@ -64,6 +64,7 @@ const Container = styled(Stat)<{ $colorMode: ColorMode }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
+  cursor: pointer;
 `;
 
 const WordPackNameAndInfoButton = styled.div`

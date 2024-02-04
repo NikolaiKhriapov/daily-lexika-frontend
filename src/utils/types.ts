@@ -65,16 +65,17 @@ export interface ReviewDTO {
 export interface WordDTO {
   id: number;
   nameChineseSimplified: string;
-  nameChineseTraditional: string;
-  pinyin: string;
+  transcription: string;
   nameEnglish: string;
   nameRussian: string;
+  definition: string;
+  examples: string[];
+  listOfWordPackNames: string[];
   status: Status;
   currentStreak: number;
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfWordPackNames: string[];
 }
 
 export interface WordPackDTO {
