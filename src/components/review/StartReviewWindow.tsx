@@ -31,11 +31,10 @@ export default function StartReviewWindow(props: Props) {
   const [isReviewComplete, setReviewComplete] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const [isAnswerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const fetchReviewAction = (answer: boolean | null) => {
-    setButtonDisabled(true);
+    setLoading(true);
     if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
       || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
       successNotification(
@@ -59,7 +58,7 @@ export default function StartReviewWindow(props: Props) {
           setReviewComplete(true);
         }
         setReload(true);
-        setButtonDisabled(false);
+        setLoading(false);
         setThrown(false);
       })
       .catch((error) => console.error(error.code, error.response.data.message));
@@ -79,7 +78,6 @@ export default function StartReviewWindow(props: Props) {
     fetchReviewAction(answer);
     setFlipped(false);
     setThrown(true);
-    setAnswerCorrect(answer);
   };
 
   const getReviewWordName = (reviewWord: WordDTO): string => {
@@ -114,20 +112,20 @@ export default function StartReviewWindow(props: Props) {
                     setFlipped={setFlipped}
                     isThrown={isThrown}
                     pressButton={pressButton}
-                    answer={isAnswerCorrect}
+                    isLoading={isLoading}
                   />
                   <ButtonsContainer>
                     <Button
                       buttonText='Forgot'
                       buttonType={ButtonType.BUTTON_RED}
                       onClick={() => pressButton(false)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                     <Button
                       buttonText='Remembered'
                       buttonType={ButtonType.BUTTON}
                       onClick={() => pressButton(true)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                   </ButtonsContainer>
                 </CardContainer>

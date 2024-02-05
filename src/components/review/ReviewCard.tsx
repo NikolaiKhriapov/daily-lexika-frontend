@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { successNotification } from '@services/popup-notification';
-import { getReview, refreshReview, deleteReview } from '@services/reviews';
-import { ButtonType, FontWeight, RoleName, Size } from '@utils/constants';
-import { borderStyles } from '@utils/functions';
+import { deleteReview, getReview, refreshReview } from '@services/reviews';
+import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -13,8 +11,9 @@ import CompletedIcon from '@components/common/basic/CompletedIcon';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
-import StartReviewWindow from '@components/review/StartReviewWindow';
+import Card from '@components/common/complex/Card';
 import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewWindow';
+import StartReviewWindow from '@components/review/StartReviewWindow';
 
 type Props = {
   reviewDTO: ReviewDTO;
@@ -24,7 +23,6 @@ type Props = {
 export default function ReviewCard(props: Props) {
   const { reviewDTO, fetchAllReviewsDTO } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
@@ -91,14 +89,13 @@ export default function ReviewCard(props: Props) {
   const totalNewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
   const totalInReviewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
 
-  const dynamicStyles = {
-    transform: `${isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)'}`,
-    transition: 'transform 0.3s',
-  };
-
   const onClickStartOrRefreshButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    !isDateLastCompletedToday() ? onOpenStartButton() : requestRefreshReview(reviewDTO.id!);
+    if (!isDateLastCompletedToday()) {
+      onOpenStartButton();
+    } else {
+      requestRefreshReview(reviewDTO.id!);
+    }
   };
   const onClickChangeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -110,8 +107,15 @@ export default function ReviewCard(props: Props) {
   };
 
   return (
-    <Container style={dynamicStyles} $colorMode={colorMode} onClick={() => setFlipped(!isFlipped)}>
-      {!isFlipped && (
+    <Card
+      height='280px'
+      width='215px'
+      padding='0 25px'
+      borderColor=''
+      bgColor={theme.colors[colorMode].bgColor}
+      isFlipped={isFlipped}
+      setFlipped={setFlipped}
+      face={(
         <ContentsContainer>
           <CompletedIconContainer>
             {isDateLastCompletedToday() && <CompletedIcon />}
@@ -119,7 +123,7 @@ export default function ReviewCard(props: Props) {
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{reviewDTO.wordPackDTO.name}</Text>
           </WordPackNameContainer>
-          <WordsCountContainer $height={user?.role === RoleName.USER_CHINESE ? '140px' : '105px'}>
+          <WordsCountContainer>
             <WordsContainer>
               <Text size={Size.XXL}>{totalNewWords}</Text>
               <Text size={Size.SM}>{' New Words'}</Text>
@@ -149,7 +153,7 @@ export default function ReviewCard(props: Props) {
           </ButtonsContainer>
         </ContentsContainer>
       )}
-      {isFlipped && (
+      back={(
         <ContentsContainer>
           <DescriptionContainer>
             <Text isCentered>{reviewDTO.wordPackDTO.description}</Text>
@@ -192,22 +196,9 @@ export default function ReviewCard(props: Props) {
           </ButtonsContainer>
         </ContentsContainer>
       )}
-    </Container>
+    />
   );
 }
-
-const Container = styled.div<{ $colorMode: ColorMode }>`
-  height: 280px;
-  width: calc(280px / 1.3);
-  padding: 0 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
-  border-radius: ${theme.stylesToDelete.borderRadius};
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
-  cursor: pointer;
-`;
 
 const ContentsContainer = styled.div`
   display: flex;
@@ -218,7 +209,7 @@ const ContentsContainer = styled.div`
 
 const CompletedIconContainer = styled.div`
   display: flex;
-  height: 16px;
+  height: 15px;
   margin-top: -10px;
   margin-bottom: 10px;
   margin-left: -10px;
@@ -229,7 +220,7 @@ const WordPackNameContainer = styled.div`
   justify-content: center;
 `;
 
-const WordsCountContainer = styled.div<{ $height: string }>`
+const WordsCountContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

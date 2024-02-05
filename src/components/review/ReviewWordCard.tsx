@@ -2,27 +2,27 @@ import React, { useContext, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { ColorMode, useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
-import { Breakpoint, ButtonType, RoleName, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { ButtonType, RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Status, WordDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import Text from '@components/common/basic/Text';
+import Card from '@components/common/complex/Card';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
   reviewWordDTO: WordDTO;
   isFlipped: boolean;
-  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  setFlipped: any;
   isThrown: boolean;
   pressButton: any;
-  answer: boolean | null;
+  isLoading: boolean;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWordDTO, isFlipped, setFlipped, isThrown, pressButton, answer } = props;
+  const { reviewWordDTO, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
 
   const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
@@ -31,13 +31,21 @@ export default function ReviewWordCard(props: Props) {
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
 
-  const swipeDistance = useBreakpointValue({ base: 150, md: 400, xl: 700 });
+  const swipeDistance = 150;
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (eventData) => {
       if (eventData.absX > swipeDistance!) pressButton(false);
+      if (!isLoading) {
+        setDeltaX(0);
+        setDeltaY(0);
+      }
     },
     onSwipedRight: (eventData) => {
       if (eventData.absX > swipeDistance!) pressButton(true);
+      if (!isLoading) {
+        setDeltaX(0);
+        setDeltaY(0);
+      }
     },
     delta: 1,
     onSwipeStart: () => setFollowingSwipe(true),
@@ -87,7 +95,6 @@ export default function ReviewWordCard(props: Props) {
 
   const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
 
-  const isThrownDistance = useBreakpointValue({ base: '350px', md: '550px', xl: '700px' });
   const dynamicStyles = {
     transform: `${isFollowingSwipe
       ? isFlipped
@@ -96,10 +103,8 @@ export default function ReviewWordCard(props: Props) {
       : isFlipped
         ? `rotateY(180deg) scaleX(-1)`
         : `rotateY(0deg)`
-    } ${isThrown 
-      ? answer
-        ? `rotateY(0deg) translateX(${isThrownDistance}) translateY(0px)`
-        : `rotateY(0deg) translateX(-${isThrownDistance}) translateY(0px)`
+    } ${isThrown
+      ? `rotateY(90deg)`
       : ''
     }`,
     transition: `${isFollowingSwipe ? 'transform 0s' : 'transform 0.3s'}
@@ -112,69 +117,51 @@ export default function ReviewWordCard(props: Props) {
   };
 
   return (
-    <Container
-      style={dynamicStyles}
-      $colorMode={colorMode}
-      $isNewStatus={isNewStatus}
-      {...swipeHandlers}
-      onClick={() => setFlipped(!isFlipped)}
-    >
-      {userRole === RoleName.USER_ENGLISH && (
-        <DetailsButtonContainer>
-          <Button
-            size={{ base: Size.SM, md: Size.MD }}
-            buttonType={ButtonType.BUTTON}
-            buttonText={<InfoOutlineIcon />}
-            onClick={onClickDetails}
-          />
-          {isOpenDetails && (
-            <WordDetailedInfo
-              isOpen={isOpenDetails}
-              onClose={onCloseDetails}
-              wordId={reviewWordDTO.id}
-            />
-          )}
-        </DetailsButtonContainer>
-      )}
-      {!isFlipped && (
-        <ContentsContainer>
-          <Text size={wordData[userRole]?.nameWord.size}>{wordData[userRole]?.nameWord.text}</Text>
-        </ContentsContainer>
-      )}
-      {isFlipped && (
-        <ContentsContainer>
-          <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
-          <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
-        </ContentsContainer>
-      )}
-    </Container>
+    <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
+      <Card
+        height={{ base: '312px', md: '370px', lg: '520px' }}
+        width={{ base: '240px', md: '290px', lg: '400px' }}
+        padding='10px'
+        borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
+        bgColor={theme.colors[colorMode].reviewWordCardBgColor}
+        isFlipped={isFlipped}
+        setFlipped={setFlipped}
+        face={(
+          <ContentsContainer>
+            <Text size={wordData[userRole]?.nameWord.size}>{wordData[userRole]?.nameWord.text}</Text>
+          </ContentsContainer>
+        )}
+        back={(
+          <>
+            {userRole === RoleName.USER_ENGLISH && (
+              <DetailsButtonContainer>
+                <Button
+                  size={{ base: Size.SM, md: Size.MD }}
+                  buttonType={ButtonType.BUTTON}
+                  buttonText={<InfoOutlineIcon />}
+                  onClick={onClickDetails}
+                />
+                {isOpenDetails && (
+                  <WordDetailedInfo
+                    isOpen={isOpenDetails}
+                    onClose={onCloseDetails}
+                    wordId={reviewWordDTO.id}
+                  />
+                )}
+              </DetailsButtonContainer>
+            )}
+            <ContentsContainer>
+              <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
+              <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
+            </ContentsContainer>
+          </>
+        )}
+      />
+    </SwipeableContainer>
   );
 }
 
-const Container = styled.div<{ $colorMode: ColorMode, $isNewStatus: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 240px;
-  height: calc(240px * 1.3);
-  padding: 10px;
-
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].reviewWordCardBgColor};
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
-  border-radius: ${theme.stylesToDelete.borderRadius};
-  border-color: ${({ $colorMode, $isNewStatus }) => ($isNewStatus
-          && theme.colors[$colorMode].reviewWordCardBadgeRedColor
-  )};
-
-  ${mediaBreakpointUp('400px')} {
-    height: 370px;
-    width: calc(375px / 1.3);
-  }
-
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    width: 400px;
-    height: calc(400px * 1.3);
-  }
+const SwipeableContainer = styled.div`
 `;
 
 const DetailsButtonContainer = styled.div`

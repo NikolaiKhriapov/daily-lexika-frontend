@@ -28,13 +28,13 @@ export default function BadgeStreakCount(props: Props) {
 const ColoredDot = styled.div<{ $color: string }>`
   background-color: ${({ $color }) => $color};
   border-radius: 50%;
-  width: 7px;
-  height: 7px;
-  margin-left: 3px;
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    width: 10px;
-    height: 10px;
-    margin-left: 5px;
+    width: 8px;
+    height: 8px;
+    margin-left: 3px;
   }
 `;
