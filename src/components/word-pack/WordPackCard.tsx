@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
-import { Flex, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { getWordPack } from '@services/word-packs';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -9,8 +9,8 @@ import { WordPackDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import Text from '@components/common/basic/Text';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
+import ButtonUnavailable from '@components/common/complex/ButtonUnavailable';
 import Card from '@components/common/complex/Card';
-import SignAdded from '@components/common/complex/SignAdded';
 import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewWindow';
 import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
 
@@ -64,7 +64,6 @@ export default function WordPackCard(props: Props) {
       setFlipped={setFlipped}
       face={(
         <ContentsContainer>
-          <Flex height={5} />
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{wordPackDTO.name}</Text>
           </WordPackNameContainer>
@@ -74,7 +73,12 @@ export default function WordPackCard(props: Props) {
           </WordsCountContainer>
           <ButtonsContainer>
             {updatedWordPackDTO.reviewId !== undefined
-              ? <SignAdded />
+              ? (
+                <ButtonUnavailable
+                  text='Added'
+                  isWithIcon
+                />
+              )
               : (
                 <>
                   <Button

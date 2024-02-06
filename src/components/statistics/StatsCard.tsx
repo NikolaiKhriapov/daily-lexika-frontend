@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
@@ -17,9 +18,21 @@ export default function StatsCard(props: Props) {
   const { icon, stat, title, isClickable = false, onOpen } = props;
 
   const { colorMode } = useColorMode();
+  const [isFlipped, setFlipped] = useState(false);
+
+  const onClick = () => {
+    if (isClickable) {
+      return onOpen();
+    }
+    return setFlipped(!isFlipped);
+  };
 
   return (
-    <Container $colorMode={colorMode} $isClickable={isClickable} onClick={onOpen}>
+    <Container
+      $colorMode={colorMode}
+      $isFlipped={isFlipped}
+      onClick={onClick}
+    >
       <Icon>{icon}</Icon>
       <Stats>
         <Text size={Size.XXL}>{stat}</Text>
@@ -35,7 +48,7 @@ StatsCard.defaultProps = {
   onOpen: null,
 };
 
-const Container = styled.div<{ $colorMode: ColorMode; $isClickable: boolean }>`
+const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   width: 220px;
   height: 100px;
   padding: 15px;
@@ -48,7 +61,10 @@ const Container = styled.div<{ $colorMode: ColorMode; $isClickable: boolean }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
-  cursor: ${({ $isClickable }) => $isClickable && 'pointer'};
+  cursor: pointer;
+
+  transform: ${({ $isFlipped }) => ($isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)')};
+  transition: transform 0.3s;
 `;
 
 const Icon = styled.div`
