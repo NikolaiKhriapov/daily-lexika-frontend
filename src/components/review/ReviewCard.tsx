@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Flex, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { successNotification } from '@services/popup-notification';
 import { deleteReview, getReview, refreshReview } from '@services/reviews';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
-import CompletedIcon from '@components/common/basic/CompletedIcon';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -113,7 +112,6 @@ export default function ReviewCard(props: Props) {
       height='280px'
       width='215px'
       padding='0 25px'
-      borderColor=''
       bgColor={theme.colors[colorMode].bgColor}
       isFlipped={isFlipped}
       setFlipped={setFlipped}
@@ -191,10 +189,11 @@ export default function ReviewCard(props: Props) {
                 onCloseDeleteButton={onCloseRemoveButton}
                 cancelRef={cancelRef}
                 handleDelete={handleRemoveReview}
-                header="Remove Review"
-                body={`Are you sure you want to delete daily review? You can't undo this action.`}
-                deleteButtonText="Delete"
+                header="Remove this daily review?"
+                body="Your known words and review progress will be saved if you choose to add this review again later."
+                deleteButtonText="Remove"
                 isButtonDisabled={isButtonDisabled}
+                width='600px'
               />
             )}
           </ButtonsContainer>

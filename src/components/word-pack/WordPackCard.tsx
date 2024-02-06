@@ -58,7 +58,6 @@ export default function WordPackCard(props: Props) {
       height='280px'
       width='215px'
       padding='0 25px'
-      borderColor=''
       bgColor={theme.colors[colorMode].bgColor}
       isFlipped={isFlipped}
       setFlipped={setFlipped}

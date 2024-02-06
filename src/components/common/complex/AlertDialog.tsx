@@ -18,10 +18,25 @@ type Props = {
   body: string;
   deleteButtonText: string;
   isButtonDisabled: boolean;
+  width?: string;
+};
+
+AlertDialog.defaultProps = {
+  width: 'fit-content',
 };
 
 export default function AlertDialog(props: Props) {
-  const { isOpenDeleteButton, onCloseDeleteButton, cancelRef, handleDelete, header, body, deleteButtonText, isButtonDisabled } = props;
+  const {
+    isOpenDeleteButton,
+    onCloseDeleteButton,
+    cancelRef,
+    handleDelete,
+    header,
+    body,
+    deleteButtonText,
+    isButtonDisabled,
+    width = 'fit-content',
+  } = props;
 
   const { colorMode } = useColorMode();
 
@@ -33,7 +48,7 @@ export default function AlertDialog(props: Props) {
       isCentered
     >
       <AlertDialogOverlay>
-        <AlertDialogContentStyled $colorMode={colorMode}>
+        <AlertDialogContentStyled $colorMode={colorMode} $width={width}>
           <AlertDialogHeader>{header}</AlertDialogHeader>
           <AlertDialogBody>{body}</AlertDialogBody>
           <AlertDialogFooterStyled>
@@ -62,10 +77,10 @@ const AlertDialogFooterStyled = styled(AlertDialogFooter)`
   gap: 20px;
 `;
 
-const AlertDialogContentStyled = styled(AlertDialogContent)<{ $colorMode: ColorMode }>`
+const AlertDialogContentStyled = styled(AlertDialogContent)<{ $colorMode: ColorMode; $width: string }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
-  width: fit-content !important;
+  width: ${({ $width }) => $width} !important;
   max-width: 90% !important;
 `;

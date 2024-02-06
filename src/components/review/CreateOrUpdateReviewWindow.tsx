@@ -20,13 +20,17 @@ type Props = {
   reviewDTO?: ReviewDTO;
 };
 
+CreateOrUpdateReviewWindow.defaultProps = {
+  reviewDTO: null,
+};
+
 export default function CreateOrUpdateReviewWindow(props: Props) {
-  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO } = props;
+  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO = null } = props;
 
   const initialValues = {
     maxNewWordsPerDay: reviewDTO ? reviewDTO.maxNewWordsPerDay : 5,
     maxReviewWordsPerDay: reviewDTO ? reviewDTO.maxReviewWordsPerDay : 20,
-    wordPackDTO: wordPackDTO,
+    wordPackDTO,
   };
 
   const validationSchema = Yup.object({
@@ -40,9 +44,9 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       .required('Required'),
   });
 
-  const handleOnSubmit = (reviewDTO: ReviewDTO, { setSubmitting }: any) => {
+  const handleOnSubmit = (review: ReviewDTO, { setSubmitting }: any) => {
     setSubmitting(true);
-    createReview(reviewDTO)
+    createReview(review)
       .then(() => {
         successNotification('Review saved', `${wordPackDTO.name} was successfully saved`);
         setReload(true);
@@ -54,6 +58,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
+      width='450px'
       isOpen={isOpen}
       onClose={onClose}
       header={wordPackDTO.name}
@@ -84,6 +89,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
                   type="number"
                   placeholder="1"
                 />
+                <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
               </>
             )}
             buttonText="Submit"

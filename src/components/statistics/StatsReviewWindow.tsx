@@ -76,7 +76,7 @@ export default function StatsReviewWindow(props: Props) {
           <ReviewStatus $colorMode={colorMode}>
             <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Review Status</Text>
             <StatsContainer>
-              <ProgressCircular value={wordsPercentage.inReview + wordsPercentage.known} text='In Review' />
+              <ProgressCircular value={wordsPercentage.inReview + wordsPercentage.known} text='In Review' isWithLabel />
               <StatsColumn>
                 <Stat>
                   <Text size={{ base: Size.XL, md: Size.XXXL, xl: Size.XXXL }}>

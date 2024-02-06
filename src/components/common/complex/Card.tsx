@@ -10,14 +10,28 @@ type Props = {
   height: string | { base: string, md: string, lg: string };
   width: string | { base: string, md: string, lg: string };
   padding: string;
-  borderColor: string;
+  borderColor?: string;
   bgColor: string;
   isFlipped: boolean;
-  setFlipped: any;
+  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+Card.defaultProps = {
+  borderColor: '',
 };
 
 export default function Card(props: Props) {
-  const { face, back, height, width, padding, borderColor, bgColor, isFlipped, setFlipped } = props;
+  const {
+    face,
+    back,
+    height,
+    width,
+    padding,
+    borderColor = '',
+    bgColor,
+    isFlipped,
+    setFlipped,
+  } = props;
 
   const { colorMode } = useColorMode();
 
