@@ -149,7 +149,7 @@ export default function ReviewCard(props: Props) {
                         reviewId={reviewDTO.id!}
                         isOpen={isOpenStartButton}
                         onClose={onCloseStartButton}
-                        totalReviewWords={reviewDTO.listOfWordDTO!.length}
+                        totalReviewWords={updatedReviewDTO.actualSize}
                         setReload={setReloadCard}
                       />
                     )}

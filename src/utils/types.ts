@@ -58,6 +58,7 @@ export interface ReviewDTO {
   maxReviewWordsPerDay: number;
   wordPackDTO: WordPackDTO;
   listOfWordDTO?: WordDTO[];
+  actualSize: number;
   dateLastCompleted?: string;
   dateGenerated?: string;
 }
