@@ -9,15 +9,6 @@ const getAuthConfig = () => ({
   },
 });
 
-export const getWord = async (wordId: number): Promise<AxiosResponse<WordDTO>> => {
-  try {
-    return await axios.get(ApiEndpointsWords.getWord(wordId), getAuthConfig());
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 export const getAllWordsByStatus = async (status: Status, page: number, size: number): Promise<AxiosResponse<WordDTO[]>> => {
   try {
     return await axios.get(ApiEndpointsWords.getAllWordsByStatus(status, page, size), getAuthConfig());

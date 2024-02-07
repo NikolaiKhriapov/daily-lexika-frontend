@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react';
-import { getWord } from '@services/words';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
 import { WordDTO } from '@utils/types';
@@ -13,24 +12,13 @@ import Modal from '@components/common/complex/Modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  wordId: number;
+  wordDTO: WordDTO;
 };
 
 export default function WordDetailedInfo(props: Props) {
-  const { isOpen, onClose, wordId } = props;
-  const [wordDTO, setWordDTO] = useState<WordDTO | null>(null);
+  const { isOpen, onClose, wordDTO } = props;
 
-  const fetchWordDTO = (id: number) => {
-    getWord(id)
-      .then((response) => setWordDTO(response.data))
-      .catch((error) => console.error(error.code, error.response.data.message));
-  };
-
-  useEffect(() => {
-    fetchWordDTO(wordId);
-  }, [wordId]);
-
-  const streakProgress = wordDTO ? (wordDTO.totalStreak / 5) * 100 : 0;
+  const streakProgress = (wordDTO.totalStreak / 5) * 100;
 
   return (
     <Modal
@@ -38,7 +26,7 @@ export default function WordDetailedInfo(props: Props) {
       height={useBreakpointValue({ base: '85vh', md: '600px' })}
       isOpen={isOpen}
       onClose={onClose}
-      header={wordDTO?.nameEnglish}
+      header={wordDTO.nameEnglish}
       body={(
         <Container>
           <Tabs isFitted variant='enclosed' colorScheme='gray'>
@@ -50,31 +38,31 @@ export default function WordDetailedInfo(props: Props) {
               <TabPanel>
                 <General>
                   <TranscriptionAndTranslationContainer>
-                    <Text>{wordDTO?.transcription}</Text>
-                    <Text>{wordDTO?.nameRussian}</Text>
+                    <Text>{wordDTO.transcription}</Text>
+                    <Text>{wordDTO.nameRussian}</Text>
                   </TranscriptionAndTranslationContainer>
                   <ProgressBarContainerTablet>
                     <TopContainer>
-                      {wordDTO && <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>}
-                      {wordDTO && <BadgeOrStreakCount wordDTO={wordDTO} />}
+                      <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>
+                      <BadgeOrStreakCount wordDTO={wordDTO} />
                     </TopContainer>
-                    {wordDTO && <ProgressBar value={streakProgress} colorScheme='green' />}
+                    <ProgressBar value={streakProgress} colorScheme='green' />
                   </ProgressBarContainerTablet>
                 </General>
                 <ProgressBarContainerMobile>
                   <Divider marginY={3} />
                   <TopContainer>
-                    {wordDTO && <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>}
-                    {wordDTO && <BadgeOrStreakCount wordDTO={wordDTO} />}
+                    <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>
+                    <BadgeOrStreakCount wordDTO={wordDTO} />
                   </TopContainer>
-                  {wordDTO && <ProgressBar value={(wordDTO.totalStreak / 5) * 100} colorScheme='green' />}
+                  <ProgressBar value={(wordDTO.totalStreak / 5) * 100} colorScheme='green' />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
-                <Text>{wordDTO?.definition}</Text>
+                <Text>{wordDTO.definition}</Text>
                 <Divider marginY={3} />
               </TabPanel>
               <TabPanel>
-                {wordDTO?.examples.map((examples, index) => (
+                {wordDTO.examples.map((examples, index) => (
                   <>
                     <Text key={index}>{examples}</Text>
                     <Divider marginY={3} />

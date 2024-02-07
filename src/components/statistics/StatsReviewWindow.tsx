@@ -50,11 +50,11 @@ export default function StatsReviewWindow(props: Props) {
             <WordPackNameAndInfoButton>
               <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Pack Progress</Text>
               <ArrowRightButton onClick={onOpenDrawer} />
-              {isOpenDrawer && (
+              {isOpenDrawer && wordPackDTO && (
                 <ReviewWordPackWindow
                   isOpen={isOpenDrawer}
                   onClose={onCloseDrawer}
-                  wordPackDTO={wordPackDTO!}
+                  wordPackDTO={wordPackDTO}
                 />
               )}
             </WordPackNameAndInfoButton>

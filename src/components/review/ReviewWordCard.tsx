@@ -149,7 +149,7 @@ export default function ReviewWordCard(props: Props) {
                   <WordDetailedInfo
                     isOpen={isOpenDetails}
                     onClose={onCloseDetails}
-                    wordId={reviewWordDTO.id}
+                    wordDTO={reviewWordDTO}
                   />
                 )}
               </DetailsButtonContainer>
