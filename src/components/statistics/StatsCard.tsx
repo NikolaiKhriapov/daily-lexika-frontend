@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
-import { borderStyles } from '@utils/functions';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/common/basic/Text';
 
@@ -62,6 +62,7 @@ const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
   cursor: pointer;
+  ${nonHighlightableTap};
 
   transform: ${({ $isFlipped }) => ($isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)')};
   transition: transform 0.3s;

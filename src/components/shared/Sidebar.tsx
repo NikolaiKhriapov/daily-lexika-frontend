@@ -5,7 +5,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { Breakpoint, Page, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/common/basic/Text';
 
@@ -56,17 +56,17 @@ const Item = styled(Link)<{ $colorMode: ColorMode }>`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  cursor: pointer;
   height: 100%;
   width: 100%;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  ${nonHighlightableTap};
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     padding: 16px;
     margin: 0 20px;
     justify-content: left;
-    cursor: pointer;
     border-radius: ${theme.stylesToDelete.borderRadius};
 
     &:hover {

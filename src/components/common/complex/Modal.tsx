@@ -12,7 +12,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { Breakpoint, Size } from '@utils/constants';
-import { borderStyles, hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, hiddenScrollbar, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 interface Props extends Omit<ModalProps, 'children'> {
@@ -56,6 +56,7 @@ const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width:
   height: ${({ $height }) => $height || 'fit-content'} !important;
   overflow-y: auto;
   ${hiddenScrollbar};
+  ${nonHighlightableTap};
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     min-width: 450px;

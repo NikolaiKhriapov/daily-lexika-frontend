@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
-import { borderStyles } from '@utils/functions';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
@@ -65,6 +65,7 @@ const Container = styled(Stat)<{ $colorMode: ColorMode }>`
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
   cursor: pointer;
+  ${nonHighlightableTap};
 `;
 
 const WordPackNameAndInfoButton = styled.div`

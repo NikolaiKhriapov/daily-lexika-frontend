@@ -15,3 +15,7 @@ export const hiddenScrollbar = () => `
     display: none; /* WebKit */
   }
 `;
+
+export const nonHighlightableTap = () => `
+  -webkit-tap-highlight-color: transparent;
+`;
