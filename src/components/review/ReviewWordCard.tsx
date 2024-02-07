@@ -70,6 +70,7 @@ export default function ReviewWordCard(props: Props) {
       nameWord: {
         text: reviewWordDTO.nameEnglish,
         size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
+        font: theme.fonts.body,
       },
       nameTranslation: {
         text: reviewWordDTO.nameRussian,
@@ -84,6 +85,7 @@ export default function ReviewWordCard(props: Props) {
       nameWord: {
         text: reviewWordDTO.nameChineseSimplified,
         size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+        font: theme.fonts.bodyCh,
       },
       nameTranslation: {
         text: reviewWordDTO.nameEnglish,
@@ -128,7 +130,9 @@ export default function ReviewWordCard(props: Props) {
         setFlipped={setFlipped}
         face={(
           <ContentsContainer>
-            <Text size={wordData[userRole]?.nameWord.size}>{wordData[userRole]?.nameWord.text}</Text>
+            <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>
+              {wordData[userRole]?.nameWord.text}
+            </Text>
           </ContentsContainer>
         )}
         back={(

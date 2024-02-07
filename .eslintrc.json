@@ -1,7 +1,7 @@
 {
   "extends": [
-    "next/core-web-vitals",
     "next",
+    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -54,7 +54,12 @@
     "no-nested-ternary": "off",
     "consistent-return": "off"
   },
-  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js"],
+  "ignorePatterns": [
+    "public",
+    "node_modules",
+    ".next",
+    "next.config.js"
+  ],
   "overrides": [
     {
       "files": [

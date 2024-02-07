@@ -64,7 +64,7 @@ export default function WordPackCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{wordPackDTO.name}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{wordPackDTO.name}</Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <TbCards />

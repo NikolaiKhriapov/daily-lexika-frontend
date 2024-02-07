@@ -2,7 +2,7 @@ import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { Size } from '@utils/constants';
+import { FontWeight, Size } from '@utils/constants';
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/common/basic/Text';
@@ -24,7 +24,7 @@ export default function ButtonUnavailable(props: Props) {
   return (
     <Component $colorMode={colorMode} onClick={(event) => event.stopPropagation()}>
       {isWithIcon && <><FaCheck /><Text size={Size.SM}>&nbsp;&nbsp;</Text></>}
-      <Text size={Size.SM}>{text}</Text>
+      <Text size={Size.SM} fontWeight={FontWeight.MEDIUM}>{text}</Text>
     </Component>
   );
 }

@@ -118,7 +118,7 @@ export default function ReviewCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{reviewDTO.wordPackDTO.name}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{reviewDTO.wordPackDTO.name}</Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <WordsContainer>
