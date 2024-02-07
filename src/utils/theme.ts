@@ -36,7 +36,8 @@ const customColors = {
 
 const customBreakpoints = {
   base: Breakpoint.BASE,
-  sm: Breakpoint.PHONE,
+  xs: Breakpoint.PHONE,
+  sm: Breakpoint.PHONE_LG,
   md: Breakpoint.TABLET,
   lg: Breakpoint.LG,
   xl: Breakpoint.DESKTOP,

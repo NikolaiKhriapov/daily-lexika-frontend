@@ -4,7 +4,7 @@ import { Text as ChakraText, TextProps } from '@chakra-ui/react';
 import { Size } from '@utils/constants';
 
 interface Props extends TextProps {
-  size?: Size | { base: Size, md: Size, xl: Size };
+  size?: Size | { base: Size, sm: Size, xl: Size };
   isCentered?: boolean;
 }
 

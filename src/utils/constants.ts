@@ -19,6 +19,7 @@ export enum RoleName {
 export enum Breakpoint {
   BASE = '0px',
   PHONE = '320px',
+  PHONE_LG = '400px',
   TABLET = '768px',
   LG = '960px',
   DESKTOP = '1200px',

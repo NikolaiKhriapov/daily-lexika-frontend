@@ -65,31 +65,31 @@ export default function ReviewWordCard(props: Props) {
     [RoleName.USER_ENGLISH]: {
       transcription: {
         text: reviewWordDTO.transcription,
-        size: { base: Size.SM, md: Size.XL, xl: Size.XL },
+        size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
       },
       nameWord: {
         text: reviewWordDTO.nameEnglish,
-        size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
+        size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
       nameTranslation: {
         text: reviewWordDTO.nameRussian,
-        size: { base: Size.LG, md: Size.XXL, xl: Size.XXL },
+        size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
       },
     },
     [RoleName.USER_CHINESE]: {
       transcription: {
         text: reviewWordDTO.transcription,
-        size: { base: Size.XL, md: Size.XXL, xl: Size.XXXL },
+        size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
       },
       nameWord: {
         text: reviewWordDTO.nameChineseSimplified,
-        size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+        size: { base: Size.XXXXXL, sm: Size.XXXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
         text: reviewWordDTO.nameEnglish,
-        size: { base: Size.MD, md: Size.XL, xl: Size.XL },
+        size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
       },
     },
     [RoleName.ADMIN]: null,
@@ -121,8 +121,8 @@ export default function ReviewWordCard(props: Props) {
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
       <Card
-        height={{ base: '312px', md: '370px', lg: '520px' }}
-        width={{ base: '240px', md: '290px', lg: '400px' }}
+        height={{ base: '312px', sm: '370px', lg: '520px' }}
+        width={{ base: '240px', sm: '290px', lg: '400px' }}
         padding='10px'
         borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}
