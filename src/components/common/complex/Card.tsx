@@ -7,8 +7,8 @@ import { theme } from '@utils/theme';
 type Props = {
   face: ReactNode;
   back: ReactNode;
-  height: string | { base: string, sm: string, lg: string } | { base: string, md: string, lg: string };
-  width: string | { base: string, sm: string, lg: string } | { base: string, md: string, lg: string };
+  height: string | { base: string, sm: string, xl: string };
+  width: string | { base: string, sm: string, xl: string };
   padding: string;
   borderColor?: string;
   bgColor: string;
@@ -55,8 +55,8 @@ export default function Card(props: Props) {
 const Container = styled.div<{
   $colorMode: ColorMode;
   $isFlipped: boolean;
-  $height: string | { base: string, sm: string, lg: string } | { base: string, md: string, lg: string };
-  $width: string | { base: string, sm: string, lg: string } | { base: string, md: string, lg: string };
+  $height: string | { base: string, sm: string, xl: string };
+  $width: string | { base: string, sm: string, xl: string };
   $padding: string;
   $borderColor: string;
   $bgColor: string;

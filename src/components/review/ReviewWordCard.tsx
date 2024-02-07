@@ -121,8 +121,8 @@ export default function ReviewWordCard(props: Props) {
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
       <Card
-        height={{ base: '312px', sm: '370px', lg: '520px' }}
-        width={{ base: '240px', sm: '290px', lg: '400px' }}
+        height={{ base: '312px', sm: '370px', xl: '520px' }}
+        width={{ base: '240px', sm: '290px', xl: '400px' }}
         padding='10px'
         borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}

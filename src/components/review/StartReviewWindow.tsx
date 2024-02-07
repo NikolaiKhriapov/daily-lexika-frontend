@@ -93,7 +93,7 @@ export default function StartReviewWindow(props: Props) {
 
   return (
     <Modal
-      width={useBreakpointValue({ base: '80vw', lg: '1000px' })}
+      width={useBreakpointValue({ base: '80vw', xl: '1000px' })}
       isOpen={isOpen}
       onClose={onClose}
       header={null}
