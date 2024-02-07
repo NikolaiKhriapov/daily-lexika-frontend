@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Heading as ChakraHeading, HeadingProps } from '@chakra-ui/react';
+import { FontWeight } from '@utils/constants';
 
 interface Props extends HeadingProps {
   isCentered?: boolean;
@@ -8,7 +9,7 @@ interface Props extends HeadingProps {
 
 export default function Heading({ children, isCentered, ...rest }: Props) {
   return (
-    <ChakraHeadingStyled $isCentered={isCentered} {...rest}>
+    <ChakraHeadingStyled fontWeight={FontWeight.MEDIUM} $isCentered={isCentered} {...rest}>
       {children}
     </ChakraHeadingStyled>
   );

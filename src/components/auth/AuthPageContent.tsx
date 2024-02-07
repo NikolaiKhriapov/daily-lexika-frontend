@@ -6,7 +6,7 @@ import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { AuthPageContext } from '@context/AuthPageContext';
 import { register } from '@services/authorization';
-import { successNotification } from '@services/popup-notification';
+import { errorNotification, successNotification } from '@services/popup-notification';
 import { AuthFormType, Breakpoint, ButtonType, LocalStorage, Page, Platform, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -70,11 +70,11 @@ export default function AuthPageContent() {
           register({ ...values, platform: selectedPlatform })
             .then((response) => {
               successNotification('User registered', `${values.name} was successfully registered`);
-              global.localStorage.setItem(LocalStorage.ACCESS_TOKEN, response.data.data.authenticationResponse.token);
+              global.localStorage.setItem(LocalStorage.ACCESS_TOKEN, response.data.token);
               setUserFromToken();
               router.push(Page.REVIEWS);
             })
-            .catch((error) => console.error(error.code, error.response.data.message))
+            .catch((error) => errorNotification(error.code, error.response.data.message))
             .finally(() => setSubmitting(false));
         },
       },

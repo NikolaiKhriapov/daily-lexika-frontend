@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ApiEndpointsWordPacks } from '@API/apiMethods';
 import { LocalStorage } from '@utils/constants';
+import { WordDTO, WordPackDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
@@ -8,7 +9,7 @@ const getAuthConfig = () => ({
   },
 });
 
-export const getAllWordPacks = async () => {
+export const getAllWordPacks = async (): Promise<AxiosResponse<WordPackDTO[]>> => {
   try {
     return await axios.get(ApiEndpointsWordPacks.getAllWordPacks(), getAuthConfig());
   } catch (error) {
@@ -17,7 +18,7 @@ export const getAllWordPacks = async () => {
   }
 };
 
-export const getWordPack = async (wordPackName: string) => {
+export const getWordPack = async (wordPackName: string): Promise<AxiosResponse<WordPackDTO>> => {
   try {
     return await axios.get(ApiEndpointsWordPacks.getWordPack(wordPackName), getAuthConfig());
   } catch (error) {
@@ -26,7 +27,7 @@ export const getWordPack = async (wordPackName: string) => {
   }
 };
 
-export const getAllWordsForWordPack = async (wordPackName: string, page: number, size: number) => {
+export const getAllWordsForWordPack = async (wordPackName: string, page: number, size: number): Promise<AxiosResponse<WordDTO[]>> => {
   try {
     return await axios.get(ApiEndpointsWordPacks.getAllWordsForWordPack(wordPackName, page, size), getAuthConfig());
   } catch (error) {

@@ -54,7 +54,11 @@ const stylesToDelete = {
 
 const theme = extendTheme({
   colors: customColors,
-  fonts: {},
+  fonts: {
+    heading: 'var(--font-rubik)',
+    body: 'var(--font-rubik)',
+    bodyCh: 'var(--font-noto-serif-sc)',
+  },
   fontSizes: {},
   breakpoints: customBreakpoints,
   stylesToDelete,

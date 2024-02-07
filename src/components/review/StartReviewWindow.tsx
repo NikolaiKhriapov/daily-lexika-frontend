@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { processReviewAction } from '@services/reviews';
-import { Breakpoint, ButtonType } from '@utils/constants';
+import { Breakpoint, ButtonType, RoleName } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { Status, WordDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -23,41 +24,41 @@ type Props = {
 export default function StartReviewWindow(props: Props) {
   const { reviewId, isOpen, onClose, totalReviewWords, setReload } = props;
 
+  const { user } = useContext(AuthContext);
   const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
   const [reviewUpdatedSize, setReviewUpdatedSize] = useState<number>(0);
   const [isFormVisible, setFormVisible] = useState(true);
   const [isReviewComplete, setReviewComplete] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const [isAnswerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const fetchReviewAction = (answer: boolean | null) => {
-    setButtonDisabled(true);
+    setLoading(true);
     if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
       || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
       successNotification(
-        `${reviewWordDTO.nameChineseSimplified} is a known word.`,
+        `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
         'This word will still be shown occasionally during reviews',
       );
     }
     if (answer === false && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
       successNotification(
-        `Keep reviewing ${reviewWordDTO.nameChineseSimplified}`,
+        `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
         'This word will be shown more frequently so that you can relearn it',
       );
     }
     processReviewAction(reviewId, answer)
       .then((response) => {
-        if (response.data.data != null) {
-          setReviewWordDTO(response.data.data.reviewWordDTO);
-          setReviewUpdatedSize(response.data.data.reviewUpdatedSize);
+        if (response.data != null && response.data.reviewWordDTO) {
+          setReviewWordDTO(response.data.reviewWordDTO);
+          setReviewUpdatedSize(response.data.reviewUpdatedSize);
         } else {
           setFormVisible(false);
           setReviewComplete(true);
         }
         setReload(true);
-        setButtonDisabled(false);
+        setLoading(false);
         setThrown(false);
       })
       .catch((error) => console.error(error.code, error.response.data.message));
@@ -77,7 +78,15 @@ export default function StartReviewWindow(props: Props) {
     fetchReviewAction(answer);
     setFlipped(false);
     setThrown(true);
-    setAnswerCorrect(answer);
+  };
+
+  const getReviewWordName = (reviewWord: WordDTO): string => {
+    const map: Record<RoleName, string> = {
+      [RoleName.USER_ENGLISH]: reviewWord.nameEnglish,
+      [RoleName.USER_CHINESE]: reviewWord.nameChineseSimplified,
+      [RoleName.ADMIN]: '',
+    };
+    return map[user!.role!];
   };
 
   const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
@@ -103,20 +112,20 @@ export default function StartReviewWindow(props: Props) {
                     setFlipped={setFlipped}
                     isThrown={isThrown}
                     pressButton={pressButton}
-                    answer={isAnswerCorrect}
+                    isLoading={isLoading}
                   />
                   <ButtonsContainer>
                     <Button
                       buttonText='Forgot'
                       buttonType={ButtonType.BUTTON_RED}
                       onClick={() => pressButton(false)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                     <Button
                       buttonText='Remembered'
                       buttonType={ButtonType.BUTTON}
                       onClick={() => pressButton(true)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                   </ButtonsContainer>
                 </CardContainer>
@@ -144,18 +153,18 @@ const Container = styled.div`
 
 const Placeholder = styled.div`
   width: 80vh;
-    height: 460px;
+  height: 460px;
 
-    ${mediaBreakpointUp('400px')} {
-        height: 518px;
-    }
+  ${mediaBreakpointUp('400px')} {
+    height: 518px;
+  }
 
-    ${mediaBreakpointUp(Breakpoint.TABLET)} {
-        height: 738px;
-    }
-    ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-        width: 1000px;
-    }
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    height: 738px;
+  }
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 1000px;
+  }
 `;
 
 const ProgressBarContainer = styled.div`

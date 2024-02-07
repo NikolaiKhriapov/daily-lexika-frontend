@@ -14,13 +14,11 @@ export interface AuthenticationRequest {
   platform: Platform;
 }
 
-export interface CustomJwtPayload extends JwtPayload {
-  name: string;
-  role: RoleName;
+export interface AuthenticationResponse {
+  token: string;
 }
 
-export interface AuthenticatedUser {
-  username: string;
+export interface CustomJwtPayload extends JwtPayload {
   name: string;
   role: RoleName;
 }
@@ -30,7 +28,7 @@ export interface UserDTO {
   name?: string;
   email?: string;
   password?: string;
-  role?: string;
+  role?: RoleName;
   roleStatistics?: RoleStatisticsDTO[];
 }
 
@@ -58,8 +56,9 @@ export interface ReviewDTO {
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
-  wordPackName: string;
+  wordPackDTO: WordPackDTO;
   listOfWordDTO?: WordDTO[];
+  actualSize: number;
   dateLastCompleted?: string;
   dateGenerated?: string;
 }
@@ -67,16 +66,17 @@ export interface ReviewDTO {
 export interface WordDTO {
   id: number;
   nameChineseSimplified: string;
-  nameChineseTraditional: string;
-  pinyin: string;
+  transcription: string;
   nameEnglish: string;
   nameRussian: string;
+  definition: string;
+  examples: string[];
+  listOfWordPackNames: string[];
   status: Status;
   currentStreak: number;
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfWordPackNames: string[];
 }
 
 export interface WordPackDTO {
@@ -102,7 +102,6 @@ export interface ReviewStatisticsDTO {
   wordsNew: number;
   wordsInReview: number;
   wordsKnown: number;
-  wordsTotal: number;
 }
 
 export enum Status {
