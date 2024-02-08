@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ApiEndpointsUsers } from '@API/apiMethods';
 import { LocalStorage } from '@utils/constants';
-import { UserDTO } from '@utils/types';
+import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
@@ -12,6 +12,15 @@ const getAuthConfig = () => ({
 export const updateUserInfo = async (userDTO: UserDTO): Promise<AxiosResponse<void>> => {
   try {
     return await axios.patch(ApiEndpointsUsers.updateUserInfo(), userDTO, getAuthConfig());
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updatePassword = async (request: PasswordUpdateRequest): Promise<AxiosResponse<void>> => {
+  try {
+    return await axios.patch(ApiEndpointsUsers.updatePassword(), request, getAuthConfig());
   } catch (error) {
     console.error(error);
     throw error;

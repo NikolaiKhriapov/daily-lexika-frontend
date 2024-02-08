@@ -1,18 +1,19 @@
-import { RefObject, useContext, useRef, useState } from 'react';
+import React, { RefObject, useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
-import { successNotification } from '@services/popup-notification';
-import { deleteAccount, updateUserInfo } from '@services/user';
+import { errorNotification, successNotification } from '@services/popup-notification';
+import { deleteAccount, updatePassword, updateUserInfo } from '@services/user';
 import { ButtonType, LocalStorage, Size } from '@utils/constants';
-import { UserDTO } from '@utils/types';
+import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import InputFieldWithButton from '@components/common/complex/InputFieldWithButton';
 import Modal from '@components/common/complex/Modal';
 import TextInput from '@components/common/complex/TextInput';
+import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 
 type Props = {
   isOpen: boolean;
@@ -25,10 +26,10 @@ export default function UserProfileWindow(props: Props) {
 
   const { setUser, logout } = useContext(AuthContext);
   const cancelRef: RefObject<HTMLButtonElement> = useRef(null);
-  const {
-    isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton,
-  } = useDisclosure();
+  const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
+  const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const passwordCurrentRef = useRef<string>('');
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDTO, setSubmitting: any) => {
     updateUserInfo(userUpdatedInfoDTO)
@@ -37,10 +38,10 @@ export default function UserProfileWindow(props: Props) {
       .finally(() => setSubmitting(false));
   };
 
-  const handleChangePassword = (userUpdatedInfoDTO: UserDTO, setSubmitting: any) => {
-    updateUserInfo(userUpdatedInfoDTO)
+  const handleChangePassword = (passwordUpdateRequest: PasswordUpdateRequest, setSubmitting: any) => {
+    updatePassword(passwordUpdateRequest)
       .then(() => successNotification('Password updated successfully', ''))
-      .catch((error) => console.error(error.code, error.response.data.message))
+      .catch((error) => errorNotification('', error.response.data.message))
       .finally(() => setSubmitting(false));
   };
 
@@ -79,28 +80,44 @@ export default function UserProfileWindow(props: Props) {
       inputElement: <TextInput label='Email' name='email' type='email' placeholder='Email' />,
     },
     password: {
-      initialValues: { password: '', repeatPassword: '' },
+      initialValues: { passwordCurrent: '' },
       validationSchema: Yup.object({
-        password: Yup.string()
+        passwordCurrent: Yup.string()
           .required('Password is required')
           .min(8, 'Must be at least 8 characters')
           .max(20, 'Must be 20 characters or less'),
-        repeatPassword: Yup.string()
-          .oneOf([Yup.ref('password')], 'Passwords must match'),
       }),
-      onSubmit: (userUpdatedInfoDTO: UserDTO, { setSubmitting }: any) => {
-        setSubmitting(true);
-        handleChangePassword(userUpdatedInfoDTO, setSubmitting);
+      onSubmit: (values: { passwordCurrent: string }) => {
+        passwordCurrentRef.current = values.passwordCurrent;
+        onOpenChangePasswordButton();
       },
-      inputElement: (
-        <>
-          <TextInput label='Password' name='password' type='password' placeholder='New password' />
-          <br />
-          <TextInput label='Repeat Password' name='repeatPassword' type='password' placeholder='Repeat password' />
-        </>
-      ),
+      inputElement: <TextInput label='Password' name='passwordCurrent' type='password' placeholder='Current password' />,
     },
   };
+
+  const passwordChangeData = {
+    initialValues: { passwordNewFirst: '', passwordNewSecond: '' },
+    validationSchema: Yup.object({
+      passwordNewFirst: Yup.string()
+        .required('Password is required')
+        .min(8, 'Must be at least 8 characters')
+        .max(20, 'Must be 20 characters or less'),
+      passwordNewSecond: Yup.string()
+        .required('Password is required')
+        .oneOf([Yup.ref('passwordNewFirst')], 'Passwords must match'),
+    }),
+    onSubmit: (values: { passwordNewFirst: string, passwordNewSecond: string }, { setSubmitting }: any) => {
+      setSubmitting(true);
+      const request: PasswordUpdateRequest = { passwordCurrent: passwordCurrentRef.current, passwordNew: values.passwordNewFirst };
+      handleChangePassword(request, setSubmitting);
+    },
+    inputElement: (
+      <>
+        <TextInput label="Password" name="passwordNewFirst" type="password" placeholder="New password" />
+        <TextInput label="Repeat Password" name="passwordNewSecond" type="password" placeholder="Repeat password" />
+      </>
+    ),
+  }
 
   return (
     <Modal
@@ -144,18 +161,37 @@ export default function UserProfileWindow(props: Props) {
                 buttonType={ButtonType.BUTTON_RED}
                 onClick={onOpenDeleteAccountButton}
               />
-              <AlertDialog
-                isOpenDeleteButton={isOpenDeleteAccountButton}
-                onCloseDeleteButton={onCloseDeleteAccountButton}
-                cancelRef={cancelRef}
-                handleDelete={handleDeleteAccount}
-                header='Delete Account'
-                body={`Are you sure you want to delete account? You can't undo this action.`}
-                deleteButtonText='Delete'
-                isButtonDisabled={isButtonDisabled}
-              />
             </Stack>
           </ButtonsContainer>
+          {isOpenChangePasswordButton && (
+            <Modal
+              onClose={onCloseChangePasswordButton}
+              isOpen={isOpenChangePasswordButton}
+              header='Change Password'
+              body={(
+                <InputFieldsWithButton
+                  buttonText='Submit'
+                  validateOnMount
+                  initialValues={passwordChangeData.initialValues}
+                  validationSchema={passwordChangeData.validationSchema}
+                  onSubmit={passwordChangeData.onSubmit}
+                  inputElements={passwordChangeData.inputElement}
+                />
+              )}
+            />
+          )}
+          {isOpenDeleteAccountButton && (
+            <AlertDialog
+              isOpenDeleteButton={isOpenDeleteAccountButton}
+              onCloseDeleteButton={onCloseDeleteAccountButton}
+              cancelRef={cancelRef}
+              handleDelete={handleDeleteAccount}
+              header='Delete Account'
+              body={`Are you sure you want to delete account? You can't undo this action.`}
+              deleteButtonText='Delete'
+              isButtonDisabled={isButtonDisabled}
+            />
+          )}
         </>
       )}
     />

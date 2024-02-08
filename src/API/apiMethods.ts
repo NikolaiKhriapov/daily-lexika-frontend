@@ -27,6 +27,7 @@ export const ApiEndpointsReviews = {
 const URL_USERS = `${BASE_URL}/user`;
 export const ApiEndpointsUsers = {
   updateUserInfo: () => `${URL_USERS}/account/info`,
+  updatePassword: () => `${URL_USERS}/account/password`,
   deleteAccount: () => `${URL_USERS}/account`,
 };
 
