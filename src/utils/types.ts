@@ -23,6 +23,11 @@ export interface CustomJwtPayload extends JwtPayload {
   role: RoleName;
 }
 
+export interface PasswordUpdateRequest {
+  passwordCurrent: string;
+  passwordNew: string;
+}
+
 export interface UserDTO {
   id?: number;
   name?: string;

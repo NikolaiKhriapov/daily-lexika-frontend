@@ -25,7 +25,7 @@ export default function Footer(props: Props) {
     <Container $colorMode={colorMode} $forDesktopOnly={forDesktopOnly}>
       {email && (
         <Text size={Size.SM} isCentered>
-          Contact e-mail: <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>{AppInfo.EMAIL}</Link>
+          Support: <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>{AppInfo.EMAIL}</Link>
         </Text>
       )}
       {appVersion && (

@@ -35,8 +35,11 @@ export default function ProfileComponent() {
         )}
         {/* <MenuItem>Preferences</MenuItem> */}
         <MenuDivider />
-        <LinkStyled href={`mailto:${AppInfo.EMAIL}`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
-          <MenuItem>Contact us</MenuItem>
+        <LinkStyled href={`mailto:${AppInfo.EMAIL}?subject=Support`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
+          <MenuItem>Contact support</MenuItem>
+        </LinkStyled>
+        <LinkStyled href={`mailto:${AppInfo.EMAIL}?subject=Feedback`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
+          <MenuItem>Leave feedback</MenuItem>
         </LinkStyled>
         <MenuDivider />
         <MenuItem onClick={logout}>Log out</MenuItem>
