@@ -110,6 +110,7 @@ export default function UserProfileWindow(props: Props) {
       setSubmitting(true);
       const request: PasswordUpdateRequest = { passwordCurrent: passwordCurrentRef.current, passwordNew: values.passwordNewFirst };
       handleChangePassword(request, setSubmitting);
+      onClose();
     },
     inputElement: (
       <>
