@@ -35,3 +35,21 @@ export const getAllWordsForWordPack = async (wordPackName: string, page: number,
     throw error;
   }
 };
+
+export const createCustomWordPack = async (wordPackDTO: WordPackDTO): Promise<AxiosResponse<void>> => {
+  try {
+    return await axios.post(ApiEndpointsWordPacks.createCustomWordPack(), wordPackDTO, getAuthConfig());
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteCustomWordPack = async (wordPackName: string): Promise<AxiosResponse<void>> => {
+  try {
+    return await axios.delete(ApiEndpointsWordPacks.deleteCustomWordPack(wordPackName), getAuthConfig());
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

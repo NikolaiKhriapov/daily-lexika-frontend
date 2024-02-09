@@ -27,13 +27,13 @@ export default function ReviewCard(props: Props) {
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
   const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO);
   const [reviewRemoved, setReviewRemoved] = useState(false);
   const [reviewRefreshed, setReviewRefreshed] = useState(false);
   const [reloadCard, setReloadCard] = useState<boolean>(false);
   const [reloadCards, setReloadCards] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [isFlipped, setFlipped] = useState(false);
 
   const isDateLastCompletedToday = () =>

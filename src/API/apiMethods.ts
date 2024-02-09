@@ -41,6 +41,8 @@ export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
+  createCustomWordPack: () => `${URL_WORD_PACKS}`,
+  deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
 };
 
 const URL_WORDS = `${BASE_URL}/flashcards/words`;

@@ -128,4 +128,6 @@ export enum Category {
   SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
   SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
   SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
+
+  CUSTOM = 'Custom',
 }
