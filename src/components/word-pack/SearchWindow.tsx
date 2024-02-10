@@ -115,7 +115,7 @@ export default function SearchWindow(props: Props) {
           <Input
             name='search'
             type='text'
-            placeholder='Start typing a word or pinyin...'
+            placeholder='Start typing a word...'
             width={{ base: '100%', md: '500px' }}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
