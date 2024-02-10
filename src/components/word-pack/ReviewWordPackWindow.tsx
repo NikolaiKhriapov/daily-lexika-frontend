@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
+import { AuthContext } from '@context/AuthContext';
 import { getAllWordsForWordPack } from '@services/word-packs';
 import { Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { WordDTO, WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
@@ -17,6 +19,7 @@ type Props = {
 export default function ReviewWordPackWindow(props: Props) {
   const { isOpen, onClose, wordPackDTO } = props;
 
+  const { user } = useContext(AuthContext);
   const [visibleWords, setVisibleWords] = useState<WordDTO[]>([]);
   const [page, setPage] = useState(0);
   const pageSize = 20;
@@ -47,7 +50,7 @@ export default function ReviewWordPackWindow(props: Props) {
       size={Size.XXXL}
       isOpen={isOpen}
       onClose={onClose}
-      header={wordPackDTO?.name}
+      header={getOriginalWordPackName(wordPackDTO?.name, user)}
       body={(
         <Container>
           <TotalWords>

@@ -22,12 +22,9 @@ interface Props extends Omit<ModalProps, 'children'> {
   height?: string;
 }
 
-Modal.defaultProps = {
-  width: undefined,
-  height: undefined,
-};
+export default function Modal(props: Props) {
+  const { header, body, width, height, ...rest } = props;
 
-export default function Modal({ header, body, width, height, ...rest }: Props) {
   const { colorMode } = useColorMode();
 
   return (

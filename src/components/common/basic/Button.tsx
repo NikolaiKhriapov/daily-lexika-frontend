@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Button as ChakraButton, ButtonProps, ColorMode, useColorMode } from '@chakra-ui/react';
 import { ButtonType, FontWeight } from '@utils/constants';
@@ -8,9 +8,14 @@ import { theme } from '@utils/theme';
 interface Props extends ButtonProps {
   buttonType: ButtonType;
   buttonText: React.ReactNode;
+  isDisabled?: boolean,
+  isOpen?: boolean,
+  modalContent?: ReactNode,
 }
 
-export default function Button({ buttonType, buttonText, ...rest }: Props) {
+export default function Button(props: Props) {
+  const { buttonType, buttonText, isDisabled = false, isOpen = false, modalContent, ...rest } = props;
+
   const { colorMode } = useColorMode();
 
   const getButtonType = () => {
@@ -26,14 +31,18 @@ export default function Button({ buttonType, buttonText, ...rest }: Props) {
 
   if (buttonType === ButtonType.LINK) {
     return (
-      <ChakraButton
-        variant={ButtonType.LINK}
-        color={theme.stylesToDelete.link}
-        fontWeight={FontWeight.NORMAL}
-        {...rest}
-      >
-        {buttonText}
-      </ChakraButton>
+      <>
+        <ChakraButton
+          variant={ButtonType.LINK}
+          color={theme.stylesToDelete.link}
+          fontWeight={FontWeight.NORMAL}
+          isDisabled={isDisabled}
+          {...rest}
+        >
+          {buttonText}
+        </ChakraButton>
+        {isOpen && modalContent}
+      </>
     );
   }
 

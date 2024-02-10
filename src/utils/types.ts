@@ -19,6 +19,7 @@ export interface AuthenticationResponse {
 }
 
 export interface CustomJwtPayload extends JwtPayload {
+  id: number;
   name: string;
   role: RoleName;
 }
@@ -68,7 +69,7 @@ export interface ReviewDTO {
   dateGenerated?: string;
 }
 
-export interface WordDTO {
+export interface WordDataDTO {
   id: number;
   nameChineseSimplified: string;
   transcription: string;
@@ -77,6 +78,12 @@ export interface WordDTO {
   definition: string;
   examples: string[];
   listOfWordPackNames: string[];
+  platform: Platform;
+}
+
+export interface WordDTO {
+  id: number;
+  wordDataDTO: WordDataDTO;
   status: Status;
   currentStreak: number;
   totalStreak: number;
@@ -128,4 +135,6 @@ export enum Category {
   SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
   SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
   SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
+
+  CUSTOM = 'Custom',
 }

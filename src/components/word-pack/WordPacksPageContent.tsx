@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAllWordPacks } from '@services/word-packs';
 import { Size } from '@utils/constants';
@@ -8,19 +8,25 @@ import Spinner from '@components/common/basic/Spinner';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 import WordPackCard from '@components/word-pack/WordPackCard';
+import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 
 export default function WordPacksPageContent() {
   const [allWordPacksDTO, setAllWordPacksDTO] = useState<WordPackDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [reloadCards, setReloadCards] = useState<boolean>(false);
 
   const fetchAllWordPacksDTO = () => {
     setLoading(true);
     getAllWordPacks()
       .then((response) => {
         const { data } = response;
-        const notEmptyWordPacksDTO = data.filter((wordPackDTO) => wordPackDTO.totalWords > 0);
-        setAllWordPacksDTO(notEmptyWordPacksDTO);
+        const standardWordPacksDTO = data
+          .filter((wordPackDTO) => wordPackDTO.category.toLowerCase() !== Category.CUSTOM.toLowerCase())
+          .filter((wordPackDTO) => wordPackDTO.totalWords > 0);
+        const customWordPacksDTO = data
+          .filter((wordPackDTO) => wordPackDTO.category.toLowerCase() === Category.CUSTOM.toLowerCase());
+        setAllWordPacksDTO(standardWordPacksDTO.concat(customWordPacksDTO));
       })
       .catch((e) => {
         setError((e.response.data.message));
@@ -32,10 +38,18 @@ export default function WordPacksPageContent() {
   useEffect(() => {
     fetchAllWordPacksDTO();
   }, []);
+  useEffect(() => {
+    if (reloadCards) {
+      fetchAllWordPacksDTO();
+      setReloadCards(false);
+    }
+  }, [reloadCards]);
 
   const wordPackCategories = Array.from(new Set(allWordPacksDTO?.map((wordPackDTO) => wordPackDTO.category)));
   const wordPacksDTOByCategory = (category: Category) => allWordPacksDTO
-    .filter((wordPackDTO) => wordPackDTO.category === category);
+    .filter((wordPackDTO) => wordPackDTO.category.toLowerCase() === category.toLowerCase());
+  const wordPackCategoriesStandard = wordPackCategories
+    .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
   if (loading) {
     return <Spinner />;
@@ -55,19 +69,35 @@ export default function WordPacksPageContent() {
 
   return (
     <Container>
-      {wordPackCategories.map((wordPackCategory) => (
-        <Section key={wordPackCategory}>
-          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+      <>
+        {wordPackCategoriesStandard.map((wordPackCategory) => (
+          <Section key={wordPackCategory}>
+            <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+            <WordPacksContainer>
+              {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+                <WordPackCard
+                  key={wordPackDTO.name}
+                  wordPackDTO={wordPackDTO}
+                  fetchAllWordPacksDTO={fetchAllWordPacksDTO}
+                />
+              ))}
+            </WordPacksContainer>
+          </Section>
+        ))}
+        <Section>
+          <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
           <WordPacksContainer>
-            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+            {wordPacksDTOByCategory(Category.CUSTOM).map((wordPackDTO) => (
               <WordPackCard
                 key={wordPackDTO.name}
                 wordPackDTO={wordPackDTO}
+                fetchAllWordPacksDTO={fetchAllWordPacksDTO}
               />
             ))}
+            <WordPackCardAddNew setReload={setReloadCards} />
           </WordPacksContainer>
         </Section>
-      ))}
+      </>
     </Container>
   );
 }

@@ -12,10 +12,6 @@ type Props = {
   isWithIcon?: boolean;
 };
 
-ButtonUnavailable.defaultProps = {
-  isWithIcon: false,
-};
-
 export default function ButtonUnavailable(props: Props) {
   const { text, isWithIcon = false } = props;
 

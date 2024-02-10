@@ -16,6 +16,7 @@ const customColors = {
     progressBarBgColor: '#E4E8EE',
     progressCircularColor: '#8088A0',
     alert: '#F56565',
+    cardAddNew: 'rgba(255,255,255,0.3)',
   },
   dark: {
     background: 'rgb(20,20,20)',
@@ -31,6 +32,7 @@ const customColors = {
     progressBarBgColor: '#505050',
     progressCircularColor: '#E4E8EE',
     alert: '#EF4444',
+    cardAddNew: '#3C3C3C',
   },
 };
 

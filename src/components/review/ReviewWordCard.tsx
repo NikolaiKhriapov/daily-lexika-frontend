@@ -64,31 +64,31 @@ export default function ReviewWordCard(props: Props) {
   const wordData = {
     [RoleName.USER_ENGLISH]: {
       transcription: {
-        text: reviewWordDTO.transcription,
+        text: reviewWordDTO.wordDataDTO.transcription,
         size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
       },
       nameWord: {
-        text: reviewWordDTO.nameEnglish,
+        text: reviewWordDTO.wordDataDTO.nameEnglish,
         size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
       nameTranslation: {
-        text: reviewWordDTO.nameRussian,
+        text: reviewWordDTO.wordDataDTO.nameRussian,
         size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
       },
     },
     [RoleName.USER_CHINESE]: {
       transcription: {
-        text: reviewWordDTO.transcription,
+        text: reviewWordDTO.wordDataDTO.transcription,
         size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
       },
       nameWord: {
-        text: reviewWordDTO.nameChineseSimplified,
+        text: reviewWordDTO.wordDataDTO.nameChineseSimplified,
         size: { base: Size.XXXXXL, sm: Size.XXXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
-        text: reviewWordDTO.nameEnglish,
+        text: reviewWordDTO.wordDataDTO.nameEnglish,
         size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
       },
     },
@@ -144,14 +144,15 @@ export default function ReviewWordCard(props: Props) {
                   buttonType={ButtonType.BUTTON}
                   buttonText={<InfoOutlineIcon />}
                   onClick={onClickDetails}
+                  isOpen={isOpenDetails}
+                  modalContent={(
+                    <WordDetailedInfo
+                      isOpen={isOpenDetails}
+                      onClose={onCloseDetails}
+                      wordDTO={reviewWordDTO}
+                    />
+                  )}
                 />
-                {isOpenDetails && (
-                  <WordDetailedInfo
-                    isOpen={isOpenDetails}
-                    onClose={onCloseDetails}
-                    wordDTO={reviewWordDTO}
-                  />
-                )}
               </DetailsButtonContainer>
             )}
             <ContentsContainer>

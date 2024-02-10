@@ -1,11 +1,13 @@
+import styled from 'styled-components';
 import { useRadio, UseRadioProps } from '@chakra-ui/radio';
 import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
-import { theme } from '@utils/theme';
-import { borderStyles, nonHighlightableTap } from '@utils/functions';
-import styled from 'styled-components';
 import { Size } from '@utils/constants';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
+import { theme } from '@utils/theme';
 
 export default function RadioItem(props: UseRadioProps) {
+  const { name } = props;
+
   const { colorMode } = useColorMode();
   const { getInputProps, getRadioProps } = useRadio(props);
 
@@ -21,7 +23,7 @@ export default function RadioItem(props: UseRadioProps) {
         boxShadow={Size.MD}
         _checked={{ bg: theme.colors[colorMode].buttonBgColor, color: theme.colors[colorMode].buttonColor, border: borderStyles(colorMode) }}
       >
-        {props.name}
+        {name}
       </BoxStyled>
     </Box>
   );
@@ -34,4 +36,3 @@ const BoxStyled = styled(Box)<{ $colorMode: ColorMode }>`
   cursor: pointer;
   ${nonHighlightableTap};
 `;
-

@@ -8,18 +8,15 @@ interface Props extends TextProps {
   isCentered?: boolean;
 }
 
-export default function Text({ children, size, isCentered, ...rest }: Props) {
+export default function Text(props: Props) {
+  const { children, size = Size.MD, isCentered = false, ...rest } = props;
+
   return (
     <ChakraTextStyled fontSize={size} $isCentered={isCentered} {...rest}>
       {children}
     </ChakraTextStyled>
   );
 }
-
-Text.defaultProps = {
-  size: Size.MD,
-  isCentered: false,
-};
 
 const ChakraTextStyled = styled(ChakraText)<{ $isCentered: boolean }>`
   text-align: ${({ $isCentered }) => $isCentered && 'center'};

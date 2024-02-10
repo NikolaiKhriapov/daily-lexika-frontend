@@ -20,10 +20,6 @@ type Props = {
   reviewDTO?: ReviewDTO;
 };
 
-CreateOrUpdateReviewWindow.defaultProps = {
-  reviewDTO: null,
-};
-
 export default function CreateOrUpdateReviewWindow(props: Props) {
   const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO = null } = props;
 

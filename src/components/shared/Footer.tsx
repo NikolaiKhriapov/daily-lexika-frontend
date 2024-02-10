@@ -12,10 +12,6 @@ type Props = {
   forDesktopOnly?: boolean;
 };
 
-Footer.defaultProps = {
-  forDesktopOnly: true,
-};
-
 export default function Footer(props: Props) {
   const { email, appVersion, forDesktopOnly = true } = props;
 

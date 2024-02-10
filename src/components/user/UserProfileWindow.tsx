@@ -1,4 +1,4 @@
-import React, { RefObject, useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
@@ -10,10 +10,10 @@ import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
+import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import InputFieldWithButton from '@components/common/complex/InputFieldWithButton';
 import Modal from '@components/common/complex/Modal';
 import TextInput from '@components/common/complex/TextInput';
-import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 
 type Props = {
   isOpen: boolean;
@@ -25,7 +25,6 @@ export default function UserProfileWindow(props: Props) {
   const { isOpen, onClose, userDTO } = props;
 
   const { setUser, logout } = useContext(AuthContext);
-  const cancelRef: RefObject<HTMLButtonElement> = useRef(null);
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -118,7 +117,7 @@ export default function UserProfileWindow(props: Props) {
         <TextInput label="Repeat Password" name="passwordNewSecond" type="password" placeholder="Repeat password" />
       </>
     ),
-  }
+  };
 
   return (
     <Modal
@@ -183,9 +182,8 @@ export default function UserProfileWindow(props: Props) {
           )}
           {isOpenDeleteAccountButton && (
             <AlertDialog
-              isOpenDeleteButton={isOpenDeleteAccountButton}
-              onCloseDeleteButton={onCloseDeleteAccountButton}
-              cancelRef={cancelRef}
+              isOpen={isOpenDeleteAccountButton}
+              onClose={onCloseDeleteAccountButton}
               handleDelete={handleDeleteAccount}
               header='Delete Account'
               body={`Are you sure you want to delete account? You can't undo this action.`}

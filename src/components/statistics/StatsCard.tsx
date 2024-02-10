@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function StatsCard(props: Props) {
-  const { icon, stat, title, isClickable = false, onOpen } = props;
+  const { icon, stat = '–––', title, isClickable = false, onOpen = null } = props;
 
   const { colorMode } = useColorMode();
   const [isFlipped, setFlipped] = useState(false);
@@ -41,12 +41,6 @@ export default function StatsCard(props: Props) {
     </Container>
   );
 }
-
-StatsCard.defaultProps = {
-  stat: '–––',
-  isClickable: false,
-  onOpen: null,
-};
 
 const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   width: 220px;

@@ -37,14 +37,14 @@ export default function WordsScrollableContainer(props: Props) {
   const getWordInfoForUserRole = (wordDTO: WordDTO) => {
     const map: Record<RoleName, any> = {
       [RoleName.USER_ENGLISH]: {
-        name: wordDTO.nameEnglish,
-        transcription: wordDTO.transcription,
-        translation: wordDTO.nameRussian,
+        name: wordDTO.wordDataDTO.nameEnglish,
+        transcription: wordDTO.wordDataDTO.transcription,
+        translation: wordDTO.wordDataDTO.nameRussian,
       },
       [RoleName.USER_CHINESE]: {
-        name: wordDTO.nameChineseSimplified,
-        transcription: wordDTO.transcription,
-        translation: wordDTO.nameEnglish,
+        name: wordDTO.wordDataDTO.nameChineseSimplified,
+        transcription: wordDTO.wordDataDTO.transcription,
+        translation: wordDTO.wordDataDTO.nameEnglish,
       },
       [RoleName.ADMIN]: null,
     };
@@ -60,14 +60,14 @@ export default function WordsScrollableContainer(props: Props) {
     <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
       {isLoading && page === 0
         ? <SpinnerContainer><Spinner /></SpinnerContainer>
-        : words?.slice(0, words.length).map((wordDTO) => (
-          <WordInfo $colorMode={colorMode} key={wordDTO.id} onClick={() => onClick(wordDTO.id)} $role={user!.role!}>
+        : words?.slice(0, words.length).map((wordDTO, index) => (
+          <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(wordDTO.id)}>
             <CharacterAndTranscriptionAndTranslation>
               <Text>{getWordInfoForUserRole(wordDTO)?.name}&nbsp;&nbsp;{getWordInfoForUserRole(wordDTO)?.transcription}</Text>
               <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{getWordInfoForUserRole(wordDTO)?.translation}</Text>
             </CharacterAndTranscriptionAndTranslation>
             <BadgeOrStreakCount wordDTO={wordDTO} />
-            {isOpenDetails && user!.role! === RoleName.USER_ENGLISH && (
+            {isOpenDetails && (
               <WordDetailedInfo
                 isOpen={isOpenDetails && wordDTO.id === selectedWord}
                 onClose={onCloseDetails}
@@ -86,10 +86,10 @@ const WordInfoContainer = styled.div`
   gap: 5px;
   height: 60vh;
   overflow-y: auto;
-  max-width: 700px;
+  width: 100%;
 
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    width: 700px;
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: 500px;
   }
 `;
 
@@ -98,18 +98,14 @@ const SpinnerContainer = styled.div`
   justify-content: center;
 `;
 
-const WordInfo = styled.div<{ $colorMode: ColorMode; $role: RoleName }>`
+const WordInfo = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  cursor: ${({ $role }) => $role === RoleName.USER_ENGLISH && 'pointer'};
-  &:hover {
-    background-color: ${({ $colorMode, $role }) =>
-    $role === RoleName.USER_ENGLISH && theme.colors[$colorMode].hoverBgColor};
-  }
+  cursor: pointer;
 `;
 
 const CharacterAndTranscriptionAndTranslation = styled.div`

@@ -41,9 +41,18 @@ export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
+  createCustomWordPack: () => `${URL_WORD_PACKS}`,
+  deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
+  addWordToCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/add-word/${wordId}`,
+  removeWordFromCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/remove-word/${wordId}`,
 };
 
 const URL_WORDS = `${BASE_URL}/flashcards/words`;
 export const ApiEndpointsWords = {
   getAllWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
+};
+
+const URL_WORD_DATA = `${BASE_URL}/flashcards/word-data`;
+export const ApiEndpointsWordData = {
+  search: (searchQuery: string) => `${URL_WORD_DATA}/search/${searchQuery}`,
 };

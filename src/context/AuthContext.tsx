@@ -37,7 +37,7 @@ function AuthProvider({ children }: { children: any }) {
     if (token) {
       try {
         const jwtToken: CustomJwtPayload = jwtDecode(token);
-        setUser({ ...user, email: jwtToken.sub!, name: jwtToken.name, role: jwtToken.role });
+        setUser({ ...user, email: jwtToken.sub!, id: jwtToken.id, name: jwtToken.name, role: jwtToken.role });
       } catch (error) {
         console.error('Error decoding JWT token');
       }
@@ -58,7 +58,7 @@ function AuthProvider({ children }: { children: any }) {
           const jwtTokenString = response.data.token;
           localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtTokenString);
           const jwtToken: CustomJwtPayload = jwtDecode(jwtTokenString);
-          setUser({ ...user, email: jwtToken.sub, name: jwtToken.name, role: jwtToken.role });
+          setUser({ ...user, email: jwtToken.sub, id: jwtToken.id, name: jwtToken.name, role: jwtToken.role });
           resolve();
         })
         .catch((error) => {
