@@ -112,16 +112,18 @@ export default function ReviewCard(props: Props) {
 
   return (
     <Card
-      height='280px'
-      width='215px'
-      padding='0 25px'
+      height="280px"
+      width="215px"
+      padding="0 25px"
       bgColor={theme.colors[colorMode].bgColor}
       isFlipped={isFlipped}
       setFlipped={setFlipped}
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
+              {getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)}
+            </Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <WordsContainer>
@@ -153,10 +155,9 @@ export default function ReviewCard(props: Props) {
                         setReload={setReloadCard}
                       />
                     )}
-
                   />
                 )
-                : <ButtonUnavailable text='Completed' isWithIcon />
+                : <ButtonUnavailable text="Completed" isWithIcon />
             }
           </ButtonsContainer>
         </ContentsContainer>
@@ -200,7 +201,7 @@ export default function ReviewCard(props: Props) {
                   body="Your known words and review progress will be saved if you choose to add this review again later."
                   deleteButtonText="Remove"
                   isButtonDisabled={isButtonDisabled}
-                  width='600px'
+                  width="600px"
                 />
               )}
             />

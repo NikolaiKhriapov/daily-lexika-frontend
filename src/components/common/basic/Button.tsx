@@ -47,14 +47,17 @@ export default function Button(props: Props) {
   }
 
   return (
-    <ChakraButtonStyled
-      className={`${buttonType}`}
-      type={getButtonType()}
-      $colorMode={colorMode}
-      {...rest}
-    >
-      {buttonText}
-    </ChakraButtonStyled>
+    <>
+      <ChakraButtonStyled
+        className={`${buttonType}`}
+        type={getButtonType()}
+        $colorMode={colorMode}
+        {...rest}
+      >
+        {buttonText}
+      </ChakraButtonStyled>
+      {isOpen && modalContent}
+    </>
   );
 }
 
