@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { successNotification } from '@services/popup-notification';
+import { errorNotification, successNotification } from '@services/popup-notification';
 import { createCustomWordPack } from '@services/word-packs';
 import { Size } from '@utils/constants';
 import { WordPackDTO } from '@utils/types';
@@ -36,7 +36,7 @@ export default function CreateWordPackWindow(props: Props) {
         setReload(true);
         onClose();
       })
-      .catch((error) => console.error(error.code, error.response.data.message))
+      .catch((error) => errorNotification(error.code, error.response.data.message))
       .finally(() => setSubmitting(false));
   };
 

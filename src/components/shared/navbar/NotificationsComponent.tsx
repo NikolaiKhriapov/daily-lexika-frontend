@@ -87,16 +87,17 @@ export default function NotificationsComponent() {
               buttonType={ButtonType.BUTTON}
               size={Size.SM}
               onClick={onOpen}
+              isOpen={isOpen}
+              modalContent={(
+                <NotificationsWindow
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  formattedDate={formattedDate}
+                  allNotificationsDTO={allNotificationsDTO}
+                  handleNotificationClick={handleNotificationClick}
+                />
+              )}
             />
-            {isOpen && (
-              <NotificationsWindow
-                isOpen={isOpen}
-                onClose={onClose}
-                formattedDate={formattedDate}
-                allNotificationsDTO={allNotificationsDTO}
-                handleNotificationClick={handleNotificationClick}
-              />
-            )}
             {selectedNotification && (
               <NotificationWindow
                 formattedDate={formattedDate}

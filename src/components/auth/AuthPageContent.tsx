@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import * as Yup from 'yup';
+import { useRadioGroup } from '@chakra-ui/radio';
 import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { AuthPageContext } from '@context/AuthPageContext';
@@ -13,11 +14,10 @@ import { theme } from '@utils/theme';
 import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import Heading from '@components/common/basic/Heading';
+import Link from '@components/common/basic/Link';
+import RadioItem from '@components/common/basic/RadioItem';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import TextInput from '@components/common/complex/TextInput';
-import { useRadioGroup } from '@chakra-ui/radio';
-import RadioItem from '@components/common/basic/RadioItem';
-import Link from '@components/common/basic/Link';
 
 export default function AuthPageContent() {
   const router = useRouter();

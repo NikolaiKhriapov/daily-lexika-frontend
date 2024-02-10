@@ -10,11 +10,8 @@ interface Props extends CircularProgressProps {
   isWithLabel?: boolean;
 }
 
-ProgressCircular.defaultProps = {
-  isWithLabel: false,
-};
-
-export default function ProgressCircular({ value, text, isWithLabel, ...rest }: Props) {
+export default function ProgressCircular(props: Props) {
+  const { value, text, isWithLabel = false, ...rest } = props;
   const { colorMode } = useColorMode();
 
   return (

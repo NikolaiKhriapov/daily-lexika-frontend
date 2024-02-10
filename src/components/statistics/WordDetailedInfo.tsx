@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react';
-import { Breakpoint, FontWeight, Size } from '@utils/constants';
+import { AuthContext } from '@context/AuthContext';
+import { Breakpoint, FontWeight, RoleName, Size } from '@utils/constants';
 import { hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
 import { WordDTO } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
@@ -18,7 +19,25 @@ type Props = {
 export default function WordDetailedInfo(props: Props) {
   const { isOpen, onClose, wordDTO } = props;
 
+  const { user } = useContext(AuthContext);
   const streakProgress = (wordDTO.totalStreak / 5) * 100;
+
+  const getWordInfoForUserRole = () => {
+    const map: Record<RoleName, any> = {
+      [RoleName.USER_ENGLISH]: {
+        name: wordDTO.wordDataDTO.nameEnglish,
+        transcription: wordDTO.wordDataDTO.transcription,
+        translation: wordDTO.wordDataDTO.nameRussian,
+      },
+      [RoleName.USER_CHINESE]: {
+        name: wordDTO.wordDataDTO.nameChineseSimplified,
+        transcription: wordDTO.wordDataDTO.transcription,
+        translation: wordDTO.wordDataDTO.nameEnglish,
+      },
+      [RoleName.ADMIN]: null,
+    };
+    return map[user!.role!];
+  };
 
   return (
     <Modal
@@ -26,7 +45,7 @@ export default function WordDetailedInfo(props: Props) {
       height={useBreakpointValue({ base: '85vh', md: '600px' })}
       isOpen={isOpen}
       onClose={onClose}
-      header={wordDTO.nameEnglish}
+      header={getWordInfoForUserRole().name}
       body={(
         <Container>
           <Tabs isFitted variant='enclosed' colorScheme='gray'>
@@ -38,8 +57,8 @@ export default function WordDetailedInfo(props: Props) {
               <TabPanel>
                 <General>
                   <TranscriptionAndTranslationContainer>
-                    <Text>{wordDTO.transcription}</Text>
-                    <Text>{wordDTO.nameRussian}</Text>
+                    <Text>{getWordInfoForUserRole().transcription}</Text>
+                    <Text>{getWordInfoForUserRole().translation}</Text>
                   </TranscriptionAndTranslationContainer>
                   <ProgressBarContainerTablet>
                     <TopContainer>
@@ -58,16 +77,21 @@ export default function WordDetailedInfo(props: Props) {
                   <ProgressBar value={(wordDTO.totalStreak / 5) * 100} colorScheme='green' />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
-                <Text>{wordDTO.definition}</Text>
-                <Divider marginY={3} />
-              </TabPanel>
-              <TabPanel>
-                {wordDTO.examples.map((examples, index) => (
+                {wordDTO.wordDataDTO.definition !== '[TODO]' && (
                   <>
-                    <Text key={index}>{examples}</Text>
+                    <Text>{wordDTO.wordDataDTO.definition}</Text>
                     <Divider marginY={3} />
                   </>
-                ))}
+                )}
+              </TabPanel>
+              <TabPanel>
+                {wordDTO.wordDataDTO.examples.map((example, index) => (
+                  example !== '[TODO]' && (
+                    <>
+                      <Text key={index}>{example}</Text>
+                      <Divider marginY={3} />
+                    </>
+                  )))}
               </TabPanel>
             </TabPanelsStyled>
           </Tabs>

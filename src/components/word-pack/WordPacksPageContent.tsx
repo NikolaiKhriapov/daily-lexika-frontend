@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { getAllWordPacks } from '@services/word-packs';
 import { Size } from '@utils/constants';
-import { theme } from '@utils/theme';
 import { Category, WordPackDTO } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import Spinner from '@components/common/basic/Spinner';
-import Card from '@components/common/complex/Card';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
-import CreateWordPackWindow from '@components/word-pack/CreateWordPackWindow';
 import WordPackCard from '@components/word-pack/WordPackCard';
+import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 
 export default function WordPacksPageContent() {
-  const { colorMode } = useColorMode();
   const [allWordPacksDTO, setAllWordPacksDTO] = useState<WordPackDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const [reloadCards, setReloadCards] = useState<boolean>(false);
 
   const fetchAllWordPacksDTO = () => {
@@ -99,25 +94,7 @@ export default function WordPacksPageContent() {
                 fetchAllWordPacksDTO={fetchAllWordPacksDTO}
               />
             ))}
-            <AddCustomWordPackContainer onClick={onOpenCreateButton}>
-              <Card
-                face={null}
-                back={null}
-                height="280px"
-                width="215px"
-                padding="0 25px"
-                bgColor={theme.colors[colorMode].borderColor}
-                isFlipped={false}
-                setFlipped={() => null}
-              />
-              {isOpenCreateButton && (
-                <CreateWordPackWindow
-                  isOpen={isOpenCreateButton}
-                  onClose={onCloseCreateButton}
-                  setReload={setReloadCards}
-                />
-              )}
-            </AddCustomWordPackContainer>
+            <WordPackCardAddNew setReload={setReloadCards} />
           </WordPacksContainer>
         </Section>
       </>
@@ -139,9 +116,6 @@ const Section = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-`;
-
-const AddCustomWordPackContainer = styled.div`
 `;
 
 const WordPacksContainer = styled.div`

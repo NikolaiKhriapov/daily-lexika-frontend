@@ -83,13 +83,7 @@ export interface WordDataDTO {
 
 export interface WordDTO {
   id: number;
-  nameChineseSimplified: string;
-  transcription: string;
-  nameEnglish: string;
-  nameRussian: string;
-  definition: string;
-  examples: string[];
-  listOfWordPackNames: string[];
+  wordDataDTO: WordDataDTO;
   status: Status;
   currentStreak: number;
   totalStreak: number;

@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { deleteReview, getReview, refreshReview } from '@services/reviews';
-import { ButtonType, FontWeight, Size } from '@utils/constants';
+import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
+import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -30,7 +31,6 @@ export default function ReviewCard(props: Props) {
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO);
   const [reviewRemoved, setReviewRemoved] = useState(false);
   const [reviewRefreshed, setReviewRefreshed] = useState(false);
@@ -41,7 +41,7 @@ export default function ReviewCard(props: Props) {
 
   const isDateLastCompletedToday = () =>
     new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getUTCDate();
-  const isNoWordsLeftInReview = () => updatedReviewDTO.listOfWordDTO?.length === 0;
+  const isNoWordsLeftInReview = updatedReviewDTO.listOfWordDTO?.length === 0;
 
   const fetchReviewDTO = (reviewId: number) => {
     getReview(reviewId)
@@ -135,17 +135,16 @@ export default function ReviewCard(props: Props) {
           </WordsCountContainer>
           <ButtonsContainer>
             {
-              !isDateLastCompletedToday() && !isNoWordsLeftInReview()
+              !isDateLastCompletedToday() && !isNoWordsLeftInReview
                 ? (
-                  <>
-                    <Button
-                      buttonText='Start'
-                      buttonType={ButtonType.BUTTON}
-                      size={Size.SM}
-                      onClick={onClickStartButton}
-                      isDisabled={isButtonDisabled}
-                    />
-                    {isOpenStartButton && (
+                  <Button
+                    buttonText="Start"
+                    buttonType={ButtonType.BUTTON}
+                    size={Size.SM}
+                    onClick={onClickStartButton}
+                    isDisabled={isButtonDisabled}
+                    isOpen={isOpenStartButton}
+                    modalContent={(
                       <StartReviewWindow
                         reviewId={reviewDTO.id!}
                         isOpen={isOpenStartButton}
@@ -154,7 +153,8 @@ export default function ReviewCard(props: Props) {
                         setReload={setReloadCard}
                       />
                     )}
-                  </>
+
+                  />
                 )
                 : <ButtonUnavailable text='Completed' isWithIcon />
             }
@@ -163,62 +163,47 @@ export default function ReviewCard(props: Props) {
       )}
       back={(
         <ContentsContainer>
-          <ButtonsContainer>
-            <Button
-              buttonText="Change"
-              buttonType={ButtonType.BUTTON}
-              size={Size.SM}
-              onClick={onClickChangeButton}
-            />
-            {isOpenChangeButton && (
-              <CreateOrUpdateReviewWindow
-                isOpen={isOpenChangeButton}
-                onClose={onCloseChangeButton}
-                wordPackDTO={reviewDTO.wordPackDTO}
-                setReload={setReloadCards}
-                isButtonDisabled={false}
-                reviewDTO={reviewDTO}
-              />
-            )}
-            <Button
-              buttonText="Remove"
-              buttonType={ButtonType.BUTTON_RED}
-              size={Size.SM}
-              onClick={onClickRemoveButton}
-            />
-            {isOpenRemoveButton && (
-              <AlertDialog
-                isOpen={isOpenRemoveButton}
-                onClose={onCloseRemoveButton}
-                cancelRef={cancelRef}
-                handleDelete={handleRemoveReview}
-                header="Remove this daily review?"
-                body="Your known words and review progress will be saved if you choose to add this review again later."
-                deleteButtonText="Remove"
-                isButtonDisabled={isButtonDisabled}
-                width='600px'
-              />
-            )}
-          </ButtonsContainer>
           <DescriptionContainer>
             <Text isCentered>{reviewDTO.wordPackDTO.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
-            {
-              isNoWordsLeftInReview()
-                ? (
-                  <Button
-                    buttonText='Refresh'
-                    buttonType={ButtonType.BUTTON}
-                    size={Size.SM}
-                    onClick={onClickRefreshButton}
-                    isDisabled={isButtonDisabled}
-                  />
-                )
-                : (
-                  <ButtonUnavailable text='Refreshed' />
-                )
-            }
+            <ButtonWithIcon
+              type={ButtonWithIconType.REFRESH}
+              onClick={onClickRefreshButton}
+              isDisabled={!isNoWordsLeftInReview}
+            />
+            <ButtonWithIcon
+              type={ButtonWithIconType.CHANGE}
+              onClick={onClickChangeButton}
+              isOpen={isOpenChangeButton}
+              modalContent={(
+                <CreateOrUpdateReviewWindow
+                  isOpen={isOpenChangeButton}
+                  onClose={onCloseChangeButton}
+                  wordPackDTO={reviewDTO.wordPackDTO}
+                  setReload={setReloadCards}
+                  isButtonDisabled={false}
+                  reviewDTO={reviewDTO}
+                />
+              )}
+            />
+            <ButtonWithIcon
+              type={ButtonWithIconType.DELETE}
+              onClick={onClickRemoveButton}
+              isOpen={isOpenRemoveButton}
+              modalContent={(
+                <AlertDialog
+                  isOpen={isOpenRemoveButton}
+                  onClose={onCloseRemoveButton}
+                  handleDelete={handleRemoveReview}
+                  header="Remove this daily review?"
+                  body="Your known words and review progress will be saved if you choose to add this review again later."
+                  deleteButtonText="Remove"
+                  isButtonDisabled={isButtonDisabled}
+                  width='600px'
+                />
+              )}
+            />
           </ButtonsContainer>
         </ContentsContainer>
       )}

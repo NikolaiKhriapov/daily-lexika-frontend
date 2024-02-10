@@ -16,10 +16,6 @@ type Props = {
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-Card.defaultProps = {
-  borderColor: '',
-};
-
 export default function Card(props: Props) {
   const {
     face,

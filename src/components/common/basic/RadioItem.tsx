@@ -36,4 +36,3 @@ const BoxStyled = styled(Box)<{ $colorMode: ColorMode }>`
   cursor: pointer;
   ${nonHighlightableTap};
 `;
-

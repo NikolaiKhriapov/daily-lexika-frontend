@@ -6,11 +6,9 @@ interface Props extends MenuDividerProps {
   isNarrow?: boolean;
 }
 
-MenuDivider.defaultProps = {
-  isNarrow: false,
-};
+export default function MenuDivider(props: Props) {
+  const { isNarrow = false, ...rest } = props;
 
-export default function MenuDivider({ isNarrow, ...rest }: Props) {
   return <MenuDividerStyled $isNarrow={isNarrow} {...rest} />;
 }
 

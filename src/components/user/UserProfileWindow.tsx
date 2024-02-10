@@ -1,4 +1,4 @@
-import React, { RefObject, useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
@@ -25,7 +25,6 @@ export default function UserProfileWindow(props: Props) {
   const { isOpen, onClose, userDTO } = props;
 
   const { setUser, logout } = useContext(AuthContext);
-  const cancelRef: RefObject<HTMLButtonElement> = useRef(null);
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -185,7 +184,6 @@ export default function UserProfileWindow(props: Props) {
             <AlertDialog
               isOpen={isOpenDeleteAccountButton}
               onClose={onCloseDeleteAccountButton}
-              cancelRef={cancelRef}
               handleDelete={handleDeleteAccount}
               header='Delete Account'
               body={`Are you sure you want to delete account? You can't undo this action.`}

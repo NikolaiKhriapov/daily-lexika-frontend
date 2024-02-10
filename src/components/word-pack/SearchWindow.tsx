@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
@@ -26,7 +26,6 @@ export default function SearchWindow(props: Props) {
 
   const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResult, setSearchResult] = useState<WordDataDTO[]>([]);
   const [isDisabled, setDisabled] = useState(false);
@@ -140,7 +139,6 @@ export default function SearchWindow(props: Props) {
                   body="Are you sure you want to remove this word from word pack?"
                   deleteButtonText="Remove"
                   isButtonDisabled={false}
-                  cancelRef={cancelRef}
                   width='600px'
                 />
               </WordInfo>

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { getWordPack } from '@services/word-packs';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, getOriginalWordPackName, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO, WordPackDTO } from '@utils/types';
 import ArrowRightButton from '@components/common/basic/ArrowRightButton';
@@ -24,6 +25,7 @@ type Props = {
 export default function StatsReviewWindow(props: Props) {
   const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage, wordsTotal } = props;
 
+  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
   const [wordPackDTO, setWordPackDTO] = useState<WordPackDTO>();
@@ -43,7 +45,7 @@ export default function StatsReviewWindow(props: Props) {
       size={Size.XL}
       isOpen={isOpen}
       onClose={onClose}
-      header={reviewStatisticsDTO.wordPackName}
+      header={getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}
       body={(
         <>
           <PackProgress $colorMode={colorMode}>

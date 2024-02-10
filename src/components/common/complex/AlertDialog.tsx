@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import {
   AlertDialog as ChakraAlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
@@ -12,7 +12,6 @@ import Button from '@components/common/basic/Button';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  cancelRef: React.RefObject<HTMLButtonElement>;
   handleDelete: () => void;
   header: string;
   body: string;
@@ -21,14 +20,11 @@ type Props = {
   width?: string;
 };
 
-AlertDialog.defaultProps = {
-  width: 'fit-content',
-};
-
 export default function AlertDialog(props: Props) {
-  const { isOpen, onClose, cancelRef, handleDelete, header, body, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
+  const { isOpen, onClose, handleDelete, header, body, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
 
   const { colorMode } = useColorMode();
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
     <ChakraAlertDialog

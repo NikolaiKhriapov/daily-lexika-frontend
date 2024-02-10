@@ -78,3 +78,10 @@ export enum ButtonType {
   RESET = 'reset',
   LINK = 'link',
 }
+
+export enum ButtonWithIconType {
+  PREVIEW = 'preview',
+  CHANGE = 'change',
+  REFRESH = 'refresh',
+  DELETE = 'delete',
+}

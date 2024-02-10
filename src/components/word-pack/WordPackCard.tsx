@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { deleteCustomWordPack, getWordPack } from '@services/word-packs';
-import { ButtonType, FontWeight, Size } from '@utils/constants';
+import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Category, WordPackDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
+import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -33,7 +34,6 @@ export default function WordPackCard(props: Props) {
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const { isOpen: isOpenDeleteButton, onOpen: onOpenDeleteButton, onClose: onCloseDeleteButton } = useDisclosure();
   const { isOpen: isOpenSearch, onOpen: onOpenSearch, onClose: onCloseSearch } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const [updatedWordPackDTO, setUpdatedWordPackDTO] = useState(wordPackDTO);
   const [reloadCard, setReloadCard] = useState(false);
   const [reloadCards, setReloadCards] = useState<boolean>(false);
@@ -137,59 +137,55 @@ export default function WordPackCard(props: Props) {
       )}
       back={(
         <ContentsContainer>
-          {wordPackDTO.category.toLowerCase() === Category.CUSTOM.toLowerCase() && (
-            <ButtonsContainer>
-              <Button
-                buttonText="Add word"
-                buttonType={ButtonType.BUTTON}
-                size={Size.SM}
-                onClick={onClickAddWordButton}
-              />
-              {isOpenSearch && (
-                <SearchWindow
-                  isOpen={isOpenSearch}
-                  onClose={onCloseSearch}
-                  wordPackDTO={wordPackDTO}
-                  setReloadCard={setReloadCard}
-                />
-              )}
-              <Button
-                buttonText="Delete"
-                buttonType={ButtonType.BUTTON_RED}
-                size={Size.SM}
-                onClick={onClickDeleteButton}
-              />
-              {isOpenDeleteButton && (
-                <AlertDialog
-                  isOpen={isOpenDeleteButton}
-                  onClose={onCloseDeleteButton}
-                  cancelRef={cancelRef}
-                  handleDelete={handleDeleteCustomWordPack}
-                  header="Delete this word pack?"
-                  body="If you have a review for this word pack, it will also be removed."
-                  deleteButtonText="Delete"
-                  isButtonDisabled={isButtonDisabled}
-                  width='600px'
-                />
-              )}
-            </ButtonsContainer>
-          )}
           <DescriptionContainer>
             <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} isCentered>{wordPackDTO.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
-            <Button
-              buttonText="Preview Words"
-              buttonType={ButtonType.BUTTON}
-              size={Size.SM}
+            <ButtonWithIcon
+              type={ButtonWithIconType.PREVIEW}
               onClick={onClickPreviewButton}
+              isOpen={isOpenPreviewButton}
+              modalContent={(
+                <ReviewWordPackWindow
+                  isOpen={isOpenPreviewButton}
+                  onClose={onClosePreviewButton}
+                  wordPackDTO={updatedWordPackDTO}
+                />
+              )}
             />
-            {isOpenPreviewButton && (
-              <ReviewWordPackWindow
-                isOpen={isOpenPreviewButton}
-                onClose={onClosePreviewButton}
-                wordPackDTO={updatedWordPackDTO}
-              />
+            {wordPackDTO.category.toLowerCase() === Category.CUSTOM.toLowerCase() && (
+              <>
+                <ButtonWithIcon
+                  type={ButtonWithIconType.CHANGE}
+                  onClick={onClickAddWordButton}
+                  isOpen={isOpenSearch}
+                  modalContent={(
+                    <SearchWindow
+                      isOpen={isOpenSearch}
+                      onClose={onCloseSearch}
+                      wordPackDTO={wordPackDTO}
+                      setReloadCard={setReloadCard}
+                    />
+                  )}
+                />
+                <ButtonWithIcon
+                  type={ButtonWithIconType.DELETE}
+                  onClick={onClickDeleteButton}
+                  isOpen={isOpenDeleteButton}
+                  modalContent={(
+                    <AlertDialog
+                      isOpen={isOpenDeleteButton}
+                      onClose={onCloseDeleteButton}
+                      handleDelete={handleDeleteCustomWordPack}
+                      header="Delete this word pack?"
+                      body="If you have a review for this word pack, it will also be removed."
+                      deleteButtonText="Delete"
+                      isButtonDisabled={isButtonDisabled}
+                      width='600px'
+                    />
+                  )}
+                />
+              </>
             )}
           </ButtonsContainer>
         </ContentsContainer>
