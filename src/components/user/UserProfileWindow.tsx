@@ -10,10 +10,10 @@ import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
+import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import InputFieldWithButton from '@components/common/complex/InputFieldWithButton';
 import Modal from '@components/common/complex/Modal';
 import TextInput from '@components/common/complex/TextInput';
-import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 
 type Props = {
   isOpen: boolean;
@@ -118,7 +118,7 @@ export default function UserProfileWindow(props: Props) {
         <TextInput label="Repeat Password" name="passwordNewSecond" type="password" placeholder="Repeat password" />
       </>
     ),
-  }
+  };
 
   return (
     <Modal
@@ -183,8 +183,8 @@ export default function UserProfileWindow(props: Props) {
           )}
           {isOpenDeleteAccountButton && (
             <AlertDialog
-              isOpenDeleteButton={isOpenDeleteAccountButton}
-              onCloseDeleteButton={onCloseDeleteAccountButton}
+              isOpen={isOpenDeleteAccountButton}
+              onClose={onCloseDeleteAccountButton}
               cancelRef={cancelRef}
               handleDelete={handleDeleteAccount}
               header='Delete Account'

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { deleteReview, getReview, refreshReview } from '@services/reviews';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -23,6 +25,7 @@ type Props = {
 export default function ReviewCard(props: Props) {
   const { reviewDTO, fetchAllReviewsDTO } = props;
 
+  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
@@ -118,7 +121,7 @@ export default function ReviewCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{reviewDTO.wordPackDTO.name}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)}</Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <WordsContainer>
@@ -185,8 +188,8 @@ export default function ReviewCard(props: Props) {
             />
             {isOpenRemoveButton && (
               <AlertDialog
-                isOpenDeleteButton={isOpenRemoveButton}
-                onCloseDeleteButton={onCloseRemoveButton}
+                isOpen={isOpenRemoveButton}
+                onClose={onCloseRemoveButton}
                 cancelRef={cancelRef}
                 handleDelete={handleRemoveReview}
                 header="Remove this daily review?"

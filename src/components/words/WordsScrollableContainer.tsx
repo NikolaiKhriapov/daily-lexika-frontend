@@ -86,10 +86,10 @@ const WordInfoContainer = styled.div`
   gap: 5px;
   height: 60vh;
   overflow-y: auto;
-  max-width: 700px;
+  width: 100%;
 
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    width: 700px;
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: 500px;
   }
 `;
 

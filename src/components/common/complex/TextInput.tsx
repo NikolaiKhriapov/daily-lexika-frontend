@@ -1,16 +1,14 @@
-import { Field, FieldProps, useFormikContext } from 'formik';
-import { Box, FormLabel, IconButton, InputGroup, InputRightElement } from '@chakra-ui/react';
-import { theme } from '@utils/theme';
-import Input from '@components/common/basic/Input';
 import React from 'react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
+import { Field, FieldProps, useFormikContext } from 'formik';
+import { Box, FormLabel, IconButton, InputGroup, InputProps, InputRightElement } from '@chakra-ui/react';
+import { theme } from '@utils/theme';
+import Input from '@components/common/basic/Input';
 
-type Props = {
+interface Props extends InputProps {
   label: string;
   name: string;
-  type: string;
-  placeholder: string;
-};
+}
 
 export default function TextInput(props: Props) {
   const { label, name, type, placeholder } = props;

@@ -46,12 +46,15 @@ export default function WordPacksPageContent() {
   useEffect(() => {
     if (reloadCards) {
       fetchAllWordPacksDTO();
+      setReloadCards(false);
     }
   }, [reloadCards]);
 
   const wordPackCategories = Array.from(new Set(allWordPacksDTO?.map((wordPackDTO) => wordPackDTO.category)));
   const wordPacksDTOByCategory = (category: Category) => allWordPacksDTO
-    .filter((wordPackDTO) => wordPackDTO.category === category);
+    .filter((wordPackDTO) => wordPackDTO.category.toLowerCase() === category.toLowerCase());
+  const wordPackCategoriesStandard = wordPackCategories
+    .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
   if (loading) {
     return <Spinner />;
@@ -71,41 +74,53 @@ export default function WordPacksPageContent() {
 
   return (
     <Container>
-      {wordPackCategories.map((wordPackCategory) => (
-        <Section key={wordPackCategory}>
-          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+      <>
+        {wordPackCategoriesStandard.map((wordPackCategory) => (
+          <Section key={wordPackCategory}>
+            <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+            <WordPacksContainer>
+              {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+                <WordPackCard
+                  key={wordPackDTO.name}
+                  wordPackDTO={wordPackDTO}
+                  fetchAllWordPacksDTO={fetchAllWordPacksDTO}
+                />
+              ))}
+            </WordPacksContainer>
+          </Section>
+        ))}
+        <Section>
+          <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
           <WordPacksContainer>
-            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+            {wordPacksDTOByCategory(Category.CUSTOM).map((wordPackDTO) => (
               <WordPackCard
                 key={wordPackDTO.name}
                 wordPackDTO={wordPackDTO}
                 fetchAllWordPacksDTO={fetchAllWordPacksDTO}
               />
             ))}
-            {wordPackCategory.toLowerCase() === Category.CUSTOM.toLowerCase() && (
-              <AddCustomWordPackContainer onClick={onOpenCreateButton}>
-                <Card
-                  face={null}
-                  back={null}
-                  height='280px'
-                  width='215px'
-                  padding='0 25px'
-                  bgColor={theme.colors[colorMode].borderColor}
-                  isFlipped={false}
-                  setFlipped={() => null}
+            <AddCustomWordPackContainer onClick={onOpenCreateButton}>
+              <Card
+                face={null}
+                back={null}
+                height="280px"
+                width="215px"
+                padding="0 25px"
+                bgColor={theme.colors[colorMode].borderColor}
+                isFlipped={false}
+                setFlipped={() => null}
+              />
+              {isOpenCreateButton && (
+                <CreateWordPackWindow
+                  isOpen={isOpenCreateButton}
+                  onClose={onCloseCreateButton}
+                  setReload={setReloadCards}
                 />
-                {isOpenCreateButton && (
-                  <CreateWordPackWindow
-                    isOpen={isOpenCreateButton}
-                    onClose={onCloseCreateButton}
-                    setReload={setReloadCards}
-                  />
-                )}
-              </AddCustomWordPackContainer>
-            )}
+              )}
+            </AddCustomWordPackContainer>
           </WordPacksContainer>
         </Section>
-      ))}
+      </>
     </Container>
   );
 }

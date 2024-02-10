@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { deleteCustomWordPack, getWordPack } from '@services/word-packs';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Category, WordPackDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -15,6 +17,7 @@ import ButtonUnavailable from '@components/common/complex/ButtonUnavailable';
 import Card from '@components/common/complex/Card';
 import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewWindow';
 import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
+import SearchWindow from '@components/word-pack/SearchWindow';
 
 type Props = {
   wordPackDTO: WordPackDTO;
@@ -24,17 +27,18 @@ type Props = {
 export default function WordPackCard(props: Props) {
   const { wordPackDTO, fetchAllWordPacksDTO } = props;
 
+  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const { isOpen: isOpenDeleteButton, onOpen: onOpenDeleteButton, onClose: onCloseDeleteButton } = useDisclosure();
+  const { isOpen: isOpenSearch, onOpen: onOpenSearch, onClose: onCloseSearch } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
   const [updatedWordPackDTO, setUpdatedWordPackDTO] = useState(wordPackDTO);
   const [reloadCard, setReloadCard] = useState(false);
   const [reloadCards, setReloadCards] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
-  const [customWordPackDeleted, setCustomWordPackDeleted] = useState(false);
 
   const fetchWordPackDTO = () => {
     setButtonDisabled(true);
@@ -46,11 +50,10 @@ export default function WordPackCard(props: Props) {
 
   const handleDeleteCustomWordPack = () => {
     setButtonDisabled(true);
-    setCustomWordPackDeleted(true);
     deleteCustomWordPack(wordPackDTO.name)
       .then(() => {
         successNotification('Word Pack deleted successfully', `${wordPackDTO.name} deleted successfully`);
-        fetchAllWordPacksDTO();
+        setReloadCards(!reloadCards);
       })
       .catch((e) => errorNotification(e.code, e.response.data.message))
       .finally(() => {
@@ -81,6 +84,10 @@ export default function WordPackCard(props: Props) {
     event.stopPropagation();
     onOpenPreviewButton();
   };
+  const onClickAddWordButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenSearch();
+  };
   const onClickDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onOpenDeleteButton();
@@ -97,11 +104,11 @@ export default function WordPackCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{wordPackDTO.name}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(wordPackDTO.name, user)}</Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <TbCards />
-            <Text size={Size.MD}>{wordPackDTO.totalWords}</Text>
+            <Text size={Size.MD}>{updatedWordPackDTO.totalWords}</Text>
           </WordsCountContainer>
           <ButtonsContainer>
             {updatedWordPackDTO.reviewId !== undefined
@@ -133,6 +140,20 @@ export default function WordPackCard(props: Props) {
           {wordPackDTO.category.toLowerCase() === Category.CUSTOM.toLowerCase() && (
             <ButtonsContainer>
               <Button
+                buttonText="Add word"
+                buttonType={ButtonType.BUTTON}
+                size={Size.SM}
+                onClick={onClickAddWordButton}
+              />
+              {isOpenSearch && (
+                <SearchWindow
+                  isOpen={isOpenSearch}
+                  onClose={onCloseSearch}
+                  wordPackDTO={wordPackDTO}
+                  setReloadCard={setReloadCard}
+                />
+              )}
+              <Button
                 buttonText="Delete"
                 buttonType={ButtonType.BUTTON_RED}
                 size={Size.SM}
@@ -140,12 +161,12 @@ export default function WordPackCard(props: Props) {
               />
               {isOpenDeleteButton && (
                 <AlertDialog
-                  isOpenDeleteButton={isOpenDeleteButton}
-                  onCloseDeleteButton={onCloseDeleteButton}
+                  isOpen={isOpenDeleteButton}
+                  onClose={onCloseDeleteButton}
                   cancelRef={cancelRef}
                   handleDelete={handleDeleteCustomWordPack}
                   header="Delete this word pack?"
-                  body="You will not be able to undo this action."
+                  body="If you have a review for this word pack, it will also be removed."
                   deleteButtonText="Delete"
                   isButtonDisabled={isButtonDisabled}
                   width='600px'

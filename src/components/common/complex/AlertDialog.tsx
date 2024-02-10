@@ -10,8 +10,8 @@ import { theme } from '@utils/theme';
 import Button from '@components/common/basic/Button';
 
 type Props = {
-  isOpenDeleteButton: boolean;
-  onCloseDeleteButton: () => void;
+  isOpen: boolean;
+  onClose: () => void;
   cancelRef: React.RefObject<HTMLButtonElement>;
   handleDelete: () => void;
   header: string;
@@ -26,24 +26,14 @@ AlertDialog.defaultProps = {
 };
 
 export default function AlertDialog(props: Props) {
-  const {
-    isOpenDeleteButton,
-    onCloseDeleteButton,
-    cancelRef,
-    handleDelete,
-    header,
-    body,
-    deleteButtonText,
-    isButtonDisabled,
-    width = 'fit-content',
-  } = props;
+  const { isOpen, onClose, cancelRef, handleDelete, header, body, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
 
   const { colorMode } = useColorMode();
 
   return (
     <ChakraAlertDialog
-      isOpen={isOpenDeleteButton}
-      onClose={onCloseDeleteButton}
+      isOpen={isOpen}
+      onClose={onClose}
       leastDestructiveRef={cancelRef}
       isCentered
     >
@@ -55,7 +45,7 @@ export default function AlertDialog(props: Props) {
             <Button
               buttonText='Cancel'
               buttonType={ButtonType.BUTTON}
-              onClick={onCloseDeleteButton}
+              onClick={onClose}
               isDisabled={isButtonDisabled}
             />
             <Button

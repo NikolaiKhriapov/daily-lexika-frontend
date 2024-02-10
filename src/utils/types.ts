@@ -19,6 +19,7 @@ export interface AuthenticationResponse {
 }
 
 export interface CustomJwtPayload extends JwtPayload {
+  id: number;
   name: string;
   role: RoleName;
 }
@@ -66,6 +67,18 @@ export interface ReviewDTO {
   actualSize: number;
   dateLastCompleted?: string;
   dateGenerated?: string;
+}
+
+export interface WordDataDTO {
+  id: number;
+  nameChineseSimplified: string;
+  transcription: string;
+  nameEnglish: string;
+  nameRussian: string;
+  definition: string;
+  examples: string[];
+  listOfWordPackNames: string[];
+  platform: Platform;
 }
 
 export interface WordDTO {

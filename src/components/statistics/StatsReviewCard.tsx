@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { AuthContext } from '@context/AuthContext';
 import { FontWeight, Size } from '@utils/constants';
-import { borderStyles, nonHighlightableTap } from '@utils/functions';
+import { borderStyles, getOriginalWordPackName, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
@@ -15,21 +17,22 @@ type Props = {
 export default function StatsReviewCard(props: Props) {
   const { reviewStatisticsDTO } = props;
 
+  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const wordsTotal = reviewStatisticsDTO.wordsNew + reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown;
 
   const wordsPercentage = {
-    inReview: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsInReview / wordsTotal) * 100),
-    known: reviewStatisticsDTO && Math.round((reviewStatisticsDTO.wordsKnown / wordsTotal) * 100),
+    inReview: reviewStatisticsDTO && Math.round(wordsTotal < 1 ? 0 : (reviewStatisticsDTO.wordsInReview / wordsTotal) * 100),
+    known: reviewStatisticsDTO && Math.round(wordsTotal < 1 ? 0 : (reviewStatisticsDTO.wordsKnown / wordsTotal) * 100),
   };
 
   return (
     <>
       <Container $colorMode={colorMode} shadow='2xl' onClick={onOpen}>
         <WordPackNameAndInfoButton>
-          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{reviewStatisticsDTO.wordPackName}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}</Text>
         </WordPackNameAndInfoButton>
         <Stats>
           <Percentage>

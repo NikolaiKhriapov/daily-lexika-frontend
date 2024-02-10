@@ -34,6 +34,7 @@ export default function CreateWordPackWindow(props: Props) {
       .then(() => {
         successNotification('Word Pack saved', `${wordPack.name} was successfully saved`);
         setReload(true);
+        onClose();
       })
       .catch((error) => console.error(error.code, error.response.data.message))
       .finally(() => setSubmitting(false));
