@@ -128,7 +128,9 @@ const ProgressBarContainerTablet = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 5px;
+    min-width: 150px;
     width: 150px;
   }
 `;
@@ -143,7 +145,7 @@ const TopContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  height: 30px;
+  height: fit-content;
 `;
 
 const TabPanelsStyled = styled(TabPanels)`

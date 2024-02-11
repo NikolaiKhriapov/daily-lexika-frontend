@@ -45,7 +45,7 @@ export default function StatsCard(props: Props) {
 const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   width: 220px;
   height: 100px;
-  padding: 15px;
+  padding: 14px;
   display: flex;
   flex-direction: row;
   align-items: center;

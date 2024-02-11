@@ -48,7 +48,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
     setSubmitting(true);
     createReview(review)
       .then(() => {
-        successNotification('Review saved', `${wordPackDTO.name} was successfully saved`);
+        successNotification('Review saved', `${getOriginalWordPackName(wordPackDTO.name, user)} was successfully saved`);
         setReload(true);
       })
       .catch((error) => console.error(error.code, error.response.data.message))

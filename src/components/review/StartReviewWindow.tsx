@@ -35,19 +35,6 @@ export default function StartReviewWindow(props: Props) {
 
   const fetchReviewAction = (answer: boolean | null) => {
     setLoading(true);
-    if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
-      || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
-      successNotification(
-        `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
-        'This word will still be shown occasionally during reviews',
-      );
-    }
-    if (answer === false && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
-      successNotification(
-        `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
-        'This word will be shown more frequently so that you can relearn it',
-      );
-    }
     processReviewAction(reviewId, answer)
       .then((response) => {
         if (response.data != null && response.data.reviewWordDTO) {
@@ -58,10 +45,25 @@ export default function StartReviewWindow(props: Props) {
           setReviewComplete(true);
         }
         setReload(true);
+      })
+      .catch((error) => console.error(error.code, error.response.data.message))
+      .finally(() => {
         setLoading(false);
         setThrown(false);
-      })
-      .catch((error) => console.error(error.code, error.response.data.message));
+        if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
+          || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
+          successNotification(
+            `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
+            'This word will still be shown occasionally during reviews',
+          );
+        }
+        if (answer === false && reviewWordDTO?.status.toString() === Status[Status.KNOWN]) {
+          successNotification(
+            `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
+            'This word will be shown more frequently so that you can relearn it',
+          );
+        }
+      });
   };
 
   useEffect(() => {
@@ -116,13 +118,13 @@ export default function StartReviewWindow(props: Props) {
                   />
                   <ButtonsContainer>
                     <Button
-                      buttonText='Forgot'
+                      buttonText="Forgot"
                       buttonType={ButtonType.BUTTON_RED}
                       onClick={() => pressButton(false)}
                       isDisabled={isLoading}
                     />
                     <Button
-                      buttonText='Remembered'
+                      buttonText="Remembered"
                       buttonType={ButtonType.BUTTON}
                       onClick={() => pressButton(true)}
                       isDisabled={isLoading}
@@ -146,7 +148,7 @@ const Container = styled.div`
   overflow-y: hidden;
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    gap: 100px;
+    gap: 70px;
     margin: 0 0 50px 0;
   }
 `;
@@ -162,6 +164,7 @@ const Placeholder = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 738px;
   }
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 1000px;
   }
@@ -169,7 +172,7 @@ const Placeholder = styled.div`
 
 const ProgressBarContainer = styled.div`
   margin: 20px 10px;
-  
+
   ${mediaBreakpointUp('450px')} {
     margin: 20px 50px;
   }

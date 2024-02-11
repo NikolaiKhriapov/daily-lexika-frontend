@@ -84,7 +84,7 @@ export default function ReviewWordCard(props: Props) {
       },
       nameWord: {
         text: reviewWordDTO.wordDataDTO.nameChineseSimplified,
-        size: { base: Size.XXXXXL, sm: Size.XXXXXXL, xl: Size.XXXXXXL },
+        size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
@@ -121,9 +121,9 @@ export default function ReviewWordCard(props: Props) {
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
       <Card
-        height={{ base: '312px', sm: '370px', xl: '520px' }}
-        width={{ base: '240px', sm: '290px', xl: '400px' }}
-        padding='10px'
+        height={{ base: '312px', sm: '390px', xl: '520px' }}
+        width={{ base: '240px', sm: '300px', xl: '400px' }}
+        padding="10px"
         borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}
         isFlipped={isFlipped}
@@ -137,24 +137,22 @@ export default function ReviewWordCard(props: Props) {
         )}
         back={(
           <>
-            {userRole === RoleName.USER_ENGLISH && (
-              <DetailsButtonContainer>
-                <Button
-                  size={{ base: Size.SM, md: Size.MD }}
-                  buttonType={ButtonType.BUTTON}
-                  buttonText={<InfoOutlineIcon />}
-                  onClick={onClickDetails}
-                  isOpen={isOpenDetails}
-                  modalContent={(
-                    <WordDetailedInfo
-                      isOpen={isOpenDetails}
-                      onClose={onCloseDetails}
-                      wordDTO={reviewWordDTO}
-                    />
-                  )}
-                />
-              </DetailsButtonContainer>
-            )}
+            <DetailsButtonContainer>
+              <Button
+                size={{ base: Size.SM, md: Size.MD }}
+                buttonType={ButtonType.BUTTON}
+                buttonText={<InfoOutlineIcon />}
+                onClick={onClickDetails}
+                isOpen={isOpenDetails}
+                modalContent={(
+                  <WordDetailedInfo
+                    isOpen={isOpenDetails}
+                    onClose={onCloseDetails}
+                    wordDTO={reviewWordDTO}
+                  />
+                )}
+              />
+            </DetailsButtonContainer>
             <ContentsContainer>
               <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
               <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
