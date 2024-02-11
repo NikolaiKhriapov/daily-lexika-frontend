@@ -29,6 +29,7 @@ export enum Breakpoint {
 }
 
 export enum Page {
+  LANDING = '/landing',
   AUTH = '/',
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',

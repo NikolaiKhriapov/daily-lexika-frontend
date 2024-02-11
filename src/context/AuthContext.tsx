@@ -41,8 +41,7 @@ function AuthProvider({ children }: { children: any }) {
       } catch (error) {
         console.error('Error decoding JWT token');
       }
-    }
-    if (!token && window.location.pathname !== Page.AUTH) {
+    } else if (window.location.pathname !== Page.LANDING) {
       router.push(Page.AUTH);
     }
   };

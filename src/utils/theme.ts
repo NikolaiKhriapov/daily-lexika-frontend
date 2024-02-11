@@ -34,6 +34,8 @@ const customColors = {
     alert: '#EF4444',
     cardAddNew: '#3C3C3C',
   },
+  telegramBlue: 'rgb(73,150,214)',
+  whatsAppGreen: 'rgb(100,205,110)',
 };
 
 const customBreakpoints = {
