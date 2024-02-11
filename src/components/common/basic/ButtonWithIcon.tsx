@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
-import { CiEdit } from 'react-icons/ci';
+import { CiEdit, CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { GoTrash } from 'react-icons/go';
 import { SlRefresh } from 'react-icons/sl';
 import styled from 'styled-components';
@@ -26,6 +26,8 @@ export default function ButtonWithIcon(props: Props) {
     [ButtonWithIconType.CHANGE]: <CiEdit size={20} />,
     [ButtonWithIconType.REFRESH]: <SlRefresh size={20} />,
     [ButtonWithIconType.DELETE]: <GoTrash size={20} />,
+    [ButtonWithIconType.ADD_WORD]: <CiSquarePlus size={20} />,
+    [ButtonWithIconType.REMOVE_WORD]: <CiSquareMinus size={20} />,
   };
 
   return (

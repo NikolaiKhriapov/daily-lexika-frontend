@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ApiEndpointsWordPacks } from '@API/apiMethods';
 import { LocalStorage } from '@utils/constants';
-import { WordDTO, WordPackDTO } from '@utils/types';
+import { WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
 
 const getAuthConfig = () => ({
   headers: {
@@ -54,7 +54,7 @@ export const deleteCustomWordPack = async (wordPackName: string): Promise<AxiosR
   }
 };
 
-export const addWordToCustomWordPack = async (wordPackName: string, wordId: number): Promise<AxiosResponse<void>> => {
+export const addWordToCustomWordPack = async (wordPackName: string, wordId: number): Promise<AxiosResponse<WordDataDTO>> => {
   try {
     return await axios.get(ApiEndpointsWordPacks.addWordToCustomWordPack(wordPackName, wordId), getAuthConfig());
   } catch (error) {
@@ -63,7 +63,7 @@ export const addWordToCustomWordPack = async (wordPackName: string, wordId: numb
   }
 };
 
-export const removeWordFromCustomWordPack = async (wordPackName: string, wordId: number): Promise<AxiosResponse<void>> => {
+export const removeWordFromCustomWordPack = async (wordPackName: string, wordId: number): Promise<AxiosResponse<WordDataDTO>> => {
   try {
     return await axios.get(ApiEndpointsWordPacks.removeWordFromCustomWordPack(wordPackName, wordId), getAuthConfig());
   } catch (error) {

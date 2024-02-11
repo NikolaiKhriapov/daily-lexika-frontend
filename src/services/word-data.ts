@@ -9,9 +9,9 @@ const getAuthConfig = () => ({
   },
 });
 
-export const search = async (searchQuery: string): Promise<AxiosResponse<WordDataDTO[]>> => {
+export const getAllWordData = async (): Promise<AxiosResponse<WordDataDTO[]>> => {
   try {
-    return await axios.get(ApiEndpointsWordData.search(searchQuery), getAuthConfig());
+    return await axios.get(ApiEndpointsWordData.getAllWordData(), getAuthConfig());
   } catch (error) {
     console.error(error);
     throw error;

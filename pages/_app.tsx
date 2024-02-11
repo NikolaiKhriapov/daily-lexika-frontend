@@ -2,6 +2,7 @@ import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import AuthProvider from '@context/AuthContext';
 import NotificationsProvider from '@context/NotificationsContext';
+import WordDataProvider from '@context/WordDataContext';
 import { fonts } from '@utils/fonts';
 import { theme } from '@utils/theme';
 
@@ -19,7 +20,9 @@ export default function MyApp({ Component, pageProps }: { Component: any; pagePr
       <ChakraProvider theme={theme}>
         <AuthProvider>
           <NotificationsProvider>
-            <Component {...pageProps} />
+            <WordDataProvider>
+              <Component {...pageProps} />
+            </WordDataProvider>
           </NotificationsProvider>
         </AuthProvider>
       </ChakraProvider>

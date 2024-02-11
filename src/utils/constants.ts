@@ -84,4 +84,6 @@ export enum ButtonWithIconType {
   CHANGE = 'change',
   REFRESH = 'refresh',
   DELETE = 'delete',
+  ADD_WORD = 'add-word',
+  REMOVE_WORD = 'remove-word',
 }

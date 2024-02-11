@@ -54,5 +54,5 @@ export const ApiEndpointsWords = {
 
 const URL_WORD_DATA = `${BASE_URL}/flashcards/word-data`;
 export const ApiEndpointsWordData = {
-  search: (searchQuery: string) => `${URL_WORD_DATA}/search/${searchQuery}`,
+  getAllWordData: () => `${URL_WORD_DATA}`,
 };
