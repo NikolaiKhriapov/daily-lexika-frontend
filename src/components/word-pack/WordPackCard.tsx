@@ -52,7 +52,7 @@ export default function WordPackCard(props: Props) {
     setButtonDisabled(true);
     deleteCustomWordPack(wordPackDTO.name)
       .then(() => {
-        successNotification('Word Pack deleted successfully', `${wordPackDTO.name} deleted successfully`);
+        successNotification('Word Pack deleted successfully', `${getOriginalWordPackName(wordPackDTO.name, user)} deleted successfully`);
         setReloadCards(!reloadCards);
       })
       .catch((e) => errorNotification(e.code, e.response.data.message))

@@ -80,7 +80,7 @@ export default function ReviewCard(props: Props) {
     setReviewRemoved(true);
     deleteReview(reviewDTO.id!)
       .then(() => {
-        successNotification('Review removed successfully', `${reviewDTO.wordPackDTO.name} removed successfully`);
+        successNotification('Review removed successfully', `${getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)} removed successfully`);
         fetchAllReviewsDTO();
       })
       .catch((e) => console.error(e.code, e.response.data.message))

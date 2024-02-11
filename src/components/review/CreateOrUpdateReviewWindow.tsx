@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import * as Yup from 'yup';
+import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { createReview } from '@services/reviews';
 import { Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { ReviewDTO, WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
@@ -22,6 +24,8 @@ type Props = {
 
 export default function CreateOrUpdateReviewWindow(props: Props) {
   const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO = null } = props;
+
+  const { user } = useContext(AuthContext);
 
   const initialValues = {
     maxNewWordsPerDay: reviewDTO ? reviewDTO.maxNewWordsPerDay : 5,
@@ -57,7 +61,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={wordPackDTO.name}
+      header={getOriginalWordPackName(wordPackDTO.name, user)}
       body={(
         <>
           <TotalWords>
