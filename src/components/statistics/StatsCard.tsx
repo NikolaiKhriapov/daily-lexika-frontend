@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
-import { borderStyles } from '@utils/functions';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/common/basic/Text';
 
@@ -9,15 +10,29 @@ type Props = {
   icon: any;
   stat?: number;
   title: string;
+  isClickable?: boolean;
+  onOpen?: any;
 };
 
 export default function StatsCard(props: Props) {
-  const { icon, stat, title } = props;
+  const { icon, stat = '–––', title, isClickable = false, onOpen = null } = props;
 
   const { colorMode } = useColorMode();
+  const [isFlipped, setFlipped] = useState(false);
+
+  const onClick = () => {
+    if (isClickable) {
+      return onOpen();
+    }
+    return setFlipped(!isFlipped);
+  };
 
   return (
-    <Container $colorMode={colorMode}>
+    <Container
+      $colorMode={colorMode}
+      $isFlipped={isFlipped}
+      onClick={onClick}
+    >
       <Icon>{icon}</Icon>
       <Stats>
         <Text size={Size.XXL}>{stat}</Text>
@@ -27,14 +42,10 @@ export default function StatsCard(props: Props) {
   );
 }
 
-StatsCard.defaultProps = {
-  stat: '–––',
-};
-
-const Container = styled.div<{ $colorMode: ColorMode }>`
+const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   width: 220px;
   height: 100px;
-  padding: 15px;
+  padding: 14px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,6 +55,11 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${theme.stylesToDelete.boxShadow};
+  cursor: pointer;
+  ${nonHighlightableTap};
+
+  transform: ${({ $isFlipped }) => ($isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)')};
+  transition: transform 0.3s;
 `;
 
 const Icon = styled.div`

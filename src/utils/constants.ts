@@ -2,7 +2,9 @@ export enum AppInfo {
   NAME = 'Daily Lexika',
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'nikolai.khriapov@icloud.com',
-  APP_VERSION = '2024.2.0',
+  APP_VERSION = '2024.3.0',
+  EMAIL_PASSWORD_RECOVERY_SUBJECT = 'Password Recovery',
+  EMAIL_PASSWORD_RECOVERY_BODY = 'Hi there, I seem to have forgotten my password for the English/Chinese platform. Could you please assist me in resetting it?',
 }
 
 export enum LocalStorage {
@@ -19,6 +21,7 @@ export enum RoleName {
 export enum Breakpoint {
   BASE = '0px',
   PHONE = '320px',
+  PHONE_LG = '400px',
   TABLET = '768px',
   LG = '960px',
   DESKTOP = '1200px',
@@ -75,4 +78,13 @@ export enum ButtonType {
   SUBMIT = 'submit',
   RESET = 'reset',
   LINK = 'link',
+}
+
+export enum ButtonWithIconType {
+  PREVIEW = 'preview',
+  CHANGE = 'change',
+  REFRESH = 'refresh',
+  DELETE = 'delete',
+  ADD_WORD = 'add-word',
+  REMOVE_WORD = 'remove-word',
 }

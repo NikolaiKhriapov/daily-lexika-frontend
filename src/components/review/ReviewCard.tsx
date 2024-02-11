@@ -1,24 +1,26 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { deleteReview, getReview, refreshReview } from '@services/reviews';
-import { ButtonType, FontWeight, RoleName, Size } from '@utils/constants';
-import { borderStyles } from '@utils/functions';
+import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
-import CloseButton from '@components/common/basic/CloseButton';
-import CompletedIcon from '@components/common/basic/CompletedIcon';
+import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
+import ButtonUnavailable from '@components/common/complex/ButtonUnavailable';
+import Card from '@components/common/complex/Card';
+import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewWindow';
 import StartReviewWindow from '@components/review/StartReviewWindow';
 
 type Props = {
   reviewDTO: ReviewDTO;
-  fetchAllReviewsDTO: any;
+  fetchAllReviewsDTO: () => void;
 };
 
 export default function ReviewCard(props: Props) {
@@ -27,16 +29,19 @@ export default function ReviewCard(props: Props) {
   const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
+  const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
   const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO);
   const [reviewRemoved, setReviewRemoved] = useState(false);
   const [reviewRefreshed, setReviewRefreshed] = useState(false);
-  const [reload, setReload] = useState<boolean>(false);
+  const [reloadCard, setReloadCard] = useState<boolean>(false);
+  const [reloadCards, setReloadCards] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const cancelRef = useRef<HTMLButtonElement>(null);
+  const [isFlipped, setFlipped] = useState(false);
 
   const isDateLastCompletedToday = () =>
     new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getUTCDate();
+  const isNoWordsLeftInReview = updatedReviewDTO.listOfWordDTO?.length === 0;
 
   const fetchReviewDTO = (reviewId: number) => {
     getReview(reviewId)
@@ -57,18 +62,25 @@ export default function ReviewCard(props: Props) {
   };
 
   useEffect(() => {
-    if (!reviewRemoved && !reviewRefreshed && reload) {
+    if (!reviewRemoved && !reviewRefreshed && reloadCard) {
       fetchReviewDTO(reviewDTO.id!);
-      setReload(false);
+      setReloadCard(false);
     }
-  }, [reload]);
+  }, [reloadCard]);
+
+  useEffect(() => {
+    if (reloadCards) {
+      fetchAllReviewsDTO();
+      setReloadCards(false);
+    }
+  }, [reloadCards]);
 
   const handleRemoveReview = () => {
     setButtonDisabled(true);
     setReviewRemoved(true);
     deleteReview(reviewDTO.id!)
       .then(() => {
-        successNotification('Review removed successfully', `${reviewDTO.wordPackName} removed successfully`);
+        successNotification('Review removed successfully', `${getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)} removed successfully`);
         fetchAllReviewsDTO();
       })
       .catch((e) => console.error(e.code, e.response.data.message))
@@ -81,89 +93,130 @@ export default function ReviewCard(props: Props) {
   const totalNewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
   const totalInReviewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
 
+  const onClickStartButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenStartButton();
+  };
+  const onClickRefreshButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    requestRefreshReview(reviewDTO.id!);
+  };
+  const onClickChangeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenChangeButton();
+  };
+  const onClickRemoveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenRemoveButton();
+  };
+
   return (
-    <Container $colorMode={colorMode}>
-      <CompletedIconAndCloseButtonContainer>
-        <CompletedIconContainer>
-          {isDateLastCompletedToday() && <CompletedIcon />}
-        </CompletedIconContainer>
-        <CloseButtonContainer>
-          <CloseButton onClick={onOpenRemoveButton} />
-          <AlertDialog
-            isOpenDeleteButton={isOpenRemoveButton}
-            onCloseDeleteButton={onCloseRemoveButton}
-            cancelRef={cancelRef}
-            handleDelete={handleRemoveReview}
-            header='Remove Review'
-            body={`Are you sure you want to delete daily review? You can't undo this action.`}
-            deleteButtonText='Delete'
-            isButtonDisabled={isButtonDisabled}
-          />
-        </CloseButtonContainer>
-      </CompletedIconAndCloseButtonContainer>
-      <WordPackNameContainer>
-        <Text size={Size.XXL} fontWeight={FontWeight.SEMIBOLD} isCentered>{reviewDTO.wordPackName}</Text>
-      </WordPackNameContainer>
-      <WordsCountContainer $height={user?.role === RoleName.USER_CHINESE ? '140px' : '105px'}>
-        <WordsContainer>
-          <Text size={Size.XXL}>{totalNewWords}</Text>
-          <Text size={Size.SM}>{' New Words'}</Text>
-        </WordsContainer>
-        <WordsContainer>
-          <Text size={Size.XXL}>{totalInReviewWords}</Text>
-          <Text size={Size.SM}>{' Review Words'}</Text>
-        </WordsContainer>
-      </WordsCountContainer>
-      <ButtonsContainer>
-        <Button
-          buttonText={!isDateLastCompletedToday() ? 'Start' : 'Refresh'}
-          buttonType={ButtonType.BUTTON}
-          size={Size.SM}
-          onClick={() => (!isDateLastCompletedToday() ? onOpenStartButton() : requestRefreshReview(reviewDTO.id!))}
-          isDisabled={isButtonDisabled}
-        />
-        {isOpenStartButton && (
-          <StartReviewWindow
-            reviewId={reviewDTO.id!}
-            isOpen={isOpenStartButton}
-            onClose={onCloseStartButton}
-            totalReviewWords={reviewDTO.listOfWordDTO!.length}
-            setReload={setReload}
-          />
-        )}
-      </ButtonsContainer>
-    </Container>
+    <Card
+      height="280px"
+      width="215px"
+      padding="0 25px"
+      bgColor={theme.colors[colorMode].bgColor}
+      isFlipped={isFlipped}
+      setFlipped={setFlipped}
+      face={(
+        <ContentsContainer>
+          <WordPackNameContainer>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
+              {getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)}
+            </Text>
+          </WordPackNameContainer>
+          <WordsCountContainer>
+            <WordsContainer>
+              <Text size={Size.XXL}>{totalNewWords}</Text>
+              <Text size={Size.SM}>{' New Words'}</Text>
+            </WordsContainer>
+            <WordsContainer>
+              <Text size={Size.XXL}>{totalInReviewWords}</Text>
+              <Text size={Size.SM}>{' Review Words'}</Text>
+            </WordsContainer>
+          </WordsCountContainer>
+          <ButtonsContainer>
+            {
+              !isDateLastCompletedToday() && !isNoWordsLeftInReview
+                ? (
+                  <Button
+                    buttonText="Start"
+                    buttonType={ButtonType.BUTTON}
+                    size={Size.SM}
+                    onClick={onClickStartButton}
+                    isDisabled={isButtonDisabled}
+                    isOpen={isOpenStartButton}
+                    modalContent={(
+                      <StartReviewWindow
+                        reviewId={reviewDTO.id!}
+                        isOpen={isOpenStartButton}
+                        onClose={onCloseStartButton}
+                        totalReviewWords={updatedReviewDTO.actualSize}
+                        setReload={setReloadCard}
+                      />
+                    )}
+                  />
+                )
+                : <ButtonUnavailable text="Completed" isWithIcon />
+            }
+          </ButtonsContainer>
+        </ContentsContainer>
+      )}
+      back={(
+        <ContentsContainer>
+          <DescriptionContainer>
+            <Text isCentered>{reviewDTO.wordPackDTO.description}</Text>
+          </DescriptionContainer>
+          <ButtonsContainer>
+            <ButtonWithIcon
+              type={ButtonWithIconType.REFRESH}
+              onClick={onClickRefreshButton}
+              isDisabled={!isNoWordsLeftInReview}
+            />
+            <ButtonWithIcon
+              type={ButtonWithIconType.CHANGE}
+              onClick={onClickChangeButton}
+              isOpen={isOpenChangeButton}
+              modalContent={(
+                <CreateOrUpdateReviewWindow
+                  isOpen={isOpenChangeButton}
+                  onClose={onCloseChangeButton}
+                  wordPackDTO={reviewDTO.wordPackDTO}
+                  setReload={setReloadCards}
+                  isButtonDisabled={false}
+                  reviewDTO={reviewDTO}
+                />
+              )}
+            />
+            <ButtonWithIcon
+              type={ButtonWithIconType.DELETE}
+              onClick={onClickRemoveButton}
+              isOpen={isOpenRemoveButton}
+              modalContent={(
+                <AlertDialog
+                  isOpen={isOpenRemoveButton}
+                  onClose={onCloseRemoveButton}
+                  handleDelete={handleRemoveReview}
+                  header="Remove this daily review?"
+                  body="Your known words and review progress will be saved if you choose to add this review again later."
+                  deleteButtonText="Remove"
+                  isButtonDisabled={isButtonDisabled}
+                  width="600px"
+                />
+              )}
+            />
+          </ButtonsContainer>
+        </ContentsContainer>
+      )}
+    />
   );
 }
 
-const Container = styled.div<{ $colorMode: ColorMode }>`
-  height: 280px;
-  width: calc(280px / 1.3);
-  padding: 0 25px;
+const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
-  border-radius: ${theme.stylesToDelete.borderRadius};
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
-`;
-
-const CompletedIconAndCloseButtonContainer = styled.div`
-  display: flex;
   justify-content: space-between;
-`;
-
-const CompletedIconContainer = styled.div`
-  height: 10px;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  margin-left: -10px;
-`;
-
-const CloseButtonContainer = styled.div`
-  margin-top: -15px;
-  margin-bottom: 15px;
-  margin-right: -15px;
+  height: 85%;
 `;
 
 const WordPackNameContainer = styled.div`
@@ -171,11 +224,11 @@ const WordPackNameContainer = styled.div`
   justify-content: center;
 `;
 
-const WordsCountContainer = styled.div<{ $height: string }>`
+const WordsCountContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-    height: ${({ $height }) => $height};
+  height: 100%;
 `;
 
 const WordsContainer = styled.div`
@@ -183,4 +236,11 @@ const WordsContainer = styled.div`
   justify-content: center;
   align-items: baseline;
   gap: 4px;
+`;
+
+const DescriptionContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;

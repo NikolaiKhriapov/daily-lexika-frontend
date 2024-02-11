@@ -15,12 +15,8 @@ type Props = {
   isButtonDisabled?: boolean;
 };
 
-InputFieldsWithButton.defaultProps = {
-  isButtonDisabled: false,
-};
-
 export default function InputFieldsWithButton(props: Props) {
-  const { validateOnMount, initialValues, validationSchema, onSubmit, inputElements, buttonText, isButtonDisabled } = props;
+  const { validateOnMount, initialValues, validationSchema, onSubmit, inputElements, buttonText, isButtonDisabled = false } = props;
 
   return (
     <Formik

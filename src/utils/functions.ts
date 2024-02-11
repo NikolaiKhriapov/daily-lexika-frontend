@@ -1,6 +1,7 @@
 import { ColorMode } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
 import { theme } from '@utils/theme';
+import { UserDTO } from '@utils/types';
 
 export const mediaBreakpointUp: (breakpoint: Breakpoint | string) => string = (breakpoint) =>
   `@media (min-width: ${breakpoint})`;
@@ -15,3 +16,15 @@ export const hiddenScrollbar = () => `
     display: none; /* WebKit */
   }
 `;
+
+export const nonHighlightableTap = () => `
+  -webkit-tap-highlight-color: transparent;
+`;
+
+export const getOriginalWordPackName = (wordPackName: string, user: UserDTO | null) => {
+  const postfix = `__${user?.id}`;
+  if (user && wordPackName.endsWith(postfix)) {
+    return wordPackName.replace(postfix, '');
+  }
+  return wordPackName;
+};

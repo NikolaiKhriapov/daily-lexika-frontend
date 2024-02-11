@@ -1,4 +1,4 @@
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import styled from 'styled-components';
 import { nonHighlightableTap } from '@utils/functions';
 
@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void;
 };
 
-export default function InfoButton(props: Props) {
+export default function ArrowRightButton(props: Props) {
   const { onClick } = props;
 
   return (
@@ -14,8 +14,8 @@ export default function InfoButton(props: Props) {
   );
 }
 
-const Component = styled(AiOutlineQuestionCircle)`
-  font-size: 16px;
+const Component = styled(MdOutlineKeyboardArrowRight)`
+  font-size: 22px;
   cursor: pointer;
   ${nonHighlightableTap};
 `;

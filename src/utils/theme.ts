@@ -16,6 +16,7 @@ const customColors = {
     progressBarBgColor: '#E4E8EE',
     progressCircularColor: '#8088A0',
     alert: '#F56565',
+    cardAddNew: 'rgba(255,255,255,0.3)',
   },
   dark: {
     background: 'rgb(20,20,20)',
@@ -31,6 +32,7 @@ const customColors = {
     progressBarBgColor: '#505050',
     progressCircularColor: '#E4E8EE',
     alert: '#EF4444',
+    cardAddNew: '#3C3C3C',
   },
   telegramBlue: 'rgb(73,150,214)',
   whatsAppGreen: 'rgb(100,205,110)',
@@ -38,7 +40,8 @@ const customColors = {
 
 const customBreakpoints = {
   base: Breakpoint.BASE,
-  sm: Breakpoint.PHONE,
+  xs: Breakpoint.PHONE,
+  sm: Breakpoint.PHONE_LG,
   md: Breakpoint.TABLET,
   lg: Breakpoint.LG,
   xl: Breakpoint.DESKTOP,
@@ -56,7 +59,11 @@ const stylesToDelete = {
 
 const theme = extendTheme({
   colors: customColors,
-  fonts: {},
+  fonts: {
+    heading: 'var(--font-rubik)',
+    body: 'var(--font-rubik)',
+    bodyCh: 'var(--font-noto-serif-sc)',
+  },
   fontSizes: {},
   breakpoints: customBreakpoints,
   stylesToDelete,

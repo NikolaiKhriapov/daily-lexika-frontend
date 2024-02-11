@@ -1,7 +1,7 @@
 {
   "extends": [
-    "next/core-web-vitals",
     "next",
+    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -33,6 +33,7 @@
     "react/jsx-indent-props": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/quotes": "off",
+    "react/require-default-props": "off",
     "react-hooks/exhaustive-deps": "off",
     "import/prefer-default-export": "off",
     "react/jsx-one-expression-per-line": "off",
@@ -54,7 +55,12 @@
     "no-nested-ternary": "off",
     "consistent-return": "off"
   },
-  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js"],
+  "ignorePatterns": [
+    "public",
+    "node_modules",
+    ".next",
+    "next.config.js"
+  ],
   "overrides": [
     {
       "files": [

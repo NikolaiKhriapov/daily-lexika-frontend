@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import * as Yup from 'yup';
+import { AuthContext } from '@context/AuthContext';
 import { successNotification } from '@services/popup-notification';
 import { createReview } from '@services/reviews';
 import { Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { ReviewDTO, WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
@@ -17,15 +19,18 @@ type Props = {
   wordPackDTO: WordPackDTO;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   isButtonDisabled: boolean;
+  reviewDTO?: ReviewDTO;
 };
 
-export default function CreateReviewWindow(props: Props) {
-  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled } = props;
+export default function CreateOrUpdateReviewWindow(props: Props) {
+  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO = null } = props;
+
+  const { user } = useContext(AuthContext);
 
   const initialValues = {
-    maxNewWordsPerDay: 5,
-    maxReviewWordsPerDay: 20,
-    wordPackName: `${wordPackDTO.name}`,
+    maxNewWordsPerDay: reviewDTO ? reviewDTO.maxNewWordsPerDay : 5,
+    maxReviewWordsPerDay: reviewDTO ? reviewDTO.maxReviewWordsPerDay : 20,
+    wordPackDTO,
   };
 
   const validationSchema = Yup.object({
@@ -39,11 +44,11 @@ export default function CreateReviewWindow(props: Props) {
       .required('Required'),
   });
 
-  const handleOnSubmit = (reviewDTO: ReviewDTO, { setSubmitting }: any) => {
+  const handleOnSubmit = (review: ReviewDTO, { setSubmitting }: any) => {
     setSubmitting(true);
-    createReview(reviewDTO)
+    createReview(review)
       .then(() => {
-        successNotification('Review saved', `${wordPackDTO.name} was successfully saved`);
+        successNotification('Review saved', `${getOriginalWordPackName(wordPackDTO.name, user)} was successfully saved`);
         setReload(true);
       })
       .catch((error) => console.error(error.code, error.response.data.message))
@@ -53,9 +58,10 @@ export default function CreateReviewWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
+      width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={wordPackDTO.name}
+      header={getOriginalWordPackName(wordPackDTO.name, user)}
       body={(
         <>
           <TotalWords>
@@ -83,6 +89,7 @@ export default function CreateReviewWindow(props: Props) {
                   type="number"
                   placeholder="1"
                 />
+                <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
               </>
             )}
             buttonText="Submit"

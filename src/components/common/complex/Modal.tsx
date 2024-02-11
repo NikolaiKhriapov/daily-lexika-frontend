@@ -12,26 +12,25 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { Breakpoint, Size } from '@utils/constants';
-import { borderStyles, hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, hiddenScrollbar, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 interface Props extends Omit<ModalProps, 'children'> {
   header: React.ReactNode;
   body: React.ReactNode;
   width?: string;
+  height?: string;
 }
 
-Modal.defaultProps = {
-  width: undefined,
-};
+export default function Modal(props: Props) {
+  const { header, body, width, height, ...rest } = props;
 
-export default function Modal({ header, body, width, ...rest }: Props) {
   const { colorMode } = useColorMode();
 
   return (
     <ChakraModal isCentered {...rest} size={Size.XXXL}>
       <ModalOverlay />
-      <ModalContentStyled $colorMode={colorMode} $width={width}>
+      <ModalContentStyled $colorMode={colorMode} $width={width} $height={height}>
         <ModalCloseButton />
         <ModalHeaderStyled fontSize={Size.XL}>{header}</ModalHeaderStyled>
         <ModalBodyStyled>{body}</ModalBodyStyled>
@@ -41,17 +40,20 @@ export default function Modal({ header, body, width, ...rest }: Props) {
   );
 }
 
-const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width: string | undefined }>`
+const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width: string | undefined, $height: string | undefined }>`
   padding: 6px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   min-width: 90%;
   max-width: 90% !important;
+  min-height: fit-content;
   max-height: 90vh;
   width: ${({ $width }) => $width || 'fit-content'} !important;
+  height: ${({ $height }) => $height || 'fit-content'} !important;
   overflow-y: auto;
   ${hiddenScrollbar};
+  ${nonHighlightableTap};
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     min-width: 450px;

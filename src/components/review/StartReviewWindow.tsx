@@ -31,24 +31,10 @@ export default function StartReviewWindow(props: Props) {
   const [isReviewComplete, setReviewComplete] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const [isAnswerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const fetchReviewAction = (answer: boolean | null) => {
-    setButtonDisabled(true);
-    if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
-      || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
-      successNotification(
-        `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
-        'This word will still be shown occasionally during reviews',
-      );
-    }
-    if (answer === false && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.KNOWN])) {
-      successNotification(
-        `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
-        'This word will be shown more frequently so that you can relearn it',
-      );
-    }
+    setLoading(true);
     processReviewAction(reviewId, answer)
       .then((response) => {
         if (response.data != null && response.data.reviewWordDTO) {
@@ -59,10 +45,25 @@ export default function StartReviewWindow(props: Props) {
           setReviewComplete(true);
         }
         setReload(true);
-        setButtonDisabled(false);
-        setThrown(false);
       })
-      .catch((error) => console.error(error.code, error.response.data.message));
+      .catch((error) => console.error(error.code, error.response.data.message))
+      .finally(() => {
+        setLoading(false);
+        setThrown(false);
+        if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
+          || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
+          successNotification(
+            `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
+            'This word will still be shown occasionally during reviews',
+          );
+        }
+        if (answer === false && reviewWordDTO?.status.toString() === Status[Status.KNOWN]) {
+          successNotification(
+            `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
+            'This word will be shown more frequently so that you can relearn it',
+          );
+        }
+      });
   };
 
   useEffect(() => {
@@ -79,13 +80,12 @@ export default function StartReviewWindow(props: Props) {
     fetchReviewAction(answer);
     setFlipped(false);
     setThrown(true);
-    setAnswerCorrect(answer);
   };
 
   const getReviewWordName = (reviewWord: WordDTO): string => {
     const map: Record<RoleName, string> = {
-      [RoleName.USER_ENGLISH]: reviewWord.nameEnglish,
-      [RoleName.USER_CHINESE]: reviewWord.nameChineseSimplified,
+      [RoleName.USER_ENGLISH]: reviewWord.wordDataDTO.nameEnglish,
+      [RoleName.USER_CHINESE]: reviewWord.wordDataDTO.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
     return map[user!.role!];
@@ -95,7 +95,7 @@ export default function StartReviewWindow(props: Props) {
 
   return (
     <Modal
-      width={useBreakpointValue({ base: '80vw', lg: '1000px' })}
+      width={useBreakpointValue({ base: '80vw', xl: '1000px' })}
       isOpen={isOpen}
       onClose={onClose}
       header={null}
@@ -114,20 +114,20 @@ export default function StartReviewWindow(props: Props) {
                     setFlipped={setFlipped}
                     isThrown={isThrown}
                     pressButton={pressButton}
-                    answer={isAnswerCorrect}
+                    isLoading={isLoading}
                   />
                   <ButtonsContainer>
                     <Button
-                      buttonText={reviewWordDTO.status === Status.NEW ? 'Add to review' : 'Forgot'}
-                      buttonType={ButtonType.BUTTON}
+                      buttonText="Forgot"
+                      buttonType={ButtonType.BUTTON_RED}
                       onClick={() => pressButton(false)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                     <Button
-                      buttonText={reviewWordDTO.status === Status.NEW ? 'Know' : 'Remembered'}
+                      buttonText="Remembered"
                       buttonType={ButtonType.BUTTON}
                       onClick={() => pressButton(true)}
-                      isDisabled={isButtonDisabled}
+                      isDisabled={isLoading}
                     />
                   </ButtonsContainer>
                 </CardContainer>
@@ -148,7 +148,7 @@ const Container = styled.div`
   overflow-y: hidden;
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    gap: 100px;
+    gap: 70px;
     margin: 0 0 50px 0;
   }
 `;
@@ -164,6 +164,7 @@ const Placeholder = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 738px;
   }
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 1000px;
   }
@@ -171,7 +172,7 @@ const Placeholder = styled.div`
 
 const ProgressBarContainer = styled.div`
   margin: 20px 10px;
-  
+
   ${mediaBreakpointUp('450px')} {
     margin: 20px 50px;
   }

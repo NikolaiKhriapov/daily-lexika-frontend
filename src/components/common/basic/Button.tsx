@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Button as ChakraButton, ButtonProps, ColorMode, useColorMode } from '@chakra-ui/react';
-import { Breakpoint, ButtonType, FontWeight } from '@utils/constants';
-import { mediaBreakpointUp } from '@utils/functions';
+import { ButtonType, FontWeight } from '@utils/constants';
+import { nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 interface Props extends ButtonProps {
   buttonType: ButtonType;
   buttonText: React.ReactNode;
+  isDisabled?: boolean,
+  isOpen?: boolean,
+  modalContent?: ReactNode,
 }
 
-export default function Button({ buttonType, buttonText, ...rest }: Props) {
+export default function Button(props: Props) {
+  const { buttonType, buttonText, isDisabled = false, isOpen = false, modalContent, ...rest } = props;
+
   const { colorMode } = useColorMode();
 
   const getButtonType = () => {
@@ -26,48 +31,46 @@ export default function Button({ buttonType, buttonText, ...rest }: Props) {
 
   if (buttonType === ButtonType.LINK) {
     return (
-      <ChakraButton
-        variant={ButtonType.LINK}
-        color={theme.stylesToDelete.link}
-        fontWeight={FontWeight.NORMAL}
-        {...rest}
-      >
-        {buttonText}
-      </ChakraButton>
+      <>
+        <ChakraButton
+          variant={ButtonType.LINK}
+          color={theme.stylesToDelete.link}
+          fontWeight={FontWeight.NORMAL}
+          isDisabled={isDisabled}
+          {...rest}
+        >
+          {buttonText}
+        </ChakraButton>
+        {isOpen && modalContent}
+      </>
     );
   }
 
   return (
-    <ChakraButtonStyled
-      className={`${buttonType}`}
-      type={getButtonType()}
-      $colorMode={colorMode}
-      {...rest}
-    >
-      {buttonText}
-    </ChakraButtonStyled>
+    <>
+      <ChakraButtonStyled
+        className={`${buttonType}`}
+        type={getButtonType()}
+        $colorMode={colorMode}
+        {...rest}
+      >
+        {buttonText}
+      </ChakraButtonStyled>
+      {isOpen && modalContent}
+    </>
   );
 }
 
 const ChakraButtonStyled = styled(ChakraButton)<{ $colorMode: ColorMode }>`
-  &.standard {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor} !important;
+  color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
+  ${nonHighlightableTap};
+
+  &.standard:hover {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
   }
 
-  &.redOnHover {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor} !important;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
-
-    &.standard:hover {
-      background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
-    }
-
-    &.redOnHover:hover {
-      background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor};
-    }
+  &.redOnHover:hover {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor};
   }
 `;

@@ -1,3 +1,5 @@
+import { Status } from '@utils/types';
+
 const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
 
 const URL_AUTH = `${BASE_URL}/auth`;
@@ -25,6 +27,7 @@ export const ApiEndpointsReviews = {
 const URL_USERS = `${BASE_URL}/user`;
 export const ApiEndpointsUsers = {
   updateUserInfo: () => `${URL_USERS}/account/info`,
+  updatePassword: () => `${URL_USERS}/account/password`,
   deleteAccount: () => `${URL_USERS}/account`,
 };
 
@@ -38,4 +41,18 @@ export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
+  createCustomWordPack: () => `${URL_WORD_PACKS}`,
+  deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
+  addWordToCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/add-word/${wordId}`,
+  removeWordFromCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/remove-word/${wordId}`,
+};
+
+const URL_WORDS = `${BASE_URL}/flashcards/words`;
+export const ApiEndpointsWords = {
+  getAllWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
+};
+
+const URL_WORD_DATA = `${BASE_URL}/flashcards/word-data`;
+export const ApiEndpointsWordData = {
+  getAllWordData: () => `${URL_WORD_DATA}`,
 };
