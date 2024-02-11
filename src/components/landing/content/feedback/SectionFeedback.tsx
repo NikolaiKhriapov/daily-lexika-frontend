@@ -71,7 +71,7 @@ const Container = styled.div`
     position: relative;
     user-select: none;
     mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0));
-    
+    overflow: hidden;
 `;
 
 const move = keyframes`
