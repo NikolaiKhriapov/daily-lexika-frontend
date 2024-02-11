@@ -160,7 +160,7 @@ const WordInfoContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   height: 60vh;
-  overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
 `;
 
