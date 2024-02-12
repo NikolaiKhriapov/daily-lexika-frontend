@@ -103,7 +103,7 @@ export interface StatisticsDTO {
   currentStreak?: number;
   recordStreak?: number;
   wordsKnown: number;
-  // charactersKnown: number;
+  charactersKnown: number;
   // idiomsKnown: number;
   listOfReviewStatisticsDTO: ReviewStatisticsDTO[];
 }

@@ -61,7 +61,7 @@ export default function StatisticsPageContent() {
           <StatsCard title="Words Known" stat={statisticsDTO?.wordsKnown} icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} isClickable onOpen={onOpenStatsWords} />
           {isOpenStatsWords && (<StatsWordsWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
           {user?.role === RoleName.USER_CHINESE && (
-            <StatsCard title="Characters Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
+            <StatsCard title="Characters Known" stat={statisticsDTO?.charactersKnown} icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
           )}
           <StatsCard title="Idioms Known" icon={<GiYinYang size="45px" style={{ width: '45px', height: '45px' }} />} />
         </CardsContainer>
