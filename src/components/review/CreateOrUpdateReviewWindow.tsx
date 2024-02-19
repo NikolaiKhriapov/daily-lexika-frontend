@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import { AuthContext } from '@context/AuthContext';
-import { successNotification } from '@services/popup-notification';
-import { createReview } from '@services/reviews';
+import { errorNotification, successNotification } from '@services/popup-notification';
+import { useCreateReviewMutation, useUpdateReviewMutation } from '@store/api/reviewsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { ReviewDTO, WordPackDTO } from '@utils/types';
+import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import Modal from '@components/common/complex/Modal';
@@ -16,21 +17,23 @@ import TextInput from '@components/common/complex/TextInput';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  wordPackDTO: WordPackDTO;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
-  isButtonDisabled: boolean;
-  reviewDTO?: ReviewDTO;
+  wordPack: WordPackDTO;
+  review?: ReviewDTO;
 };
 
 export default function CreateOrUpdateReviewWindow(props: Props) {
-  const { isOpen, onClose, wordPackDTO, setReload, isButtonDisabled, reviewDTO = null } = props;
+  const { isOpen, onClose, wordPack, review = null } = props;
 
-  const { user } = useContext(AuthContext);
+  const { data: user } = useGetUserInfoQuery();
+  const [updateReview, { isLoading: isLoadingUpdateReview }] = useUpdateReviewMutation();
+  const [createReview, { isLoading: isLoadingCreateReview }] = useCreateReviewMutation();
+
+  if (!user) return <Spinner />;
 
   const initialValues = {
-    maxNewWordsPerDay: reviewDTO ? reviewDTO.maxNewWordsPerDay : 5,
-    maxReviewWordsPerDay: reviewDTO ? reviewDTO.maxReviewWordsPerDay : 20,
-    wordPackDTO,
+    maxNewWordsPerDay: review?.maxNewWordsPerDay || 5,
+    maxReviewWordsPerDay: review?.maxReviewWordsPerDay || 20,
+    wordPackDTO: wordPack,
   };
 
   const validationSchema = Yup.object({
@@ -44,15 +47,20 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       .required('Required'),
   });
 
-  const handleOnSubmit = (review: ReviewDTO, { setSubmitting }: any) => {
-    setSubmitting(true);
-    createReview(review)
-      .then(() => {
-        successNotification('Review saved', `${getOriginalWordPackName(wordPackDTO.name, user)} was successfully saved`);
-        setReload(true);
-      })
-      .catch((error) => console.error(error.code, error.response.data.message))
-      .finally(() => setSubmitting(false));
+  const handleOnSubmit = (reviewDTO: ReviewDTO) => {
+    if (review) {
+      updateReview({ reviewId: review!.id!, reviewDTO })
+        .unwrap()
+        .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .catch((error) => errorNotification('', error.data.message))
+        .finally(() => onClose());
+    } else {
+      createReview(reviewDTO)
+        .unwrap()
+        .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .catch((error) => errorNotification('', error.data.message))
+        .finally(() => onClose());
+    }
   };
 
   return (
@@ -61,15 +69,15 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(wordPackDTO.name, user)}
+      header={getOriginalWordPackName(wordPack.name, user)}
       body={(
         <>
           <TotalWords>
             <TbCards />
-            <Text>{wordPackDTO.totalWords}</Text>
+            <Text>{wordPack.totalWords}</Text>
           </TotalWords>
           <Description>
-            <Text>{wordPackDTO.description}</Text>
+            <Text>{wordPack.description}</Text>
           </Description>
           <InputFieldsWithButton
             validateOnMount
@@ -94,7 +102,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             )}
             buttonText="Submit"
             onSubmit={handleOnSubmit}
-            isButtonDisabled={isButtonDisabled}
+            isButtonDisabled={isLoadingCreateReview && isLoadingUpdateReview}
           />
         </>
       )}

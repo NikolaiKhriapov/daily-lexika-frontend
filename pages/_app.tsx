@@ -1,8 +1,8 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
 import AuthProvider from '@context/AuthContext';
-import NotificationsProvider from '@context/NotificationsContext';
-import WordDataProvider from '@context/WordDataContext';
+import { store } from '@store/index';
 import { fonts } from '@utils/fonts';
 import { theme } from '@utils/theme';
 
@@ -18,13 +18,11 @@ export default function MyApp({ Component, pageProps }: { Component: any; pagePr
         `}
       </style>
       <ChakraProvider theme={theme}>
-        <AuthProvider>
-          <NotificationsProvider>
-            <WordDataProvider>
-              <Component {...pageProps} />
-            </WordDataProvider>
-          </NotificationsProvider>
-        </AuthProvider>
+        <Provider store={store}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </Provider>
       </ChakraProvider>
     </>
   );

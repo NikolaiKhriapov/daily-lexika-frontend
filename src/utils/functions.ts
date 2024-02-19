@@ -1,7 +1,7 @@
 import { ColorMode } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { UserDTO } from '@utils/types';
+import { UserDTO, WordDataDTO } from '@utils/types';
 
 export const mediaBreakpointUp: (breakpoint: Breakpoint | string) => string = (breakpoint) =>
   `@media (min-width: ${breakpoint})`;
@@ -27,4 +27,15 @@ export const getOriginalWordPackName = (wordPackName: string, user: UserDTO | nu
     return wordPackName.replace(postfix, '');
   }
   return wordPackName;
+};
+
+export const removeAccent = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+export const sortWordsChinese = (a: WordDataDTO, b: WordDataDTO) => {
+  const nameA = removeAccent(a.transcription).toLowerCase();
+  const nameB = removeAccent(b.transcription).toLowerCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
 };

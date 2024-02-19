@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
-import { successNotification } from '@services/popup-notification';
-import { deleteReview, getReview, refreshReview } from '@services/reviews';
+import { errorNotification, successNotification } from '@services/popup-notification';
+import { useDeleteReviewMutation, useRefreshReviewMutation } from '@store/api/reviewsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
+import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -19,79 +20,43 @@ import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewW
 import StartReviewWindow from '@components/review/StartReviewWindow';
 
 type Props = {
-  reviewDTO: ReviewDTO;
-  fetchAllReviewsDTO: () => void;
+  review: ReviewDTO;
 };
 
 export default function ReviewCard(props: Props) {
-  const { reviewDTO, fetchAllReviewsDTO } = props;
+  const { review } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
-  const [updatedReviewDTO, setUpdatedReviewDTO] = useState(reviewDTO);
-  const [reviewRemoved, setReviewRemoved] = useState(false);
-  const [reviewRefreshed, setReviewRefreshed] = useState(false);
-  const [reloadCard, setReloadCard] = useState<boolean>(false);
-  const [reloadCards, setReloadCards] = useState<boolean>(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
 
-  const isDateLastCompletedToday = () =>
-    new Date(updatedReviewDTO.dateLastCompleted!).getDate() === new Date().getUTCDate();
-  const isNoWordsLeftInReview = updatedReviewDTO.listOfWordDTO?.length === 0;
+  const { data: user } = useGetUserInfoQuery();
+  const [refreshReview, { isLoading: isLoadingRefreshReview }] = useRefreshReviewMutation();
+  const [deleteReview, { isLoading: isLoadingDeleteReview }] = useDeleteReviewMutation();
 
-  const fetchReviewDTO = (reviewId: number) => {
-    getReview(reviewId)
-      .then((response) => setUpdatedReviewDTO(response.data))
-      .catch((error) => console.error(error.code, error.response.data.message));
+  if (!user) return <Spinner />;
+
+  const isNoWordsLeftInReview = review.listOfWordDTO?.length === 0;
+
+  const requestRefreshReview = () => {
+    refreshReview(review.id!)
+      .unwrap()
+      .then(() => successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDTO.name, user)} refreshed successfully`))
+      .catch((error) => errorNotification('', error.data.message));
   };
-
-  const requestRefreshReview = (reviewId: number) => {
-    setButtonDisabled(true);
-    setReviewRefreshed(true);
-    refreshReview(reviewId)
-      .then(() => fetchReviewDTO(reviewId))
-      .catch((error) => console.error(error.code, error.response.data.message))
-      .finally(() => {
-        setReviewRefreshed(false);
-        setButtonDisabled(false);
-      });
-  };
-
-  useEffect(() => {
-    if (!reviewRemoved && !reviewRefreshed && reloadCard) {
-      fetchReviewDTO(reviewDTO.id!);
-      setReloadCard(false);
-    }
-  }, [reloadCard]);
-
-  useEffect(() => {
-    if (reloadCards) {
-      fetchAllReviewsDTO();
-      setReloadCards(false);
-    }
-  }, [reloadCards]);
 
   const handleRemoveReview = () => {
-    setButtonDisabled(true);
-    setReviewRemoved(true);
-    deleteReview(reviewDTO.id!)
-      .then(() => {
-        successNotification('Review removed successfully', `${getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)} removed successfully`);
-        fetchAllReviewsDTO();
-      })
-      .catch((e) => console.error(e.code, e.response.data.message))
-      .finally(() => {
-        onCloseRemoveButton();
-        setButtonDisabled(false);
-      });
+    deleteReview(review.id!)
+      .unwrap()
+      .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDTO.name, user)} removed successfully`))
+      .catch((error) => errorNotification('', error.data.message))
+      .finally(() => onCloseRemoveButton());
   };
 
-  const totalNewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
-  const totalInReviewWords = updatedReviewDTO.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
+  const totalNewWords = review.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
+  const totalInReviewWords = review.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
 
   const onClickStartButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -99,7 +64,7 @@ export default function ReviewCard(props: Props) {
   };
   const onClickRefreshButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    requestRefreshReview(reviewDTO.id!);
+    requestRefreshReview();
   };
   const onClickChangeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -122,7 +87,7 @@ export default function ReviewCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {getOriginalWordPackName(reviewDTO.wordPackDTO.name, user)}
+              {getOriginalWordPackName(review.wordPackDTO.name, user)}
             </Text>
           </WordPackNameContainer>
           <WordsCountContainer>
@@ -137,22 +102,20 @@ export default function ReviewCard(props: Props) {
           </WordsCountContainer>
           <ButtonsContainer>
             {
-              !isDateLastCompletedToday() && !isNoWordsLeftInReview
+              !isNoWordsLeftInReview
                 ? (
                   <Button
                     buttonText="Start"
                     buttonType={ButtonType.BUTTON}
                     size={Size.SM}
                     onClick={onClickStartButton}
-                    isDisabled={isButtonDisabled}
+                    isDisabled={false}
                     isOpen={isOpenStartButton}
                     modalContent={(
                       <StartReviewWindow
-                        reviewId={reviewDTO.id!}
+                        review={review}
                         isOpen={isOpenStartButton}
                         onClose={onCloseStartButton}
-                        totalReviewWords={updatedReviewDTO.actualSize}
-                        setReload={setReloadCard}
                       />
                     )}
                   />
@@ -165,13 +128,13 @@ export default function ReviewCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text isCentered>{reviewDTO.wordPackDTO.description}</Text>
+            <Text isCentered>{review.wordPackDTO.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon
               type={ButtonWithIconType.REFRESH}
               onClick={onClickRefreshButton}
-              isDisabled={!isNoWordsLeftInReview}
+              isDisabled={!isNoWordsLeftInReview || isLoadingRefreshReview}
             />
             <ButtonWithIcon
               type={ButtonWithIconType.CHANGE}
@@ -181,10 +144,8 @@ export default function ReviewCard(props: Props) {
                 <CreateOrUpdateReviewWindow
                   isOpen={isOpenChangeButton}
                   onClose={onCloseChangeButton}
-                  wordPackDTO={reviewDTO.wordPackDTO}
-                  setReload={setReloadCards}
-                  isButtonDisabled={false}
-                  reviewDTO={reviewDTO}
+                  wordPack={review.wordPackDTO}
+                  review={review}
                 />
               )}
             />
@@ -200,7 +161,7 @@ export default function ReviewCard(props: Props) {
                   header="Remove this daily review?"
                   body="Your known words and review progress will be saved if you choose to add this review again later."
                   deleteButtonText="Remove"
-                  isButtonDisabled={isButtonDisabled}
+                  isButtonDisabled={isLoadingDeleteReview}
                   width="600px"
                 />
               )}

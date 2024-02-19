@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { NotificationsContext } from '@context/NotificationsContext';
-import { readNotification } from '@services/notifications';
+import { errorNotification } from '@services/popup-notification';
+import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store/api/notificationsAPI';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -19,19 +19,17 @@ import NotificationWindow from '@components/shared/navbar/NotificationWindow';
 
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
-  const { allNotificationsDTO, setAllNotificationsDTO } = useContext(NotificationsContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedNotification, setSelectedNotification] = useState<NotificationDTO | null>(null);
 
+  const { data: allNotifications = [] } = useGetAllNotificationsQuery();
+  const [readNotification] = useReadNotificationMutation();
+
   const handleNotificationClick = (notificationDTO: NotificationDTO) => {
-    readNotification(notificationDTO.notificationId);
+    readNotification(notificationDTO.notificationId)
+      .unwrap()
+      .catch((error) => errorNotification('', error.data.message));
     setSelectedNotification(notificationDTO);
-    setAllNotificationsDTO((prevNotificationsDTO) => prevNotificationsDTO.map((notification) => {
-      if (notification.notificationId === notificationDTO.notificationId) {
-        return { ...notification, isRead: true };
-      }
-      return notification;
-    }));
   };
 
   const handleCloseNotificationModal = () => setSelectedNotification(null);
@@ -42,8 +40,7 @@ export default function NotificationsComponent() {
     return new Date(year, month - 1, day).toLocaleDateString(undefined, options);
   };
 
-  const unreadNotifications = allNotificationsDTO
-    .filter((notificationDTO) => !notificationDTO.isRead);
+  const unreadNotifications = allNotifications.filter((notificationDTO) => !notificationDTO.isRead);
 
   return (
     <Notifications $colorMode={colorMode}>
@@ -72,7 +69,7 @@ export default function NotificationsComponent() {
                     {formattedDate(notificationDTO.sentAt)}
                   </Text>
                 </MenuItemStyled>
-                {index < allNotificationsDTO.length - 1 && <MenuDivider />}
+                {index < allNotifications.length - 1 && <MenuDivider />}
               </NotificationContainer>
             )))
             : (
@@ -93,7 +90,7 @@ export default function NotificationsComponent() {
                   isOpen={isOpen}
                   onClose={onClose}
                   formattedDate={formattedDate}
-                  allNotificationsDTO={allNotificationsDTO}
+                  allNotificationsDTO={allNotifications}
                   handleNotificationClick={handleNotificationClick}
                 />
               )}

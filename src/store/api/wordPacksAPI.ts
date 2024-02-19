@@ -1,0 +1,100 @@
+import { apiSlice, providesList } from '@store/api/apiSlice';
+import { wordDataAPI } from '@store/api/wordDataAPI';
+import { ApiEndpointsWordPacks } from '@utils/apiMethods';
+import { QueryMethods } from '@utils/constants';
+import { WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
+
+export const wordPacksAPI = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getAllWordPacks: builder.query<WordPackDTO[], void>({
+      query: () => ({
+        url: ApiEndpointsWordPacks.getAllWordPacks(),
+        method: QueryMethods.GET,
+      }),
+      providesTags: (result) => providesList(result, 'WordPacks'),
+    }),
+    createCustomWordPack: builder.mutation<void, WordPackDTO>({
+      query: (wordPackDTO) => ({
+        url: ApiEndpointsWordPacks.createCustomWordPack(),
+        body: wordPackDTO,
+        method: QueryMethods.POST,
+      }),
+      invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }],
+    }),
+    deleteCustomWordPack: builder.mutation<void, string>({
+      query: (wordPackName) => ({
+        url: ApiEndpointsWordPacks.deleteCustomWordPack(wordPackName),
+        method: QueryMethods.DELETE,
+      }),
+      invalidatesTags: [{ type: 'WordPacks', id: 'LIST' }, { type: 'Reviews', id: 'LIST' }],
+    }),
+    getAllWordsForWordPack: builder.query<WordDTO[], { wordPackName: string, page: number, size: number }>({
+      query: ({ wordPackName, page, size }) => ({
+        url: ApiEndpointsWordPacks.getAllWordsForWordPack(wordPackName, page, size),
+        method: QueryMethods.GET,
+      }),
+      providesTags: ['AllWordsForWordPack'],
+    }),
+    addWordToCustomWordPack: builder.mutation<WordDataDTO, { wordPackName: string, wordDataId: number }>({
+      query: ({ wordPackName, wordDataId }) => ({
+        url: ApiEndpointsWordPacks.addWordToCustomWordPack(wordPackName, wordDataId),
+        method: QueryMethods.GET,
+      }),
+      invalidatesTags: ['AllWordsForWordPack'],
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
+          const wordPack = draft?.find((item) => item.name === args.wordPackName);
+          if (wordPack) {
+            wordPack.totalWords += 1;
+          }
+        }));
+        try {
+          const { data: updatedWordData } = await queryFulfilled;
+          dispatch(wordDataAPI.util?.updateQueryData('getAllWordData', undefined, (draft) => {
+            const wordData = draft?.find((item) => item.id === args.wordDataId);
+            if (wordData) {
+              Object.assign(wordData, updatedWordData);
+            }
+          }));
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
+    }),
+    removeWordFromCustomWordPack: builder.mutation<WordDataDTO, { wordPackName: string, wordDataId: number }>({
+      query: ({ wordPackName, wordDataId }) => ({
+        url: ApiEndpointsWordPacks.removeWordFromCustomWordPack(wordPackName, wordDataId),
+        method: QueryMethods.GET,
+      }),
+      invalidatesTags: ['AllWordsForWordPack'],
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
+          const wordPack = draft?.find((item) => item?.name === args.wordPackName);
+          if (wordPack) {
+            wordPack.totalWords -= 1;
+          }
+        }));
+        try {
+          const { data: updatedWordData } = await queryFulfilled;
+          dispatch(wordDataAPI.util?.updateQueryData('getAllWordData', undefined, (draft) => {
+            const wordData = draft?.find((item) => item?.id === args.wordDataId);
+            if (wordData) {
+              Object.assign(wordData, updatedWordData);
+            }
+          }));
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
+    }),
+  }),
+});
+
+export const {
+  useGetAllWordPacksQuery,
+  useCreateCustomWordPackMutation,
+  useDeleteCustomWordPackMutation,
+  useGetAllWordsForWordPackQuery,
+  useAddWordToCustomWordPackMutation,
+  useRemoveWordFromCustomWordPackMutation,
+} = wordPacksAPI;

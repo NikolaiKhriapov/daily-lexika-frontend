@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Box } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
@@ -131,53 +131,53 @@ export default function SectionDemoClass() {
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const DemoClassBlock1 = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const TextContainer = styled.div`
-    display: flex;
-    border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
-    border-radius: 30px;
-    width: 706px;
-    background-color: ${theme.colors.light.bgColor};
-    padding: 20px;
+  display: flex;
+  border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
+  border-radius: 30px;
+  width: 706px;
+  background-color: ${theme.colors.light.bgColor};
+  padding: 20px;
 `;
 
 const YoutubeVideoContainer = styled.div`
-    display: flex;
-    border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
-    border-radius: 30px;
-    overflow: hidden;
-    width: fit-content;
+  display: flex;
+  border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
+  border-radius: 30px;
+  overflow: hidden;
+  width: fit-content;
 `;
 
 const DemoClassBlock2 = styled.div`
 `;
 
 const DemoSubmitForm = styled(Box)`
-    width: 480px;
-    padding: 30px;
-    background-color: ${theme.colors.light.bgColor};
-    border: ${borderStyles('light')};
-    border-radius: 30px;
+  width: 480px;
+  padding: 30px;
+  background-color: ${theme.colors.light.bgColor};
+  border: ${borderStyles('light')};
+  border-radius: 30px;
 `;
 
 const InputElements = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 `;
 
 const Space = styled.div<{ $height: number }>`
-    display: flex;
-    height: ${({ $height }) => `${$height}px`};
+  display: flex;
+  height: ${({ $height }) => `${$height}px`};
 `;

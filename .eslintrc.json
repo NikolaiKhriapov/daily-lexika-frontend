@@ -39,6 +39,7 @@
     "react/jsx-one-expression-per-line": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-no-constructed-context-values": "off",
+    "no-param-reassign": "off",
     //    "operator-linebreak": "error",
     //    "@typescript-eslint/comma-dangle": "error",
     "react/no-array-index-key": "off",
@@ -53,7 +54,8 @@
     "react/jsx-props-no-spreading": "off",
     "no-trailing-spaces": "off",
     "no-nested-ternary": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["global", "jsx"] }]
   },
   "ignorePatterns": [
     "public",
@@ -85,8 +87,8 @@
                 "^(@chakra-ui)(/.*|$)",
                 "^(@public)(/.*|$)",
                 "^(@context)(/.*|$)",
-                "^(@API)(/.*|$)",
                 "^(@services)(/.*|$)",
+                "^(@store)(/.*|$)",
                 "^(@utils)(/.*|$)",
                 "^(@pages)(/.*|$)",
                 "^(@components)(/.*|$)",

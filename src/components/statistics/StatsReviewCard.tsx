@@ -1,38 +1,41 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { FontWeight, Size } from '@utils/constants';
 import { borderStyles, getOriginalWordPackName, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDTO } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
+import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import StatsReviewWindow from '@components/statistics/StatsReviewWindow';
 
 type Props = {
-  reviewStatisticsDTO: ReviewStatisticsDTO;
+  reviewStatistics: ReviewStatisticsDTO;
 };
 
 export default function StatsReviewCard(props: Props) {
-  const { reviewStatisticsDTO } = props;
+  const { reviewStatistics } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const wordsTotal = reviewStatisticsDTO.wordsNew + reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown;
+  const { data: user } = useGetUserInfoQuery();
+
+  const wordsTotal = reviewStatistics.wordsNew + reviewStatistics.wordsInReview + reviewStatistics.wordsKnown;
 
   const wordsPercentage = {
-    inReview: reviewStatisticsDTO && Math.round(wordsTotal < 1 ? 0 : (reviewStatisticsDTO.wordsInReview / wordsTotal) * 100),
-    known: reviewStatisticsDTO && Math.round(wordsTotal < 1 ? 0 : (reviewStatisticsDTO.wordsKnown / wordsTotal) * 100),
+    inReview: reviewStatistics && Math.round(wordsTotal < 1 ? 0 : (reviewStatistics.wordsInReview / wordsTotal) * 100),
+    known: reviewStatistics && Math.round(wordsTotal < 1 ? 0 : (reviewStatistics.wordsKnown / wordsTotal) * 100),
   };
+
+  if (!user) return <Spinner />;
 
   return (
     <>
       <Container $colorMode={colorMode} shadow='2xl' onClick={onOpen}>
         <WordPackNameAndInfoButton>
-          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{getOriginalWordPackName(reviewStatistics.wordPackName, user)}</Text>
         </WordPackNameAndInfoButton>
         <Stats>
           <Percentage>
@@ -40,7 +43,7 @@ export default function StatsReviewCard(props: Props) {
             <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
           </Percentage>
           <Text fontWeight={FontWeight.SEMIBOLD}>
-            {`${reviewStatisticsDTO.wordsKnown}/${wordsTotal}`}
+            {`${reviewStatistics.wordsKnown}/${wordsTotal}`}
           </Text>
         </Stats>
         <ProgressBar value={wordsPercentage.known || 0} />
@@ -49,7 +52,7 @@ export default function StatsReviewCard(props: Props) {
         <StatsReviewWindow
           isOpen={isOpen}
           onClose={onClose}
-          reviewStatisticsDTO={reviewStatisticsDTO}
+          reviewStatisticsDTO={reviewStatistics}
           wordsPercentage={wordsPercentage}
           wordsTotal={wordsTotal}
         />
@@ -75,7 +78,7 @@ const WordPackNameAndInfoButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-    height: 35px;
+  height: 35px;
 `;
 
 const Stats = styled.div`

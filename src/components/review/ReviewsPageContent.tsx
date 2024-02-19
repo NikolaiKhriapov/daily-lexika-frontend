@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getAllReviews } from '@services/reviews';
+import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { Size } from '@utils/constants';
-import { ReviewDTO } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
@@ -11,37 +10,12 @@ import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 import ReviewCard from '@components/review/ReviewCard';
 
 export default function ReviewsPageContent() {
-  const [allReviewsDTO, setAllReviewsDTO] = useState<ReviewDTO[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { data: allReviews = [], isLoading, isError } = useGetAllReviewsQuery();
 
-  const fetchAllReviewsDTO = () => {
-    setLoading(true);
-    getAllReviews()
-      .then((response) => {
-        const { data } = response;
-        setAllReviewsDTO(data.sort((a, b) => a.wordPackDTO.name.localeCompare(b.wordPackDTO.name)));
-      })
-      .catch((e) => {
-        setError(e.response.data.message);
-        console.error(e.code, e.response.data.message);
-      })
-      .finally(() => setLoading(false));
-  };
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorComponent />;
 
-  useEffect(() => {
-    fetchAllReviewsDTO();
-  }, []);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <ErrorComponent />;
-  }
-
-  if (allReviewsDTO.length <= 0) {
+  if (!allReviews || allReviews.length === 0) {
     return (
       <IndexPageContainer>
         <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
@@ -54,11 +28,10 @@ export default function ReviewsPageContent() {
 
   return (
     <Container>
-      {allReviewsDTO.map((reviewDTO) => (
+      {allReviews.map((reviewDTO) => (
         <ReviewCard
           key={reviewDTO.id}
-          reviewDTO={reviewDTO}
-          fetchAllReviewsDTO={fetchAllReviewsDTO}
+          review={reviewDTO}
         />
       ))}
     </Container>

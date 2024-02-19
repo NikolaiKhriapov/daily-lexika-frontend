@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
-import { AuthContext } from '@context/AuthContext';
-import { getAllWordsForWordPack } from '@services/word-packs';
+import { Spinner } from '@chakra-ui/react';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetAllWordsForWordPackQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
-import { WordDTO, WordPackDTO } from '@utils/types';
+import { WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
 import WordsScrollableContainer from '@components/words/WordsScrollableContainer';
@@ -19,48 +20,34 @@ type Props = {
 export default function ReviewWordPackWindow(props: Props) {
   const { isOpen, onClose, wordPackDTO } = props;
 
-  const { user } = useContext(AuthContext);
-  const [visibleWords, setVisibleWords] = useState<WordDTO[]>([]);
   const [page, setPage] = useState(0);
   const pageSize = 20;
-  const [isWordInfoLoading, setWordInfoLoading] = useState(false);
 
-  const fetchAllWordsForWordPack = () => {
-    setWordInfoLoading(true);
-    getAllWordsForWordPack(wordPackDTO.name, page, pageSize)
-      .then((response) => {
-        const { data } = response;
-        setVisibleWords((prevData) => {
-          if (page === 0) {
-            return data;
-          }
-          return [...prevData, ...data];
-        });
-      })
-      .catch((error) => console.error(error.code, error.response.data.message))
-      .finally(() => setWordInfoLoading(false));
-  };
+  const { data: user } = useGetUserInfoQuery();
 
-  useEffect(() => {
-    fetchAllWordsForWordPack();
-  }, [wordPackDTO?.name, page, pageSize]);
+  const {
+    data: wordsPage = [],
+    isLoading: isLoadingGetAllWordsForWordPack,
+  } = useGetAllWordsForWordPackQuery({ wordPackName: wordPackDTO.name, page, size: pageSize });
+
+  if (!user) return <Spinner />;
 
   return (
     <Modal
       size={Size.XXXL}
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(wordPackDTO?.name, user)}
+      header={getOriginalWordPackName(wordPackDTO.name, user)}
       body={(
         <Container>
           <TotalWords>
             <CopyIcon />
-            <Text>{wordPackDTO?.totalWords}</Text>
+            <Text>{wordPackDTO.totalWords}</Text>
           </TotalWords>
-          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPackDTO?.description}</Text>
+          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPackDTO.description}</Text>
           <WordsScrollableContainer
-            words={visibleWords}
-            isLoading={isWordInfoLoading}
+            wordsPage={wordsPage}
+            isLoading={isLoadingGetAllWordsForWordPack}
             page={page}
             setPage={setPage}
           />

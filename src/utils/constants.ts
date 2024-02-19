@@ -88,3 +88,10 @@ export enum ButtonWithIconType {
   ADD_WORD = 'add-word',
   REMOVE_WORD = 'remove-word',
 }
+
+export enum QueryMethods {
+  GET = 'GET',
+  POST = 'POST',
+  PATCH = 'PATCH',
+  DELETE = 'DELETE',
+}
