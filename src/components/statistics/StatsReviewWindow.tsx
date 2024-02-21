@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
-import { getWordPack } from '@services/word-packs';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, getOriginalWordPackName, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { ReviewStatisticsDTO, WordPackDTO } from '@utils/types';
+import { ReviewStatisticsDTO } from '@utils/types';
 import ArrowRightButton from '@components/common/basic/ArrowRightButton';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import ProgressCircular from '@components/common/basic/ProgressCircular';
+import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
 import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
@@ -25,20 +25,14 @@ type Props = {
 export default function StatsReviewWindow(props: Props) {
   const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage, wordsTotal } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
-  const [wordPackDTO, setWordPackDTO] = useState<WordPackDTO>();
 
-  const fetchWordPackDTO = (wordPackName: string) => {
-    getWordPack(wordPackName)
-      .then((response) => setWordPackDTO(response.data))
-      .catch((e) => console.error(e.code, e.response.data.message));
-  };
+  const { data: user } = useGetUserInfoQuery();
+  const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
+  const wordPack = allWordPacks.find((item) => item.name === reviewStatisticsDTO.wordPackName);
 
-  useEffect(() => {
-    fetchWordPackDTO(reviewStatisticsDTO.wordPackName);
-  }, []);
+  if (!user) return <Spinner />;
 
   return (
     <Modal
@@ -52,11 +46,11 @@ export default function StatsReviewWindow(props: Props) {
             <WordPackNameAndInfoButton>
               <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Pack Progress</Text>
               <ArrowRightButton onClick={onOpenDrawer} />
-              {isOpenDrawer && wordPackDTO && (
+              {isOpenDrawer && wordPack && (
                 <ReviewWordPackWindow
                   isOpen={isOpenDrawer}
                   onClose={onCloseDrawer}
-                  wordPackDTO={wordPackDTO}
+                  wordPackDTO={wordPack}
                 />
               )}
             </WordPackNameAndInfoButton>

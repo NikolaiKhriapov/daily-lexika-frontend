@@ -2,6 +2,10 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
+import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
+import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
+import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { theme } from '@utils/theme';
 import Content from '@components/shared/Content';
 import Footer from '@components/shared/Footer';
@@ -18,6 +22,11 @@ export default function PageLayout(props: Props) {
   const { title, description, children } = props;
 
   const { colorMode } = useColorMode();
+
+  useGetAllReviewsQuery();
+  useGetAllWordPacksQuery();
+  useGetStatisticsQuery();
+  useGetAllWordDataQuery();
 
   return (
     <>

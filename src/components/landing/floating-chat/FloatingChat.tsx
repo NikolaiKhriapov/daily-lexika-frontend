@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { BsChatText } from 'react-icons/bs';
 import { RxCross1 } from 'react-icons/rx';
 import Image from 'next/image';
@@ -6,12 +6,14 @@ import styled from 'styled-components';
 import InstagramLogo from '@public/landing/logo-instagram.svg';
 import TelegramLogo from '@public/landing/logo-telegram.png';
 import WhatsappLogo from '@public/landing/logo-whatsapp.svg';
-import { FloatingChatContext } from '@context/FloatingChatContext';
+import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
+import { toggleVisibility } from '@store/reducers/floatingChatSlice';
 import { theme } from '@utils/theme';
 import MessengerIconLink from '@components/landing/floating-chat/MessengerIconLink';
 
 export default function FloatingChat() {
-  const { isVisible, toggleVisibility } = useContext(FloatingChatContext);
+  const dispatch = useAppDispatch();
+  const { isVisible } = useAppSelector((state) => state.floatingChatSlice);
 
   const messengerLinkMapping = [
     {
@@ -41,7 +43,10 @@ export default function FloatingChat() {
           />
         ))}
       </MessengersContainer>
-      <FloatingChatContainer $backgroundColor={isVisible ? theme.colors.white : theme.colors.black} onClick={toggleVisibility}>
+      <FloatingChatContainer
+        onClick={() => dispatch(toggleVisibility())}
+        $backgroundColor={isVisible ? theme.colors.white : theme.colors.black}
+      >
         <ChatIcon $isVisible={isVisible} />
         <CrossIcon $isVisible={isVisible} />
       </FloatingChatContainer>
@@ -76,14 +81,12 @@ const FloatingChatContainer = styled.button<{ $backgroundColor: string }>`
     border-radius: 70px;
     z-index: 1000;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-
     background-color: ${({ $backgroundColor }) => $backgroundColor};
     transition: background-color 0.3s ease-in-out;
 `;
 
 const ChatIcon = styled(BsChatText)<{ $isVisible: boolean }>`
     color: ${theme.colors.white};
-    
     height: ${({ $isVisible }) => ($isVisible ? '0' : '35px')};
     width: ${({ $isVisible }) => ($isVisible ? '0' : '35px')};
     transition: height 0.3s ease-in-out, width 0.3s ease-in-out;
@@ -91,7 +94,6 @@ const ChatIcon = styled(BsChatText)<{ $isVisible: boolean }>`
 
 const CrossIcon = styled(RxCross1)<{ $isVisible: boolean }>`
     color: ${theme.colors.black};
-    
     height: ${({ $isVisible }) => ($isVisible ? '25px' : '0')};
     width: ${({ $isVisible }) => ($isVisible ? '25px' : '0')};
     transition: height 0.3s ease-in-out, width 0.3s ease-in-out;

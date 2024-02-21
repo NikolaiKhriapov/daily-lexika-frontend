@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { errorNotification, successNotification } from '@services/popup-notification';
-import { createCustomWordPack } from '@services/word-packs';
+import { useCreateCustomWordPackMutation } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
 import { WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
@@ -12,11 +12,12 @@ import TextInput from '@components/common/complex/TextInput';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function CreateWordPackWindow(props: Props) {
-  const { isOpen, onClose, setReload } = props;
+  const { isOpen, onClose } = props;
+
+  const [createCustomWordPack, { isLoading: isLoadingCreateCustomWordPack }] = useCreateCustomWordPackMutation();
 
   const initialValues = {
     name: '',
@@ -28,16 +29,12 @@ export default function CreateWordPackWindow(props: Props) {
     description: Yup.string().required('Required'),
   });
 
-  const handleOnSubmit = (wordPack: WordPackDTO, { setSubmitting }: any) => {
-    setSubmitting(true);
+  const handleOnSubmit = (wordPack: WordPackDTO) => {
     createCustomWordPack(wordPack)
-      .then(() => {
-        successNotification('Word Pack saved', `${wordPack.name} was successfully saved`);
-        setReload(true);
-        onClose();
-      })
-      .catch((error) => errorNotification(error.code, error.response.data.message))
-      .finally(() => setSubmitting(false));
+      .unwrap()
+      .then(() => successNotification('Word Pack saved', `${wordPack.name} was successfully saved`))
+      .catch((error) => errorNotification('', error.data.message))
+      .finally(() => onClose());
   };
 
   return (
@@ -71,7 +68,7 @@ export default function CreateWordPackWindow(props: Props) {
           )}
           buttonText="Submit"
           onSubmit={handleOnSubmit}
-          isButtonDisabled={false}
+          isButtonDisabled={isLoadingCreateCustomWordPack}
         />
       )}
     />

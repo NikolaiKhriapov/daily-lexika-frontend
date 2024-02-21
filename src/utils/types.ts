@@ -1,4 +1,3 @@
-import { JwtPayload } from 'jwt-decode';
 import { Platform, RoleName } from '@utils/constants';
 
 export interface RegistrationRequest {
@@ -16,12 +15,6 @@ export interface AuthenticationRequest {
 
 export interface AuthenticationResponse {
   token: string;
-}
-
-export interface CustomJwtPayload extends JwtPayload {
-  id: number;
-  name: string;
-  role: RoleName;
 }
 
 export interface PasswordUpdateRequest {

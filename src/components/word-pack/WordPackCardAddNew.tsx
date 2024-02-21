@@ -6,13 +6,7 @@ import { theme } from '@utils/theme';
 import Card from '@components/common/complex/Card';
 import CreateWordPackWindow from '@components/word-pack/CreateWordPackWindow';
 
-type Props = {
-  setReload: any,
-};
-
-export default function WordPackCardAddNew(props: Props) {
-  const { setReload } = props;
-
+export default function WordPackCardAddNew() {
   const { colorMode } = useColorMode();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
 
@@ -32,7 +26,6 @@ export default function WordPackCardAddNew(props: Props) {
         <CreateWordPackWindow
           isOpen={isOpenCreateButton}
           onClose={onCloseCreateButton}
-          setReload={setReload}
         />
       )}
     </Container>

@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, RoleName, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -12,20 +12,37 @@ import BadgeOrStreakCount from '@components/common/complex/BadgeOrStreakCount';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  words: WordDTO[];
+  wordsPage: WordDTO[];
   isLoading: boolean;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export default function WordsScrollableContainer(props: Props) {
-  const { words, isLoading, page, setPage } = props;
+  const { wordsPage, isLoading, page, setPage } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const containerRef = useRef<HTMLDivElement>(null);
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [selectedWord, setSelectedWord] = useState<number | null>();
+  const [visibleWords, setVisibleWords] = useState<WordDTO[]>([]);
+
+  const { data: user } = useGetUserInfoQuery();
+
+  useEffect(() => {
+    updateVisibleWords();
+  }, [wordsPage, page]);
+
+  const updateVisibleWords = () => {
+    if (wordsPage && wordsPage.length > 0) {
+      setVisibleWords((prevWords) => {
+        if (page === 0) {
+          return wordsPage;
+        }
+        return [...prevWords, ...wordsPage.filter((word) => !prevWords.some((prevWord) => prevWord.id === word.id))];
+      });
+    }
+  };
 
   const handleScroll = () => {
     const container = containerRef.current;
@@ -33,6 +50,8 @@ export default function WordsScrollableContainer(props: Props) {
       setPage((prevPage) => prevPage + 1);
     }
   };
+
+  if (!user) return <Spinner />;
 
   const getWordInfoForUserRole = (wordDTO: WordDTO) => {
     const map: Record<RoleName, any> = {
@@ -48,7 +67,7 @@ export default function WordsScrollableContainer(props: Props) {
       },
       [RoleName.ADMIN]: null,
     };
-    return map[user!.role!];
+    return map[user.role!];
   };
 
   const onClick = (wordId: number) => {
@@ -60,7 +79,7 @@ export default function WordsScrollableContainer(props: Props) {
     <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
       {isLoading && page === 0
         ? <SpinnerContainer><Spinner /></SpinnerContainer>
-        : words?.slice(0, words.length).map((wordDTO, index) => (
+        : visibleWords.slice(0, visibleWords.length).map((wordDTO, index) => (
           <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(wordDTO.id)}>
             <CharacterAndTranscriptionAndTranslation>
               <Text>{getWordInfoForUserRole(wordDTO)?.name}&nbsp;&nbsp;{getWordInfoForUserRole(wordDTO)?.transcription}</Text>

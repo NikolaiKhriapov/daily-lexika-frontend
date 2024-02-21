@@ -1,74 +1,67 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
-import { successNotification } from '@services/popup-notification';
-import { processReviewAction } from '@services/reviews';
+import { errorNotification, successNotification } from '@services/popup-notification';
+import { useProcessReviewActionMutation } from '@store/api/reviewsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, ButtonType, RoleName } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
-import { Status, WordDTO } from '@utils/types';
+import { ReviewDTO, Status, WordDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ProgressBar from '@components/common/basic/ProgressBar';
+import Spinner from '@components/common/basic/Spinner';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import Modal from '@components/common/complex/Modal';
 import ReviewWordCard from '@components/review/ReviewWordCard';
 
 type Props = {
-  reviewId: number;
+  review: ReviewDTO;
   isOpen: boolean;
   onClose: () => void;
-  totalReviewWords: number;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function StartReviewWindow(props: Props) {
-  const { reviewId, isOpen, onClose, totalReviewWords, setReload } = props;
+  const { review, isOpen, onClose } = props;
 
-  const { user } = useContext(AuthContext);
   const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
-  const [reviewUpdatedSize, setReviewUpdatedSize] = useState<number>(0);
   const [isFormVisible, setFormVisible] = useState(true);
   const [isReviewComplete, setReviewComplete] = useState(false);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
+  const { data: user } = useGetUserInfoQuery();
+  const [processReviewAction] = useProcessReviewActionMutation();
+
   const fetchReviewAction = (answer: boolean | null) => {
     setLoading(true);
-    processReviewAction(reviewId, answer)
+    processReviewAction({ reviewId: review.id!, answer })
+      .unwrap()
       .then((response) => {
-        if (response.data != null && response.data.reviewWordDTO) {
-          setReviewWordDTO(response.data.reviewWordDTO);
-          setReviewUpdatedSize(response.data.reviewUpdatedSize);
+        if (response != null && response.listOfWordDTO && response.listOfWordDTO.length > 0) {
+          setReviewWordDTO(response.listOfWordDTO[0]);
         } else {
           setFormVisible(false);
           setReviewComplete(true);
         }
-        setReload(true);
       })
-      .catch((error) => console.error(error.code, error.response.data.message))
+      .catch((error) => errorNotification('', error.data.message))
       .finally(() => {
         setLoading(false);
         setThrown(false);
         if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
           || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
-          successNotification(
-            `'${getReviewWordName(reviewWordDTO)}' is a known word.`,
-            'This word will still be shown occasionally during reviews',
-          );
+          successNotification(`'${getReviewWordName(reviewWordDTO)}' is a known word.`, 'This word will still be shown occasionally during reviews');
         }
         if (answer === false && reviewWordDTO?.status.toString() === Status[Status.KNOWN]) {
-          successNotification(
-            `Keep reviewing '${getReviewWordName(reviewWordDTO)}'`,
-            'This word will be shown more frequently so that you can relearn it',
-          );
+          successNotification(`Keep reviewing '${getReviewWordName(reviewWordDTO)}'`, 'This word will be shown more frequently so that you can relearn it');
         }
       });
   };
 
   useEffect(() => {
     fetchReviewAction(null);
-  }, [reviewId]);
+  }, []);
 
   useEffect(() => {
     if (!isFormVisible && isReviewComplete) {
@@ -82,20 +75,23 @@ export default function StartReviewWindow(props: Props) {
     setThrown(true);
   };
 
+  const reviewProgress = ((review.actualSize - review.listOfWordDTO!.length) / review.actualSize) * 100;
+  const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
+
+  if (!user) return <Spinner />;
+
   const getReviewWordName = (reviewWord: WordDTO): string => {
     const map: Record<RoleName, string> = {
       [RoleName.USER_ENGLISH]: reviewWord.wordDataDTO.nameEnglish,
       [RoleName.USER_CHINESE]: reviewWord.wordDataDTO.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
-    return map[user!.role!];
+    return map[user.role!];
   };
-
-  const reviewProgress = ((totalReviewWords - reviewUpdatedSize) / totalReviewWords) * 100;
 
   return (
     <Modal
-      width={useBreakpointValue({ base: '80vw', xl: '1000px' })}
+      width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
       header={null}
@@ -109,7 +105,7 @@ export default function StartReviewWindow(props: Props) {
                 </ProgressBarContainer>
                 <CardContainer>
                   <ReviewWordCard
-                    reviewWordDTO={reviewWordDTO!}
+                    reviewWord={reviewWordDTO!}
                     isFlipped={isFlipped}
                     setFlipped={setFlipped}
                     isThrown={isThrown}

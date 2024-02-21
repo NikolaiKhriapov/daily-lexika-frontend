@@ -1,43 +1,44 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { login as performLogin } from '@services/authorization';
-import { errorNotification } from '@services/popup-notification';
+import { apiSlice } from '@store/api/apiSlice';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useAppDispatch } from '@store/hooks/hooks';
 import { LocalStorage, Page } from '@utils/constants';
-import { AuthenticationRequest, CustomJwtPayload, UserDTO } from '@utils/types';
 
-type Props = {
-  user: UserDTO | null;
-  login: (authenticationRequest: AuthenticationRequest) => Promise<void>;
+type ContextProps = {
+  setUserFromToken: (token: string) => void;
   logout: () => void;
-  isUserAuthenticated: () => boolean;
-  setUserFromToken: () => void;
-  setUser: (user: UserDTO) => void;
 };
 
-const AuthContext = createContext<Props>({
-  user: null,
-  login: async () => {
+const AuthContext = createContext<ContextProps>({
+  setUserFromToken: () => {
   },
   logout: () => {
   },
-  isUserAuthenticated: () => false,
-  setUserFromToken: () => {
-  },
-  setUser: () => {
-  },
 });
 
-function AuthProvider({ children }: { children: any }) {
-  const router = useRouter();
-  const [user, setUser] = useState<UserDTO | null>(null);
+type Props = {
+  children: ReactNode;
+};
 
-  const setUserFromToken = () => {
-    const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
+function AuthProvider(props: Props) {
+  const { children } = props;
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const [skip, setSkip] = useState(true);
+
+  const { data: user } = useGetUserInfoQuery(undefined, { skip });
+
+  const setUserFromToken = (token: string) => {
     if (token) {
       try {
-        const jwtToken: CustomJwtPayload = jwtDecode(token);
-        setUser({ ...user, email: jwtToken.sub!, id: jwtToken.id, name: jwtToken.name, role: jwtToken.role });
+        localStorage.setItem(LocalStorage.ACCESS_TOKEN, token);
+        if (window.location.pathname === Page.AUTH) {
+          router.push(Page.REVIEWS);
+        }
       } catch (error) {
         console.error('Error decoding JWT token');
       }
@@ -46,31 +47,25 @@ function AuthProvider({ children }: { children: any }) {
     }
   };
 
-  useEffect(() => {
-    setUserFromToken();
-  }, []);
-
-  const login = async (authenticationRequest: AuthenticationRequest): Promise<void> =>
-    new Promise((resolve, reject) => {
-      performLogin(authenticationRequest)
-        .then((response) => {
-          const jwtTokenString = response.data.token;
-          localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtTokenString);
-          const jwtToken: CustomJwtPayload = jwtDecode(jwtTokenString);
-          setUser({ ...user, email: jwtToken.sub, id: jwtToken.id, name: jwtToken.name, role: jwtToken.role });
-          resolve();
-        })
-        .catch((error) => {
-          errorNotification(error.code, error.response.data.message);
-          reject(error);
-        });
-    });
-
   const logout = () => {
     localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
-    setUser(null);
+    dispatch(apiSlice.util.resetApiState());
     router.push(Page.AUTH);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
+    if (!isUserAuthenticated() || !token) {
+      logout();
+    }
+    if (token) {
+      setUserFromToken(token);
+      setSkip(false);
+    }
+    if (user) {
+      router.push(Page.REVIEWS);
+    }
+  }, []);
 
   const isUserAuthenticated = () => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
@@ -86,7 +81,7 @@ function AuthProvider({ children }: { children: any }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isUserAuthenticated, setUserFromToken, setUser }}>
+    <AuthContext.Provider value={{ setUserFromToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

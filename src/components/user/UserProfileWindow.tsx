@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
-import { deleteAccount, updatePassword, updateUserInfo } from '@services/user';
+import { useDeleteAccountMutation, useUpdatePasswordMutation, useUpdateUserInfoMutation } from '@store/api/userAPI';
 import { ButtonType, LocalStorage, Size } from '@utils/constants';
 import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
@@ -24,34 +24,41 @@ type Props = {
 export default function UserProfileWindow(props: Props) {
   const { isOpen, onClose, userDTO } = props;
 
-  const { setUser, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const passwordCurrentRef = useRef<string>('');
 
+  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const [updatePassword] = useUpdatePasswordMutation();
+  const [deleteAccount] = useDeleteAccountMutation();
+
   const handleChangeInfo = (userUpdatedInfoDTO: UserDTO, setSubmitting: any) => {
     updateUserInfo(userUpdatedInfoDTO)
+      .unwrap()
       .then(() => successNotification('User information updated successfully', ''))
-      .catch((error) => console.error(error.code, error.response.data.message))
+      .catch((error) => errorNotification('', error.data.message))
       .finally(() => setSubmitting(false));
   };
 
   const handleChangePassword = (passwordUpdateRequest: PasswordUpdateRequest, setSubmitting: any) => {
     updatePassword(passwordUpdateRequest)
+      .unwrap()
       .then(() => successNotification('Password updated successfully', ''))
-      .catch((error) => errorNotification('', error.response.data.message))
+      .catch((error) => errorNotification('', error.data.message))
       .finally(() => setSubmitting(false));
   };
 
   const handleDeleteAccount = () => {
     setButtonDisabled(true);
     deleteAccount()
+      .unwrap()
       .then(() => {
         successNotification('Account deleted successfully', '');
         logout();
       })
-      .catch((error) => console.error(error.code, error.response.data.message))
+      .catch((error) => errorNotification('', error.data.message))
       .finally(() => setButtonDisabled(false));
   };
 
@@ -62,8 +69,6 @@ export default function UserProfileWindow(props: Props) {
       onSubmit: (userUpdatedInfoDTO: UserDTO, { setSubmitting }: any) => {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
-        const updatedUserDTO = { ...userDTO, name: userUpdatedInfoDTO.name };
-        setUser(updatedUserDTO);
         onClose();
       },
       inputElement: <TextInput label='Name' name='name' type='text' placeholder='Name' />,

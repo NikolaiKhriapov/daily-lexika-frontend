@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { AppInfo, Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -13,9 +14,11 @@ import Text from '@components/common/basic/Text';
 import UserProfileWindow from '@components/user/UserProfileWindow';
 
 export default function ProfileComponent() {
-  const { user, logout } = useContext(AuthContext);
   const { colorMode } = useColorMode();
+  const { logout } = useContext(AuthContext);
   const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
+
+  const { data: user } = useGetUserInfoQuery();
 
   return (
     <Menu>

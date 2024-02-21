@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
+import { Spinner, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Status, WordDTO } from '@utils/types';
@@ -13,7 +13,7 @@ import Card from '@components/common/complex/Card';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  reviewWordDTO: WordDTO;
+  reviewWord: WordDTO;
   isFlipped: boolean;
   setFlipped: any;
   isThrown: boolean;
@@ -22,14 +22,15 @@ type Props = {
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWordDTO, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
+  const { reviewWord, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
+
+  const { data: user } = useGetUserInfoQuery();
 
   const swipeDistance = 150;
   const swipeHandlers = useSwipeable({
@@ -60,42 +61,44 @@ export default function ReviewWordCard(props: Props) {
     },
   });
 
-  const userRole = user!.role!;
+  if (!user) return <Spinner />;
+
+  const userRole = user.role!;
   const wordData = {
     [RoleName.USER_ENGLISH]: {
       transcription: {
-        text: reviewWordDTO.wordDataDTO.transcription,
+        text: reviewWord.wordDataDTO.transcription,
         size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
       },
       nameWord: {
-        text: reviewWordDTO.wordDataDTO.nameEnglish,
+        text: reviewWord.wordDataDTO.nameEnglish,
         size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
       nameTranslation: {
-        text: reviewWordDTO.wordDataDTO.nameRussian,
+        text: reviewWord.wordDataDTO.nameRussian,
         size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
       },
     },
     [RoleName.USER_CHINESE]: {
       transcription: {
-        text: reviewWordDTO.wordDataDTO.transcription,
+        text: reviewWord.wordDataDTO.transcription,
         size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
       },
       nameWord: {
-        text: reviewWordDTO.wordDataDTO.nameChineseSimplified,
+        text: reviewWord.wordDataDTO.nameChineseSimplified,
         size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
-        text: reviewWordDTO.wordDataDTO.nameEnglish,
+        text: reviewWord.wordDataDTO.nameEnglish,
         size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
       },
     },
     [RoleName.ADMIN]: null,
   };
 
-  const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
+  const isNewStatus = reviewWord.status.toString() === Status[Status.NEW];
 
   const dynamicStyles = {
     transform: `${isFollowingSwipe
@@ -148,7 +151,7 @@ export default function ReviewWordCard(props: Props) {
                   <WordDetailedInfo
                     isOpen={isOpenDetails}
                     onClose={onCloseDetails}
-                    wordDTO={reviewWordDTO}
+                    wordDTO={reviewWord}
                   />
                 )}
               />

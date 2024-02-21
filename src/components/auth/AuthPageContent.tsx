@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { useRadioGroup } from '@chakra-ui/radio';
 import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
-import { AuthPageContext } from '@context/AuthPageContext';
-import { register } from '@services/authorization';
 import { errorNotification, successNotification } from '@services/popup-notification';
-import { AppInfo, AuthFormType, Breakpoint, ButtonType, LocalStorage, Page, Platform, Size } from '@utils/constants';
+import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
+import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
+import { toggleAuthFormType } from '@store/reducers/authPageSlice';
+import { AppInfo, AuthFormType, Breakpoint, ButtonType, Platform, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
@@ -20,11 +20,31 @@ import InputFieldsWithButton from '@components/common/complex/InputFieldsWithBut
 import TextInput from '@components/common/complex/TextInput';
 
 export default function AuthPageContent() {
-  const router = useRouter();
+  const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
-  const { user, setUserFromToken, login } = useContext(AuthContext);
-  const { authFormType, setAuthFormType } = useContext(AuthPageContext);
+  const { setUserFromToken } = useContext(AuthContext);
+  const { authFormType } = useAppSelector((state) => state.authPageSlice);
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>(Platform.ENGLISH);
+
+  const [login] = useLoginMutation();
+  const [register] = useRegisterMutation();
+
+  const performLogin = (authenticationRequest: AuthenticationRequest) => {
+    login(authenticationRequest)
+      .unwrap()
+      .then((response) => setUserFromToken(response.token))
+      .catch((error) => errorNotification('', error.data.message));
+  };
+
+  const performRegister = (registrationRequest: RegistrationRequest) => {
+    register(registrationRequest)
+      .unwrap()
+      .then((response) => {
+        setUserFromToken(response.token);
+        successNotification('User registered', `${registrationRequest.name} was successfully registered`);
+      })
+      .catch((error) => errorNotification('', error.data.message));
+  };
 
   const pageData = {
     [AuthFormType.LOGIN]: {
@@ -41,13 +61,8 @@ export default function AuthPageContent() {
             .max(20, 'Must be 20 characters or less')
             .required('Required'),
         }),
-        handleOnSubmit: (values: RegistrationRequest | AuthenticationRequest, { setSubmitting }: any) => {
-          setSubmitting(true);
-          login({ ...values, platform: selectedPlatform! })
-            .then(() => router.push(Page.REVIEWS))
-            .catch((error) => console.error(error.code, error.response.data.message))
-            .finally(() => setSubmitting(false));
-        },
+        handleOnSubmit: (values: AuthenticationRequest) =>
+          performLogin({ ...values, platform: selectedPlatform }),
       },
       submitButtonText: 'Sign in',
     },
@@ -68,30 +83,14 @@ export default function AuthPageContent() {
             .max(20, 'Must be 20 characters or less')
             .required('Required'),
         }),
-        handleOnSubmit: (values: any, { setSubmitting }: any) => {
-          setSubmitting(true);
-          register({ ...values, platform: selectedPlatform })
-            .then((response) => {
-              successNotification('User registered', `${values.name} was successfully registered`);
-              global.localStorage.setItem(LocalStorage.ACCESS_TOKEN, response.data.token);
-              setUserFromToken();
-              router.push(Page.REVIEWS);
-            })
-            .catch((error) => errorNotification(error.code, error.response.data.message))
-            .finally(() => setSubmitting(false));
-        },
+        handleOnSubmit: (values: RegistrationRequest) =>
+          performRegister({ ...values, platform: selectedPlatform }),
       },
       submitButtonText: 'Sign up',
     },
   };
 
-  useEffect(() => {
-    if (user) {
-      router.push(Page.REVIEWS);
-    }
-  });
-
-  const onClickSwitchAuthFormType = () => setAuthFormType(authFormType === AuthFormType.LOGIN ? AuthFormType.REGISTER : AuthFormType.LOGIN);
+  const onClickSwitchAuthFormType = () => dispatch(toggleAuthFormType());
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     defaultValue: Platform.ENGLISH,
