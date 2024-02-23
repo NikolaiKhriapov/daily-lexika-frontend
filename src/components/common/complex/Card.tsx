@@ -67,6 +67,7 @@ const Container = styled.div<{
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-color: ${({ $borderColor }) => $borderColor};
   border-radius: ${theme.stylesToDelete.borderRadius};
+  box-shadow: ${theme.stylesToDelete.boxShadow};
   
   background-color: ${({ $bgColor }) => $bgColor};
   cursor: pointer;

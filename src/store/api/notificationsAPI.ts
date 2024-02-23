@@ -1,9 +1,9 @@
-import { apiSlice, providesList } from '@store/api/apiSlice';
+import { API, providesList } from '@store/api/API';
 import { ApiEndpointsNotifications } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { NotificationDTO } from '@utils/types';
 
-export const notificationsAPI = apiSlice.injectEndpoints({
+export const notificationsAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     getAllNotifications: builder.query<NotificationDTO[], void>({
       query: () => ({

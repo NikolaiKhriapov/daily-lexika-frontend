@@ -1,9 +1,9 @@
-import { apiSlice } from '@store/api/apiSlice';
+import { API } from '@store/api/API';
 import { ApiEndpointsAuthorization } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { AuthenticationRequest, AuthenticationResponse, RegistrationRequest } from '@utils/types';
 
-export const authAPI = apiSlice.injectEndpoints({
+export const authAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<AuthenticationResponse, RegistrationRequest>({
       query: (registrationRequest: RegistrationRequest) => ({

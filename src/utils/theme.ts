@@ -4,8 +4,10 @@ import { Breakpoint } from '@utils/constants';
 const customColors = {
   light: {
     background: 'rgb(237,238,240)',
+    background2: '#F7FAFC',
+    bgColor: 'F7FAFC',
+    borderColorMain: '#CBD5E0',
     borderColor: '#CBD5E0',
-    bgColor: '#F7FAFC',
     hoverBgColor: '#E3E8EF',
     buttonColor: '#000000',
     buttonBgColor: '#CBD5E0',
@@ -19,9 +21,11 @@ const customColors = {
     cardAddNew: 'rgba(255,255,255,0.3)',
   },
   dark: {
-    background: 'rgb(20,20,20)',
-    borderColor: '#505050',
+    background: 'rgb(10,10,10)',
+    background2: 'rgb(25,25,25)',
     bgColor: '#282828',
+    borderColorMain: '#3C3C3C',
+    borderColor: '#505050',
     hoverBgColor: '#3C3C3C',
     buttonColor: '#FFFFFF',
     buttonBgColor: '#3C3C3C',

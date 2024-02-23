@@ -30,7 +30,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   height: 50px;
   gap: 5px;
   padding-right: 10px;
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2};
   z-index: 1000;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
