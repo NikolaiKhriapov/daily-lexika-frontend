@@ -78,8 +78,12 @@ const Container = styled.div`
 
 const ButtonContainer = styled.div`
   padding-left: 0;
-  width: 80vh;
-  max-width: 100%;
+  width: 100%;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 80vh;
+    max-width: 100%;
+  }
 `;
 
 const NotificationButton = styled(ChakraButton)<{ $colorMode: ColorMode }>`
@@ -90,10 +94,10 @@ const NotificationButton = styled(ChakraButton)<{ $colorMode: ColorMode }>`
   padding: 0 5px 0 0 !important;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   height: 30px !important;
-  width: 250px;
+  width: 100%;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    padding: 0 16px !important;
+    padding: 0 16px 0 0 !important;
     height: 35px !important;
     width: 460px;
   }
