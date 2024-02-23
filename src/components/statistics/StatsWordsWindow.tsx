@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useGetAllWordsByStatusQuery } from '@store/api/wordsAPI';
+import { useGetAllWordsByStatusQuery, wordsAPI } from '@store/api/wordsAPI';
+import { useAppDispatch } from '@store/hooks/hooks';
 import { Size } from '@utils/constants';
 import { Status } from '@utils/types';
 import Modal from '@components/common/complex/Modal';
@@ -13,8 +14,12 @@ type Props = {
 export default function StatsWordsWindow(props: Props) {
   const { isOpen, onClose } = props;
 
+  const dispatch = useAppDispatch();
   const [page, setPage] = useState(0);
   const pageSize = 20;
+
+  dispatch(wordsAPI.util.prefetch('getAllWordsByStatus', { status: Status.KNOWN, page: page + 1, size: pageSize }, { force: true }));
+  dispatch(wordsAPI.util.prefetch('getAllWordsByStatus', { status: Status.KNOWN, page: page + 2, size: pageSize }, { force: true }));
 
   const {
     data: wordsPage = [],
