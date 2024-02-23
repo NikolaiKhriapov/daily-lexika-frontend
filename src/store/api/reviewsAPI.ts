@@ -1,7 +1,7 @@
 import { apiSlice, providesList } from '@store/api/apiSlice';
 import { ApiEndpointsReviews } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { ReviewDTO } from '@utils/types';
+import { placeholderReview, ReviewDTO } from '@utils/types';
 
 export const reviewsAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,6 +20,18 @@ export const reviewsAPI = apiSlice.injectEndpoints({
         method: QueryMethods.POST,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }, 'Statistics'],
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(reviewsAPI.util?.updateQueryData('getAllReviews', undefined, (draft) => {
+          if (draft) {
+            draft.push(placeholderReview);
+          }
+        }));
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
     updateReview: builder.mutation<ReviewDTO, { reviewId: number, reviewDTO: ReviewDTO }>({
       query: ({ reviewId, reviewDTO }) => ({
@@ -66,6 +78,19 @@ export const reviewsAPI = apiSlice.injectEndpoints({
         method: QueryMethods.DELETE,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }, 'Statistics'],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(reviewsAPI.util?.updateQueryData('getAllReviews', undefined, (draft) => {
+          const reviewIndex = draft.findIndex((item) => item.id === arg);
+          if (reviewIndex !== -1) {
+            draft.splice(reviewIndex, 1);
+          }
+        }));
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
     processReviewAction: builder.mutation<ReviewDTO, { reviewId: number; answer: boolean | null }>({
       query: ({ reviewId, answer = null }) => ({

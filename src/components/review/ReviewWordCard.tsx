@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Spinner, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -13,7 +13,7 @@ import Card from '@components/common/complex/Card';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  reviewWord: WordDTO;
+  reviewWord?: WordDTO | null;
   isFlipped: boolean;
   setFlipped: any;
   isThrown: boolean;
@@ -22,7 +22,7 @@ type Props = {
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWord, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
+  const { reviewWord = null, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
@@ -31,6 +31,9 @@ export default function ReviewWordCard(props: Props) {
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
 
   const { data: user } = useGetUserInfoQuery();
+
+  const cardHeight = { base: '312px', sm: '390px', xl: '520px' };
+  const cardWidth = { base: '240px', sm: '300px', xl: '400px' };
 
   const swipeDistance = 150;
   const swipeHandlers = useSwipeable({
@@ -61,7 +64,7 @@ export default function ReviewWordCard(props: Props) {
     },
   });
 
-  if (!user) return <Spinner />;
+  if (!user || !reviewWord) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
 
   const userRole = user.role!;
   const wordData = {
@@ -124,8 +127,8 @@ export default function ReviewWordCard(props: Props) {
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
       <Card
-        height={{ base: '312px', sm: '390px', xl: '520px' }}
-        width={{ base: '240px', sm: '300px', xl: '400px' }}
+        height={cardHeight}
+        width={cardWidth}
         padding="10px"
         borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}
@@ -151,7 +154,7 @@ export default function ReviewWordCard(props: Props) {
                   <WordDetailedInfo
                     isOpen={isOpenDetails}
                     onClose={onCloseDetails}
-                    wordDTO={reviewWord}
+                    word={reviewWord}
                   />
                 )}
               />
@@ -183,4 +186,10 @@ const ContentsContainer = styled.div`
   gap: 60px;
   text-align: center;
   justify-content: center;
+`;
+
+const ReviewWordPlaceholderContainer = styled.div<{
+  $height: string | { base: string, sm: string, xl: string };
+}>`
+  height: ${({ $height }) => (typeof $height === 'string' ? $height : useBreakpointValue($height))};
 `;

@@ -2,7 +2,7 @@ import { apiSlice, providesList } from '@store/api/apiSlice';
 import { wordDataAPI } from '@store/api/wordDataAPI';
 import { ApiEndpointsWordPacks } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
+import { placeholderWordPack, WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
 
 export const wordPacksAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,6 +20,18 @@ export const wordPacksAPI = apiSlice.injectEndpoints({
         method: QueryMethods.POST,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }],
+      async onQueryStarted(args, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
+          if (draft) {
+            draft.push(placeholderWordPack);
+          }
+        }));
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
     deleteCustomWordPack: builder.mutation<void, string>({
       query: (wordPackName) => ({
@@ -27,6 +39,19 @@ export const wordPacksAPI = apiSlice.injectEndpoints({
         method: QueryMethods.DELETE,
       }),
       invalidatesTags: [{ type: 'WordPacks', id: 'LIST' }, { type: 'Reviews', id: 'LIST' }],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
+          const wordPackIndex = draft.findIndex((item) => item.name === arg);
+          if (wordPackIndex !== -1) {
+            draft.splice(wordPackIndex, 1);
+          }
+        }));
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
     getAllWordsForWordPack: builder.query<WordDTO[], { wordPackName: string, page: number, size: number }>({
       query: ({ wordPackName, page, size }) => ({

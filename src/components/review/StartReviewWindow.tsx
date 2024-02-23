@@ -9,7 +9,6 @@ import { mediaBreakpointUp } from '@utils/functions';
 import { ReviewDTO, Status, WordDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ProgressBar from '@components/common/basic/ProgressBar';
-import Spinner from '@components/common/basic/Spinner';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
 import Modal from '@components/common/complex/Modal';
 import ReviewWordCard from '@components/review/ReviewWordCard';
@@ -24,30 +23,25 @@ export default function StartReviewWindow(props: Props) {
   const { review, isOpen, onClose } = props;
 
   const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
-  const [isFormVisible, setFormVisible] = useState(true);
-  const [isReviewComplete, setReviewComplete] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(true);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
-  const [isLoading, setLoading] = useState(false);
 
   const { data: user } = useGetUserInfoQuery();
-  const [processReviewAction] = useProcessReviewActionMutation();
+  const [processReviewAction, { isLoading }] = useProcessReviewActionMutation();
 
   const fetchReviewAction = (answer: boolean | null) => {
-    setLoading(true);
     processReviewAction({ reviewId: review.id!, answer })
       .unwrap()
       .then((response) => {
         if (response != null && response.listOfWordDTO && response.listOfWordDTO.length > 0) {
           setReviewWordDTO(response.listOfWordDTO[0]);
         } else {
-          setFormVisible(false);
-          setReviewComplete(true);
+          setModalVisible(false);
         }
       })
       .catch((error) => errorNotification('', error.data.message))
       .finally(() => {
-        setLoading(false);
         setThrown(false);
         if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
           || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
@@ -64,10 +58,10 @@ export default function StartReviewWindow(props: Props) {
   }, []);
 
   useEffect(() => {
-    if (!isFormVisible && isReviewComplete) {
+    if (!isModalVisible) {
       onClose();
     }
-  }, [isFormVisible, isReviewComplete]);
+  }, [isModalVisible]);
 
   const pressButton = (answer: boolean | null) => {
     fetchReviewAction(answer);
@@ -78,15 +72,13 @@ export default function StartReviewWindow(props: Props) {
   const reviewProgress = ((review.actualSize - review.listOfWordDTO!.length) / review.actualSize) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
 
-  if (!user) return <Spinner />;
-
   const getReviewWordName = (reviewWord: WordDTO): string => {
     const map: Record<RoleName, string> = {
       [RoleName.USER_ENGLISH]: reviewWord.wordDataDTO.nameEnglish,
       [RoleName.USER_CHINESE]: reviewWord.wordDataDTO.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
-    return map[user.role!];
+    return map[user!.role!];
   };
 
   return (
@@ -97,39 +89,33 @@ export default function StartReviewWindow(props: Props) {
       header={null}
       body={(
         <Container>
-          {(isFormVisible && !isReviewComplete && reviewWordDTO)
-            ? (
-              <>
-                <ProgressBarContainer>
-                  <ProgressBar value={reviewProgress} />
-                </ProgressBarContainer>
-                <CardContainer>
-                  <ReviewWordCard
-                    reviewWord={reviewWordDTO!}
-                    isFlipped={isFlipped}
-                    setFlipped={setFlipped}
-                    isThrown={isThrown}
-                    pressButton={pressButton}
-                    isLoading={isLoading}
-                  />
-                  <ButtonsContainer>
-                    <Button
-                      buttonText="Forgot"
-                      buttonType={ButtonType.BUTTON_RED}
-                      onClick={() => pressButton(false)}
-                      isDisabled={isLoading}
-                    />
-                    <Button
-                      buttonText="Remembered"
-                      buttonType={ButtonType.BUTTON}
-                      onClick={() => pressButton(true)}
-                      isDisabled={isLoading}
-                    />
-                  </ButtonsContainer>
-                </CardContainer>
-              </>
-            )
-            : <Placeholder />}
+          <ProgressBarContainer>
+            <ProgressBar value={reviewProgress} />
+          </ProgressBarContainer>
+          <CardContainer>
+            <ReviewWordCard
+              reviewWord={reviewWordDTO}
+              isFlipped={isFlipped}
+              setFlipped={setFlipped}
+              isThrown={isThrown}
+              pressButton={pressButton}
+              isLoading={!isModalVisible || !reviewWordDTO || isLoading}
+            />
+            <ButtonsContainer>
+              <Button
+                buttonText="Forgot"
+                buttonType={ButtonType.BUTTON_RED}
+                onClick={() => pressButton(false)}
+                isDisabled={!isModalVisible || !reviewWordDTO || isLoading}
+              />
+              <Button
+                buttonText="Remembered"
+                buttonType={ButtonType.BUTTON}
+                onClick={() => pressButton(true)}
+                isDisabled={!isModalVisible || !reviewWordDTO || isLoading}
+              />
+            </ButtonsContainer>
+          </CardContainer>
         </Container>
       )}
     />
@@ -146,23 +132,6 @@ const Container = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 70px;
     margin: 0 0 50px 0;
-  }
-`;
-
-const Placeholder = styled.div`
-  width: 80vh;
-  height: 460px;
-
-  ${mediaBreakpointUp('400px')} {
-    height: 518px;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    height: 738px;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    width: 1000px;
   }
 `;
 

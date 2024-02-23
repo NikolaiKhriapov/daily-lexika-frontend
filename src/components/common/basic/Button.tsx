@@ -52,6 +52,7 @@ export default function Button(props: Props) {
         className={`${buttonType}`}
         type={getButtonType()}
         $colorMode={colorMode}
+        isDisabled={isDisabled}
         {...rest}
       >
         {buttonText}

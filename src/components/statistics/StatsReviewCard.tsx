@@ -12,10 +12,11 @@ import StatsReviewWindow from '@components/statistics/StatsReviewWindow';
 
 type Props = {
   reviewStatistics: ReviewStatisticsDTO;
+  isRefreshing: boolean;
 };
 
 export default function StatsReviewCard(props: Props) {
-  const { reviewStatistics } = props;
+  const { reviewStatistics, isRefreshing } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,6 +48,7 @@ export default function StatsReviewCard(props: Props) {
           </Text>
         </Stats>
         <ProgressBar value={wordsPercentage.known || 0} />
+        {isRefreshing && <SpinnerContainer><Spinner size={Size.SM} /></SpinnerContainer>}
       </Container>
       {isOpen && (
         <StatsReviewWindow
@@ -91,4 +93,10 @@ const Percentage = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
+`;
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
