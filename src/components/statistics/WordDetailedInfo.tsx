@@ -14,15 +14,15 @@ import Modal from '@components/common/complex/Modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  wordDTO: WordDTO;
+  word: WordDTO;
 };
 
 export default function WordDetailedInfo(props: Props) {
-  const { isOpen, onClose, wordDTO } = props;
+  const { isOpen, onClose, word } = props;
 
   const { data: user } = useGetUserInfoQuery();
 
-  const streakProgress = (wordDTO.totalStreak / 5) * 100;
+  const streakProgress = (word.totalStreak / 5) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', md: '575px' });
   const modalHeight = useBreakpointValue({ base: '85vh', md: '600px' });
   
@@ -31,14 +31,14 @@ export default function WordDetailedInfo(props: Props) {
   const getWordInfoForUserRole = () => {
     const map: Record<RoleName, any> = {
       [RoleName.USER_ENGLISH]: {
-        name: wordDTO.wordDataDTO.nameEnglish,
-        transcription: wordDTO.wordDataDTO.transcription,
-        translation: wordDTO.wordDataDTO.nameRussian,
+        name: word.wordDataDTO.nameEnglish,
+        transcription: word.wordDataDTO.transcription,
+        translation: word.wordDataDTO.nameRussian,
       },
       [RoleName.USER_CHINESE]: {
-        name: wordDTO.wordDataDTO.nameChineseSimplified,
-        transcription: wordDTO.wordDataDTO.transcription,
-        translation: wordDTO.wordDataDTO.nameEnglish,
+        name: word.wordDataDTO.nameChineseSimplified,
+        transcription: word.wordDataDTO.transcription,
+        translation: word.wordDataDTO.nameEnglish,
       },
       [RoleName.ADMIN]: null,
     };
@@ -68,8 +68,8 @@ export default function WordDetailedInfo(props: Props) {
                   </TranscriptionAndTranslationContainer>
                   <ProgressBarContainerTablet>
                     <TopContainer>
-                      <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>
-                      <BadgeOrStreakCount wordDTO={wordDTO} />
+                      <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
+                      <BadgeOrStreakCount wordDTO={word} />
                     </TopContainer>
                     <ProgressBar value={streakProgress} colorScheme='green' />
                   </ProgressBarContainerTablet>
@@ -77,21 +77,21 @@ export default function WordDetailedInfo(props: Props) {
                 <ProgressBarContainerMobile>
                   <Divider marginY={3} />
                   <TopContainer>
-                    <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${wordDTO.totalStreak} / 5`}</Text>
-                    <BadgeOrStreakCount wordDTO={wordDTO} />
+                    <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
+                    <BadgeOrStreakCount wordDTO={word} />
                   </TopContainer>
-                  <ProgressBar value={(wordDTO.totalStreak / 5) * 100} colorScheme='green' />
+                  <ProgressBar value={(word.totalStreak / 5) * 100} colorScheme='green' />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
-                {wordDTO.wordDataDTO.definition !== '[TODO]' && (
+                {word.wordDataDTO.definition !== '[TODO]' && (
                   <>
-                    <Text>{wordDTO.wordDataDTO.definition}</Text>
+                    <Text>{word.wordDataDTO.definition}</Text>
                     <Divider marginY={3} />
                   </>
                 )}
               </TabPanel>
               <TabPanel>
-                {wordDTO.wordDataDTO.examples.map((example, index) => (
+                {word.wordDataDTO.examples.map((example, index) => (
                   example !== '[TODO]' && (
                     <>
                       <Text key={index}>{example}</Text>

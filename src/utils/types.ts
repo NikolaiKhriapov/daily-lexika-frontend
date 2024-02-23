@@ -131,3 +131,18 @@ export enum Category {
 
   CUSTOM = 'Custom',
 }
+
+export const placeholderWordPack: WordPackDTO = {
+  name: '!@#$%^&*()',
+  description: '',
+  category: Category.CUSTOM,
+  totalWords: 0,
+};
+
+export const placeholderReview: ReviewDTO = {
+  id: -1,
+  maxNewWordsPerDay: -1,
+  maxReviewWordsPerDay: -1,
+  wordPackDTO: placeholderWordPack,
+  actualSize: -1,
+};

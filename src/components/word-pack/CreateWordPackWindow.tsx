@@ -1,8 +1,10 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { errorNotification, successNotification } from '@services/popup-notification';
-import { useCreateCustomWordPackMutation } from '@store/api/wordPacksAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
+import { getOriginalWordPackName } from '@utils/functions';
 import { WordPackDTO } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
@@ -17,6 +19,8 @@ type Props = {
 export default function CreateWordPackWindow(props: Props) {
   const { isOpen, onClose } = props;
 
+  const { data: user } = useGetUserInfoQuery();
+  const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [createCustomWordPack, { isLoading: isLoadingCreateCustomWordPack }] = useCreateCustomWordPackMutation();
 
   const initialValues = {
@@ -25,16 +29,20 @@ export default function CreateWordPackWindow(props: Props) {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Required'),
+    name: Yup.string().trim().required('Required')
+      .test((value) => {
+        const allWordPackNames = allWordPacks.map((wordPack) => getOriginalWordPackName(wordPack.name, user!));
+        return !allWordPackNames.includes(value) && !value.includes(';');
+      }),
     description: Yup.string().required('Required'),
   });
 
   const handleOnSubmit = (wordPack: WordPackDTO) => {
+    onClose();
     createCustomWordPack(wordPack)
       .unwrap()
       .then(() => successNotification('Word Pack saved', `${wordPack.name} was successfully saved`))
-      .catch((error) => errorNotification('', error.data.message))
-      .finally(() => onClose());
+      .catch((error) => errorNotification('', error.data.message));
   };
 
   return (

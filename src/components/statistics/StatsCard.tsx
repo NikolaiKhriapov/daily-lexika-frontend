@@ -4,6 +4,7 @@ import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
 import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
+import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 
 type Props = {
@@ -12,10 +13,11 @@ type Props = {
   title: string;
   isClickable?: boolean;
   onOpen?: any;
+  isRefreshing: boolean;
 };
 
 export default function StatsCard(props: Props) {
-  const { icon, stat = '–––', title, isClickable = false, onOpen = null } = props;
+  const { icon, stat = '–––', title, isClickable = false, onOpen = null, isRefreshing } = props;
 
   const { colorMode } = useColorMode();
   const [isFlipped, setFlipped] = useState(false);
@@ -38,6 +40,7 @@ export default function StatsCard(props: Props) {
         <Text size={Size.XXL}>{stat}</Text>
         <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>{title}</Text>
       </Stats>
+      {isRefreshing && <SpinnerContainer><Spinner size={Size.SM} /></SpinnerContainer>}
     </Container>
   );
 }
@@ -71,4 +74,10 @@ const Icon = styled.div`
 const Stats = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const SpinnerContainer = styled.div`
+    position: absolute;
+    top: 10px;
+    right: 10px;
 `;

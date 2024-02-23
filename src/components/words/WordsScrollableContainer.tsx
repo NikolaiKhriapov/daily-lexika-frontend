@@ -90,7 +90,7 @@ export default function WordsScrollableContainer(props: Props) {
               <WordDetailedInfo
                 isOpen={isOpenDetails && wordDTO.id === selectedWord}
                 onClose={onCloseDetails}
-                wordDTO={wordDTO}
+                word={wordDTO}
               />
             )}
           </WordInfo>

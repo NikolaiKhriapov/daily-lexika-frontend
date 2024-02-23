@@ -4,9 +4,10 @@ import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
 import { Category } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
-import Spinner from '@components/common/basic/Spinner';
+import { SkeletonType } from '@components/common/basic/Skeleton';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
+import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
 import WordPackCard from '@components/word-pack/WordPackCard';
 import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 
@@ -19,7 +20,7 @@ export default function WordPacksPageContent() {
   const wordPackCategoriesStandard = wordPackCategories
     .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={3} />;
   if (isError) return <ErrorComponent />;
 
   if (!allWordPacks || allWordPacks.length === 0) {

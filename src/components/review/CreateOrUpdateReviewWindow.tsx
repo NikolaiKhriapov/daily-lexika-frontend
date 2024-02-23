@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -19,14 +19,15 @@ type Props = {
   onClose: () => void;
   wordPack: WordPackDTO;
   review?: ReviewDTO;
+  setDisabledButton: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function CreateOrUpdateReviewWindow(props: Props) {
-  const { isOpen, onClose, wordPack, review = null } = props;
+  const { isOpen, onClose, wordPack, review = null, setDisabledButton } = props;
 
   const { data: user } = useGetUserInfoQuery();
-  const [updateReview, { isLoading: isLoadingUpdateReview }] = useUpdateReviewMutation();
-  const [createReview, { isLoading: isLoadingCreateReview }] = useCreateReviewMutation();
+  const [updateReview] = useUpdateReviewMutation();
+  const [createReview] = useCreateReviewMutation();
 
   if (!user) return <Spinner />;
 
@@ -48,18 +49,20 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   });
 
   const handleOnSubmit = (reviewDTO: ReviewDTO) => {
+    setDisabledButton(true);
+    onClose();
     if (review) {
       updateReview({ reviewId: review!.id!, reviewDTO })
         .unwrap()
         .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error.data.message))
-        .finally(() => onClose());
+        .finally(() => setDisabledButton(false));
     } else {
       createReview(reviewDTO)
         .unwrap()
         .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error.data.message))
-        .finally(() => onClose());
+        .finally(() => setDisabledButton(false));
     }
   };
 
@@ -102,7 +105,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             )}
             buttonText="Submit"
             onSubmit={handleOnSubmit}
-            isButtonDisabled={isLoadingCreateReview && isLoadingUpdateReview}
+            isButtonDisabled={false}
           />
         </>
       )}

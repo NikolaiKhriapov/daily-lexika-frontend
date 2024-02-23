@@ -7,9 +7,10 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { ReviewDTO, Status } from '@utils/types';
+import { placeholderReview, ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
+import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
@@ -31,10 +32,11 @@ export default function ReviewCard(props: Props) {
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
   const [isFlipped, setFlipped] = useState(false);
+  const [isDisabledChangeButton, setDisabledChangeButton] = useState(false);
 
   const { data: user } = useGetUserInfoQuery();
   const [refreshReview, { isLoading: isLoadingRefreshReview }] = useRefreshReviewMutation();
-  const [deleteReview, { isLoading: isLoadingDeleteReview }] = useDeleteReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
 
   if (!user) return <Spinner />;
 
@@ -48,15 +50,15 @@ export default function ReviewCard(props: Props) {
   };
 
   const handleRemoveReview = () => {
+    onCloseRemoveButton();
     deleteReview(review.id!)
       .unwrap()
       .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDTO.name, user)} removed successfully`))
-      .catch((error) => errorNotification('', error.data.message))
-      .finally(() => onCloseRemoveButton());
+      .catch((error) => errorNotification('', error.data.message));
   };
 
-  const totalNewWords = review.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length;
-  const totalInReviewWords = review.listOfWordDTO!.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length;
+  const totalNewWords = review.listOfWordDTO?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length || 0;
+  const totalInReviewWords = review.listOfWordDTO?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length || 0;
 
   const onClickStartButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -74,6 +76,10 @@ export default function ReviewCard(props: Props) {
     event.stopPropagation();
     onOpenRemoveButton();
   };
+
+  if (review.id === placeholderReview.id) {
+    return <Skeleton type={SkeletonType.REVIEW_CARD} />;
+  }
 
   return (
     <Card
@@ -109,7 +115,7 @@ export default function ReviewCard(props: Props) {
                     buttonType={ButtonType.BUTTON}
                     size={Size.SM}
                     onClick={onClickStartButton}
-                    isDisabled={false}
+                    isDisabled={isLoadingRefreshReview}
                     isOpen={isOpenStartButton}
                     modalContent={(
                       <StartReviewWindow
@@ -139,6 +145,7 @@ export default function ReviewCard(props: Props) {
             <ButtonWithIcon
               type={ButtonWithIconType.CHANGE}
               onClick={onClickChangeButton}
+              isDisabled={isDisabledChangeButton}
               isOpen={isOpenChangeButton}
               modalContent={(
                 <CreateOrUpdateReviewWindow
@@ -146,12 +153,14 @@ export default function ReviewCard(props: Props) {
                   onClose={onCloseChangeButton}
                   wordPack={review.wordPackDTO}
                   review={review}
+                  setDisabledButton={setDisabledChangeButton}
                 />
               )}
             />
             <ButtonWithIcon
               type={ButtonWithIconType.DELETE}
               onClick={onClickRemoveButton}
+              isDisabled={false}
               isOpen={isOpenRemoveButton}
               modalContent={(
                 <AlertDialog
@@ -161,7 +170,7 @@ export default function ReviewCard(props: Props) {
                   header="Remove this daily review?"
                   body="Your known words and review progress will be saved if you choose to add this review again later."
                   deleteButtonText="Remove"
-                  isButtonDisabled={isLoadingDeleteReview}
+                  isButtonDisabled={false}
                   width="600px"
                 />
               )}

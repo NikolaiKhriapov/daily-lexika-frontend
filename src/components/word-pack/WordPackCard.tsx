@@ -4,13 +4,15 @@ import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { useDeleteCustomWordPackMutation } from '@store/api/wordPacksAPI';
+import { useDeleteCustomWordPackMutation, wordPacksAPI } from '@store/api/wordPacksAPI';
+import { useAppDispatch } from '@store/hooks/hooks';
 import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { Category, WordPackDTO } from '@utils/types';
+import { Category, placeholderWordPack, WordPackDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
+import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
@@ -28,24 +30,27 @@ type Props = {
 export default function WordPackCard(props: Props) {
   const { wordPack } = props;
 
+  const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const { isOpen: isOpenDeleteButton, onOpen: onOpenDeleteButton, onClose: onCloseDeleteButton } = useDisclosure();
   const { isOpen: isOpenSearch, onOpen: onOpenSearch, onClose: onCloseSearch } = useDisclosure();
   const [isFlipped, setFlipped] = useState(false);
+  const [isDisabledCreateButton, setDisabledCreateButton] = useState(false);
 
   const { data: user } = useGetUserInfoQuery();
   const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
+  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: 0, size: 20 }, { force: false }));
 
   if (!user) return <Spinner />;
 
   const handleDeleteCustomWordPack = () => {
+    onCloseDeleteButton();
     deleteWordPack(wordPack.name)
       .unwrap()
       .then(() => successNotification('Word Pack deleted successfully', `${getOriginalWordPackName(wordPack.name, user)} deleted successfully`))
-      .catch((error) => errorNotification('', error.data.message))
-      .finally(() => onCloseDeleteButton());
+      .catch((error) => errorNotification('', error.data.message));
   };
 
   const onClickCreateButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,6 +69,10 @@ export default function WordPackCard(props: Props) {
     event.stopPropagation();
     onOpenDeleteButton();
   };
+
+  if (wordPack.name === placeholderWordPack.name) {
+    return <Skeleton type={SkeletonType.WORD_PACK_CARD} />;
+  }
 
   return (
     <Card
@@ -86,21 +95,22 @@ export default function WordPackCard(props: Props) {
             {wordPack.reviewId !== undefined
               ? <ButtonUnavailable text='Added' isWithIcon />
               : (
-                <>
-                  <Button
-                    buttonText="Create Daily Review"
-                    buttonType={ButtonType.BUTTON}
-                    size={Size.SM}
-                    onClick={onClickCreateButton}
-                  />
-                  {isOpenCreateButton && (
+                <Button
+                  size={Size.SM}
+                  buttonText="Create Daily Review"
+                  buttonType={ButtonType.BUTTON}
+                  onClick={onClickCreateButton}
+                  isOpen={isOpenCreateButton}
+                  isDisabled={isDisabledCreateButton || isLoadingDeleteWordPack}
+                  modalContent={(
                     <CreateOrUpdateReviewWindow
                       isOpen={isOpenCreateButton}
                       onClose={onCloseCreateButton}
                       wordPack={wordPack}
+                      setDisabledButton={setDisabledCreateButton}
                     />
                   )}
-                </>
+                />
               )}
           </ButtonsContainer>
         </ContentsContainer>
@@ -114,6 +124,7 @@ export default function WordPackCard(props: Props) {
             <ButtonWithIcon
               type={ButtonWithIconType.PREVIEW}
               onClick={onClickPreviewButton}
+              isDisabled={isLoadingDeleteWordPack}
               isOpen={isOpenPreviewButton}
               modalContent={(
                 <ReviewWordPackWindow
@@ -128,6 +139,7 @@ export default function WordPackCard(props: Props) {
                 <ButtonWithIcon
                   type={ButtonWithIconType.CHANGE}
                   onClick={onClickAddWordButton}
+                  isDisabled={isLoadingDeleteWordPack}
                   isOpen={isOpenSearch}
                   modalContent={(
                     <SearchWindow
@@ -140,6 +152,7 @@ export default function WordPackCard(props: Props) {
                 <ButtonWithIcon
                   type={ButtonWithIconType.DELETE}
                   onClick={onClickDeleteButton}
+                  isDisabled={isLoadingDeleteWordPack}
                   isOpen={isOpenDeleteButton}
                   modalContent={(
                     <AlertDialog
