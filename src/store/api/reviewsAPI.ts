@@ -1,9 +1,9 @@
-import { apiSlice, providesList } from '@store/api/apiSlice';
+import { API, providesList } from '@store/api/API';
 import { ApiEndpointsReviews } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { placeholderReview, ReviewDTO } from '@utils/types';
 
-export const reviewsAPI = apiSlice.injectEndpoints({
+export const reviewsAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     getAllReviews: builder.query<ReviewDTO[], void>({
       query: () => ({

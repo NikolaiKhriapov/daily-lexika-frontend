@@ -33,33 +33,31 @@ export default function WordPacksPageContent() {
 
   return (
     <Container>
-      <>
-        {wordPackCategoriesStandard.map((wordPackCategory) => (
-          <Section key={wordPackCategory}>
-            <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
-            <WordPacksContainer>
-              {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
-                <WordPackCard
-                  key={wordPackDTO.name}
-                  wordPack={wordPackDTO}
-                />
-              ))}
-            </WordPacksContainer>
-          </Section>
-        ))}
-        <Section>
-          <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
+      {wordPackCategoriesStandard.map((wordPackCategory) => (
+        <Section key={wordPackCategory}>
+          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
           <WordPacksContainer>
-            {wordPacksDTOByCategory(Category.CUSTOM).map((wordPackDTO) => (
+            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
               <WordPackCard
                 key={wordPackDTO.name}
                 wordPack={wordPackDTO}
               />
             ))}
-            <WordPackCardAddNew />
           </WordPacksContainer>
         </Section>
-      </>
+      ))}
+      <Section>
+        <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
+        <WordPacksContainer>
+          {wordPacksDTOByCategory(Category.CUSTOM).map((wordPackDTO) => (
+            <WordPackCard
+              key={wordPackDTO.name}
+              wordPack={wordPackDTO}
+            />
+          ))}
+          <WordPackCardAddNew />
+        </WordPacksContainer>
+      </Section>
     </Container>
   );
 }

@@ -1,10 +1,10 @@
-import { apiSlice } from '@store/api/apiSlice';
+import { API } from '@store/api/API';
 import { ApiEndpointsWordData } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { sortWordsChinese } from '@utils/functions';
 import { WordDataDTO } from '@utils/types';
 
-export const wordDataAPI = apiSlice.injectEndpoints({
+export const wordDataAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     getAllWordData: builder.query<WordDataDTO[], void>({
       query: () => ({

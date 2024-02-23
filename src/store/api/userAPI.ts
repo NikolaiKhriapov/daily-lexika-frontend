@@ -1,9 +1,9 @@
-import { apiSlice } from '@store/api//apiSlice';
+import { API } from '@store/api/API';
 import { ApiEndpointsUsers } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { PasswordUpdateRequest, UserDTO } from '@utils/types';
 
-export const userAPI = apiSlice.injectEndpoints({
+export const userAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     getUserInfo: builder.query<UserDTO, void>({
       query: () => ({

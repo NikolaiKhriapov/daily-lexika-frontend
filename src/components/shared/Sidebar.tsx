@@ -38,17 +38,23 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2};
   z-index: 1000;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    top: 120px;
-    width: 210px;
+    padding: 30px 20px;
+    position: sticky;
+    top: 100px;
+    width: 220px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: normal;
     justify-content: normal;
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
+    border: ${({ $colorMode }) => borderStyles($colorMode)};
+    border-color: ${({ $colorMode }) => theme.colors[$colorMode].borderColorMain};
+    border-radius: ${theme.stylesToDelete.borderRadius};
+    box-shadow: ${theme.stylesToDelete.boxShadow};
   }
 `;
 
@@ -64,14 +70,15 @@ const Item = styled(Link)<{ $colorMode: ColorMode }>`
   ${nonHighlightableTap};
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 180px;
     padding: 16px;
-    margin: 0 20px;
     justify-content: left;
     border-radius: ${theme.stylesToDelete.borderRadius};
 
     &:hover {
       background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
       border: ${({ $colorMode }) => borderStyles($colorMode)};
+      box-shadow: ${theme.stylesToDelete.boxShadow};
     }
   }
 `;

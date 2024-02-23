@@ -1,10 +1,10 @@
-import { apiSlice, providesList } from '@store/api/apiSlice';
+import { API, providesList } from '@store/api/API';
 import { wordDataAPI } from '@store/api/wordDataAPI';
 import { ApiEndpointsWordPacks } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { placeholderWordPack, WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
 
-export const wordPacksAPI = apiSlice.injectEndpoints({
+export const wordPacksAPI = API.injectEndpoints({
   endpoints: (builder) => ({
     getAllWordPacks: builder.query<WordPackDTO[], void>({
       query: () => ({

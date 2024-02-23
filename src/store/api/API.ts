@@ -9,7 +9,7 @@ const prepareHeaders = (headers: any) => {
   return headers;
 };
 
-export const apiSlice = createApi({
+export const API = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_URL as string}/api/v1`,

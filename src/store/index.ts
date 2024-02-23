@@ -1,4 +1,4 @@
-import { apiSlice } from '@store/api/apiSlice';
+import { API } from '@store/api/API';
 import authPageSlice from '@store/reducers/authPageSlice';
 import floatingChatSlice from '@store/reducers/floatingChatSlice';
 import { configureStore } from '@reduxjs/toolkit';
@@ -8,14 +8,14 @@ import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
   authPageSlice,
   floatingChatSlice,
-  [apiSlice.reducerPath]: apiSlice.reducer,
+  [API.reducerPath]: API.reducer,
 });
 
 export const setupStore = () => configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false,
-  }).concat(apiSlice.middleware),
+  }).concat(API.middleware),
 });
 
 export const store = setupStore();

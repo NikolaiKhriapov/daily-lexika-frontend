@@ -20,7 +20,7 @@ export default function ColorModeSwitchComponent() {
 }
 
 const ButtonStyled = styled(Button)<{ $colorMode: ColorMode }>`
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2} !important;
 
   &:hover {
     background-color: ${({ $colorMode }) => theme.colors[$colorMode].hoverBgColor} !important;

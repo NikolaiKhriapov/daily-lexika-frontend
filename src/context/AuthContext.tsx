@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { apiSlice } from '@store/api/apiSlice';
+import { API } from '@store/api/API';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { LocalStorage, Page } from '@utils/constants';
@@ -49,7 +49,7 @@ function AuthProvider(props: Props) {
 
   const logout = () => {
     localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
-    dispatch(apiSlice.util.resetApiState());
+    dispatch(API.util.resetApiState());
     router.push(Page.AUTH);
   };
 
