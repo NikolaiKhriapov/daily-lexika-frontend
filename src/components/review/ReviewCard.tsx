@@ -11,7 +11,6 @@ import { placeholderReview, ReviewDTO, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
-import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -38,7 +37,9 @@ export default function ReviewCard(props: Props) {
   const [refreshReview, { isLoading: isLoadingRefreshReview }] = useRefreshReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
 
-  if (!user) return <Spinner />;
+  if (!user || review.id === placeholderReview.id) {
+    return <Skeleton type={SkeletonType.REVIEW_CARD} />;
+  }
 
   const isNoWordsLeftInReview = review.listOfWordDTO?.length === 0;
 
@@ -76,10 +77,6 @@ export default function ReviewCard(props: Props) {
     event.stopPropagation();
     onOpenRemoveButton();
   };
-
-  if (review.id === placeholderReview.id) {
-    return <Skeleton type={SkeletonType.REVIEW_CARD} />;
-  }
 
   return (
     <Card

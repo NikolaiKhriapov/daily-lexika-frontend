@@ -13,7 +13,6 @@ import { Category, placeholderWordPack, WordPackDTO } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
-import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -43,7 +42,9 @@ export default function WordPackCard(props: Props) {
   const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
   dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: 0, size: 20 }, { force: false }));
 
-  if (!user) return <Spinner />;
+  if (!user || wordPack.name === placeholderWordPack.name) {
+    return <Skeleton type={SkeletonType.WORD_PACK_CARD} />;
+  }
 
   const handleDeleteCustomWordPack = () => {
     onCloseDeleteButton();
@@ -69,10 +70,6 @@ export default function WordPackCard(props: Props) {
     event.stopPropagation();
     onOpenDeleteButton();
   };
-
-  if (wordPack.name === placeholderWordPack.name) {
-    return <Skeleton type={SkeletonType.WORD_PACK_CARD} />;
-  }
 
   return (
     <Card
