@@ -5,7 +5,7 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
-import { WordPackDTO } from '@utils/types';
+import { WordPackDto } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import Modal from '@components/common/complex/Modal';
@@ -37,7 +37,7 @@ export default function CreateWordPackWindow(props: Props) {
     description: Yup.string().required('Required'),
   });
 
-  const handleOnSubmit = (wordPack: WordPackDTO) => {
+  const handleOnSubmit = (wordPack: WordPackDto) => {
     onClose();
     createCustomWordPack(wordPack)
       .unwrap()

@@ -64,8 +64,8 @@ export default function StatisticsPageContent() {
         <Heading size={Size.LG}>Daily Reviews</Heading>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={3} isLoading={!statistics}>
-            {statistics?.listOfReviewStatisticsDTO && statistics.listOfReviewStatisticsDTO.length > 0
-              ? (statistics.listOfReviewStatisticsDTO.map((reviewStatisticsDTO, index) => (
+            {statistics?.listOfReviewStatisticsDto && statistics.listOfReviewStatisticsDto.length > 0
+              ? (statistics.listOfReviewStatisticsDto.map((reviewStatisticsDTO, index) => (
                 <StatsReviewCard
                   key={index}
                   reviewStatistics={reviewStatisticsDTO}

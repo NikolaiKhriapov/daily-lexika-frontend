@@ -2,16 +2,16 @@ import { API } from '@store/api/API';
 import { ApiEndpointsWordData } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { sortWordsChinese } from '@utils/functions';
-import { WordDataDTO } from '@utils/types';
+import { WordDataDto } from '@utils/types';
 
 export const wordDataAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getAllWordData: builder.query<WordDataDTO[], void>({
+    getAllWordData: builder.query<WordDataDto[], void>({
       query: () => ({
         url: ApiEndpointsWordData.getAllWordData(),
         method: QueryMethods.GET,
       }),
-      transformResponse: (response: WordDataDTO[]) => response.sort(sortWordsChinese),
+      transformResponse: (response: WordDataDto[]) => response.sort(sortWordsChinese),
     }),
   }),
 });

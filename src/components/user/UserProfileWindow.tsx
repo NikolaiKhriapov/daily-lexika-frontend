@@ -6,7 +6,7 @@ import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useDeleteAccountMutation, useUpdatePasswordMutation, useUpdateUserInfoMutation } from '@store/api/userAPI';
 import { ButtonType, LocalStorage, Size } from '@utils/constants';
-import { PasswordUpdateRequest, UserDTO } from '@utils/types';
+import { PasswordUpdateRequest, UserDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import AlertDialog from '@components/common/complex/AlertDialog';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -18,7 +18,7 @@ import TextInput from '@components/common/complex/TextInput';
 type Props = {
   isOpen: boolean;
   onClose: any;
-  userDTO: UserDTO;
+  userDTO: UserDto;
 };
 
 export default function UserProfileWindow(props: Props) {
@@ -34,7 +34,7 @@ export default function UserProfileWindow(props: Props) {
   const [updatePassword] = useUpdatePasswordMutation();
   const [deleteAccount] = useDeleteAccountMutation();
 
-  const handleChangeInfo = (userUpdatedInfoDTO: UserDTO, setSubmitting: any) => {
+  const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting: any) => {
     updateUserInfo(userUpdatedInfoDTO)
       .unwrap()
       .then(() => successNotification('User information updated successfully', ''))
@@ -66,7 +66,7 @@ export default function UserProfileWindow(props: Props) {
     name: {
       initialValues: { name: userDTO && userDTO.name },
       validationSchema: Yup.object({ name: Yup.string().max(15, 'Must be 15 characters or less') }),
-      onSubmit: (userUpdatedInfoDTO: UserDTO, { setSubmitting }: any) => {
+      onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
         onClose();
@@ -76,7 +76,7 @@ export default function UserProfileWindow(props: Props) {
     email: {
       initialValues: { email: userDTO && userDTO.email },
       validationSchema: Yup.object({ email: Yup.string().email('Invalid email address') }),
-      onSubmit: (userUpdatedInfoDTO: UserDTO, { setSubmitting }: any) => {
+      onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
         localStorage.removeItem(LocalStorage.ACCESS_TOKEN);

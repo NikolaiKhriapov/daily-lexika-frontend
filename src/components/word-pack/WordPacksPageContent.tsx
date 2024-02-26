@@ -14,9 +14,9 @@ import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 export default function WordPacksPageContent() {
   const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
 
-  const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDTO) => wordPackDTO.category)));
-  const wordPacksDTOByCategory = (category: Category) => allWordPacks
-    .filter((wordPackDTO) => wordPackDTO.category.toLowerCase() === category.toLowerCase());
+  const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDto) => wordPackDto.category)));
+  const wordPacksDtoByCategory = (category: Category) => allWordPacks
+    .filter((wordPackDto) => wordPackDto.category.toLowerCase() === category.toLowerCase());
   const wordPackCategoriesStandard = wordPackCategories
     .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
@@ -37,10 +37,10 @@ export default function WordPacksPageContent() {
         <Section key={wordPackCategory}>
           <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
           <WordPacksContainer>
-            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
+            {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
               <WordPackCard
-                key={wordPackDTO.name}
-                wordPack={wordPackDTO}
+                key={wordPackDto.name}
+                wordPack={wordPackDto}
               />
             ))}
           </WordPacksContainer>
@@ -49,10 +49,10 @@ export default function WordPacksPageContent() {
       <Section>
         <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
         <WordPacksContainer>
-          {wordPacksDTOByCategory(Category.CUSTOM).map((wordPackDTO) => (
+          {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
             <WordPackCard
-              key={wordPackDTO.name}
-              wordPack={wordPackDTO}
+              key={wordPackDto.name}
+              wordPack={wordPackDto}
             />
           ))}
           <WordPackCardAddNew />

@@ -9,7 +9,7 @@ import { useAppDispatch } from '@store/hooks/hooks';
 import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { Category, placeholderWordPack, WordPackDTO } from '@utils/types';
+import { Category, placeholderWordPack, WordPackDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
@@ -23,7 +23,7 @@ import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
 import SearchWindow from '@components/word-pack/SearchWindow';
 
 type Props = {
-  wordPack: WordPackDTO;
+  wordPack: WordPackDto;
 };
 
 export default function WordPackCard(props: Props) {
@@ -89,7 +89,7 @@ export default function WordPackCard(props: Props) {
             <Text size={Size.MD}>{wordPack.totalWords}</Text>
           </WordsCountContainer>
           <ButtonsContainer>
-            {wordPack.reviewId !== undefined
+            {wordPack.reviewId !== null
               ? <ButtonUnavailable text='Added' isWithIcon />
               : (
                 <Button
@@ -127,7 +127,7 @@ export default function WordPackCard(props: Props) {
                 <ReviewWordPackWindow
                   isOpen={isOpenPreviewButton}
                   onClose={onClosePreviewButton}
-                  wordPackDTO={wordPack}
+                  wordPack={wordPack}
                 />
               )}
             />

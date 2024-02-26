@@ -4,7 +4,7 @@ import { Button as ChakraButton, ColorMode, MenuDivider, useColorMode } from '@c
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { NotificationDTO } from '@utils/types';
+import { NotificationDto } from '@utils/types';
 import RedDot from '@components/common/basic/RedDot';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
@@ -13,8 +13,8 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   formattedDate: (dateString: string) => string;
-  allNotificationsDTO: NotificationDTO[];
-  handleNotificationClick: (notificationDTO: NotificationDTO) => void;
+  allNotificationsDTO: NotificationDto[];
+  handleNotificationClick: (notificationDTO: NotificationDto) => void;
 };
 
 export default function NotificationsWindow(props: Props) {

@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Status, WordDTO } from '@utils/types';
+import { Status, WordDto } from '@utils/types';
 import StatusBadge from '@components/common/basic/StatusBadge';
 import BadgeStreakCount from '@components/common/complex/BadgeStreakCount';
 
 type Props = {
-  wordDTO: WordDTO;
+  word: WordDto;
 };
 
 export default function BadgeOrStreakCount(props: Props) {
-  const { wordDTO } = props;
+  const { word } = props;
 
   const getStatusColor = (status: Status) => {
     switch (status.toString()) {
@@ -25,9 +25,9 @@ export default function BadgeOrStreakCount(props: Props) {
   return (
     <Component>
       {
-        wordDTO.status.toString() === Status[Status.IN_REVIEW]
-          ? <BadgeStreakCount totalStreak={wordDTO.totalStreak} />
-          : <StatusBadge text={wordDTO.status} colorScheme={getStatusColor(wordDTO.status)} />
+        word.status.toString() === Status[Status.IN_REVIEW]
+          ? <BadgeStreakCount totalStreak={word.totalStreak} />
+          : <StatusBadge text={word.status} colorScheme={getStatusColor(word.status)} />
       }
     </Component>
   );

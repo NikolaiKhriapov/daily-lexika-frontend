@@ -1,7 +1,7 @@
 import { ColorMode } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { UserDTO, WordDataDTO } from '@utils/types';
+import { UserDto, WordDataDto } from '@utils/types';
 
 export const mediaBreakpointUp: (breakpoint: Breakpoint | string) => string = (breakpoint) =>
   `@media (min-width: ${breakpoint})`;
@@ -21,7 +21,7 @@ export const nonHighlightableTap = () => `
   -webkit-tap-highlight-color: transparent;
 `;
 
-export const getOriginalWordPackName = (wordPackName: string, user: UserDTO | null) => {
+export const getOriginalWordPackName = (wordPackName: string, user: UserDto | null) => {
   const postfix = `__${user?.id}`;
   if (user && wordPackName.endsWith(postfix)) {
     return wordPackName.replace(postfix, '');
@@ -31,7 +31,7 @@ export const getOriginalWordPackName = (wordPackName: string, user: UserDTO | nu
 
 export const removeAccent = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-export const sortWordsChinese = (a: WordDataDTO, b: WordDataDTO) => {
+export const sortWordsChinese = (a: WordDataDto, b: WordDataDto) => {
   const nameA = removeAccent(a.transcription).toLowerCase();
   const nameB = removeAccent(b.transcription).toLowerCase();
 

@@ -7,7 +7,7 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { placeholderReview, ReviewDTO, Status } from '@utils/types';
+import { placeholderReview, ReviewDto, Status } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
@@ -20,7 +20,7 @@ import CreateOrUpdateReviewWindow from '@components/review/CreateOrUpdateReviewW
 import StartReviewWindow from '@components/review/StartReviewWindow';
 
 type Props = {
-  review: ReviewDTO;
+  review: ReviewDto;
 };
 
 export default function ReviewCard(props: Props) {
@@ -41,12 +41,12 @@ export default function ReviewCard(props: Props) {
     return <Skeleton type={SkeletonType.REVIEW_CARD} />;
   }
 
-  const isNoWordsLeftInReview = review.listOfWordDTO?.length === 0;
+  const isNoWordsLeftInReview = review.listOfWordDto?.length === 0;
 
   const requestRefreshReview = () => {
     refreshReview(review.id!)
       .unwrap()
-      .then(() => successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDTO.name, user)} refreshed successfully`))
+      .then(() => successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`))
       .catch((error) => errorNotification('', error.data.message));
   };
 
@@ -54,12 +54,12 @@ export default function ReviewCard(props: Props) {
     onCloseRemoveButton();
     deleteReview(review.id!)
       .unwrap()
-      .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDTO.name, user)} removed successfully`))
+      .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
       .catch((error) => errorNotification('', error.data.message));
   };
 
-  const totalNewWords = review.listOfWordDTO?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length || 0;
-  const totalInReviewWords = review.listOfWordDTO?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length || 0;
+  const totalNewWords = review.listOfWordDto?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length || 0;
+  const totalInReviewWords = review.listOfWordDto?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.IN_REVIEW] || wordDTO.status.toString() === Status[Status.KNOWN]).length || 0;
 
   const onClickStartButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -90,7 +90,7 @@ export default function ReviewCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {getOriginalWordPackName(review.wordPackDTO.name, user)}
+              {getOriginalWordPackName(review.wordPackDto.name, user)}
             </Text>
           </WordPackNameContainer>
           <WordsCountContainer>
@@ -131,7 +131,7 @@ export default function ReviewCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text isCentered>{review.wordPackDTO.description}</Text>
+            <Text isCentered>{review.wordPackDto.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon
@@ -148,7 +148,7 @@ export default function ReviewCard(props: Props) {
                 <CreateOrUpdateReviewWindow
                   isOpen={isOpenChangeButton}
                   onClose={onCloseChangeButton}
-                  wordPack={review.wordPackDTO}
+                  wordPack={review.wordPackDto}
                   review={review}
                   setDisabledButton={setDisabledChangeButton}
                 />

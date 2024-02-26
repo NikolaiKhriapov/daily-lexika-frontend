@@ -4,7 +4,7 @@ import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } 
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, FontWeight, RoleName, Size } from '@utils/constants';
 import { hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
-import { WordDTO } from '@utils/types';
+import { WordDto } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
@@ -14,7 +14,7 @@ import Modal from '@components/common/complex/Modal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  word: WordDTO;
+  word: WordDto;
 };
 
 export default function WordDetailedInfo(props: Props) {
@@ -31,14 +31,14 @@ export default function WordDetailedInfo(props: Props) {
   const getWordInfoForUserRole = () => {
     const map: Record<RoleName, any> = {
       [RoleName.USER_ENGLISH]: {
-        name: word.wordDataDTO.nameEnglish,
-        transcription: word.wordDataDTO.transcription,
-        translation: word.wordDataDTO.nameRussian,
+        name: word.wordDataDto.nameEnglish,
+        transcription: word.wordDataDto.transcription,
+        translation: word.wordDataDto.nameRussian,
       },
       [RoleName.USER_CHINESE]: {
-        name: word.wordDataDTO.nameChineseSimplified,
-        transcription: word.wordDataDTO.transcription,
-        translation: word.wordDataDTO.nameEnglish,
+        name: word.wordDataDto.nameChineseSimplified,
+        transcription: word.wordDataDto.transcription,
+        translation: word.wordDataDto.nameEnglish,
       },
       [RoleName.ADMIN]: null,
     };
@@ -69,7 +69,7 @@ export default function WordDetailedInfo(props: Props) {
                   <ProgressBarContainerTablet>
                     <TopContainer>
                       <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
-                      <BadgeOrStreakCount wordDTO={word} />
+                      <BadgeOrStreakCount word={word} />
                     </TopContainer>
                     <ProgressBar value={streakProgress} colorScheme='green' />
                   </ProgressBarContainerTablet>
@@ -78,20 +78,20 @@ export default function WordDetailedInfo(props: Props) {
                   <Divider marginY={3} />
                   <TopContainer>
                     <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
-                    <BadgeOrStreakCount wordDTO={word} />
+                    <BadgeOrStreakCount word={word} />
                   </TopContainer>
                   <ProgressBar value={(word.totalStreak / 5) * 100} colorScheme='green' />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
-                {word.wordDataDTO.definition !== '[TODO]' && (
+                {word.wordDataDto.definition !== '[TODO]' && (
                   <>
-                    <Text>{word.wordDataDTO.definition}</Text>
+                    <Text>{word.wordDataDto.definition}</Text>
                     <Divider marginY={3} />
                   </>
                 )}
               </TabPanel>
               <TabPanel>
-                {word.wordDataDTO.examples.map((example, index) => (
+                {word.wordDataDto.examples.map((example, index) => (
                   example !== '[TODO]' && (
                     <>
                       <Text key={index}>{example}</Text>

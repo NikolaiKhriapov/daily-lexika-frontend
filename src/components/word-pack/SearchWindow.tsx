@@ -8,7 +8,7 @@ import { useAddWordToCustomWordPackMutation, useRemoveWordFromCustomWordPackMuta
 import { Breakpoint, ButtonWithIconType, RoleName, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, removeAccent } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { WordDataDTO, WordPackDTO } from '@utils/types';
+import { WordDataDto, WordPackDto } from '@utils/types';
 import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
 import Input from '@components/common/basic/Input';
 import Spinner from '@components/common/basic/Spinner';
@@ -18,7 +18,7 @@ import Modal from '@components/common/complex/Modal';
 type Props = {
   isOpen: boolean;
   onClose: any;
-  wordPack: WordPackDTO;
+  wordPack: WordPackDto;
 };
 
 export default function SearchWindow(props: Props) {
@@ -26,7 +26,7 @@ export default function SearchWindow(props: Props) {
 
   const { colorMode } = useColorMode();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<WordDataDTO[]>([]);
+  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
   const [isDisabled, setDisabled] = useState<number | null>(null);
   const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
 
@@ -35,7 +35,7 @@ export default function SearchWindow(props: Props) {
   const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();
   const [removeWordFromCustomWordPack] = useRemoveWordFromCustomWordPackMutation();
 
-  const handleAddWordToCustomWordPack = (wordDataDTO: WordDataDTO) => {
+  const handleAddWordToCustomWordPack = (wordDataDTO: WordDataDto) => {
     setDisabled(wordDataDTO.id);
     setOpenAddOrRemoveWord(null);
     addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
@@ -45,7 +45,7 @@ export default function SearchWindow(props: Props) {
       .finally(() => setDisabled(null));
   };
 
-  const handleRemoveWordFromCustomWordPack = (wordDataDTO: WordDataDTO) => {
+  const handleRemoveWordFromCustomWordPack = (wordDataDTO: WordDataDto) => {
     setDisabled(wordDataDTO.id);
     setOpenAddOrRemoveWord(null);
     removeWordFromCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
@@ -71,7 +71,7 @@ export default function SearchWindow(props: Props) {
     }
   }, [searchQuery]);
 
-  const getWordInfoForUserRole = (wordDataDTO: WordDataDTO) => {
+  const getWordInfoForUserRole = (wordDataDTO: WordDataDto) => {
     const map: Record<RoleName, any> = {
       [RoleName.USER_ENGLISH]: {
         name: wordDataDTO.nameEnglish,
@@ -91,10 +91,10 @@ export default function SearchWindow(props: Props) {
     return map[user!.role!];
   };
 
-  const isWordAlreadyAddedToWordPack = (wordData: WordDataDTO) =>
+  const isWordAlreadyAddedToWordPack = (wordData: WordDataDto) =>
     allWordData.some((wordDataDTO) => wordDataDTO.id === wordData.id && wordDataDTO.listOfWordPackNames.includes(wordPack.name));
 
-  const onClickWordData = (wordDataDTO: WordDataDTO) => {
+  const onClickWordData = (wordDataDTO: WordDataDto) => {
     if (isDisabled !== wordDataDTO.id) {
       setOpenAddOrRemoveWord(wordDataDTO.id);
     }
