@@ -6,14 +6,14 @@ import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/reac
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { Status, WordDTO } from '@utils/types';
+import { Status, WordDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import Text from '@components/common/basic/Text';
 import Card from '@components/common/complex/Card';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  reviewWord?: WordDTO | null;
+  reviewWord?: WordDto | null;
   isFlipped: boolean;
   setFlipped: any;
   isThrown: boolean;
@@ -70,31 +70,31 @@ export default function ReviewWordCard(props: Props) {
   const wordData = {
     [RoleName.USER_ENGLISH]: {
       transcription: {
-        text: reviewWord.wordDataDTO.transcription,
+        text: reviewWord.wordDataDto.transcription,
         size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
       },
       nameWord: {
-        text: reviewWord.wordDataDTO.nameEnglish,
+        text: reviewWord.wordDataDto.nameEnglish,
         size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
       nameTranslation: {
-        text: reviewWord.wordDataDTO.nameRussian,
+        text: reviewWord.wordDataDto.nameRussian,
         size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
       },
     },
     [RoleName.USER_CHINESE]: {
       transcription: {
-        text: reviewWord.wordDataDTO.transcription,
+        text: reviewWord.wordDataDto.transcription,
         size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
       },
       nameWord: {
-        text: reviewWord.wordDataDTO.nameChineseSimplified,
+        text: reviewWord.wordDataDto.nameChineseSimplified,
         size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
-        text: reviewWord.wordDataDTO.nameEnglish,
+        text: reviewWord.wordDataDto.nameEnglish,
         size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
       },
     },

@@ -7,7 +7,7 @@ import { useCreateReviewMutation, useUpdateReviewMutation } from '@store/api/rev
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
-import { ReviewDTO, WordPackDTO } from '@utils/types';
+import { ReviewDto, WordPackDto } from '@utils/types';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
@@ -17,8 +17,8 @@ import TextInput from '@components/common/complex/TextInput';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  wordPack: WordPackDTO;
-  review?: ReviewDTO;
+  wordPack: WordPackDto;
+  review?: ReviewDto;
   setDisabledButton: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -34,7 +34,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   const initialValues = {
     maxNewWordsPerDay: review?.maxNewWordsPerDay || 5,
     maxReviewWordsPerDay: review?.maxReviewWordsPerDay || 20,
-    wordPackDTO: wordPack,
+    wordPackDto: wordPack,
   };
 
   const validationSchema = Yup.object({
@@ -48,7 +48,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       .required('Required'),
   });
 
-  const handleOnSubmit = (reviewDTO: ReviewDTO) => {
+  const handleOnSubmit = (reviewDTO: ReviewDto) => {
     setDisabledButton(true);
     onClose();
     if (review) {

@@ -7,7 +7,7 @@ import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { NotificationDTO } from '@utils/types';
+import { NotificationDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import MenuItem from '@components/common/basic/MenuItem';
 import MenuList from '@components/common/basic/MenuList';
@@ -20,12 +20,12 @@ import NotificationWindow from '@components/shared/navbar/NotificationWindow';
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedNotification, setSelectedNotification] = useState<NotificationDTO | null>(null);
+  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
 
   const { data: allNotifications = [] } = useGetAllNotificationsQuery();
   const [readNotification] = useReadNotificationMutation();
 
-  const handleNotificationClick = (notificationDTO: NotificationDTO) => {
+  const handleNotificationClick = (notificationDTO: NotificationDto) => {
     readNotification(notificationDTO.notificationId)
       .unwrap()
       .catch((error) => errorNotification('', error.data.message));

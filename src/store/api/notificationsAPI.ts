@@ -1,11 +1,11 @@
 import { API, providesList } from '@store/api/API';
 import { ApiEndpointsNotifications } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { NotificationDTO } from '@utils/types';
+import { NotificationDto } from '@utils/types';
 
 export const notificationsAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getAllNotifications: builder.query<NotificationDTO[], void>({
+    getAllNotifications: builder.query<NotificationDto[], void>({
       query: () => ({
         url: ApiEndpointsNotifications.getAllNotifications(),
         method: QueryMethods.GET,

@@ -22,16 +22,15 @@ export interface PasswordUpdateRequest {
   passwordNew: string;
 }
 
-export interface UserDTO {
+export interface UserDto {
   id?: number;
   name?: string;
   email?: string;
-  password?: string;
   role?: RoleName;
-  roleStatistics?: RoleStatisticsDTO[];
+  roleStatistics?: RoleStatisticsDto[];
 }
 
-export interface RoleStatisticsDTO {
+export interface RoleStatisticsDto {
   id: number;
   roleName: string;
   currentStreak: number;
@@ -39,7 +38,7 @@ export interface RoleStatisticsDTO {
   recordStreak: number;
 }
 
-export interface NotificationDTO {
+export interface NotificationDto {
   notificationId: number;
   toUserId: number;
   toUserEmail: string;
@@ -50,19 +49,19 @@ export interface NotificationDTO {
   isRead: boolean;
 }
 
-export interface ReviewDTO {
+export interface ReviewDto {
   id?: number;
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
-  wordPackDTO: WordPackDTO;
-  listOfWordDTO?: WordDTO[];
+  wordPackDto: WordPackDto;
+  listOfWordDto?: WordDto[];
   actualSize: number;
   dateLastCompleted?: string;
   dateGenerated?: string;
 }
 
-export interface WordDataDTO {
+export interface WordDataDto {
   id: number;
   nameChineseSimplified: string;
   transcription: string;
@@ -74,9 +73,10 @@ export interface WordDataDTO {
   platform: Platform;
 }
 
-export interface WordDTO {
+export interface WordDto {
   id: number;
-  wordDataDTO: WordDataDTO;
+  userId: number;
+  wordDataDto: WordDataDto;
   status: Status;
   currentStreak: number;
   totalStreak: number;
@@ -84,25 +84,26 @@ export interface WordDTO {
   dateOfLastOccurrence: string;
 }
 
-export interface WordPackDTO {
+export interface WordPackDto {
   name: string;
   description: string;
   category: Category;
-  totalWords: number;
+  platform?: Platform;
+  totalWords?: number;
   reviewId?: number;
 }
 
-export interface StatisticsDTO {
+export interface StatisticsDto {
   currentStreak?: number;
   recordStreak?: number;
   wordsKnown: number;
   charactersKnown: number;
   // idiomsKnown: number;
-  listOfReviewStatisticsDTO: ReviewStatisticsDTO[];
+  listOfReviewStatisticsDto: ReviewStatisticsDto[];
 }
 
-export interface ReviewStatisticsDTO {
-  id: number;
+export interface ReviewStatisticsDto {
+  reviewId: number;
   wordPackName: string;
   wordsNew: number;
   wordsInReview: number;
@@ -132,17 +133,16 @@ export enum Category {
   CUSTOM = 'Custom',
 }
 
-export const placeholderWordPack: WordPackDTO = {
-  name: '!@#$%^&*()',
+export const placeholderWordPack: WordPackDto = {
+  name: '0000000000',
   description: '',
   category: Category.CUSTOM,
-  totalWords: 0,
 };
 
-export const placeholderReview: ReviewDTO = {
+export const placeholderReview: ReviewDto = {
   id: -1,
   maxNewWordsPerDay: -1,
   maxReviewWordsPerDay: -1,
-  wordPackDTO: placeholderWordPack,
+  wordPackDto: placeholderWordPack,
   actualSize: -1,
 };

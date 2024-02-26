@@ -1,19 +1,19 @@
 import { API, providesList } from '@store/api/API';
 import { ApiEndpointsReviews } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { placeholderReview, ReviewDTO } from '@utils/types';
+import { placeholderReview, ReviewDto } from '@utils/types';
 
 export const reviewsAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getAllReviews: builder.query<ReviewDTO[], void>({
+    getAllReviews: builder.query<ReviewDto[], void>({
       query: () => ({
         url: ApiEndpointsReviews.getAllReviews(),
         method: QueryMethods.GET,
       }),
-      transformResponse: (response: ReviewDTO[]) => response.sort((a, b) => a.wordPackDTO.name.localeCompare(b.wordPackDTO.name)),
+      transformResponse: (response: ReviewDto[]) => response.sort((a, b) => a.wordPackDto.name.localeCompare(b.wordPackDto.name)),
       providesTags: (result) => providesList(result, 'Reviews'),
     }),
-    createReview: builder.mutation<ReviewDTO, ReviewDTO>({
+    createReview: builder.mutation<ReviewDto, ReviewDto>({
       query: (reviewDTO) => ({
         url: ApiEndpointsReviews.createReview(),
         body: reviewDTO,
@@ -33,7 +33,7 @@ export const reviewsAPI = API.injectEndpoints({
         }
       },
     }),
-    updateReview: builder.mutation<ReviewDTO, { reviewId: number, reviewDTO: ReviewDTO }>({
+    updateReview: builder.mutation<ReviewDto, { reviewId: number, reviewDTO: ReviewDto }>({
       query: ({ reviewId, reviewDTO }) => ({
         url: ApiEndpointsReviews.updateReview(reviewId),
         method: QueryMethods.PATCH,
@@ -53,7 +53,7 @@ export const reviewsAPI = API.injectEndpoints({
         }
       },
     }),
-    refreshReview: builder.mutation<ReviewDTO, number>({
+    refreshReview: builder.mutation<ReviewDto, number>({
       query: (reviewId) => ({
         url: ApiEndpointsReviews.refreshReview(reviewId),
         method: QueryMethods.PATCH,
@@ -92,7 +92,7 @@ export const reviewsAPI = API.injectEndpoints({
         }
       },
     }),
-    processReviewAction: builder.mutation<ReviewDTO, { reviewId: number; answer: boolean | null }>({
+    processReviewAction: builder.mutation<ReviewDto, { reviewId: number; answer: boolean | null }>({
       query: ({ reviewId, answer = null }) => ({
         url: ApiEndpointsReviews.processReviewAction(reviewId, answer),
         method: QueryMethods.GET,

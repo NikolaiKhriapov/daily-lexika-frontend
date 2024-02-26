@@ -2,21 +2,21 @@ import { API, providesList } from '@store/api/API';
 import { wordDataAPI } from '@store/api/wordDataAPI';
 import { ApiEndpointsWordPacks } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { placeholderWordPack, WordDataDTO, WordDTO, WordPackDTO } from '@utils/types';
+import { placeholderWordPack, WordDataDto, WordDto, WordPackDto } from '@utils/types';
 
 export const wordPacksAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getAllWordPacks: builder.query<WordPackDTO[], void>({
+    getAllWordPacks: builder.query<WordPackDto[], void>({
       query: () => ({
         url: ApiEndpointsWordPacks.getAllWordPacks(),
         method: QueryMethods.GET,
       }),
       providesTags: (result) => providesList(result, 'WordPacks'),
     }),
-    createCustomWordPack: builder.mutation<void, WordPackDTO>({
-      query: (wordPackDTO) => ({
+    createCustomWordPack: builder.mutation<void, WordPackDto>({
+      query: (wordPackDto) => ({
         url: ApiEndpointsWordPacks.createCustomWordPack(),
-        body: wordPackDTO,
+        body: wordPackDto,
         method: QueryMethods.POST,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }],
@@ -53,14 +53,14 @@ export const wordPacksAPI = API.injectEndpoints({
         }
       },
     }),
-    getAllWordsForWordPack: builder.query<WordDTO[], { wordPackName: string, page: number, size: number }>({
+    getAllWordsForWordPack: builder.query<WordDto[], { wordPackName: string, page: number, size: number }>({
       query: ({ wordPackName, page, size }) => ({
         url: ApiEndpointsWordPacks.getAllWordsForWordPack(wordPackName, page, size),
         method: QueryMethods.GET,
       }),
       providesTags: ['AllWordsForWordPack'],
     }),
-    addWordToCustomWordPack: builder.mutation<WordDataDTO, { wordPackName: string, wordDataId: number }>({
+    addWordToCustomWordPack: builder.mutation<WordDataDto, { wordPackName: string, wordDataId: number }>({
       query: ({ wordPackName, wordDataId }) => ({
         url: ApiEndpointsWordPacks.addWordToCustomWordPack(wordPackName, wordDataId),
         method: QueryMethods.GET,
@@ -69,7 +69,7 @@ export const wordPacksAPI = API.injectEndpoints({
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
           const wordPack = draft?.find((item) => item.name === args.wordPackName);
-          if (wordPack) {
+          if (wordPack && wordPack.totalWords) {
             wordPack.totalWords += 1;
           }
         }));
@@ -86,7 +86,7 @@ export const wordPacksAPI = API.injectEndpoints({
         }
       },
     }),
-    removeWordFromCustomWordPack: builder.mutation<WordDataDTO, { wordPackName: string, wordDataId: number }>({
+    removeWordFromCustomWordPack: builder.mutation<WordDataDto, { wordPackName: string, wordDataId: number }>({
       query: ({ wordPackName, wordDataId }) => ({
         url: ApiEndpointsWordPacks.removeWordFromCustomWordPack(wordPackName, wordDataId),
         method: QueryMethods.GET,
@@ -95,7 +95,7 @@ export const wordPacksAPI = API.injectEndpoints({
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
           const wordPack = draft?.find((item) => item?.name === args.wordPackName);
-          if (wordPack) {
+          if (wordPack && wordPack.totalWords) {
             wordPack.totalWords -= 1;
           }
         }));

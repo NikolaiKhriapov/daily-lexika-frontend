@@ -2,9 +2,11 @@ import { LocalStorage } from '@utils/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const prepareHeaders = (headers: any) => {
-  const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
+  if (typeof localStorage !== 'undefined') {
+    const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
   }
   return headers;
 };

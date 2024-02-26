@@ -5,7 +5,7 @@ import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, getOriginalWordPackName, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { ReviewStatisticsDTO } from '@utils/types';
+import { ReviewStatisticsDto } from '@utils/types';
 import ArrowRightButton from '@components/common/basic/ArrowRightButton';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import ProgressCircular from '@components/common/basic/ProgressCircular';
@@ -17,7 +17,7 @@ import ReviewWordPackWindow from '@components/word-pack/ReviewWordPackWindow';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  reviewStatisticsDTO: ReviewStatisticsDTO;
+  reviewStatisticsDTO: ReviewStatisticsDto;
   wordsPercentage: { inReview: number, known: number };
   wordsTotal: number;
 };
@@ -50,7 +50,7 @@ export default function StatsReviewWindow(props: Props) {
                 <ReviewWordPackWindow
                   isOpen={isOpenDrawer}
                   onClose={onCloseDrawer}
-                  wordPackDTO={wordPack}
+                  wordPack={wordPack}
                 />
               )}
             </WordPackNameAndInfoButton>

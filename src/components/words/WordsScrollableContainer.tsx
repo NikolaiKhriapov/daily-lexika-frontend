@@ -5,14 +5,14 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, RoleName, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { WordDTO } from '@utils/types';
+import { WordDto } from '@utils/types';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import BadgeOrStreakCount from '@components/common/complex/BadgeOrStreakCount';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  wordsPage: WordDTO[];
+  wordsPage: WordDto[];
   isLoading: boolean;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -25,7 +25,7 @@ export default function WordsScrollableContainer(props: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [selectedWord, setSelectedWord] = useState<number | null>();
-  const [visibleWords, setVisibleWords] = useState<WordDTO[]>([]);
+  const [visibleWords, setVisibleWords] = useState<WordDto[]>([]);
 
   const { data: user } = useGetUserInfoQuery();
 
@@ -53,17 +53,17 @@ export default function WordsScrollableContainer(props: Props) {
 
   if (!user) return <Spinner />;
 
-  const getWordInfoForUserRole = (wordDTO: WordDTO) => {
+  const getWordInfoForUserRole = (wordDTO: WordDto) => {
     const map: Record<RoleName, any> = {
       [RoleName.USER_ENGLISH]: {
-        name: wordDTO.wordDataDTO.nameEnglish,
-        transcription: wordDTO.wordDataDTO.transcription,
-        translation: wordDTO.wordDataDTO.nameRussian,
+        name: wordDTO.wordDataDto.nameEnglish,
+        transcription: wordDTO.wordDataDto.transcription,
+        translation: wordDTO.wordDataDto.nameRussian,
       },
       [RoleName.USER_CHINESE]: {
-        name: wordDTO.wordDataDTO.nameChineseSimplified,
-        transcription: wordDTO.wordDataDTO.transcription,
-        translation: wordDTO.wordDataDTO.nameEnglish,
+        name: wordDTO.wordDataDto.nameChineseSimplified,
+        transcription: wordDTO.wordDataDto.transcription,
+        translation: wordDTO.wordDataDto.nameEnglish,
       },
       [RoleName.ADMIN]: null,
     };
@@ -85,7 +85,7 @@ export default function WordsScrollableContainer(props: Props) {
               <Text>{getWordInfoForUserRole(wordDTO)?.name}&nbsp;&nbsp;{getWordInfoForUserRole(wordDTO)?.transcription}</Text>
               <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{getWordInfoForUserRole(wordDTO)?.translation}</Text>
             </CharacterAndTranscriptionAndTranslation>
-            <BadgeOrStreakCount wordDTO={wordDTO} />
+            <BadgeOrStreakCount word={wordDTO} />
             {isOpenDetails && (
               <WordDetailedInfo
                 isOpen={isOpenDetails && wordDTO.id === selectedWord}

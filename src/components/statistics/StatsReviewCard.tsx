@@ -4,14 +4,14 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { FontWeight, Size } from '@utils/constants';
 import { borderStyles, getOriginalWordPackName, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { ReviewStatisticsDTO } from '@utils/types';
+import { ReviewStatisticsDto } from '@utils/types';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
 import StatsReviewWindow from '@components/statistics/StatsReviewWindow';
 
 type Props = {
-  reviewStatistics: ReviewStatisticsDTO;
+  reviewStatistics: ReviewStatisticsDto;
   isRefreshing: boolean;
 };
 

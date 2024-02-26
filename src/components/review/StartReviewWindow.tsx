@@ -6,7 +6,7 @@ import { useProcessReviewActionMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, ButtonType, RoleName } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
-import { ReviewDTO, Status, WordDTO } from '@utils/types';
+import { ReviewDto, Status, WordDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import ProgressBar from '@components/common/basic/ProgressBar';
 import ButtonsContainer from '@components/common/complex/ButtonsContainer';
@@ -14,7 +14,7 @@ import Modal from '@components/common/complex/Modal';
 import ReviewWordCard from '@components/review/ReviewWordCard';
 
 type Props = {
-  review: ReviewDTO;
+  review: ReviewDto;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -22,7 +22,7 @@ type Props = {
 export default function StartReviewWindow(props: Props) {
   const { review, isOpen, onClose } = props;
 
-  const [reviewWordDTO, setReviewWordDTO] = useState<WordDTO | null>(null);
+  const [reviewWordDTO, setReviewWordDTO] = useState<WordDto | null>(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [isFlipped, setFlipped] = useState(false);
   const [isThrown, setThrown] = useState(false);
@@ -34,8 +34,8 @@ export default function StartReviewWindow(props: Props) {
     processReviewAction({ reviewId: review.id!, answer })
       .unwrap()
       .then((response) => {
-        if (response != null && response.listOfWordDTO && response.listOfWordDTO.length > 0) {
-          setReviewWordDTO(response.listOfWordDTO[0]);
+        if (response != null && response.listOfWordDto && response.listOfWordDto.length > 0) {
+          setReviewWordDTO(response.listOfWordDto[0]);
         } else {
           setModalVisible(false);
         }
@@ -69,13 +69,13 @@ export default function StartReviewWindow(props: Props) {
     setThrown(true);
   };
 
-  const reviewProgress = ((review.actualSize - review.listOfWordDTO!.length) / review.actualSize) * 100;
+  const reviewProgress = ((review.actualSize - review.listOfWordDto!.length) / review.actualSize) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
 
-  const getReviewWordName = (reviewWord: WordDTO): string => {
+  const getReviewWordName = (reviewWord: WordDto): string => {
     const map: Record<RoleName, string> = {
-      [RoleName.USER_ENGLISH]: reviewWord.wordDataDTO.nameEnglish,
-      [RoleName.USER_CHINESE]: reviewWord.wordDataDTO.nameChineseSimplified,
+      [RoleName.USER_ENGLISH]: reviewWord.wordDataDto.nameEnglish,
+      [RoleName.USER_CHINESE]: reviewWord.wordDataDto.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
     return map[user!.role!];

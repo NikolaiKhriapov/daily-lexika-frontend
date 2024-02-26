@@ -7,7 +7,7 @@ import { useGetAllWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPac
 import { useAppDispatch } from '@store/hooks/hooks';
 import { Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
-import { WordPackDTO } from '@utils/types';
+import { WordPackDto } from '@utils/types';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
 import WordsScrollableContainer from '@components/words/WordsScrollableContainer';
@@ -15,20 +15,20 @@ import WordsScrollableContainer from '@components/words/WordsScrollableContainer
 type Props = {
   isOpen: boolean;
   onClose: any;
-  wordPackDTO: WordPackDTO;
+  wordPack: WordPackDto;
 };
 
 export default function ReviewWordPackWindow(props: Props) {
-  const { isOpen, onClose, wordPackDTO } = props;
+  const { isOpen, onClose, wordPack } = props;
 
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(0);
   const pageSize = 20;
 
   const { data: user } = useGetUserInfoQuery();
-  const { data: wordsPage = [], isLoading } = useGetAllWordsForWordPackQuery({ wordPackName: wordPackDTO.name, page, size: pageSize });
-  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPackDTO.name, page: page + 1, size: pageSize }, { force: false }));
-  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPackDTO.name, page: page + 2, size: pageSize }, { force: false }));
+  const { data: wordsPage = [], isLoading } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
+  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
+  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
 
   if (!user) return <Spinner />;
 
@@ -37,14 +37,14 @@ export default function ReviewWordPackWindow(props: Props) {
       size={Size.XXXL}
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(wordPackDTO.name, user)}
+      header={getOriginalWordPackName(wordPack.name, user)}
       body={(
         <Container>
           <TotalWords>
             <CopyIcon />
-            <Text>{wordPackDTO.totalWords}</Text>
+            <Text>{wordPack.totalWords}</Text>
           </TotalWords>
-          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPackDTO.description}</Text>
+          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPack.description}</Text>
           <WordsScrollableContainer
             wordsPage={wordsPage}
             isLoading={isLoading}
