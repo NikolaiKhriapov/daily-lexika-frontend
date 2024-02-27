@@ -28,7 +28,7 @@ export default function NotificationsComponent() {
   const handleNotificationClick = (notificationDTO: NotificationDto) => {
     readNotification(notificationDTO.notificationId)
       .unwrap()
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
     setSelectedNotification(notificationDTO);
   };
 

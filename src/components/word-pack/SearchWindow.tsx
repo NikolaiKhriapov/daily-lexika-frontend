@@ -41,7 +41,7 @@ export default function SearchWindow(props: Props) {
     addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
       .unwrap()
       .then(() => successNotification('Word added successfully', ''))
-      .catch((error) => errorNotification('', error.data.message))
+      .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
 
@@ -51,7 +51,7 @@ export default function SearchWindow(props: Props) {
     removeWordFromCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
       .unwrap()
       .then(() => successNotification('Word removed successfully', ''))
-      .catch((error) => errorNotification('', error.data.message))
+      .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
 

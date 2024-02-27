@@ -51,7 +51,7 @@ export default function WordPackCard(props: Props) {
     deleteWordPack(wordPack.name)
       .unwrap()
       .then(() => successNotification('Word Pack deleted successfully', `${getOriginalWordPackName(wordPack.name, user)} deleted successfully`))
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   const onClickCreateButton = (event: React.MouseEvent<HTMLButtonElement>) => {

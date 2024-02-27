@@ -33,7 +33,7 @@ export default function AuthPageContent() {
     login(authenticationRequest)
       .unwrap()
       .then((response) => setUserFromToken(response.token))
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   const performRegister = (registrationRequest: RegistrationRequest) => {
@@ -43,7 +43,7 @@ export default function AuthPageContent() {
         setUserFromToken(response.token);
         successNotification('User registered', `${registrationRequest.name} was successfully registered`);
       })
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   const pageData = {

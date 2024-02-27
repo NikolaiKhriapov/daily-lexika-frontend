@@ -39,10 +39,6 @@ export default function StartReviewWindow(props: Props) {
         } else {
           setModalVisible(false);
         }
-      })
-      .catch((error) => errorNotification('', error.data.message))
-      .finally(() => {
-        setThrown(false);
         if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
           || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
           successNotification(`'${getReviewWordName(reviewWordDTO)}' is a known word.`, 'This word will still be shown occasionally during reviews');
@@ -50,7 +46,9 @@ export default function StartReviewWindow(props: Props) {
         if (answer === false && reviewWordDTO?.status.toString() === Status[Status.KNOWN]) {
           successNotification(`Keep reviewing '${getReviewWordName(reviewWordDTO)}'`, 'This word will be shown more frequently so that you can relearn it');
         }
-      });
+      })
+      .catch((error) => errorNotification('', error))
+      .finally(() => setThrown(false));
   };
 
   useEffect(() => {

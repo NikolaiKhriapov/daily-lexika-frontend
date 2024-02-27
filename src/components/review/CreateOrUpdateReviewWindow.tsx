@@ -55,13 +55,13 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       updateReview({ reviewId: review!.id!, reviewDTO })
         .unwrap()
         .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
-        .catch((error) => errorNotification('', error.data.message))
+        .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     } else {
       createReview(reviewDTO)
         .unwrap()
         .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
-        .catch((error) => errorNotification('', error.data.message))
+        .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     }
   };
