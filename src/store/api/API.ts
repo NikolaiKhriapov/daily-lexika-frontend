@@ -1,5 +1,19 @@
+import { errorNotification } from '@services/popup-notification';
 import { LocalStorage } from '@utils/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+const baseQuery = (baseQueryOptions: any) => async (args: any, api: any, extraOptions: any) => {
+  const result = await fetchBaseQuery(baseQueryOptions)(args, api, extraOptions);
+
+  if (result.error) {
+    if (result.error.status === 'FETCH_ERROR') {
+      errorNotification("Unable to establish a connection", "Please ensure you have an active internet connection and try again.");
+    }
+    console.log(result.error);
+  }
+
+  return result;
+};
 
 const prepareHeaders = (headers: any) => {
   if (typeof localStorage !== 'undefined') {
@@ -13,7 +27,7 @@ const prepareHeaders = (headers: any) => {
 
 export const API = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
+  baseQuery: baseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_URL as string}/api/v1`,
     prepareHeaders,
   }),

@@ -42,7 +42,7 @@ export default function CreateWordPackWindow(props: Props) {
     createCustomWordPack(wordPack)
       .unwrap()
       .then(() => successNotification('Word Pack saved', `${wordPack.name} was successfully saved`))
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   return (

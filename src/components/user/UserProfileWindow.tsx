@@ -38,7 +38,7 @@ export default function UserProfileWindow(props: Props) {
     updateUserInfo(userUpdatedInfoDTO)
       .unwrap()
       .then(() => successNotification('User information updated successfully', ''))
-      .catch((error) => errorNotification('', error.data.message))
+      .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting(false));
   };
 
@@ -46,7 +46,7 @@ export default function UserProfileWindow(props: Props) {
     updatePassword(passwordUpdateRequest)
       .unwrap()
       .then(() => successNotification('Password updated successfully', ''))
-      .catch((error) => errorNotification('', error.data.message))
+      .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting(false));
   };
 
@@ -58,7 +58,7 @@ export default function UserProfileWindow(props: Props) {
         successNotification('Account deleted successfully', '');
         logout();
       })
-      .catch((error) => errorNotification('', error.data.message))
+      .catch((error) => errorNotification('', error))
       .finally(() => setButtonDisabled(false));
   };
 

@@ -47,7 +47,7 @@ export default function ReviewCard(props: Props) {
     refreshReview(review.id!)
       .unwrap()
       .then(() => successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`))
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   const handleRemoveReview = () => {
@@ -55,7 +55,7 @@ export default function ReviewCard(props: Props) {
     deleteReview(review.id!)
       .unwrap()
       .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
-      .catch((error) => errorNotification('', error.data.message));
+      .catch((error) => errorNotification('', error));
   };
 
   const totalNewWords = review.listOfWordDto?.filter((wordDTO) => wordDTO.status.toString() === Status[Status.NEW]).length || 0;
