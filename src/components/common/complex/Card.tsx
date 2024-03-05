@@ -14,6 +14,7 @@ type Props = {
   bgColor: string;
   isFlipped: boolean;
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  setUnlocked?: any;
 };
 
 export default function Card(props: Props) {
@@ -27,6 +28,7 @@ export default function Card(props: Props) {
     bgColor,
     isFlipped,
     setFlipped,
+    setUnlocked,
   } = props;
 
   const { colorMode } = useColorMode();
@@ -40,7 +42,12 @@ export default function Card(props: Props) {
       $padding={padding}
       $borderColor={borderColor}
       $bgColor={bgColor}
-      onClick={() => setFlipped(!isFlipped)}
+      onClick={() => {
+        setFlipped(!isFlipped);
+        if (setUnlocked) {
+          setUnlocked(true);
+        }
+      }}
     >
       {!isFlipped && face}
       {isFlipped && back}
@@ -67,7 +74,7 @@ const Container = styled.div<{
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-color: ${({ $borderColor }) => $borderColor};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  box-shadow: ${theme.stylesToDelete.boxShadow};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   
   background-color: ${({ $bgColor }) => $bgColor};
   cursor: pointer;

@@ -5,7 +5,7 @@ const customColors = {
   light: {
     background: 'rgb(237,238,240)',
     background2: '#F7FAFC',
-    bgColor: 'F7FAFC',
+    bgColor: '#F7FAFC',
     borderColorMain: '#CBD5E0',
     borderColor: '#CBD5E0',
     hoverBgColor: '#E3E8EF',
@@ -54,10 +54,15 @@ const customBreakpoints = {
 
 // TODO::: remove
 const stylesToDelete = {
+  light: {
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+  },
+  dark: {
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+  },
   borderWidth: '1px',
   borderStyle: 'solid',
   borderRadius: '10px',
-  boxShadow: '0 6px 24px rgba(0, 0, 0, 0.1)',
   link: 'blue.500',
 };
 

@@ -2,7 +2,7 @@ import { API, providesList } from '@store/api/API';
 import { wordDataAPI } from '@store/api/wordDataAPI';
 import { ApiEndpointsWordPacks } from '@utils/apiMethods';
 import { QueryMethods } from '@utils/constants';
-import { placeholderWordPack, WordDataDto, WordDto, WordPackDto } from '@utils/types';
+import { Category, placeholderWordPack, WordDataDto, WordDto, WordPackDto } from '@utils/types';
 
 export const wordPacksAPI = API.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +11,7 @@ export const wordPacksAPI = API.injectEndpoints({
         url: ApiEndpointsWordPacks.getAllWordPacks(),
         method: QueryMethods.GET,
       }),
+      transformResponse: (response: WordPackDto[]) => response.filter((wordPack) => (wordPack.category.toLowerCase() !== Category.CUSTOM.toLowerCase()) && (wordPack.totalWords! > 0)),
       providesTags: (result) => providesList(result, 'WordPacks'),
     }),
     createCustomWordPack: builder.mutation<void, WordPackDto>({

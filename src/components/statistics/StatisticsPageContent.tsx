@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BsFire } from 'react-icons/bs';
-import { GiYinYang } from 'react-icons/gi';
 import { ImFire } from 'react-icons/im';
+import { PiBookThin } from 'react-icons/pi';
 import styled from 'styled-components';
 import { useDisclosure } from '@chakra-ui/react';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
@@ -51,12 +51,12 @@ export default function StatisticsPageContent() {
         <Heading size={Size.LG}>Vocabulary</Heading>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={3} isLoading={!statistics}>
-            <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<GiYinYang style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
+            <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<PiBookThin style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
             {isOpenStatsWords && (<StatsWordsWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
             {user?.role === RoleName.USER_CHINESE && (
-              <StatsCard title="Characters Known" stat={statistics?.charactersKnown} icon={<GiYinYang style={iconStyles} />} isRefreshing={isFetching} />
+              <StatsCard title="Characters Known" stat={statistics?.charactersKnown} icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
             )}
-            <StatsCard title="Idioms Known" icon={<GiYinYang style={iconStyles} />} isRefreshing={isFetching} />
+            <StatsCard title="Idioms Known" icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
           </SkeletonWrapper>
         </CardsContainer>
       </Section>

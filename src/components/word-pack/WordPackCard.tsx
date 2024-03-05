@@ -85,8 +85,7 @@ export default function WordPackCard(props: Props) {
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(wordPack.name, user)}</Text>
           </WordPackNameContainer>
           <WordsCountContainer>
-            <TbCards />
-            <Text size={Size.MD}>{wordPack.totalWords}</Text>
+            <TbCards size={20} />&nbsp;<Text size={Size.MD}>{wordPack.totalWords}</Text>
           </WordsCountContainer>
           <ButtonsContainer>
             {wordPack.reviewId !== null

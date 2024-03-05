@@ -57,7 +57,7 @@ const Container = styled.div<{ $colorMode: ColorMode; $isFlipped: boolean }>`
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  box-shadow: ${theme.stylesToDelete.boxShadow};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   cursor: pointer;
   ${nonHighlightableTap};
 

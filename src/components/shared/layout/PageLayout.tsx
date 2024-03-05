@@ -58,12 +58,12 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
 `;
 
 const SidebarAndContentContainer = styled.div<{ $colorMode: ColorMode }>`
-    ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 40px;
-        margin: 100px 100px 0 100px;
-        min-height: calc(100vh - 170px);
-    }
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+    margin: 100px 100px 0 100px;
+    min-height: calc(100vh - 170px);
+  }
 `;

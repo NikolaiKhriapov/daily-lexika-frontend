@@ -39,6 +39,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   height: 50px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2};
   z-index: 1000;
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 70px;

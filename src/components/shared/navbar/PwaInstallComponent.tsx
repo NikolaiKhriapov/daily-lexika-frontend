@@ -32,7 +32,7 @@ export default function PwaInstallComponent() {
           buttonText={(
             <>
               <ImDownload fontSize={20} />
-              <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Download app</Text>
+              <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
             </>
           )}
           buttonType={ButtonType.BUTTON}
@@ -53,12 +53,15 @@ const ButtonStyled = styled(Button)<{ $colorMode: ColorMode }>`
   }
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    box-shadow: ${theme.stylesToDelete.boxShadow};
-    border: ${({ $colorMode }) => borderStyles($colorMode)};
+    box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
+    border: ${({ $colorMode }) => borderStyles($colorMode)} !important;
   }
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     box-shadow: none;
     border: none !important;
+    border-radius: ${theme.stylesToDelete.borderRadius} !important;
+      height: 60px !important;
+    width: 100%;
   }
 `;
