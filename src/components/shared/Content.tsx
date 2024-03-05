@@ -28,7 +28,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px;
     height: fit-content;
     overflow-x: hidden;
 

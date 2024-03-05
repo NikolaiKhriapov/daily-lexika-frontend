@@ -6,6 +6,7 @@ import { SlRefresh } from 'react-icons/sl';
 import styled from 'styled-components';
 import { ColorMode, IconButton, useColorMode } from '@chakra-ui/react';
 import { ButtonWithIconType } from '@utils/constants';
+import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 type Props = {
@@ -46,6 +47,8 @@ export default function ButtonWithIcon(props: Props) {
 }
 
 const IconButtonStyled = styled(IconButton)<{ $type: ButtonWithIconType; $colorMode: ColorMode }>`
+  border: ${({ $colorMode }) => borderStyles($colorMode)};
+  
   &:hover {
     background-color: ${({ $type, $colorMode }) =>
     $type === ButtonWithIconType.DELETE && theme.colors[$colorMode].buttonRemoveHoverBgColor} !important;

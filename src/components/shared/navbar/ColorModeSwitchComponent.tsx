@@ -20,6 +20,7 @@ export default function ColorModeSwitchComponent() {
 }
 
 const ButtonStyled = styled(Button)<{ $colorMode: ColorMode }>`
+  border: none !important;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2} !important;
 
   &:hover {

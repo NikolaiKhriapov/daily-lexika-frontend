@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Button as ChakraButton, ButtonProps, ColorMode, useColorMode } from '@chakra-ui/react';
 import { ButtonType, FontWeight } from '@utils/constants';
-import { nonHighlightableTap } from '@utils/functions';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 interface Props extends ButtonProps {
@@ -65,11 +65,8 @@ export default function Button(props: Props) {
 const ChakraButtonStyled = styled(ChakraButton)<{ $colorMode: ColorMode }>`
   color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
+  border: ${({ $colorMode }) => borderStyles($colorMode)};
   ${nonHighlightableTap};
-
-  &.standard:hover {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
-  }
 
   &.redOnHover:hover {
     background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonRemoveHoverBgColor};

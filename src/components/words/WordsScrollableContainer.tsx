@@ -125,6 +125,10 @@ const WordInfo = styled.div<{ $colorMode: ColorMode }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   cursor: pointer;
+
+  &:hover {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].hoverBgColor};
+  }
 `;
 
 const CharacterAndTranscriptionAndTranslation = styled.div`
