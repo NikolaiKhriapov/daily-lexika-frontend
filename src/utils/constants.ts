@@ -2,7 +2,7 @@ export enum AppInfo {
   NAME = 'Daily Lexika',
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'nikolai.khriapov@icloud.com',
-  APP_VERSION = '2024.3.0',
+  APP_VERSION = '2024.4.0',
   EMAIL_PASSWORD_RECOVERY_SUBJECT = 'Password Recovery',
   EMAIL_PASSWORD_RECOVERY_BODY = 'Hi there, I seem to have forgotten my password for the English/Chinese platform. Could you please assist me in resetting it?',
 }
