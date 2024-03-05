@@ -22,9 +22,10 @@ type Props = {
 export default function StartReviewWindow(props: Props) {
   const { review, isOpen, onClose } = props;
 
-  const [reviewWordDTO, setReviewWordDTO] = useState<WordDto | null>(null);
+  const [reviewWord, setReviewWord] = useState<WordDto | null>(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [isFlipped, setFlipped] = useState(false);
+  const [isUnlocked, setUnlocked] = useState(false);
   const [isThrown, setThrown] = useState(false);
 
   const { data: user } = useGetUserInfoQuery();
@@ -35,20 +36,23 @@ export default function StartReviewWindow(props: Props) {
       .unwrap()
       .then((response) => {
         if (response != null && response.listOfWordDto && response.listOfWordDto.length > 0) {
-          setReviewWordDTO(response.listOfWordDto[0]);
+          setReviewWord(response.listOfWordDto[0]);
         } else {
           setModalVisible(false);
         }
-        if ((answer === true && reviewWordDTO !== null && (reviewWordDTO.status.toString() === Status[Status.NEW]
-          || (reviewWordDTO.status.toString() === Status[Status.IN_REVIEW] && reviewWordDTO.totalStreak === 4)))) {
-          successNotification(`'${getReviewWordName(reviewWordDTO)}' is a known word.`, 'This word will still be shown occasionally during reviews');
+        if ((answer === true && reviewWord !== null && (reviewWord.status.toString() === Status[Status.NEW]
+          || (reviewWord.status.toString() === Status[Status.IN_REVIEW] && reviewWord.totalStreak === 4)))) {
+          successNotification(`'${getReviewWordName(reviewWord)}' is a known word.`, 'This word will still be shown occasionally during reviews');
         }
-        if (answer === false && reviewWordDTO?.status.toString() === Status[Status.KNOWN]) {
-          successNotification(`Keep reviewing '${getReviewWordName(reviewWordDTO)}'`, 'This word will be shown more frequently so that you can relearn it');
+        if (answer === false && reviewWord?.status.toString() === Status[Status.KNOWN]) {
+          successNotification(`Keep reviewing '${getReviewWordName(reviewWord)}'`, 'This word will be shown more frequently so that you can relearn it');
         }
       })
       .catch((error) => errorNotification('', error))
-      .finally(() => setThrown(false));
+      .finally(() => {
+        setThrown(false);
+        setUnlocked(false);
+      });
   };
 
   useEffect(() => {
@@ -62,18 +66,21 @@ export default function StartReviewWindow(props: Props) {
   }, [isModalVisible]);
 
   const pressButton = (answer: boolean | null) => {
-    fetchReviewAction(answer);
-    setFlipped(false);
-    setThrown(true);
+    if (isUnlocked) {
+      fetchReviewAction(answer);
+      setFlipped(false);
+      setThrown(true);
+    }
   };
 
   const reviewProgress = ((review.actualSize - review.listOfWordDto!.length) / review.actualSize) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
+  const buttonWidth = useBreakpointValue({ base: '109px', sm: '139px' });
 
-  const getReviewWordName = (reviewWord: WordDto): string => {
+  const getReviewWordName = (reviewWordDto: WordDto): string => {
     const map: Record<RoleName, string> = {
-      [RoleName.USER_ENGLISH]: reviewWord.wordDataDto.nameEnglish,
-      [RoleName.USER_CHINESE]: reviewWord.wordDataDto.nameChineseSimplified,
+      [RoleName.USER_ENGLISH]: reviewWordDto.wordDataDto.nameEnglish,
+      [RoleName.USER_CHINESE]: reviewWordDto.wordDataDto.nameChineseSimplified,
       [RoleName.ADMIN]: '',
     };
     return map[user!.role!];
@@ -92,25 +99,28 @@ export default function StartReviewWindow(props: Props) {
           </ProgressBarContainer>
           <CardContainer>
             <ReviewWordCard
-              reviewWord={reviewWordDTO}
+              reviewWord={reviewWord}
               isFlipped={isFlipped}
               setFlipped={setFlipped}
+              setUnlocked={setUnlocked}
               isThrown={isThrown}
               pressButton={pressButton}
-              isLoading={!isModalVisible || !reviewWordDTO || isLoading}
+              isLoading={!isModalVisible || !reviewWord || isLoading}
             />
             <ButtonsContainer>
               <Button
-                buttonText="Forgot"
+                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? `Don't know` : 'Forgot'}
                 buttonType={ButtonType.BUTTON_RED}
                 onClick={() => pressButton(false)}
-                isDisabled={!isModalVisible || !reviewWordDTO || isLoading}
+                isDisabled={!isModalVisible || !reviewWord || isLoading}
+                width={buttonWidth}
               />
               <Button
-                buttonText="Remembered"
+                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? 'Know' : 'Remembered'}
                 buttonType={ButtonType.BUTTON}
                 onClick={() => pressButton(true)}
-                isDisabled={!isModalVisible || !reviewWordDTO || isLoading}
+                isDisabled={!isModalVisible || !reviewWord || isLoading}
+                width={buttonWidth}
               />
             </ButtonsContainer>
           </CardContainer>

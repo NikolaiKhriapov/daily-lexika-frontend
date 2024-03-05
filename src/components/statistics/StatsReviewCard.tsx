@@ -34,7 +34,7 @@ export default function StatsReviewCard(props: Props) {
 
   return (
     <>
-      <Container $colorMode={colorMode} shadow='2xl' onClick={onOpen}>
+      <Container $colorMode={colorMode} onClick={onOpen}>
         <WordPackNameAndInfoButton>
           <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{getOriginalWordPackName(reviewStatistics.wordPackName, user)}</Text>
         </WordPackNameAndInfoButton>
@@ -71,7 +71,7 @@ const Container = styled(Stat)<{ $colorMode: ColorMode }>`
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
-  box-shadow: ${theme.stylesToDelete.boxShadow};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   cursor: pointer;
   ${nonHighlightableTap};
 `;

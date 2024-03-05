@@ -25,10 +25,13 @@ export default function Content(props: Props) {
 
 const Container = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
-  
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 100%;
     max-width: 1200px;
+    min-height: fit-content;
     height: fit-content;
     overflow-x: hidden;
 
@@ -36,7 +39,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
     border: ${({ $colorMode }) => borderStyles($colorMode)};
     border-color: ${({ $colorMode }) => theme.colors[$colorMode].borderColorMain};
     border-radius: ${theme.stylesToDelete.borderRadius};
-    box-shadow: ${theme.stylesToDelete.boxShadow};
+    box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   }
 `;
 
@@ -45,12 +48,10 @@ const InnerContainer = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   justify-content: center;
   margin-top: 50px;
-  margin-bottom: 50px;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     padding: 50px;
     margin-top: 70px;
-    margin-bottom: 70px;
   }
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {

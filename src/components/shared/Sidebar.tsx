@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-import { IoStatsChart } from 'react-icons/io5';
-import { LuCalendarCheck } from 'react-icons/lu';
-import { TbCards } from 'react-icons/tb';
+import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
+import { TbCalendarCheck } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -17,9 +16,9 @@ export default function Sidebar() {
   const { isPwaInstalled } = useContext(PwaContext);
 
   const sidebarMainItems = [
-    { name: 'Daily Reviews', route: Page.REVIEWS, icon: LuCalendarCheck },
-    { name: 'Word Packs', route: Page.WORD_PACKS, icon: TbCards },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChart },
+    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck },
+    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline },
   ];
 
   return (
@@ -45,6 +44,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    width: 220px;
+  }
 `;
 
 const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
@@ -56,14 +62,14 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   justify-content: space-evenly;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   z-index: 1000;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     padding: 30px 20px;
-    position: sticky;
-    top: 100px;
-    width: 220px;
-    height: fit-content;
+    position: inherit;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: normal;
@@ -71,7 +77,6 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
     border: ${({ $colorMode }) => borderStyles($colorMode)};
     border-color: ${({ $colorMode }) => theme.colors[$colorMode].borderColorMain};
     border-radius: ${theme.stylesToDelete.borderRadius};
-    box-shadow: ${theme.stylesToDelete.boxShadow};
   }
 `;
 
@@ -80,6 +85,7 @@ const SidebarExtra = styled(SidebarMain)`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     display: unset;
+    padding: 0;
   }
 `;
 
@@ -103,7 +109,7 @@ const Item = styled(Link)<{ $colorMode: ColorMode }>`
     &:hover {
       background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
       border: ${({ $colorMode }) => borderStyles($colorMode)};
-      box-shadow: ${theme.stylesToDelete.boxShadow};
+      box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
     }
   }
 `;

@@ -15,14 +15,15 @@ import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 type Props = {
   reviewWord?: WordDto | null;
   isFlipped: boolean;
-  setFlipped: any;
+  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  setUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
   isThrown: boolean;
-  pressButton: any;
+  pressButton: (answer: boolean | null) => void;
   isLoading: boolean;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWord = null, isFlipped, setFlipped, isThrown, pressButton, isLoading } = props;
+  const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
@@ -94,7 +95,9 @@ export default function ReviewWordCard(props: Props) {
         font: theme.fonts.bodyCh,
       },
       nameTranslation: {
-        text: reviewWord.wordDataDto.nameEnglish,
+        text: reviewWord.wordDataDto.nameEnglish.length < 100
+          ? reviewWord.wordDataDto.nameEnglish
+          : reviewWord.wordDataDto.nameEnglish.substring(0, 100).concat("..."), // TODO::: remove after revising all Chinese words
         size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
       },
     },
@@ -134,6 +137,7 @@ export default function ReviewWordCard(props: Props) {
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}
         isFlipped={isFlipped}
         setFlipped={setFlipped}
+        setUnlocked={setUnlocked}
         face={(
           <ContentsContainer>
             <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>

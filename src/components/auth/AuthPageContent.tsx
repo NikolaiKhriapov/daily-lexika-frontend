@@ -102,7 +102,7 @@ export default function AuthPageContent() {
   return (
     <Container $colorMode={colorMode}>
       <Heading size={Size.LG}>{pageData[authFormType].heading}</Heading>
-      <AuthForm boxShadow="2xl" $colorMode={colorMode}>
+      <AuthForm $colorMode={colorMode}>
         <InputFieldsWithButton
           validateOnMount
           initialValues={pageData[authFormType].form.initialValues}
@@ -164,6 +164,7 @@ const AuthForm = styled(Box)<{ $colorMode: ColorMode }>`
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 400px;
