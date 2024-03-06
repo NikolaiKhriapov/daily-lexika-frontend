@@ -11,7 +11,7 @@ export const wordPacksAPI = API.injectEndpoints({
         url: ApiEndpointsWordPacks.getAllWordPacks(),
         method: QueryMethods.GET,
       }),
-      transformResponse: (response: WordPackDto[]) => response.filter((wordPack) => (wordPack.category.toLowerCase() !== Category.CUSTOM.toLowerCase()) && (wordPack.totalWords! > 0)),
+      transformResponse: (response: WordPackDto[]) => response.filter((wordPack) => ((wordPack.category.toLowerCase() !== Category.CUSTOM.toLowerCase()) ? (wordPack.totalWords! > 0) : wordPack)),
       providesTags: (result) => providesList(result, 'WordPacks'),
     }),
     createCustomWordPack: builder.mutation<void, WordPackDto>({
