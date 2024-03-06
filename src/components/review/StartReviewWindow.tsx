@@ -55,6 +55,14 @@ export default function StartReviewWindow(props: Props) {
       });
   };
 
+  const pressButton = (answer: boolean | null) => {
+    if (isUnlocked) {
+      fetchReviewAction(answer);
+      setFlipped(false);
+      setThrown(true);
+    }
+  };
+
   useEffect(() => {
     fetchReviewAction(null);
   }, []);
@@ -65,13 +73,37 @@ export default function StartReviewWindow(props: Props) {
     }
   }, [isModalVisible]);
 
-  const pressButton = (answer: boolean | null) => {
-    if (isUnlocked) {
-      fetchReviewAction(answer);
-      setFlipped(false);
-      setThrown(true);
-    }
-  };
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowUp': {
+          setFlipped(!isFlipped);
+          setUnlocked(true);
+          break;
+        }
+        case 'ArrowDown': {
+          setFlipped(!isFlipped);
+          setUnlocked(true);
+          break;
+        }
+        case 'ArrowLeft': {
+          pressButton(false);
+          break;
+        }
+        case 'ArrowRight': {
+          pressButton(true);
+          break;
+        }
+        default: break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [pressButton]);
 
   const reviewProgress = ((review.actualSize - review.listOfWordDto!.length) / review.actualSize) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
@@ -134,9 +166,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  
+  //overflow-x: hidden;
+  //overflow-y: hidden;
+    
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 70px;
     margin: 0 0 50px 0;
