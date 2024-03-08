@@ -37,6 +37,7 @@ export default function StatsReviewWindow(props: Props) {
   return (
     <Modal
       size={Size.XL}
+      width='320px'
       isOpen={isOpen}
       onClose={onClose}
       header={getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}

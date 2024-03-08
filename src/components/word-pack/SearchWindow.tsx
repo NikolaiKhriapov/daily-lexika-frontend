@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
@@ -102,6 +102,7 @@ export default function SearchWindow(props: Props) {
 
   return (
     <Modal
+      width={useBreakpointValue({ base: '450px', md: 'auto' })}
       isOpen={isOpen}
       onClose={onClose}
       header="Add or remove words"

@@ -17,7 +17,7 @@ export default function Footer(props: Props) {
   const { colorMode } = useColorMode();
 
   return (
-    <Container $colorMode={colorMode}>
+    <Container $colorMode={colorMode} $isAuthFooter={email}>
       {email && (
         <Text size={Size.SM} isCentered>
           Support: <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>{AppInfo.EMAIL}</Link>
@@ -30,7 +30,7 @@ export default function Footer(props: Props) {
   );
 }
 
-const Container = styled.div<{ $colorMode: ColorMode }>`
+const Container = styled.div<{ $colorMode: ColorMode; $isAuthFooter: boolean }>`
   bottom: 0;
   width: 100%;
   height: 70px;
@@ -39,7 +39,7 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   justify-content: center;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
-  margin-bottom: 70px;
+  margin-bottom: ${({ $isAuthFooter }) => $isAuthFooter ? '0' : '70px'};
   z-index: 0;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {

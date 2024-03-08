@@ -1,6 +1,7 @@
 import React from 'react';
-import { Input as ChakraInput, InputProps } from '@chakra-ui/react';
+import { Input as ChakraInput, InputProps, useBreakpointValue } from '@chakra-ui/react';
 import { theme } from '@utils/theme';
+import { Size } from '@utils/constants';
 
 export default function Input({ children, ...rest }: InputProps) {
   return (

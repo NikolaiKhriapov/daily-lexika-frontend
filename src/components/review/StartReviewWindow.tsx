@@ -106,7 +106,7 @@ export default function StartReviewWindow(props: Props) {
   }, [pressButton]);
 
   const reviewProgress = ((review.actualSize - review.listOfWordDto!.length) / review.actualSize) * 100;
-  const modalWidth = useBreakpointValue({ base: '80vw', xl: '1000px' });
+  const modalWidth = useBreakpointValue({ base: '90%', xl: '1000px' });
   const buttonWidth = useBreakpointValue({ base: '109px', sm: '139px' });
 
   const getReviewWordName = (reviewWordDto: WordDto): string => {

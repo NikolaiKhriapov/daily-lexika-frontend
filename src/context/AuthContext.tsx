@@ -1,8 +1,7 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { API } from '@store/api/API';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { LocalStorage, Page } from '@utils/constants';
 
@@ -28,15 +27,11 @@ function AuthProvider(props: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [skip, setSkip] = useState(true);
-
-  const { data: user } = useGetUserInfoQuery(undefined, { skip });
-
   const setUserFromToken = (token: string) => {
     if (token) {
       try {
         localStorage.setItem(LocalStorage.ACCESS_TOKEN, token);
-        if (window.location.pathname === Page.AUTH) {
+        if (window.location.pathname === Page.AUTH && isUserAuthenticated()) {
           router.push(Page.REVIEWS);
         }
       } catch (error) {
@@ -55,14 +50,13 @@ function AuthProvider(props: Props) {
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
-    if (!isUserAuthenticated() || !token) {
+    if (!isUserAuthenticated()) {
       logout();
     }
     if (token) {
       setUserFromToken(token);
-      setSkip(false);
     }
-    if (user) {
+    if (window.location.pathname === Page.AUTH && isUserAuthenticated()) {
       router.push(Page.REVIEWS);
     }
   }, []);
