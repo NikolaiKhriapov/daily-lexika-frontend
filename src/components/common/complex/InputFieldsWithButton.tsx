@@ -25,13 +25,13 @@ export default function InputFieldsWithButton(props: Props) {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ isValid, isSubmitting }) => (
+      {({ isValid }) => (
         <FormStyled>
           {inputElements}
           <Button
             buttonText={buttonText}
             buttonType={ButtonType.SUBMIT}
-            isDisabled={!(isValid) || isSubmitting || isButtonDisabled}
+            isDisabled={!(isValid) || isButtonDisabled}
           />
         </FormStyled>
       )}
@@ -43,8 +43,12 @@ const FormStyled = styled(Form)`
   display: flex;
   flex-direction: column;
 
-  gap: 20px;
-
+  gap: 15px;
+    
+  ${mediaBreakpointUp(Breakpoint.PHONE_LG)} {
+    gap: 20px;
+  }
+    
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 25px;
   }

@@ -5,6 +5,7 @@ import { Size } from '@utils/constants';
 import { Status } from '@utils/types';
 import Modal from '@components/common/complex/Modal';
 import WordsScrollableContainer from '@components/words/WordsScrollableContainer';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 type Props = {
   isOpen: boolean;
@@ -29,6 +30,7 @@ export default function StatsWordsWindow(props: Props) {
   return (
     <Modal
       size={Size.XXXL}
+      width={useBreakpointValue({ base: '475px', md: 'auto' })}
       isOpen={isOpen}
       onClose={onClose}
       header='Words Known'

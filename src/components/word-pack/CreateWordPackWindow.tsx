@@ -10,6 +10,7 @@ import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import Modal from '@components/common/complex/Modal';
 import TextInput from '@components/common/complex/TextInput';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 type Props = {
   isOpen: boolean;
@@ -48,7 +49,7 @@ export default function CreateWordPackWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
-      width='450px'
+      width={useBreakpointValue({ base: '350px', md: '450px' })}
       isOpen={isOpen}
       onClose={onClose}
       header='Create Word Pack'

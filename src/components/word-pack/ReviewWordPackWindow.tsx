@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
@@ -35,6 +35,7 @@ export default function ReviewWordPackWindow(props: Props) {
   return (
     <Modal
       size={Size.XXXL}
+      width={useBreakpointValue({ base: '475px', md: 'auto' })}
       isOpen={isOpen}
       onClose={onClose}
       header={getOriginalWordPackName(wordPack.name, user)}

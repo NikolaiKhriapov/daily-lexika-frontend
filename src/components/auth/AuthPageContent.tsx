@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import { useRadioGroup } from '@chakra-ui/radio';
-import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
+import { Box, ColorMode, FormLabel, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
@@ -15,16 +14,16 @@ import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import Heading from '@components/common/basic/Heading';
 import Link from '@components/common/basic/Link';
-import RadioItem from '@components/common/basic/RadioItem';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import TextInput from '@components/common/complex/TextInput';
+import { Select as ChakraSelect } from '@chakra-ui/react';
 
 export default function AuthPageContent() {
   const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
   const { setUserFromToken } = useContext(AuthContext);
   const { authFormType } = useAppSelector((state) => state.authPageSlice);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>(Platform.ENGLISH);
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
 
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
@@ -62,7 +61,7 @@ export default function AuthPageContent() {
             .required('Required'),
         }),
         handleOnSubmit: (values: AuthenticationRequest) =>
-          performLogin({ ...values, platform: selectedPlatform }),
+          performLogin({ ...values, platform: selectedPlatform! }),
       },
       submitButtonText: 'Sign in',
     },
@@ -84,7 +83,7 @@ export default function AuthPageContent() {
             .required('Required'),
         }),
         handleOnSubmit: (values: RegistrationRequest) =>
-          performRegister({ ...values, platform: selectedPlatform }),
+          performRegister({ ...values, platform: selectedPlatform! }),
       },
       submitButtonText: 'Sign up',
     },
@@ -92,16 +91,23 @@ export default function AuthPageContent() {
 
   const onClickSwitchAuthFormType = () => dispatch(toggleAuthFormType());
 
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    defaultValue: Platform.ENGLISH,
-    onChange: (selected) => setSelectedPlatform(selected as Platform),
-  });
-  const group = getRootProps();
-  const transformPlatformName = (value: Platform) => value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
-
   return (
     <Container $colorMode={colorMode}>
       <Heading size={Size.LG}>{pageData[authFormType].heading}</Heading>
+      <AuthForm $colorMode={colorMode}>
+        <FormLabel>I want to practice</FormLabel>
+        <ChakraSelect
+          id="platform"
+          name="platform"
+          placeholder="Select language"
+          value={selectedPlatform || ''}
+          onChange={(e) => setSelectedPlatform(e.target.value as Platform)}
+          focusBorderColor={theme.colors.gray['400']}
+        >
+          <option value={Platform.ENGLISH}>English</option>
+          <option value={Platform.CHINESE}>Chinese</option>
+        </ChakraSelect>
+      </AuthForm>
       <AuthForm $colorMode={colorMode}>
         <InputFieldsWithButton
           validateOnMount
@@ -110,17 +116,12 @@ export default function AuthPageContent() {
           onSubmit={pageData[authFormType].form.handleOnSubmit}
           inputElements={(
             <InputElements>
-              <RadioContainer {...group}>
-                {Object.values(Platform).map((value) => (
-                  <RadioItem key={value} {...getRadioProps({ value })} name={transformPlatformName(value)} />
-                ))}
-              </RadioContainer>
               {authFormType === AuthFormType.REGISTER && (
                 <TextInput label="Name" name="name" type="text" placeholder="Name" />
               )}
               <TextInput label="Email" name="email" type="email" placeholder="Email address" />
               <PasswordFieldContainer>
-                <TextInput label="Password" name="password" type="password" placeholder="Password" />
+                <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" />
                 {authFormType === AuthFormType.LOGIN && (
                   <ForgotPasswordContainer>
                     <Link href={`mailto:${AppInfo.EMAIL}?subject=${AppInfo.EMAIL_PASSWORD_RECOVERY_SUBJECT}&body=${AppInfo.EMAIL_PASSWORD_RECOVERY_BODY}`}>
@@ -132,6 +133,7 @@ export default function AuthPageContent() {
             </InputElements>
           )}
           buttonText={pageData[authFormType].submitButtonText}
+          isButtonDisabled={!selectedPlatform}
         />
       </AuthForm>
       <Button buttonText={pageData[authFormType].linkText} buttonType={ButtonType.LINK} onClick={onClickSwitchAuthFormType} />
@@ -146,37 +148,30 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   justify-content: center;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
-  gap: 30px;
+  gap: 10px;
 
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    gap: 35px;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    gap: 40px;
+  ${mediaBreakpointUp(Breakpoint.PHONE_LG)} {
+    gap: 20px;
   }
 `;
 
 const AuthForm = styled(Box)<{ $colorMode: ColorMode }>`
   width: 320px;
   max-width: 90%;
-  padding: 20px;
+  padding: 10px 15px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
 
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+  ${mediaBreakpointUp(Breakpoint.PHONE_LG)} {
+    padding: 20px;
+  }
+
+    ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 400px;
     padding: 30px;
   }
-`;
-
-const RadioContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 20px;
 `;
 
 const PasswordFieldContainer = styled.div`
@@ -193,8 +188,12 @@ const ForgotPasswordContainer = styled.div`
 const InputElements = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    gap: 15px;
+  }
+    
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 20px;
   }
