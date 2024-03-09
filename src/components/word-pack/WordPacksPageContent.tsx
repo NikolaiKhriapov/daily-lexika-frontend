@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
-import { Size } from '@utils/constants';
+import { Breakpoint, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import { Category } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import { SkeletonType } from '@components/common/basic/Skeleton';
+import Swiper, { SwiperSlide } from '@components/common/basic/Swiper';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
@@ -36,27 +38,27 @@ export default function WordPacksPageContent() {
       {wordPackCategoriesStandard.map((wordPackCategory) => (
         <Section key={wordPackCategory}>
           <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
-          <WordPacksContainer>
+          <Swiper>
             {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
-              <WordPackCard
-                key={wordPackDto.name}
-                wordPack={wordPackDto}
-              />
+              <SwiperSlide key={wordPackDto.name}>
+                <WordPackCard wordPack={wordPackDto} />
+              </SwiperSlide>
             ))}
-          </WordPacksContainer>
+          </Swiper>
         </Section>
       ))}
       <Section>
         <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
-        <WordPacksContainer>
+        <Swiper>
           {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
-            <WordPackCard
-              key={wordPackDto.name}
-              wordPack={wordPackDto}
-            />
+            <SwiperSlide key={wordPackDto.name}>
+              <WordPackCard wordPack={wordPackDto} />
+            </SwiperSlide>
           ))}
-          <WordPackCardAddNew />
-        </WordPacksContainer>
+          <SwiperSlide key='add-new'>
+            <WordPackCardAddNew />
+          </SwiperSlide>
+        </Swiper>
       </Section>
     </Container>
   );
@@ -68,19 +70,29 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   align-content: baseline;
-  gap: 40px;
+  gap: 30px;
+  width: calc(100vw - 80px);
+  
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 100%;
+  }
 `;
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-`;
+  gap: 15px;
+  width: calc(100vw - 80px);
 
-const WordPacksContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 100%;
+  }
 `;

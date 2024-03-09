@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
-import { Size } from '@utils/constants';
+import { Breakpoint, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import Heading from '@components/common/basic/Heading';
 import { SkeletonType } from '@components/common/basic/Skeleton';
 import Text from '@components/common/basic/Text';
@@ -46,4 +47,9 @@ const Container = styled.div`
   justify-content: center;
   align-content: baseline;
   gap: 40px;
+  width: calc(100vw - 80px);
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
 `;

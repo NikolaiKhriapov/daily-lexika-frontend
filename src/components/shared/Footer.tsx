@@ -39,7 +39,7 @@ const Container = styled.div<{ $colorMode: ColorMode; $isAuthFooter: boolean }>`
   align-items: center;
   justify-content: center;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
-  margin-bottom: ${({ $isAuthFooter }) => $isAuthFooter ? '0' : '70px'};
+  margin-bottom: ${({ $isAuthFooter }) => ($isAuthFooter ? '0' : '70px')};
   z-index: 0;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {

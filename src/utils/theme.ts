@@ -18,7 +18,7 @@ const customColors = {
     progressBarBgColor: '#E4E8EE',
     progressCircularColor: '#8088A0',
     alert: '#F56565',
-    cardAddNew: 'rgba(255,255,255,0.3)',
+    cardAddNew: '#F7FAFC',
   },
   dark: {
     background: 'rgb(10,10,10)',
@@ -55,10 +55,10 @@ const customBreakpoints = {
 // TODO::: remove
 const stylesToDelete = {
   light: {
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
   },
   dark: {
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+    boxShadow: '0 10px 10px rgba(0, 0, 0, 0.4)',
   },
   borderWidth: '1px',
   borderStyle: 'solid',

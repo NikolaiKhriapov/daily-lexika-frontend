@@ -53,13 +53,14 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100%;
+  width: 100vw;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
 `;
 
 const SidebarAndContentContainer = styled.div<{ $colorMode: ColorMode }>`
+  display: flex;
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 40px;
