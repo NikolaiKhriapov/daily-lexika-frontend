@@ -67,5 +67,5 @@ const MenuText = styled(Text)`
 `;
 
 const LinkStyled = styled(Link)<{ $colorMode: ColorMode }>`
-    color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor} !important;
+  color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor} !important;
 `;

@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
@@ -10,7 +11,6 @@ import Text from '@components/common/basic/Text';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import Modal from '@components/common/complex/Modal';
 import TextInput from '@components/common/complex/TextInput';
-import { useBreakpointValue } from '@chakra-ui/react';
 
 type Props = {
   isOpen: boolean;

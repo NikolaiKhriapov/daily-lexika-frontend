@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetAllWordsByStatusQuery, wordsAPI } from '@store/api/wordsAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { Size } from '@utils/constants';
 import { Status } from '@utils/types';
 import Modal from '@components/common/complex/Modal';
 import WordsScrollableContainer from '@components/words/WordsScrollableContainer';
-import { useBreakpointValue } from '@chakra-ui/react';
 
 type Props = {
   isOpen: boolean;

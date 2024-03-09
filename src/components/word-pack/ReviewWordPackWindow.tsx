@@ -24,6 +24,7 @@ export default function ReviewWordPackWindow(props: Props) {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(0);
   const pageSize = 20;
+  const modalWidth = useBreakpointValue({ base: '475px', md: 'auto' });
 
   const { data: user } = useGetUserInfoQuery();
   const { data: wordsPage = [], isLoading } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
@@ -35,7 +36,7 @@ export default function ReviewWordPackWindow(props: Props) {
   return (
     <Modal
       size={Size.XXXL}
-      width={useBreakpointValue({ base: '475px', md: 'auto' })}
+      width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
       header={getOriginalWordPackName(wordPack.name, user)}

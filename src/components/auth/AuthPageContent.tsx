@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import { Box, ColorMode, FormLabel, useColorMode } from '@chakra-ui/react';
+import { Box, ColorMode, FormLabel, Select as ChakraSelect, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { errorNotification, successNotification } from '@services/popup-notification';
 import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
@@ -16,7 +16,6 @@ import Heading from '@components/common/basic/Heading';
 import Link from '@components/common/basic/Link';
 import InputFieldsWithButton from '@components/common/complex/InputFieldsWithButton';
 import TextInput from '@components/common/complex/TextInput';
-import { Select as ChakraSelect } from '@chakra-ui/react';
 
 export default function AuthPageContent() {
   const dispatch = useAppDispatch();

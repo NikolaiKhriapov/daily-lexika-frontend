@@ -8,7 +8,8 @@ import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { wordsAPI } from '@store/api/wordsAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
-import { RoleName, Size } from '@utils/constants';
+import { Breakpoint, RoleName, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import { Status } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import { SkeletonType } from '@components/common/basic/Skeleton';
@@ -85,6 +86,11 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  width: calc(100vw - 80px);
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
 `;
 
 const Section = styled.div`
