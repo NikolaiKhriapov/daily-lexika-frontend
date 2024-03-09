@@ -9,6 +9,7 @@ import Text from '@components/common/basic/Text';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
+import Swiper, { SwiperSlide } from '@components/common/complex/Swiper';
 import ReviewCard from '@components/review/ReviewCard';
 
 export default function ReviewsPageContent() {
@@ -29,27 +30,46 @@ export default function ReviewsPageContent() {
   }
 
   return (
-    <Container>
-      {allReviews.map((reviewDTO) => (
-        <ReviewCard
-          key={reviewDTO.id}
-          review={reviewDTO}
-        />
-      ))}
-    </Container>
+    <>
+      <ContainerMobile>
+        <Swiper>
+          {allReviews.map((reviewDTO) => (
+            <SwiperSlide key={reviewDTO.id}>
+              <ReviewCard review={reviewDTO} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </ContainerMobile>
+      <ContainerTabletAndDesktop>
+        {allReviews.map((reviewDTO) => (
+          <ReviewCard key={reviewDTO.id} review={reviewDTO} />
+        ))}
+      </ContainerTabletAndDesktop>
+    </>
   );
 }
 
-const Container = styled.div`
+const ContainerMobile = styled.div`
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   align-content: baseline;
-  gap: 40px;
-  width: calc(100vw - 80px);
+  width: 100%;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: none;
+  }
+`;
+
+const ContainerTabletAndDesktop = styled.div`
+  display: none;
+    
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: baseline;
+    gap: 40px;
     width: calc(100vw - 100px);
   }
 `;

@@ -6,10 +6,10 @@ import { mediaBreakpointUp } from '@utils/functions';
 import { Category } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
 import { SkeletonType } from '@components/common/basic/Skeleton';
-import Swiper, { SwiperSlide } from '@components/common/basic/Swiper';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
+import Swiper, { SwiperSlide } from '@components/common/complex/Swiper';
 import WordPackCard from '@components/word-pack/WordPackCard';
 import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 
@@ -71,7 +71,7 @@ const Container = styled.div`
   align-items: center;
   align-content: baseline;
   gap: 30px;
-  width: calc(100vw - 80px);
+  width: 100%;
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: calc(100vw - 100px);
