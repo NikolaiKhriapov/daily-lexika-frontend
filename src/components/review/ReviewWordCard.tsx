@@ -175,6 +175,7 @@ export default function ReviewWordCard(props: Props) {
 }
 
 const SwipeableContainer = styled.div`
+  z-index: 1;
 `;
 
 const DetailsButtonContainer = styled.div`
