@@ -6,12 +6,12 @@ import { errorNotification, successNotification } from '@services/popup-notifica
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useDeleteCustomWordPackMutation, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
-import { ButtonType, ButtonWithIconType, FontWeight, Size } from '@utils/constants';
+import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Category, placeholderWordPack, WordPackDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
-import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
+import ButtonWithIcon, { ButtonWithIconType } from '@components/common/basic/ButtonWithIcon';
 import Skeleton, { SkeletonType } from '@components/common/basic/Skeleton';
 import Text from '@components/common/basic/Text';
 import AlertDialog from '@components/common/complex/AlertDialog';

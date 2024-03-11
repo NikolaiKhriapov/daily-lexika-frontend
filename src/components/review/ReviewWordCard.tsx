@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { ButtonType, RoleName, Size } from '@utils/constants';
+import { RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Status, WordDto } from '@utils/types';
-import Button from '@components/common/basic/Button';
+import ButtonWithIcon, { ButtonWithIconType } from '@components/common/basic/ButtonWithIcon';
 import Text from '@components/common/basic/Text';
+import ButtonsPronunciation from '@components/common/complex/ButtonsPronunciation';
 import Card from '@components/common/complex/Card';
 import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
@@ -140,18 +140,19 @@ export default function ReviewWordCard(props: Props) {
         setUnlocked={setUnlocked}
         face={(
           <ContentsContainer>
+            <ButtonContainer>
+              <ButtonsPronunciation word={reviewWord} />
+            </ButtonContainer>
             <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>
               {wordData[userRole]?.nameWord.text}
             </Text>
           </ContentsContainer>
         )}
         back={(
-          <>
-            <DetailsButtonContainer>
-              <Button
-                size={{ base: Size.SM, md: Size.MD }}
-                buttonType={ButtonType.BUTTON}
-                buttonText={<InfoOutlineIcon />}
+          <ContentsContainer>
+            <ButtonContainer>
+              <ButtonWithIcon
+                type={ButtonWithIconType.INFO}
                 onClick={onClickDetails}
                 isOpen={isOpenDetails}
                 modalContent={(
@@ -162,12 +163,10 @@ export default function ReviewWordCard(props: Props) {
                   />
                 )}
               />
-            </DetailsButtonContainer>
-            <ContentsContainer>
-              <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
-              <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
-            </ContentsContainer>
-          </>
+            </ButtonContainer>
+            <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
+            <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
+          </ContentsContainer>
         )}
       />
     </SwipeableContainer>
@@ -178,10 +177,13 @@ const SwipeableContainer = styled.div`
   z-index: 1;
 `;
 
-const DetailsButtonContainer = styled.div`
+const ButtonContainer = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const ContentsContainer = styled.div`
