@@ -5,11 +5,11 @@ import { errorNotification, successNotification } from '@services/popup-notifica
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { useAddWordToCustomWordPackMutation, useRemoveWordFromCustomWordPackMutation } from '@store/api/wordPacksAPI';
-import { Breakpoint, ButtonWithIconType, RoleName, Size } from '@utils/constants';
+import { Breakpoint, RoleName, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, removeAccent } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDataDto, WordPackDto } from '@utils/types';
-import ButtonWithIcon from '@components/common/basic/ButtonWithIcon';
+import ButtonWithIcon, { ButtonWithIconType } from '@components/common/basic/ButtonWithIcon';
 import Input from '@components/common/basic/Input';
 import Spinner from '@components/common/basic/Spinner';
 import Text from '@components/common/basic/Text';
