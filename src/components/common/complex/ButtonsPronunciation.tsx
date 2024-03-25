@@ -26,6 +26,7 @@ export default function ButtonsPronunciation(props: Props) {
 
       const utterance = new SpeechSynthesisUtterance(word.wordDataDto.nameEnglish);
       utterance.voice = randomVoice;
+      utterance.lang = lang;
       window.speechSynthesis.speak(utterance);
     }
     if (userRole === RoleName.USER_CHINESE) {
