@@ -63,6 +63,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+    width: min-content;
 `;
 
 const TotalWords = styled.div`
