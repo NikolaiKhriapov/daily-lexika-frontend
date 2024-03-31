@@ -39,9 +39,13 @@ export default function SkeletonWrapper(props: Props) {
   };
 
   return (
-    isLoading
-      ? skeletonComponent[type]
-      : <>{children}</>
+    <>
+      {
+        isLoading
+          ? skeletonComponent[type]
+          : children
+      }
+    </>
   );
 }
 
@@ -127,9 +131,9 @@ function StatisticsPageContentSkeleton(props: StatisticsPageContentSkeletonProps
   const type = SkeletonType.STATS_CARD;
 
   return (
-    <ContainerMobile>
+    <ContainerStatistics>
       {[...Array(number)].map((_, index) => <Skeleton key={index} type={type} />)}
-    </ContainerMobile>
+    </ContainerStatistics>
   );
 }
 
@@ -171,4 +175,13 @@ const ContainerWordPacksTabletAndDesktop = styled.div`
     gap: 30px;
     width: 100%;
   }
+`;
+
+const ContainerStatistics = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: baseline;
+    gap: 40px;
 `;

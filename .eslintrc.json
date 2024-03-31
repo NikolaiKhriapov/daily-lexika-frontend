@@ -43,6 +43,7 @@
     //    "operator-linebreak": "error",
     //    "@typescript-eslint/comma-dangle": "error",
     "react/no-array-index-key": "off",
+    "react/jsx-no-useless-fragment": "off",
     "no-multi-spaces": "error",
     "react/jsx-indent": "error",
     "no-multiple-empty-lines": "error",
