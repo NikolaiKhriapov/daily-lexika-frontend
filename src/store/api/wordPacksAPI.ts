@@ -70,8 +70,12 @@ export const wordPacksAPI = API.injectEndpoints({
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
           const wordPack = draft?.find((item) => item.name === args.wordPackName);
-          if (wordPack && wordPack.totalWords) {
-            wordPack.totalWords += 1;
+          if (wordPack) {
+            if (wordPack && wordPack.totalWords) {
+              wordPack.totalWords += 1;
+            } else {
+              wordPack.totalWords = 1;
+            }
           }
         }));
         try {

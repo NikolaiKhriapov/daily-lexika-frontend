@@ -46,7 +46,10 @@ export default function ReviewCard(props: Props) {
   const requestRefreshReview = () => {
     refreshReview(review.id!)
       .unwrap()
-      .then(() => successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`))
+      .then(() => {
+        successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
+        setFlipped(false);
+      })
       .catch((error) => errorNotification('', error));
   };
 

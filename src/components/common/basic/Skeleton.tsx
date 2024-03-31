@@ -7,6 +7,7 @@ export enum SkeletonType {
   REVIEW_CARD = 'REVIEW_CARD',
   WORD_PACK_CARD = 'WORD_PACK_CARD',
   STATS_CARD = 'STATS_CARD',
+  TEXT_HEADING = 'TEXT_HEADING',
 }
 
 interface Props extends SkeletonProps {
@@ -37,6 +38,13 @@ export default function Skeleton(props: Props) {
     case SkeletonType.STATS_CARD: {
       height = 100;
       width = 220;
+      border = borderStyles(colorMode);
+      borderRadius = theme.stylesToDelete.borderRadius;
+      break;
+    }
+    case SkeletonType.TEXT_HEADING: {
+      height = 5;
+      width = 215;
       border = borderStyles(colorMode);
       borderRadius = theme.stylesToDelete.borderRadius;
       break;

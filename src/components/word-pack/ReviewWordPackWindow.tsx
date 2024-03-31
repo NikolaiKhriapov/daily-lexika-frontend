@@ -24,7 +24,7 @@ export default function ReviewWordPackWindow(props: Props) {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(0);
   const pageSize = 20;
-  const modalWidth = useBreakpointValue({ base: '475px', md: 'auto' });
+  const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
 
   const { data: user } = useGetUserInfoQuery();
   const { data: wordsPage = [], isLoading } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
@@ -63,7 +63,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-    width: min-content;
 `;
 
 const TotalWords = styled.div`
