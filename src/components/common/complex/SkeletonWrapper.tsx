@@ -39,9 +39,9 @@ export default function SkeletonWrapper(props: Props) {
   };
 
   return (
-    <Container>
-      {isLoading ? skeletonComponent[type] : children}
-    </Container>
+    isLoading
+      ? skeletonComponent[type]
+      : <>{children}</>
   );
 }
 
@@ -132,9 +132,6 @@ function StatisticsPageContentSkeleton(props: StatisticsPageContentSkeletonProps
     </ContainerMobile>
   );
 }
-
-const Container = styled.div`
-`;
 
 const ContainerMobile = styled.div`
   display: flex;
