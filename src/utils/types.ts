@@ -118,18 +118,8 @@ export enum Status {
 
 export enum Category {
   HSK = 'HSK',
-  WORK = 'Work',
-  NEWS = 'News',
-  SPORT = 'Sport',
-  FOOD = 'Food',
-  TRAVEL = 'Travel',
-
-  SPEAKOUT_STARTER = 'Speakout Starter',
-  SPEAKOUT_ELEMENTARY = 'Speakout Elementary',
-  SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
-  SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
-  SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
-
+  CEFR = 'CEFR',
+  OTHER = 'Other',
   CUSTOM = 'Custom',
 }
 

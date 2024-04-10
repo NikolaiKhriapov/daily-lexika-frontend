@@ -80,15 +80,6 @@ export enum ButtonType {
   LINK = 'link',
 }
 
-export enum ButtonWithIconType {
-  PREVIEW = 'preview',
-  CHANGE = 'change',
-  REFRESH = 'refresh',
-  DELETE = 'delete',
-  ADD_WORD = 'add-word',
-  REMOVE_WORD = 'remove-word',
-}
-
 export enum QueryMethods {
   GET = 'GET',
   POST = 'POST',

@@ -51,7 +51,7 @@ export default function StatisticsPageContent() {
       <Section>
         <Heading size={Size.LG}>Vocabulary</Heading>
         <CardsContainer>
-          <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={3} isLoading={!statistics}>
+          <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
             <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<PiBookThin style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
             {isOpenStatsWords && (<StatsWordsWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
             {user?.role === RoleName.USER_CHINESE && (

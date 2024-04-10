@@ -49,6 +49,7 @@ const InnerContainer = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   justify-content: center;
   margin-top: 50px;
+  width: 100vw;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     padding: 50px;

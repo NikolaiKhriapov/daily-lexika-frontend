@@ -24,7 +24,7 @@ export default function WordDetailedInfo(props: Props) {
 
   const streakProgress = (word.totalStreak / 5) * 100;
   const modalWidth = useBreakpointValue({ base: '80vw', md: '575px' });
-  const modalHeight = useBreakpointValue({ base: '85vh', md: '600px' });
+  const modalHeight = useBreakpointValue({ base: '550px', md: '600px' });
   
   if (!user) return <Spinner />;
 

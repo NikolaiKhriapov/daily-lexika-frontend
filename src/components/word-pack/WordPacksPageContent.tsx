@@ -48,7 +48,7 @@ export default function WordPacksPageContent() {
         </Section>
       ))}
       <Section>
-        <Heading size={Size.LG} isCentered>Custom Word Packs</Heading>
+        <Heading size={Size.LG} isCentered>Custom</Heading>
         <Swiper>
           {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
             <SwiperSlide key={wordPackDto.name}>

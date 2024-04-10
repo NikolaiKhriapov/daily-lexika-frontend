@@ -2,23 +2,36 @@ import React, { ReactNode } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
 import { CiEdit, CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { GoTrash } from 'react-icons/go';
+import { HiOutlineSpeakerWave } from 'react-icons/hi2';
 import { SlRefresh } from 'react-icons/sl';
+import { VscInfo } from 'react-icons/vsc';
 import styled from 'styled-components';
 import { ColorMode, IconButton, useColorMode } from '@chakra-ui/react';
-import { ButtonWithIconType } from '@utils/constants';
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
+
+export enum ButtonWithIconType {
+  PREVIEW = 'preview',
+  CHANGE = 'change',
+  REFRESH = 'refresh',
+  DELETE = 'delete',
+  ADD_WORD = 'add-word',
+  REMOVE_WORD = 'remove-word',
+  INFO = 'info',
+  AUDIO = 'audio',
+}
 
 type Props = {
   type: ButtonWithIconType,
   onClick: any,
   isDisabled?: boolean,
+  isLoading?: boolean,
   isOpen?: boolean,
   modalContent?: ReactNode,
 };
 
 export default function ButtonWithIcon(props: Props) {
-  const { type, onClick, isDisabled = false, isOpen = false, modalContent } = props;
+  const { type, onClick, isDisabled = false, isLoading = false, isOpen = false, modalContent } = props;
 
   const { colorMode } = useColorMode();
 
@@ -29,6 +42,8 @@ export default function ButtonWithIcon(props: Props) {
     [ButtonWithIconType.DELETE]: <GoTrash size={20} />,
     [ButtonWithIconType.ADD_WORD]: <CiSquarePlus size={20} />,
     [ButtonWithIconType.REMOVE_WORD]: <CiSquareMinus size={20} />,
+    [ButtonWithIconType.INFO]: <VscInfo size={20} />,
+    [ButtonWithIconType.AUDIO]: <HiOutlineSpeakerWave size={20} />,
   };
 
   return (
@@ -38,6 +53,7 @@ export default function ButtonWithIcon(props: Props) {
         onClick={onClick}
         aria-label={`${type.toLowerCase()}-button`}
         isDisabled={isDisabled}
+        isLoading={isLoading}
         $type={type}
         $colorMode={colorMode}
       />

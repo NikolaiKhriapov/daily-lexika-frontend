@@ -39,6 +39,7 @@ export default function StartReviewWindow(props: Props) {
           setReviewWord(response.listOfWordDto[0]);
         } else {
           setModalVisible(false);
+          onClose();
         }
         if ((answer === true && reviewWord !== null && (reviewWord.status.toString() === Status[Status.NEW]
           || (reviewWord.status.toString() === Status[Status.IN_REVIEW] && reviewWord.totalStreak === 4)))) {

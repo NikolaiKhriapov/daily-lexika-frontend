@@ -27,6 +27,7 @@ export default function Sidebar() {
         {sidebarMainItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode}>
             <Icon as={item.icon} />
+            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }}>{item.name}</Text>
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }}>{item.name}</Text>
           </Item>
         ))}
@@ -91,8 +92,8 @@ const SidebarExtra = styled(SidebarMain)`
 
 const Item = styled(Link)<{ $colorMode: ColorMode }>`
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 5px;
   height: 100%;
   width: 100%;
   justify-content: center;
@@ -100,6 +101,11 @@ const Item = styled(Link)<{ $colorMode: ColorMode }>`
   cursor: pointer;
   ${nonHighlightableTap};
 
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    flex-direction: row;
+    gap: 18px;
+  }
+    
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 180px;
     padding: 16px;
