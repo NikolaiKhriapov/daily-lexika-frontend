@@ -1,40 +1,56 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
-import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
-import { AuthContext } from '@context/AuthContext';
-import { Breakpoint, RoleName, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { RoleName, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { Status, WordDTO } from '@utils/types';
-import StatusBadge from '@components/common/basic/StatusBadge';
+import { Status, WordDto } from '@utils/types';
+import ButtonWithIcon, { ButtonWithIconType } from '@components/common/basic/ButtonWithIcon';
 import Text from '@components/common/basic/Text';
+import ButtonsPronunciation from '@components/common/complex/ButtonsPronunciation';
+import Card from '@components/common/complex/Card';
+import WordDetailedInfo from '@components/statistics/WordDetailedInfo';
 
 type Props = {
-  reviewWordDTO: WordDTO;
+  reviewWord?: WordDto | null;
   isFlipped: boolean;
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  setUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
   isThrown: boolean;
-  pressButton: any;
-  answer: boolean | null;
+  pressButton: (answer: boolean | null) => void;
+  isLoading: boolean;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWordDTO, isFlipped, setFlipped, isThrown, pressButton, answer } = props;
+  const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, pressButton, isLoading } = props;
 
-  const { user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
+  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
 
-  const swipeDistance = useBreakpointValue({ base: 150, md: 400, xl: 700 });
+  const { data: user } = useGetUserInfoQuery();
+
+  const cardHeight = { base: '312px', sm: '390px', xl: '520px' };
+  const cardWidth = { base: '240px', sm: '300px', xl: '400px' };
+
+  const swipeDistance = 150;
   const swipeHandlers = useSwipeable({
     onSwipedLeft: (eventData) => {
       if (eventData.absX > swipeDistance!) pressButton(false);
+      if (!isLoading) {
+        setDeltaX(0);
+        setDeltaY(0);
+      }
     },
     onSwipedRight: (eventData) => {
       if (eventData.absX > swipeDistance!) pressButton(true);
+      if (!isLoading) {
+        setDeltaX(0);
+        setDeltaY(0);
+      }
     },
     delta: 1,
     onSwipeStart: () => setFollowingSwipe(true),
@@ -49,35 +65,47 @@ export default function ReviewWordCard(props: Props) {
     },
   });
 
-  const wordDataCh = {
-    pinyin: {
-      text: reviewWordDTO.pinyin,
-      size: { base: Size.XL, md: Size.XXL, xl: Size.XXXL },
+  if (!user || !reviewWord) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
+
+  const userRole = user.role!;
+  const wordData = {
+    [RoleName.USER_ENGLISH]: {
+      transcription: {
+        text: reviewWord.wordDataDto.transcription,
+        size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
+      },
+      nameWord: {
+        text: reviewWord.wordDataDto.nameEnglish,
+        size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
+        font: theme.fonts.body,
+      },
+      nameTranslation: {
+        text: reviewWord.wordDataDto.nameRussian,
+        size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
+      },
     },
-    nameChineseSimplified: {
-      text: reviewWordDTO.nameChineseSimplified,
-      size: { base: Size.XXXXXL, md: Size.XXXXXXL, xl: Size.XXXXXXL },
+    [RoleName.USER_CHINESE]: {
+      transcription: {
+        text: reviewWord.wordDataDto.transcription,
+        size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
+      },
+      nameWord: {
+        text: reviewWord.wordDataDto.nameChineseSimplified,
+        size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXXXL },
+        font: theme.fonts.bodyCh,
+      },
+      nameTranslation: {
+        text: reviewWord.wordDataDto.nameEnglish.length < 100
+          ? reviewWord.wordDataDto.nameEnglish
+          : reviewWord.wordDataDto.nameEnglish.substring(0, 100).concat("..."), // TODO::: remove after revising all Chinese words
+        size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
+      },
     },
-    nameEnglish: {
-      text: reviewWordDTO.nameEnglish,
-      size: { base: Size.MD, md: Size.XL, xl: Size.XL },
-    },
+    [RoleName.ADMIN]: null,
   };
 
-  const wordDataEn = {
-    nameEnglish: {
-      text: reviewWordDTO.nameEnglish,
-      size: { base: Size.XXL, md: Size.XXXXL, xl: Size.XXXXL },
-    },
-    nameRussian: {
-      text: reviewWordDTO.nameRussian,
-      size: { base: Size.LG, md: Size.XXL, xl: Size.XXL },
-    },
-  };
+  const isNewStatus = reviewWord.status.toString() === Status[Status.NEW];
 
-  const isNewStatus = reviewWordDTO.status.toString() === Status[Status.NEW];
-
-  const isThrownDistance = useBreakpointValue({ base: '350px', md: '550px', xl: '700px' });
   const dynamicStyles = {
     transform: `${isFollowingSwipe
       ? isFlipped
@@ -86,72 +114,76 @@ export default function ReviewWordCard(props: Props) {
       : isFlipped
         ? `rotateY(180deg) scaleX(-1)`
         : `rotateY(0deg)`
-    } ${isThrown 
-      ? answer
-        ? `rotateY(0deg) translateX(${isThrownDistance}) translateY(0px)`
-        : `rotateY(0deg) translateX(-${isThrownDistance}) translateY(0px)`
+    } ${isThrown
+      ? `rotateY(90deg)`
       : ''
     }`,
     transition: `${isFollowingSwipe ? 'transform 0s' : 'transform 0.3s'}
      ${isThrown ? 'transform 0.6s' : ''}`,
   };
 
+  const onClickDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onOpenDetails();
+  };
+
   return (
-    <Container
-      style={dynamicStyles}
-      $colorMode={colorMode}
-      $isNewStatus={isNewStatus}
-      {...swipeHandlers}
-      onClick={() => setFlipped(!isFlipped)}
-    >
-      {isNewStatus && <StatusBadge text={reviewWordDTO.status} colorScheme="red" isInTopRight />}
-      {user?.role === RoleName.USER_CHINESE && (
-        <ContentsContainer>
-          <Text size={isFlipped ? wordDataCh.pinyin.size : wordDataCh.nameChineseSimplified.size}>
-            {isFlipped ? wordDataCh.pinyin.text : wordDataCh.nameChineseSimplified.text}
-          </Text>
-          {isFlipped && (
-            <Text size={wordDataCh.nameEnglish.size}>
-              {wordDataCh.nameEnglish.text}
+    <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
+      <Card
+        height={cardHeight}
+        width={cardWidth}
+        padding="10px"
+        borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
+        bgColor={theme.colors[colorMode].reviewWordCardBgColor}
+        isFlipped={isFlipped}
+        setFlipped={setFlipped}
+        setUnlocked={setUnlocked}
+        face={(
+          <ContentsContainer>
+            <ButtonContainer>
+              <ButtonsPronunciation word={reviewWord} />
+            </ButtonContainer>
+            <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>
+              {wordData[userRole]?.nameWord.text}
             </Text>
-          )}
-        </ContentsContainer>
-      )}
-      {user?.role === RoleName.USER_ENGLISH && (
-        <ContentsContainer>
-          <Text size={isFlipped ? wordDataEn.nameRussian.size : wordDataEn.nameEnglish.size}>
-            {isFlipped ? wordDataEn.nameRussian.text : wordDataEn.nameEnglish.text}
-          </Text>
-        </ContentsContainer>
-      )}
-    </Container>
+          </ContentsContainer>
+        )}
+        back={(
+          <ContentsContainer>
+            <ButtonContainer>
+              <ButtonWithIcon
+                type={ButtonWithIconType.INFO}
+                onClick={onClickDetails}
+                isOpen={isOpenDetails}
+                modalContent={(
+                  <WordDetailedInfo
+                    isOpen={isOpenDetails}
+                    onClose={onCloseDetails}
+                    word={reviewWord}
+                  />
+                )}
+              />
+            </ButtonContainer>
+            <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
+            <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
+          </ContentsContainer>
+        )}
+      />
+    </SwipeableContainer>
   );
 }
 
-const Container = styled.div<{ $colorMode: ColorMode, $isNewStatus: boolean }>`
+const SwipeableContainer = styled.div`
+  z-index: 1;
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 240px;
-  height: calc(240px * 1.3);
-  padding: 10px;
-
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].reviewWordCardBgColor};
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
-  border-radius: ${theme.stylesToDelete.borderRadius};
-  border-color: ${({ $colorMode, $isNewStatus }) => ($isNewStatus
-          && theme.colors[$colorMode].reviewWordCardBadgeRedColor
-  )};
-
-  ${mediaBreakpointUp('400px')} {
-    height: 370px;
-    width: calc(375px / 1.3);
-  }
-
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    width: 400px;
-    height: calc(400px * 1.3);
-  }
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const ContentsContainer = styled.div`
@@ -161,4 +193,10 @@ const ContentsContainer = styled.div`
   gap: 60px;
   text-align: center;
   justify-content: center;
+`;
+
+const ReviewWordPlaceholderContainer = styled.div<{
+  $height: string | { base: string, sm: string, xl: string };
+}>`
+  height: ${({ $height }) => (typeof $height === 'string' ? $height : useBreakpointValue($height))};
 `;

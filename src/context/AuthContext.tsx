@@ -1,77 +1,65 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { login as performLogin } from '@services/authorization';
-import { errorNotification } from '@services/popup-notification';
+import { API } from '@store/api/API';
+import { useAppDispatch } from '@store/hooks/hooks';
 import { LocalStorage, Page } from '@utils/constants';
-import { AuthenticationRequest, CustomJwtPayload, UserDTO } from '@utils/types';
 
-type Props = {
-  user: UserDTO | null;
-  login: (authenticationRequest: AuthenticationRequest) => Promise<void>;
+type ContextProps = {
+  setUserFromToken: (token: string) => void;
   logout: () => void;
-  isUserAuthenticated: () => boolean;
-  setUserFromToken: () => void;
-  setUser: (user: UserDTO) => void;
 };
 
-const AuthContext = createContext<Props>({
-  user: null,
-  login: async () => {
+const AuthContext = createContext<ContextProps>({
+  setUserFromToken: () => {
   },
   logout: () => {
   },
-  isUserAuthenticated: () => false,
-  setUserFromToken: () => {
-  },
-  setUser: () => {
-  },
 });
 
-function AuthProvider({ children }: { children: any }) {
-  const router = useRouter();
-  const [user, setUser] = useState<UserDTO | null>(null);
+type Props = {
+  children: ReactNode;
+};
 
-  const setUserFromToken = () => {
-    const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
+function AuthProvider(props: Props) {
+  const { children } = props;
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const setUserFromToken = (token: string) => {
     if (token) {
       try {
-        const jwtToken: CustomJwtPayload = jwtDecode(token);
-        setUser({ ...user, email: jwtToken.sub!, name: jwtToken.name, role: jwtToken.role });
+        localStorage.setItem(LocalStorage.ACCESS_TOKEN, token);
+        if (window.location.pathname === Page.AUTH && isUserAuthenticated()) {
+          router.push(Page.REVIEWS);
+        }
       } catch (error) {
         console.error('Error decoding JWT token');
       }
-    }
-    if (!token && window.location.pathname !== Page.AUTH) {
+    } else if (window.location.pathname !== Page.LANDING) {
       router.push(Page.AUTH);
     }
   };
 
-  useEffect(() => {
-    setUserFromToken();
-  }, []);
-
-  const login = async (authenticationRequest: AuthenticationRequest): Promise<void> =>
-    new Promise((resolve, reject) => {
-      performLogin(authenticationRequest)
-        .then((response) => {
-          const jwtTokenString = response.data.token;
-          localStorage.setItem(LocalStorage.ACCESS_TOKEN, jwtTokenString);
-          const jwtToken: CustomJwtPayload = jwtDecode(jwtTokenString);
-          setUser({ ...user, email: jwtToken.sub, name: jwtToken.name, role: jwtToken.role });
-          resolve();
-        })
-        .catch((error) => {
-          errorNotification(error.code, error.response.data.message);
-          reject(error);
-        });
-    });
-
   const logout = () => {
     localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
-    setUser(null);
+    dispatch(API.util.resetApiState());
     router.push(Page.AUTH);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
+    if (!isUserAuthenticated()) {
+      logout();
+    }
+    if (token) {
+      setUserFromToken(token);
+    }
+    if (window.location.pathname === Page.AUTH && isUserAuthenticated()) {
+      router.push(Page.REVIEWS);
+    }
+  }, []);
 
   const isUserAuthenticated = () => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
@@ -87,7 +75,7 @@ function AuthProvider({ children }: { children: any }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isUserAuthenticated, setUserFromToken, setUser }}>
+    <AuthContext.Provider value={{ setUserFromToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

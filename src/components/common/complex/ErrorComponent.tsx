@@ -4,7 +4,7 @@ import IndexPageContainer from '@components/common/complex/IndexPageContainer';
 export default function ErrorComponent() {
   return (
     <IndexPageContainer>
-      <Heading>Oops, there was an error</Heading>
+      <Heading isCentered>Oops, there was an error</Heading>
     </IndexPageContainer>
   );
 }

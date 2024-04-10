@@ -1,13 +1,17 @@
 import { Spinner as ChakraSpinner } from '@chakra-ui/react';
 import { Size } from '@utils/constants';
 
-export default function Spinner() {
+type Props = {
+  size?: Size;
+};
+
+export default function Spinner(props: Props) {
+  const { size = Size.XL } = props;
   return (
     <ChakraSpinner
-      marginTop='100px'
       thickness='2px'
       speed='0.3s'
-      size={Size.XL}
+      size={size}
     />
   );
 }

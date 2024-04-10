@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function StatusBadge(props: Props) {
-  const { colorScheme, text, isInTopRight } = props;
+  const { colorScheme, text, isInTopRight = false } = props;
 
   return (
     <Component>
@@ -23,10 +23,6 @@ export default function StatusBadge(props: Props) {
     </Component>
   );
 }
-
-StatusBadge.defaultProps = {
-  isInTopRight: false,
-};
 
 const Component = styled.div`
   flex-direction: column;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import {
   AlertDialog as ChakraAlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
@@ -10,37 +10,38 @@ import { theme } from '@utils/theme';
 import Button from '@components/common/basic/Button';
 
 type Props = {
-  isOpenDeleteButton: boolean;
-  onCloseDeleteButton: () => void;
-  cancelRef: React.RefObject<HTMLButtonElement>;
+  isOpen: boolean;
+  onClose: () => void;
   handleDelete: () => void;
   header: string;
   body: string;
   deleteButtonText: string;
   isButtonDisabled: boolean;
+  width?: string;
 };
 
 export default function AlertDialog(props: Props) {
-  const { isOpenDeleteButton, onCloseDeleteButton, cancelRef, handleDelete, header, body, deleteButtonText, isButtonDisabled } = props;
+  const { isOpen, onClose, handleDelete, header, body, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
 
   const { colorMode } = useColorMode();
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
     <ChakraAlertDialog
-      isOpen={isOpenDeleteButton}
-      onClose={onCloseDeleteButton}
+      isOpen={isOpen}
+      onClose={onClose}
       leastDestructiveRef={cancelRef}
       isCentered
     >
       <AlertDialogOverlay>
-        <AlertDialogContentStyled $colorMode={colorMode}>
+        <AlertDialogContentStyled $colorMode={colorMode} $width={width}>
           <AlertDialogHeader>{header}</AlertDialogHeader>
           <AlertDialogBody>{body}</AlertDialogBody>
           <AlertDialogFooterStyled>
             <Button
               buttonText='Cancel'
               buttonType={ButtonType.BUTTON}
-              onClick={onCloseDeleteButton}
+              onClick={onClose}
               isDisabled={isButtonDisabled}
             />
             <Button
@@ -62,10 +63,10 @@ const AlertDialogFooterStyled = styled(AlertDialogFooter)`
   gap: 20px;
 `;
 
-const AlertDialogContentStyled = styled(AlertDialogContent)<{ $colorMode: ColorMode }>`
+const AlertDialogContentStyled = styled(AlertDialogContent)<{ $colorMode: ColorMode; $width: string }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
-  width: fit-content !important;
+  width: ${({ $width }) => $width} !important;
   max-width: 90% !important;
 `;

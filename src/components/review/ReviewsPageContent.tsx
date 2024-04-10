@@ -1,47 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getAllReviews } from '@services/reviews';
-import { Size } from '@utils/constants';
-import { ReviewDTO } from '@utils/types';
+import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
+import { Breakpoint, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import Heading from '@components/common/basic/Heading';
-import Spinner from '@components/common/basic/Spinner';
+import { SkeletonType } from '@components/common/basic/Skeleton';
 import Text from '@components/common/basic/Text';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
+import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
+import Swiper, { SwiperSlide } from '@components/common/complex/Swiper';
 import ReviewCard from '@components/review/ReviewCard';
 
 export default function ReviewsPageContent() {
-  const [allReviewsDTO, setAllReviewsDTO] = useState<ReviewDTO[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { data: allReviews = [], isLoading, isError } = useGetAllReviewsQuery();
 
-  const fetchAllReviewsDTO = () => {
-    setLoading(true);
-    getAllReviews()
-      .then((response) => {
-        const { data } = response;
-        setAllReviewsDTO(data.sort((a, b) => a.wordPackName.localeCompare(b.wordPackName)));
-      })
-      .catch((e) => {
-        setError(e.response.data.message);
-        console.error(e.code, e.response.data.message);
-      })
-      .finally(() => setLoading(false));
-  };
+  if (isLoading) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoading} fixed={3} />;
+  if (isError) return <ErrorComponent />;
 
-  useEffect(() => {
-    fetchAllReviewsDTO();
-  }, []);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <ErrorComponent />;
-  }
-
-  if (allReviewsDTO.length <= 0) {
+  if (allReviews.length === 0) {
     return (
       <IndexPageContainer>
         <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
@@ -53,23 +30,46 @@ export default function ReviewsPageContent() {
   }
 
   return (
-    <Container>
-      {allReviewsDTO.map((reviewDTO) => (
-        <ReviewCard
-          key={reviewDTO.id}
-          reviewDTO={reviewDTO}
-          fetchAllReviewsDTO={fetchAllReviewsDTO}
-        />
-      ))}
-    </Container>
+    <>
+      <ContainerMobile>
+        <Swiper>
+          {allReviews.map((reviewDTO) => (
+            <SwiperSlide key={reviewDTO.id}>
+              <ReviewCard review={reviewDTO} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </ContainerMobile>
+      <ContainerTabletAndDesktop>
+        {allReviews.map((reviewDTO) => (
+          <ReviewCard key={reviewDTO.id} review={reviewDTO} />
+        ))}
+      </ContainerTabletAndDesktop>
+    </>
   );
 }
 
-const Container = styled.div`
+const ContainerMobile = styled.div`
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   align-content: baseline;
-  gap: 40px;
+  width: 100%;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: none;
+  }
+`;
+
+const ContainerTabletAndDesktop = styled.div`
+  display: none;
+    
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: baseline;
+    gap: 40px;
+    width: calc(100vw - 100px);
+  }
 `;

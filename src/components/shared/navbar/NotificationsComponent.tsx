@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { NotificationsContext } from '@context/NotificationsContext';
-import { readNotification } from '@services/notifications';
+import { errorNotification } from '@services/popup-notification';
+import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store/api/notificationsAPI';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { NotificationDTO } from '@utils/types';
+import { NotificationDto } from '@utils/types';
 import Button from '@components/common/basic/Button';
 import MenuItem from '@components/common/basic/MenuItem';
 import MenuList from '@components/common/basic/MenuList';
@@ -19,19 +19,17 @@ import NotificationWindow from '@components/shared/navbar/NotificationWindow';
 
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
-  const { allNotificationsDTO, setAllNotificationsDTO } = useContext(NotificationsContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedNotification, setSelectedNotification] = useState<NotificationDTO | null>(null);
+  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
 
-  const handleNotificationClick = (notificationDTO: NotificationDTO) => {
-    readNotification(notificationDTO.notificationId);
+  const { data: allNotifications = [] } = useGetAllNotificationsQuery();
+  const [readNotification] = useReadNotificationMutation();
+
+  const handleNotificationClick = (notificationDTO: NotificationDto) => {
+    readNotification(notificationDTO.notificationId)
+      .unwrap()
+      .catch((error) => errorNotification('', error));
     setSelectedNotification(notificationDTO);
-    setAllNotificationsDTO((prevNotificationsDTO) => prevNotificationsDTO.map((notification) => {
-      if (notification.notificationId === notificationDTO.notificationId) {
-        return { ...notification, isRead: true };
-      }
-      return notification;
-    }));
   };
 
   const handleCloseNotificationModal = () => setSelectedNotification(null);
@@ -42,8 +40,7 @@ export default function NotificationsComponent() {
     return new Date(year, month - 1, day).toLocaleDateString(undefined, options);
   };
 
-  const unreadNotifications = allNotificationsDTO
-    .filter((notificationDTO) => !notificationDTO.isRead);
+  const unreadNotifications = allNotifications.filter((notificationDTO) => !notificationDTO.isRead);
 
   return (
     <Notifications $colorMode={colorMode}>
@@ -72,7 +69,7 @@ export default function NotificationsComponent() {
                     {formattedDate(notificationDTO.sentAt)}
                   </Text>
                 </MenuItemStyled>
-                {index < allNotificationsDTO.length - 1 && <MenuDivider />}
+                {index < allNotifications.length - 1 && <MenuDivider />}
               </NotificationContainer>
             )))
             : (
@@ -87,16 +84,17 @@ export default function NotificationsComponent() {
               buttonType={ButtonType.BUTTON}
               size={Size.SM}
               onClick={onOpen}
+              isOpen={isOpen}
+              modalContent={(
+                <NotificationsWindow
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  formattedDate={formattedDate}
+                  allNotificationsDTO={allNotifications}
+                  handleNotificationClick={handleNotificationClick}
+                />
+              )}
             />
-            {isOpen && (
-              <NotificationsWindow
-                isOpen={isOpen}
-                onClose={onClose}
-                formattedDate={formattedDate}
-                allNotificationsDTO={allNotificationsDTO}
-                handleNotificationClick={handleNotificationClick}
-              />
-            )}
             {selectedNotification && (
               <NotificationWindow
                 formattedDate={formattedDate}
@@ -145,8 +143,10 @@ const NotificationContainer = styled.div`
 const MenuItemStyled = styled(MenuItem)`
   display: flex;
   flex-direction: column;
+  width: fit-content !important;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: 100% !important;
     flex-direction: row;
     justify-content: space-between;
   }

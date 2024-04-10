@@ -9,23 +9,18 @@ import Text from '@components/common/basic/Text';
 type Props = {
   email: boolean;
   appVersion: boolean;
-  forDesktopOnly?: boolean;
-};
-
-Footer.defaultProps = {
-  forDesktopOnly: true,
 };
 
 export default function Footer(props: Props) {
-  const { email, appVersion, forDesktopOnly = true } = props;
+  const { email, appVersion } = props;
 
   const { colorMode } = useColorMode();
 
   return (
-    <Container $colorMode={colorMode} $forDesktopOnly={forDesktopOnly}>
+    <Container $colorMode={colorMode} $isAuthFooter={email}>
       {email && (
         <Text size={Size.SM} isCentered>
-          Contact e-mail: <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>{AppInfo.EMAIL}</Link>
+          Support: <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>{AppInfo.EMAIL}</Link>
         </Text>
       )}
       {appVersion && (
@@ -35,26 +30,20 @@ export default function Footer(props: Props) {
   );
 }
 
-const Container = styled.div<{ $colorMode: ColorMode, $forDesktopOnly: boolean }>`
-  display: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : '')};
-  bottom: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : '0')};
-  width: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : '100%')};
-  height: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : '70px')};
-  display: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : 'flex')};
-  flex-direction: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : 'column')};
-  align-items: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : 'center')};
-  justify-content: ${({ $forDesktopOnly }) => ($forDesktopOnly ? 'none' : 'center')};
-  background-color: ${({ $forDesktopOnly, $colorMode }) => ($forDesktopOnly ? 'none' : `${theme.colors[$colorMode].background}`)};
-    
+const Container = styled.div<{ $colorMode: ColorMode; $isAuthFooter: boolean }>`
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
+  margin-bottom: ${({ $isAuthFooter }) => ($isAuthFooter ? '0' : '70px')};
+  z-index: 0;
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    bottom: 0;
-    width: 100%;
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
+    margin-bottom: 0;
     z-index: 1000;
   }
 `;

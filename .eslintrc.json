@@ -1,7 +1,7 @@
 {
   "extends": [
-    "next/core-web-vitals",
     "next",
+    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -33,14 +33,17 @@
     "react/jsx-indent-props": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/quotes": "off",
+    "react/require-default-props": "off",
     "react-hooks/exhaustive-deps": "off",
     "import/prefer-default-export": "off",
     "react/jsx-one-expression-per-line": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-no-constructed-context-values": "off",
+    "no-param-reassign": "off",
     //    "operator-linebreak": "error",
     //    "@typescript-eslint/comma-dangle": "error",
     "react/no-array-index-key": "off",
+    "react/jsx-no-useless-fragment": "off",
     "no-multi-spaces": "error",
     "react/jsx-indent": "error",
     "no-multiple-empty-lines": "error",
@@ -52,9 +55,15 @@
     "react/jsx-props-no-spreading": "off",
     "no-trailing-spaces": "off",
     "no-nested-ternary": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["global", "jsx"] }]
   },
-  "ignorePatterns": ["public", "node_modules", ".next", "next.config.js"],
+  "ignorePatterns": [
+    "public",
+    "node_modules",
+    ".next",
+    "next.config.js"
+  ],
   "overrides": [
     {
       "files": [
@@ -79,8 +88,8 @@
                 "^(@chakra-ui)(/.*|$)",
                 "^(@public)(/.*|$)",
                 "^(@context)(/.*|$)",
-                "^(@API)(/.*|$)",
                 "^(@services)(/.*|$)",
+                "^(@store)(/.*|$)",
                 "^(@utils)(/.*|$)",
                 "^(@pages)(/.*|$)",
                 "^(@components)(/.*|$)",

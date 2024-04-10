@@ -1,4 +1,3 @@
-import { JwtPayload } from 'jwt-decode';
 import { Platform, RoleName } from '@utils/constants';
 
 export interface RegistrationRequest {
@@ -18,21 +17,20 @@ export interface AuthenticationResponse {
   token: string;
 }
 
-export interface CustomJwtPayload extends JwtPayload {
-  name: string;
-  role: RoleName;
+export interface PasswordUpdateRequest {
+  passwordCurrent: string;
+  passwordNew: string;
 }
 
-export interface UserDTO {
+export interface UserDto {
   id?: number;
   name?: string;
   email?: string;
-  password?: string;
   role?: RoleName;
-  roleStatistics?: RoleStatisticsDTO[];
+  roleStatistics?: RoleStatisticsDto[];
 }
 
-export interface RoleStatisticsDTO {
+export interface RoleStatisticsDto {
   id: number;
   roleName: string;
   currentStreak: number;
@@ -40,7 +38,7 @@ export interface RoleStatisticsDTO {
   recordStreak: number;
 }
 
-export interface NotificationDTO {
+export interface NotificationDto {
   notificationId: number;
   toUserId: number;
   toUserEmail: string;
@@ -51,51 +49,61 @@ export interface NotificationDTO {
   isRead: boolean;
 }
 
-export interface ReviewDTO {
+export interface ReviewDto {
   id?: number;
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
-  wordPackName: string;
-  listOfWordDTO?: WordDTO[];
+  wordPackDto: WordPackDto;
+  listOfWordDto?: WordDto[];
+  actualSize: number;
   dateLastCompleted?: string;
   dateGenerated?: string;
 }
 
-export interface WordDTO {
+export interface WordDataDto {
   id: number;
   nameChineseSimplified: string;
-  nameChineseTraditional: string;
-  pinyin: string;
+  transcription: string;
   nameEnglish: string;
   nameRussian: string;
+  definition: string;
+  examples: string[];
+  listOfWordPackNames: string[];
+  platform: Platform;
+}
+
+export interface WordDto {
+  id: number;
+  userId: number;
+  wordDataDto: WordDataDto;
   status: Status;
   currentStreak: number;
   totalStreak: number;
   occurrence: number;
   dateOfLastOccurrence: string;
-  listOfWordPackNames: string[];
 }
 
-export interface WordPackDTO {
+export interface WordPackDto {
   name: string;
   description: string;
   category: Category;
-  totalWords: number;
+  platform?: Platform;
+  totalWords?: number;
   reviewId?: number;
 }
 
-export interface StatisticsDTO {
+export interface StatisticsDto {
   currentStreak?: number;
   recordStreak?: number;
   wordsKnown: number;
-  // charactersKnown: number;
+  charactersKnown: number;
   // idiomsKnown: number;
-  listOfReviewStatisticsDTO: ReviewStatisticsDTO[];
+  listOfReviewStatisticsDto: ReviewStatisticsDto[];
 }
 
-export interface ReviewStatisticsDTO {
-  id: number;
+export interface ReviewStatisticsDto {
+  reviewId: number;
   wordPackName: string;
   wordsNew: number;
   wordsInReview: number;
@@ -110,15 +118,21 @@ export enum Status {
 
 export enum Category {
   HSK = 'HSK',
-  WORK = 'Work',
-  NEWS = 'News',
-  SPORT = 'Sport',
-  FOOD = 'Food',
-  TRAVEL = 'Travel',
-
-  SPEAKOUT_STARTER = 'Speakout Starter',
-  SPEAKOUT_ELEMENTARY = 'Speakout Elementary',
-  SPEAKOUT_PRE_INTERMEDIATE = 'Speakout Pre-intermediate',
-  SPEAKOUT_INTERMEDIATE = 'Speakout Intermediate',
-  SPEAKOUT_UPPER_INTERMEDIATE = 'Speakout Upper-intermediate',
+  CEFR = 'CEFR',
+  OTHER = 'Other',
+  CUSTOM = 'Custom',
 }
+
+export const placeholderWordPack: WordPackDto = {
+  name: '0000000000',
+  description: '',
+  category: Category.CUSTOM,
+};
+
+export const placeholderReview: ReviewDto = {
+  id: -1,
+  maxNewWordsPerDay: -1,
+  maxReviewWordsPerDay: -1,
+  wordPackDto: placeholderWordPack,
+  actualSize: -1,
+};

@@ -4,7 +4,7 @@ import { Button as ChakraButton, ColorMode, MenuDivider, useColorMode } from '@c
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { NotificationDTO } from '@utils/types';
+import { NotificationDto } from '@utils/types';
 import RedDot from '@components/common/basic/RedDot';
 import Text from '@components/common/basic/Text';
 import Modal from '@components/common/complex/Modal';
@@ -13,8 +13,8 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   formattedDate: (dateString: string) => string;
-  allNotificationsDTO: NotificationDTO[];
-  handleNotificationClick: (notificationDTO: NotificationDTO) => void;
+  allNotificationsDTO: NotificationDto[];
+  handleNotificationClick: (notificationDTO: NotificationDto) => void;
 };
 
 export default function NotificationsWindow(props: Props) {
@@ -67,8 +67,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 0;
-  width: 100%;
-  max-width: 300px;
+  width: 320px;
+  max-width: 320px;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 460px;
@@ -78,8 +78,12 @@ const Container = styled.div`
 
 const ButtonContainer = styled.div`
   padding-left: 0;
-  width: 80vh;
-  max-width: 100%;
+  width: 100%;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 80vh;
+    max-width: 100%;
+  }
 `;
 
 const NotificationButton = styled(ChakraButton)<{ $colorMode: ColorMode }>`
@@ -90,10 +94,10 @@ const NotificationButton = styled(ChakraButton)<{ $colorMode: ColorMode }>`
   padding: 0 5px 0 0 !important;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   height: 30px !important;
-  width: 250px;
+  width: 100%;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    padding: 0 16px !important;
+    padding: 0 16px 0 0 !important;
     height: 35px !important;
     width: 460px;
   }

@@ -7,9 +7,11 @@ import Text from '@components/common/basic/Text';
 
 interface Props extends CircularProgressProps {
   text: string;
+  isWithLabel?: boolean;
 }
 
-export default function ProgressCircular({ text, value, ...rest }: Props) {
+export default function ProgressCircular(props: Props) {
+  const { value, text, isWithLabel = false, ...rest } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -21,9 +23,11 @@ export default function ProgressCircular({ text, value, ...rest }: Props) {
       trackColor={theme.colors[colorMode].progressBarBgColor}
       {...rest}
     >
-      <CircularProgressLabel>{value}%
-        <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>{text}</Text>
-      </CircularProgressLabel>
+      {isWithLabel && (
+        <CircularProgressLabel>{value}%
+          <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>{text}</Text>
+        </CircularProgressLabel>
+      )}
     </CircularProgress>
   );
 }

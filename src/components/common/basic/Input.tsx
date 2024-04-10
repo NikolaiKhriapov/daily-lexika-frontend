@@ -6,6 +6,7 @@ export default function Input({ children, ...rest }: InputProps) {
   return (
     <ChakraInput
       focusBorderColor={theme.colors.gray['400']}
+      autoComplete='off'
       {...rest}
     >
       {children}

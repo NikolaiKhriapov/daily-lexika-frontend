@@ -1,5 +1,6 @@
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styled from 'styled-components';
+import { nonHighlightableTap } from '@utils/functions';
 
 type Props = {
   onClick: () => void;
@@ -16,4 +17,5 @@ export default function CloseButton(props: Props) {
 const Component = styled(AiOutlineCloseCircle)`
   font-size: 16px;
   cursor: pointer;
+  ${nonHighlightableTap};
 `;

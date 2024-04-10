@@ -4,8 +4,10 @@ import { Breakpoint } from '@utils/constants';
 const customColors = {
   light: {
     background: 'rgb(237,238,240)',
-    borderColor: '#CBD5E0',
+    background2: '#F7FAFC',
     bgColor: '#F7FAFC',
+    borderColorMain: '#CBD5E0',
+    borderColor: '#CBD5E0',
     hoverBgColor: '#E3E8EF',
     buttonColor: '#000000',
     buttonBgColor: '#CBD5E0',
@@ -16,11 +18,14 @@ const customColors = {
     progressBarBgColor: '#E4E8EE',
     progressCircularColor: '#8088A0',
     alert: '#F56565',
+    cardAddNew: '#F7FAFC',
   },
   dark: {
-    background: 'rgb(20,20,20)',
-    borderColor: '#505050',
+    background: 'rgb(10,10,10)',
+    background2: 'rgb(25,25,25)',
     bgColor: '#282828',
+    borderColorMain: '#3C3C3C',
+    borderColor: '#505050',
     hoverBgColor: '#3C3C3C',
     buttonColor: '#FFFFFF',
     buttonBgColor: '#3C3C3C',
@@ -31,12 +36,16 @@ const customColors = {
     progressBarBgColor: '#505050',
     progressCircularColor: '#E4E8EE',
     alert: '#EF4444',
+    cardAddNew: '#3C3C3C',
   },
+  telegramBlue: 'rgb(73,150,214)',
+  whatsAppGreen: 'rgb(100,205,110)',
 };
 
 const customBreakpoints = {
   base: Breakpoint.BASE,
-  sm: Breakpoint.PHONE,
+  xs: Breakpoint.PHONE,
+  sm: Breakpoint.PHONE_LG,
   md: Breakpoint.TABLET,
   lg: Breakpoint.LG,
   xl: Breakpoint.DESKTOP,
@@ -45,16 +54,25 @@ const customBreakpoints = {
 
 // TODO::: remove
 const stylesToDelete = {
+  light: {
+    boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
+  },
+  dark: {
+    boxShadow: '0 10px 10px rgba(0, 0, 0, 0.4)',
+  },
   borderWidth: '1px',
   borderStyle: 'solid',
   borderRadius: '10px',
-  boxShadow: '0 6px 24px rgba(0, 0, 0, 0.1)',
   link: 'blue.500',
 };
 
 const theme = extendTheme({
   colors: customColors,
-  fonts: {},
+  fonts: {
+    heading: 'var(--font-rubik)',
+    body: 'var(--font-rubik)',
+    bodyCh: 'var(--font-noto-serif-sc)',
+  },
   fontSizes: {},
   breakpoints: customBreakpoints,
   stylesToDelete,

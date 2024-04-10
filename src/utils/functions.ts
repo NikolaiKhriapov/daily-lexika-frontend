@@ -1,6 +1,7 @@
 import { ColorMode } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
 import { theme } from '@utils/theme';
+import { UserDto, WordDataDto } from '@utils/types';
 
 export const mediaBreakpointUp: (breakpoint: Breakpoint | string) => string = (breakpoint) =>
   `@media (min-width: ${breakpoint})`;
@@ -15,3 +16,26 @@ export const hiddenScrollbar = () => `
     display: none; /* WebKit */
   }
 `;
+
+export const nonHighlightableTap = () => `
+  -webkit-tap-highlight-color: transparent;
+`;
+
+export const getOriginalWordPackName = (wordPackName: string, user: UserDto | null) => {
+  const postfix = `__${user?.id}`;
+  if (user && wordPackName.endsWith(postfix)) {
+    return wordPackName.replace(postfix, '');
+  }
+  return wordPackName;
+};
+
+export const removeAccent = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+export const sortWordsChinese = (a: WordDataDto, b: WordDataDto) => {
+  const nameA = removeAccent(a.transcription).toLowerCase();
+  const nameB = removeAccent(b.transcription).toLowerCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+};

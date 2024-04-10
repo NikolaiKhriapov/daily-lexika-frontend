@@ -1,51 +1,31 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getAllWordPacks } from '@services/word-packs';
-import { Size } from '@utils/constants';
-import { Category, WordPackDTO } from '@utils/types';
+import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
+import { Breakpoint, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
+import { Category } from '@utils/types';
 import Heading from '@components/common/basic/Heading';
-import Spinner from '@components/common/basic/Spinner';
+import { SkeletonType } from '@components/common/basic/Skeleton';
 import ErrorComponent from '@components/common/complex/ErrorComponent';
 import IndexPageContainer from '@components/common/complex/IndexPageContainer';
+import SkeletonWrapper from '@components/common/complex/SkeletonWrapper';
+import Swiper, { SwiperSlide } from '@components/common/complex/Swiper';
 import WordPackCard from '@components/word-pack/WordPackCard';
+import WordPackCardAddNew from '@components/word-pack/WordPackCardAddNew';
 
 export default function WordPacksPageContent() {
-  const [allWordPacksDTO, setAllWordPacksDTO] = useState<WordPackDTO[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
 
-  const fetchAllWordPacksDTO = () => {
-    setLoading(true);
-    getAllWordPacks()
-      .then((response) => {
-        const allWordPacksDTO = response.data;
-        const notEmptyWordPacksDTO = allWordPacksDTO.filter((wordPackDTO) => wordPackDTO.totalWords > 0);
-        setAllWordPacksDTO(notEmptyWordPacksDTO);
-      })
-      .catch((e) => {
-        setError((e.response.data.message));
-        console.error(e.code, e.response.data.message);
-      })
-      .finally(() => setLoading(false));
-  };
+  const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDto) => wordPackDto.category)));
+  const wordPacksDtoByCategory = (category: Category) => allWordPacks
+    .filter((wordPackDto) => wordPackDto.category.toLowerCase() === category.toLowerCase());
+  const wordPackCategoriesStandard = wordPackCategories
+    .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
-  useEffect(() => {
-    fetchAllWordPacksDTO();
-  }, []);
+  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={3} />;
+  if (isError) return <ErrorComponent />;
 
-  const wordPackCategories = Array.from(new Set(allWordPacksDTO?.map((wordPackDTO) => wordPackDTO.category)));
-  const wordPacksDTOByCategory = (category: Category) => allWordPacksDTO
-    .filter((wordPackDTO) => wordPackDTO.category === category);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <ErrorComponent />;
-  }
-
-  if (allWordPacksDTO?.length <= 0) {
+  if (!allWordPacks || allWordPacks.length === 0) {
     return (
       <IndexPageContainer>
         <Heading size={Size.LG} isCentered>No Word Packs available</Heading>
@@ -55,19 +35,31 @@ export default function WordPacksPageContent() {
 
   return (
     <Container>
-      {wordPackCategories.map((wordPackCategory) => (
+      {wordPackCategoriesStandard.map((wordPackCategory) => (
         <Section key={wordPackCategory}>
-          <Heading size={Size.LG}>{Category[wordPackCategory as keyof typeof Category]}</Heading>
-          <WordPacksContainer>
-            {wordPacksDTOByCategory(wordPackCategory).map((wordPackDTO) => (
-              <WordPackCard
-                key={wordPackDTO.name}
-                wordPackDTO={wordPackDTO}
-              />
+          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+          <Swiper>
+            {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
+              <SwiperSlide key={wordPackDto.name}>
+                <WordPackCard wordPack={wordPackDto} />
+              </SwiperSlide>
             ))}
-          </WordPacksContainer>
+          </Swiper>
         </Section>
       ))}
+      <Section>
+        <Heading size={Size.LG} isCentered>Custom</Heading>
+        <Swiper>
+          {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
+            <SwiperSlide key={wordPackDto.name}>
+              <WordPackCard wordPack={wordPackDto} />
+            </SwiperSlide>
+          ))}
+          <SwiperSlide key='add-new'>
+            <WordPackCardAddNew />
+          </SwiperSlide>
+        </Swiper>
+      </Section>
     </Container>
   );
 }
@@ -78,19 +70,29 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   align-content: baseline;
-  gap: 40px;
+  gap: 30px;
+  width: 100%;
+  
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 100%;
+  }
 `;
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-`;
+  gap: 15px;
+  width: calc(100vw - 80px);
 
-const WordPacksContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: calc(100vw - 100px);
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    width: 100%;
+  }
 `;

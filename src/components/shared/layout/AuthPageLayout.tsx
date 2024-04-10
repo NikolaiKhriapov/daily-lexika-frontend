@@ -25,7 +25,7 @@ export default function AuthPageLayout(props: Props) {
       </Head>
       <Container $colorMode={colorMode}>
         {children}
-        <Footer email appVersion={false} forDesktopOnly={false} />
+        <Footer email appVersion={false} />
       </Container>
     </>
   );
