@@ -1,5 +1,5 @@
 import { API, providesList } from '@store/api/API';
-import { ApiEndpointsReviews } from '@utils/apiMethods';
+import { ApiEndpointsReviews } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { placeholderReview, ReviewDto } from '@utils/types';
 

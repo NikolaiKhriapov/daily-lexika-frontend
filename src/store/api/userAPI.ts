@@ -1,5 +1,5 @@
 import { API } from '@store/api/API';
-import { ApiEndpointsUsers } from '@utils/apiMethods';
+import { ApiEndpointsUsers } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { PasswordUpdateRequest, UserDto } from '@utils/types';
 

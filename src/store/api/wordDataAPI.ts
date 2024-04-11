@@ -1,5 +1,5 @@
 import { API } from '@store/api/API';
-import { ApiEndpointsWordData } from '@utils/apiMethods';
+import { ApiEndpointsWordData } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { sortWordsChinese } from '@utils/functions';
 import { WordDataDto } from '@utils/types';
