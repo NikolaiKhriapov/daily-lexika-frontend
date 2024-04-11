@@ -50,7 +50,6 @@ export default function StartReviewWindow(props: Props) {
           successNotification(`Keep reviewing '${getReviewWordName(reviewWord)}'`, 'This word will be shown more frequently so that you can relearn it');
         }
       })
-      .catch((error) => errorNotification('', error))
       .finally(() => {
         setThrown(false);
         setUnlocked(false);

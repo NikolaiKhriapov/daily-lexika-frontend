@@ -107,7 +107,9 @@ export const reviewsAPI = API.injectEndpoints({
             }
           }));
         } catch (error) {
-          console.log(error);
+          if (error.error.data.message === 'Review not found.') {
+            dispatch(reviewsAPI.util?.invalidateTags(['Reviews']));
+          }
         }
       },
     }),
