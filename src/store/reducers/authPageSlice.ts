@@ -1,4 +1,4 @@
-import { AuthFormType } from '@utils/constants';
+import { AuthFormType } from '@utils/app/constants';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthPageState {

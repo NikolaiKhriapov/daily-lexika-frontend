@@ -1,4 +1,4 @@
-import { errorNotification } from '@services/popup-notification';
+import { errorNotification } from '@services/app/popup-notification';
 import { LocalStorage } from '@utils/constants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 

@@ -1,5 +1,5 @@
 import { API, providesList } from '@store/api/API';
-import { ApiEndpointsNotifications } from '@utils/apiMethods';
+import { ApiEndpointsNotifications } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { NotificationDto } from '@utils/types';
 

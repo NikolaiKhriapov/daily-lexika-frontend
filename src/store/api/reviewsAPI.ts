@@ -1,5 +1,5 @@
 import { API, providesList } from '@store/api/API';
-import { ApiEndpointsReviews } from '@utils/apiMethods';
+import { ApiEndpointsReviews } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { placeholderReview, ReviewDto } from '@utils/types';
 
@@ -107,7 +107,10 @@ export const reviewsAPI = API.injectEndpoints({
             }
           }));
         } catch (error) {
-          console.log(error);
+          // @ts-expect-error(need to add the Error object)
+          if (error.error.data.message === 'Review not found.') {
+            dispatch(reviewsAPI.util?.invalidateTags(['Reviews']));
+          }
         }
       },
     }),

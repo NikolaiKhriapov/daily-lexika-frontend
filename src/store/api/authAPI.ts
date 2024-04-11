@@ -1,5 +1,5 @@
 import { API } from '@store/api/API';
-import { ApiEndpointsAuthorization } from '@utils/apiMethods';
+import { ApiEndpointsAuthorization } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { AuthenticationRequest, AuthenticationResponse, RegistrationRequest } from '@utils/types';
 

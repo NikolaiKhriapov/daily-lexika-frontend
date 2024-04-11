@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { theme } from '@utils/theme';
-import FloatingChat from '@components/landing/floating-chat/FloatingChat';
-import LandingFooter from '@components/landing/footer/LandingFooter';
-import LandingNavbar from '@components/landing/navbar/LandingNavbar';
+import FloatingChat from '@components/landing/content/floating-chat/FloatingChat';
+import Footer from '@components/landing/footer/Footer';
+import Navbar from '@components/landing/navbar/Navbar';
 
 type Props = {
   title: string;
@@ -23,10 +23,10 @@ export default function LandingLayout(props: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no" />
       </Head>
       <Container>
-        <LandingNavbar />
+        <Navbar />
         <Content>{children}</Content>
         <FloatingChat />
-        <LandingFooter />
+        <Footer />
       </Container>
     </>
   );

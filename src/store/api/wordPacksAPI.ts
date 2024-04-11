@@ -1,6 +1,6 @@
 import { API, providesList } from '@store/api/API';
 import { wordDataAPI } from '@store/api/wordDataAPI';
-import { ApiEndpointsWordPacks } from '@utils/apiMethods';
+import { ApiEndpointsWordPacks } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { Category, placeholderWordPack, WordDataDto, WordDto, WordPackDto } from '@utils/types';
 

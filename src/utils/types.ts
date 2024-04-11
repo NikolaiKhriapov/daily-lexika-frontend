@@ -1,4 +1,4 @@
-import { Platform, RoleName } from '@utils/constants';
+import { Platform, RoleName } from '@utils/app/constants';
 
 export interface RegistrationRequest {
   name: string;

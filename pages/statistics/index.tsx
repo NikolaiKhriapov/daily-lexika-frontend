@@ -1,10 +1,10 @@
-import PageLayout from '@components/shared/layout/PageLayout';
-import StatisticsPageContent from '@components/statistics/StatisticsPageContent';
+import AppLayout from '@components/app/AppLayout';
+import StatisticsPageContent from '@components/app/content/statistics/StatisticsPageContent';
 
 export default function StatisticsIndex() {
   return (
-    <PageLayout title="Statistics" description="Statistics">
+    <AppLayout title="Statistics" description="Statistics">
       <StatisticsPageContent />
-    </PageLayout>
+    </AppLayout>
   );
 }
