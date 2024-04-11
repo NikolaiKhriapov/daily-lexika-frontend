@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AppInfo } from '@utils/app/constants';
+import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -51,7 +51,7 @@ export default function SectionContent() {
 
         <Block>
           <Heading size={Size.MD} isSingleColorMode>Contact Us</Heading>
-          <Text size={Size.LG} isSingleColorMode>If you have any questions or suggestions about our Privacy Policy, please do not hesitate to <Link href={`mailto:${AppInfo.EMAIL}`}>contact us</Link>.</Text>
+          <Text size={Size.LG} isSingleColorMode>If you have any questions or suggestions about our Privacy Policy, please do not hesitate to <Link href={EmailLinks.Blank}>contact us</Link>.</Text>
         </Block>
       </Content>
     </Container>

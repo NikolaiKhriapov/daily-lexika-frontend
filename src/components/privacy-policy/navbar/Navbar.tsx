@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { AppInfo } from '@utils/app/constants';
+import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -40,7 +40,7 @@ export default function Navbar() {
           </Section>
         )}
         <Section>
-          <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>
+          <Link href={EmailLinks.Blank} fontSize={Size.SM}>
             <Text color={theme.colors.textBlack}>Contact us</Text>
           </Link>
         </Section>
