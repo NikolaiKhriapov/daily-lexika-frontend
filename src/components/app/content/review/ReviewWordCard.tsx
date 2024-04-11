@@ -3,12 +3,13 @@ import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { RoleName } from '@utils/app/constants';
+import { EmailLinks, RoleName } from '@utils/app/constants';
 import { Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Status, WordDto } from '@utils/types';
 import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInfo';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
+import Link from '@components/ui-common/basic/Link';
 import Text from '@components/ui-common/basic/Text';
 import ButtonsPronunciation from '@components/ui-common/complex/ButtonsPronunciation';
 import Card from '@components/ui-common/complex/Card';
@@ -127,6 +128,9 @@ export default function ReviewWordCard(props: Props) {
     event.stopPropagation();
     onOpenDetails();
   };
+  const onClickError = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  };
 
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
@@ -141,9 +145,9 @@ export default function ReviewWordCard(props: Props) {
         setUnlocked={setUnlocked}
         face={(
           <ContentsContainer>
-            <ButtonContainer>
+            <ButtonsTopContainer>
               <ButtonsPronunciation word={reviewWord} />
-            </ButtonContainer>
+            </ButtonsTopContainer>
             <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>
               {wordData[userRole]?.nameWord.text}
             </Text>
@@ -151,7 +155,7 @@ export default function ReviewWordCard(props: Props) {
         )}
         back={(
           <ContentsContainer>
-            <ButtonContainer>
+            <ButtonsTopContainer>
               <ButtonWithIcon
                 type={ButtonWithIconType.INFO}
                 onClick={onClickDetails}
@@ -164,7 +168,12 @@ export default function ReviewWordCard(props: Props) {
                   />
                 )}
               />
-            </ButtonContainer>
+            </ButtonsTopContainer>
+            <ButtonsBottomContainer>
+              <Link href={EmailLinks.ReportError(wordData[userRole]!.nameWord.text)}>
+                <ButtonWithIcon type={ButtonWithIconType.ERROR} onClick={onClickError} />
+              </Link>
+            </ButtonsBottomContainer>
             <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
             <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
           </ContentsContainer>
@@ -178,9 +187,18 @@ const SwipeableContainer = styled.div`
   z-index: 1;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonsTopContainer = styled.div`
   position: absolute;
   top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const ButtonsBottomContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
   right: 10px;
   display: flex;
   flex-direction: column;

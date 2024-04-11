@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
+import { BiMessageSquareError } from 'react-icons/bi';
 import { CiEdit, CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { GoTrash } from 'react-icons/go';
 import { HiOutlineSpeakerWave } from 'react-icons/hi2';
@@ -19,6 +20,7 @@ export enum ButtonWithIconType {
   REMOVE_WORD = 'remove-word',
   INFO = 'info',
   AUDIO = 'audio',
+  ERROR = 'error',
 }
 
 type Props = {
@@ -44,6 +46,7 @@ export default function ButtonWithIcon(props: Props) {
     [ButtonWithIconType.REMOVE_WORD]: <CiSquareMinus size={20} />,
     [ButtonWithIconType.INFO]: <VscInfo size={20} />,
     [ButtonWithIconType.AUDIO]: <HiOutlineSpeakerWave size={20} />,
+    [ButtonWithIconType.ERROR]: <BiMessageSquareError size={20} />,
   };
 
   return (
