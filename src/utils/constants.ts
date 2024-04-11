@@ -22,6 +22,12 @@ export enum Page {
   STATISTICS = '/statistics',
 }
 
+export const WHITE_LIST = [
+  Page.AUTH,
+  Page.LANDING,
+  Page.PRIVACY_POLICY,
+];
+
 export enum Size {
   XXS = '2xs',
   XS = 'xs',

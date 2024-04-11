@@ -7,7 +7,7 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { toggleAuthFormType } from '@store/reducers/authPageSlice';
-import { AppInfo, AuthFormType, Platform } from '@utils/app/constants';
+import { AuthFormType, EmailLinks, Platform } from '@utils/app/constants';
 import { Breakpoint, ButtonType, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -124,7 +124,7 @@ export default function AuthContent() {
                 <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" />
                 {authFormType === AuthFormType.LOGIN && (
                   <ForgotPasswordContainer>
-                    <Link href={`mailto:${AppInfo.EMAIL}?subject=${AppInfo.EMAIL_PASSWORD_RECOVERY_SUBJECT}&body=${AppInfo.EMAIL_PASSWORD_RECOVERY_BODY}`}>
+                    <Link href={EmailLinks.PasswordRecovery(selectedPlatform?.toString() || 'ENGLISH/CHINESE')}>
                       Forgot password?
                     </Link>
                   </ForgotPasswordContainer>

@@ -30,7 +30,6 @@ export default function PrivacyPolicyLayout(props: Props) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: 100vh;
   width: 100vw;
 `;

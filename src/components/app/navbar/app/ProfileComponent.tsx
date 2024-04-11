@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { AppInfo } from '@utils/app/constants';
+import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -36,10 +36,10 @@ export default function ProfileComponent() {
         {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} userDTO={user!} />}
         {/* <MenuItem>Preferences</MenuItem> */}
         <MenuDivider />
-        <LinkStyled href={`mailto:${AppInfo.EMAIL}?subject=Support`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
+        <LinkStyled href={EmailLinks.ContactSupport} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
           <MenuItem>Contact support</MenuItem>
         </LinkStyled>
-        <LinkStyled href={`mailto:${AppInfo.EMAIL}?subject=Feedback`} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
+        <LinkStyled href={EmailLinks.Feedback} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
           <MenuItem>Leave feedback</MenuItem>
         </LinkStyled>
         <LinkStyled href={Page.PRIVACY_POLICY} $colorMode={colorMode} style={{ textDecoration: 'none' }} target="_blank">

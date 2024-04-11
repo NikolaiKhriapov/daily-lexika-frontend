@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { AppInfo } from '@utils/app/constants';
+import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -13,7 +13,7 @@ export default function AuthFooter() {
   return (
     <Container $colorMode={colorMode}>
       <Text size={Size.SM} isCentered>
-        <Link href={`mailto:${AppInfo.EMAIL}`} fontSize={Size.SM}>Contact support</Link>
+        <Link href={EmailLinks.Blank} fontSize={Size.SM}>Contact support</Link>
       </Text>
     </Container>
   );
