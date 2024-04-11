@@ -107,6 +107,7 @@ export const reviewsAPI = API.injectEndpoints({
             }
           }));
         } catch (error) {
+          // @ts-expect-error(need to add the Error object)
           if (error.error.data.message === 'Review not found.') {
             dispatch(reviewsAPI.util?.invalidateTags(['Reviews']));
           }
