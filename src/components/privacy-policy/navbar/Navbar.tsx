@@ -8,30 +8,35 @@ import Link from '@components/ui-common/basic/Link';
 import Text from '@components/ui-common/basic/Text';
 
 export default function Navbar() {
-  const [isScrolled, setScrolled] = useState(false);
+  const [isScrolledStepOne, setScrolledStepOne] = useState(false);
+  const [isScrolledStepTwo, setScrolledStepTwo] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY > 330;
-      if (scrolled !== isScrolled) {
-        setScrolled(scrolled);
+      const scrolledStepOne = window.scrollY > 210;
+      const scrolledStepTwo = window.scrollY > 330;
+      if (scrolledStepOne !== isScrolledStepOne) {
+        setScrolledStepOne(scrolledStepOne);
+      }
+      if (scrolledStepTwo !== isScrolledStepTwo) {
+        setScrolledStepTwo(scrolledStepTwo);
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isScrolled]);
+  }, [isScrolledStepOne, isScrolledStepTwo]);
 
   return (
-    <Container $isScrolled={isScrolled}>
+    <Container $isWithShadow={isScrolledStepTwo}>
       <SectionsContainer>
         <Section>
-          <Text>Daily Lexika</Text>
+          <Text color={theme.colors.textBlack}>Daily Lexika</Text>
         </Section>
-        {isScrolled && (
+        {isScrolledStepOne && (
           <Section>
-            <Text fontWeight={FontWeight.SEMIBOLD}>Privacy Policy</Text>
+            <Text fontWeight={FontWeight.SEMIBOLD} color={theme.colors.textBlack}>Privacy Policy</Text>
           </Section>
         )}
         <Section>
@@ -44,7 +49,7 @@ export default function Navbar() {
   );
 }
 
-const Container = styled.div<{ $isScrolled: boolean }>`
+const Container = styled.div<{ $isWithShadow: boolean }>`
   display: none;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
@@ -58,7 +63,7 @@ const Container = styled.div<{ $isScrolled: boolean }>`
     height: 70px;
     background-color: ${theme.colors.light.background};
     z-index: 1000;
-    box-shadow: ${({ $isScrolled }) => ($isScrolled ? theme.stylesToDelete.light.boxShadow : 'none')};
+    box-shadow: ${({ $isWithShadow }) => ($isWithShadow ? theme.stylesToDelete.light.boxShadow : 'none')};
   }
 `;
 

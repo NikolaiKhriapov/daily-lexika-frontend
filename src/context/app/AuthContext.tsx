@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { API } from '@store/api/API';
 import { useAppDispatch } from '@store/hooks/hooks';
-import { LocalStorage, Page } from '@utils/constants';
+import { LocalStorage, Page, WHITE_LIST } from '@utils/constants';
 
 type ContextProps = {
   setUserFromToken: (token: string) => void;
@@ -37,8 +37,6 @@ function AuthProvider(props: Props) {
       } catch (error) {
         console.error('Error decoding JWT token');
       }
-    } else if (window.location.pathname !== Page.LANDING) {
-      router.push(Page.AUTH);
     }
   };
 
@@ -50,7 +48,7 @@ function AuthProvider(props: Props) {
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorage.ACCESS_TOKEN);
-    if (!isUserAuthenticated()) {
+    if (!isUserAuthenticated() && !WHITE_LIST.includes(window.location.pathname as Page)) {
       logout();
     }
     if (token) {
