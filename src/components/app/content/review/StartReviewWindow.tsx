@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { errorNotification, successNotification } from '@services/app/popup-notification';
+import { successNotification } from '@services/app/popup-notification';
 import { useProcessReviewActionMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
@@ -50,7 +50,6 @@ export default function StartReviewWindow(props: Props) {
           successNotification(`Keep reviewing '${getReviewWordName(reviewWord)}'`, 'This word will be shown more frequently so that you can relearn it');
         }
       })
-      .catch((error) => errorNotification('', error))
       .finally(() => {
         setThrown(false);
         setUnlocked(false);

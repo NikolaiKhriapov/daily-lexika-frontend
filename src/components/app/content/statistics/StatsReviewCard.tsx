@@ -28,6 +28,7 @@ export default function StatsReviewCard(props: Props) {
   const wordsPercentage = {
     inReview: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : (reviewStatistics.wordsInReview / wordsTotal) * 100),
     known: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : (reviewStatistics.wordsKnown / wordsTotal) * 100),
+    inReviewAndKnown: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : ((reviewStatistics.wordsInReview + reviewStatistics.wordsKnown) / wordsTotal) * 100),
   };
 
   if (!user) return <Spinner />;

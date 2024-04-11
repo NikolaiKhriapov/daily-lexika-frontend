@@ -10,6 +10,7 @@ import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
+import ComingSoon from '@components/ui-common/complex/ComingSoon';
 import Modal from '@components/ui-common/complex/Modal';
 
 type Props = {
@@ -98,7 +99,9 @@ export default function WordDetailedInfo(props: Props) {
                       <Text key={index}>{example}</Text>
                       <Divider marginY={3} />
                     </>
-                  )))}
+                  )
+                ))}
+                {user.role === RoleName.USER_CHINESE && <ComingSoon />}
               </TabPanel>
             </TabPanelsStyled>
           </Tabs>

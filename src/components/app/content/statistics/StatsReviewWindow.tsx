@@ -18,7 +18,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   reviewStatisticsDTO: ReviewStatisticsDto;
-  wordsPercentage: { inReview: number, known: number };
+  wordsPercentage: { inReview: number; known: number; inReviewAndKnown: number };
   wordsTotal: number;
 };
 
@@ -73,7 +73,7 @@ export default function StatsReviewWindow(props: Props) {
           <ReviewStatus $colorMode={colorMode}>
             <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Review Status</Text>
             <StatsContainer>
-              <ProgressCircular value={wordsPercentage.inReview + wordsPercentage.known} text='In Review' isWithLabel />
+              <ProgressCircular value={wordsPercentage.inReviewAndKnown} text='In Review' isWithLabel />
               <StatsColumn>
                 <Stat>
                   <Text size={{ base: Size.XL, md: Size.XXXL, xl: Size.XXXL }}>
