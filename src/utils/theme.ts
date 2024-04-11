@@ -40,6 +40,8 @@ const customColors = {
   },
   telegramBlue: 'rgb(73,150,214)',
   whatsAppGreen: 'rgb(100,205,110)',
+  textBlack: '#282828',
+  textGrey: '#676870',
 };
 
 const customBreakpoints = {

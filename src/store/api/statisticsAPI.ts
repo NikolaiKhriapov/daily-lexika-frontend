@@ -1,5 +1,5 @@
 import { API } from '@store/api/API';
-import { ApiEndpointsStatistics } from '@utils/apiMethods';
+import { ApiEndpointsStatistics } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { StatisticsDto } from '@utils/types';
 

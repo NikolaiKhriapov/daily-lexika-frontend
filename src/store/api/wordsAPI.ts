@@ -1,5 +1,5 @@
 import { API } from '@store/api/API';
-import { ApiEndpointsWords } from '@utils/apiMethods';
+import { ApiEndpointsWords } from '@utils/app/apiMethods';
 import { QueryMethods } from '@utils/constants';
 import { Status, WordDto } from '@utils/types';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
-import AuthProvider from '@context/AuthContext';
-import PwaProvider from '@context/PwaContext';
+import AuthProvider from '@context/app/AuthContext';
+import PwaProvider from '@context/app/PwaContext';
 import { store } from '@store/index';
 import { fonts } from '@utils/fonts';
 import { theme } from '@utils/theme';

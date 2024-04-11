@@ -1,11 +1,11 @@
-import { AppInfo } from '@utils/constants';
-import AuthPageContent from '@components/auth/AuthPageContent';
-import AuthPageLayout from '@components/shared/layout/AuthPageLayout';
+import { AppInfo } from '@utils/app/constants';
+import AuthLayout from '@components/app/AuthLayout';
+import AuthContent from '@components/app/content/AuthContent';
 
 export default function AuthIndex() {
   return (
-    <AuthPageLayout title={AppInfo.NAME} description={AppInfo.DESCRIPTION}>
-      <AuthPageContent />
-    </AuthPageLayout>
+    <AuthLayout title={AppInfo.TITLE} description={AppInfo.DESCRIPTION}>
+      <AuthContent />
+    </AuthLayout>
   );
 }
