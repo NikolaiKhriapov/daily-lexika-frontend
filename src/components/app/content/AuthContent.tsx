@@ -61,7 +61,7 @@ export default function AuthContent() {
             .required('Required'),
         }),
         handleOnSubmit: (values: AuthenticationRequest) =>
-          performLogin({ ...values, platform: selectedPlatform! }),
+          performLogin({ email: values.email, password: values.password, platform: selectedPlatform! }),
       },
       submitButtonText: 'Sign in',
     },
