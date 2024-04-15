@@ -93,15 +93,25 @@ export default function WordDetailedInfo(props: Props) {
                 )}
               </TabPanel>
               <TabPanel>
-                {word.wordDataDto.examples.map((example, index) => (
-                  example !== '[TODO]' && (
-                    <>
-                      <Text key={index}>{example}</Text>
-                      <Divider marginY={3} />
-                    </>
-                  )
+                {user.role === RoleName.USER_ENGLISH && word.wordDataDto.examples.map((example, index) => (
+                  <>
+                    <Text key={index}>{example}</Text>
+                    <Divider marginY={3} />
+                  </>
                 ))}
-                {user.role === RoleName.USER_CHINESE && <ComingSoon />}
+                {user.role === RoleName.USER_CHINESE && word.wordDataDto.examples.map((example, idx) => (
+                  example === '[TODO]'
+                    ? <ComingSoon key={idx} />
+                    : (
+                      <>
+                        <Text key={idx} size={Size.XL} isCentered>{((idx + 1) % 5 === 1 && example)}</Text>{/* Chinese */}
+                        <Text key={idx} size={Size.SM} isCentered>{((idx + 5) % 5 === 1 && example)}</Text>{/* Pinyin */}
+                        <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>{/* English */}
+                        {/* <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>/!* Russian *!/ */}
+                        {(idx + 2) % 5 === 1 && <Divider marginY={3} />}
+                      </>
+                    )
+                ))}
               </TabPanel>
             </TabPanelsStyled>
           </Tabs>
