@@ -2,7 +2,7 @@ export enum AppInfo {
   TITLE = 'Daily Lexika',
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'nikolai.khriapov@icloud.com',
-  APP_VERSION = '2024.4.0',
+  APP_VERSION = '2024.5.0',
 }
 
 export const EmailLinks = {
