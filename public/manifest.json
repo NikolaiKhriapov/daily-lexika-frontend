@@ -9,9 +9,9 @@
       "sizes": "192x192"
     },
     {
-      "src": "./icon-512.png",
+      "src": "./icon-appstore.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "1024x1024"
     },
     {
       "src": "./icon.png",
