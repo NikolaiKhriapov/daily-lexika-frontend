@@ -9,9 +9,9 @@
       "sizes": "192x192"
     },
     {
-      "src": "./logo-appstore.png",
+      "src": "./icon-appstore-splashscreen.png",
       "type": "image/png",
-      "sizes": "1024x1024"
+      "sizes": "512x512"
     },
     {
       "src": "./icon.png",
