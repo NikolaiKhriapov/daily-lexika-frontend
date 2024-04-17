@@ -23,9 +23,19 @@ export const nonHighlightableTap = () => `
 
 export const getOriginalWordPackName = (wordPackName: string, user: UserDto | null) => {
   const postfix = `__${user?.id}`;
+  const prefixEn = 'EN__';
+  const prefixCh = 'CH__';
+
   if (user && wordPackName.endsWith(postfix)) {
-    return wordPackName.replace(postfix, '');
+    wordPackName = wordPackName.replace(postfix, '');
   }
+  if (user && (wordPackName.startsWith(prefixEn))) {
+    wordPackName = wordPackName.replace(prefixEn, '');
+  }
+  if (user && (wordPackName.startsWith(prefixCh))) {
+    wordPackName = wordPackName.replace(prefixCh, '');
+  }
+
   return wordPackName;
 };
 
