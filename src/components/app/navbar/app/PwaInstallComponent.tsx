@@ -17,10 +17,11 @@ export default function PwaInstallComponent() {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult: any) => {
       if (choiceResult.outcome === 'accepted') {
-        setPwaInstalled(false);
         console.log('User accepted the install prompt');
+        setPwaInstalled(false);
       } else {
         console.log('User dismissed the install prompt');
+        setPwaInstalled(false);
       }
     });
   };

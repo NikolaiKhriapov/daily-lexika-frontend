@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dailylexika.twa",
+      "sha256_cert_fingerprints": [
+        "CC:21:85:31:A5:BD:1E:78:B5:30:E5:B6:BC:46:9F:32:2A:86:8A:FF:C2:80:15:5C:21:EC:E1:AC:71:2B:C5:B8"
+      ]
+    }
+  }
+]
