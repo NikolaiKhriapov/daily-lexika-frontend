@@ -36,4 +36,5 @@ build/
 /.gitignore
 /package-lock.json
 /.next/
-/android/
+/android/.idea/
+
