@@ -30,12 +30,12 @@ export default function CreateWordPackWindow(props: Props) {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().trim().required('Required')
+    name: Yup.string().trim().required(' ')
       .test((value) => {
         const allWordPackNames = allWordPacks.map((wordPack) => getOriginalWordPackName(wordPack.name, user!));
         return !allWordPackNames.includes(value) && !value.includes(';');
       }),
-    description: Yup.string().required('Required'),
+    description: Yup.string().trim().required(' '),
   });
 
   const handleOnSubmit = (wordPack: WordPackDto) => {
