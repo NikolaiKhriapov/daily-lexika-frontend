@@ -7,6 +7,7 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useDeleteAccountMutation, useUpdatePasswordMutation, useUpdateUserInfoMutation } from '@store/api/userAPI';
 import { ButtonType, Size } from '@utils/constants';
 import { emailValidation, nameValidation, passwordRepeatValidation, passwordValidation } from '@utils/functions';
+import { theme } from '@utils/theme';
 import { PasswordUpdateRequest, UserDto } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
@@ -121,7 +122,7 @@ export default function UserProfileWindow(props: Props) {
       body={(
         <>
           <ProfileImageContainer>
-            <Avatar size='2xl' />
+            <AvatarStyled size='2xl' />
           </ProfileImageContainer>
           <InputFieldWithButton
             buttonText='Change'
@@ -193,4 +194,8 @@ export default function UserProfileWindow(props: Props) {
 const ProfileImageContainer = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${theme.colors.mainBlue} !important;
 `;

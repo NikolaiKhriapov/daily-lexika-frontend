@@ -6,7 +6,7 @@ import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
-import { Breakpoint } from '@utils/constants';
+import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import AppContent from '@components/app/content/AppContent';
@@ -15,13 +15,14 @@ import AppNavbar from '@components/app/navbar/AppNavbar';
 import AppSidebar from '@components/app/sidebar/AppSidebar';
 
 type Props = {
+  page: Page;
   title: string;
   description: string;
   children: ReactNode;
 };
 
 export default function AppLayout(props: Props) {
-  const { title, description, children } = props;
+  const { page, title, description, children } = props;
 
   const { colorMode } = useColorMode();
 
@@ -40,7 +41,7 @@ export default function AppLayout(props: Props) {
       <Container $colorMode={colorMode}>
         <AppNavbar />
         <SidebarAndContentContainer $colorMode={colorMode}>
-          <AppSidebar />
+          <AppSidebar page={page} />
           <AppContent>{children}</AppContent>
         </SidebarAndContentContainer>
         <AppFooter />

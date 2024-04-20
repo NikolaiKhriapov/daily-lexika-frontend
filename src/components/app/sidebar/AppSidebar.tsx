@@ -11,24 +11,30 @@ import { theme } from '@utils/theme';
 import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
 import Text from '@components/ui-common/basic/Text';
 
-export default function AppSidebar() {
+type Props = {
+  page?: Page;
+};
+
+export default function AppSidebar(props: Props) {
+  const { page } = props;
+
   const { colorMode } = useColorMode();
   const { isPwaInstalled } = useContext(PwaContext);
 
   const sidebarMainItems = [
-    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck },
-    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline },
+    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
+    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
   ];
 
   return (
     <Container>
       <SidebarMain $colorMode={colorMode}>
         {sidebarMainItems.map((item) => (
-          <Item key={item.name} href={item.route} $colorMode={colorMode}>
-            <Icon as={item.icon} />
-            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }}>{item.name}</Text>
-            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }}>{item.name}</Text>
+          <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
+            <Icon as={item.icon} color={item.selected && theme.colors.mainBlue} />
+            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
         ))}
       </SidebarMain>
@@ -90,7 +96,7 @@ const SidebarExtra = styled(SidebarMain)`
   }
 `;
 
-const Item = styled(Link)<{ $colorMode: ColorMode }>`
+const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -107,10 +113,11 @@ const Item = styled(Link)<{ $colorMode: ColorMode }>`
   }
     
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    width: 180px;
+    width: 100%;
     padding: 16px;
     justify-content: left;
     border-radius: ${theme.stylesToDelete.borderRadius};
+    background-color: ${({ $colorMode, $selected }) => $selected && theme.colors[$colorMode].bgColor};
 
     &:hover {
       background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};

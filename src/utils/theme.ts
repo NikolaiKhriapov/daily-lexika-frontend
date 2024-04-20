@@ -42,6 +42,7 @@ const customColors = {
   whatsAppGreen: 'rgb(100,205,110)',
   textBlack: '#282828',
   textGrey: '#676870',
+  mainBlue: '#4285F4',
 };
 
 const customBreakpoints = {
