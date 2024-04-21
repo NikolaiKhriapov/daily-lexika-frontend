@@ -21,6 +21,7 @@ import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
+import UnderDevelopmentIcon from '@components/ui-common/complex/UnderDevelopmentIcon';
 
 type Props = {
   wordPack: WordPackDto;
@@ -71,6 +72,8 @@ export default function WordPackCard(props: Props) {
     onOpenDeleteButton();
   };
 
+  const wordPacksUnderDevelopment = ['HSK 4', 'HSK 5', 'HSK 6', 'HSK 7-9'];
+
   return (
     <Card
       height='280px'
@@ -83,6 +86,11 @@ export default function WordPackCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(wordPack.name, user)}</Text>
+            {
+              wordPacksUnderDevelopment.includes(getOriginalWordPackName(wordPack.name, user)) && (
+                <UnderDevelopmentIcon tooltipText='The word pack is still under development, but can be used' />
+              )
+            }
           </WordPackNameContainer>
           <WordsCountContainer>
             <TbCards size={20} />&nbsp;<Text size={Size.MD}>{wordPack.totalWords}</Text>
@@ -182,6 +190,8 @@ const ContentsContainer = styled.div`
 const WordPackNameContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
 const WordsCountContainer = styled.div`
