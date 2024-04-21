@@ -3,7 +3,6 @@ import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { detectBrowser, detectDeviceType, detectOS } from '@chakra-ui/utils';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -15,72 +14,71 @@ import IosShareIcon from '@components/ui-common/icons/ios-share-icon.png';
 export default function PwaInstallIosComponent() {
   const { colorMode } = useColorMode();
 
-  const [isIos, setIos] = useState(false);
-  const [isMacOsAndSafari, setMacOsAndSafari] = useState(false);
-  const [deviceType, setDeviceType] = useState<string | null>(null);
+  const [userAgent, setUserAgent] = useState<string | null>(null);
+  const [isIOs, setIOs] = useState(false);
+  const [isIpadOs, setIPadOs] = useState(false);
+  const [isMacOs, setMacOs] = useState(false);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
-  const checkIsIos = () => detectOS('iOS');
-  const checkIsMacOsAndSafari = () => detectOS('Mac') && detectBrowser('WebKit');
-
   useEffect(() => {
-    setIos(checkIsIos());
-    setMacOsAndSafari(checkIsMacOsAndSafari());
-    if (typeof window !== 'undefined') {
-      setDeviceType(detectDeviceType(window.navigator));
+    if (userAgent !== null) {
+      setIOs(/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream);
+      setIPadOs(userAgent.includes('iPad') && userAgent.includes('Mac OS X'));
+      setMacOs(userAgent.includes('Macintosh') && userAgent.includes('Intel Mac OS X'));
     }
-  }, [isIos, isMacOsAndSafari]);
+    if (typeof window !== 'undefined') {
+      setUserAgent(window.navigator.userAgent);
+    }
+  }, [isIOs, isMacOs]);
+
+  if (!(isIOs || isIpadOs || isMacOs)) return null;
 
   return (
-    (isIos || isMacOsAndSafari) && deviceType
-      ? (
-        <>
-          <ButtonStyled
-            buttonText={(
-              <>
-                <ImDownload fontSize={20} />
-                <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
-              </>
-            )}
-            buttonType={ButtonType.BUTTON}
-            onClick={onOpenModal}
-            $colorMode={colorMode}
-          />
-          <Modal
-            size={Size.MD}
-            width='450px'
-            isOpen={isOpenModal}
-            onClose={onCloseModal}
-            header={(
-              <ButtonTextContainer>
-                <ImDownload fontSize={20} />
-                <Text>Install app</Text>
-              </ButtonTextContainer>
-            )}
-            body={(
-              <ContentContainer>
-                <LineContainer>
-                  <Text fontWeight={FontWeight.MEDIUM}>{'Install the app on your device. It\'s the same as downloading from the store! '}</Text>
-                </LineContainer>
-                <LineContainer>
-                  <Text fontWeight={FontWeight.MEDIUM}>1. Tap on</Text>
-                  <BgContainer $colorMode={colorMode}><Image src={IosShareIcon} width={20} height={20} alt="ios-share-icon" /></BgContainer>
-                </LineContainer>
-                <LineContainer>
-                  <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
-                  <BgContainer $colorMode={colorMode}>
-                    <Text fontWeight={FontWeight.SEMIBOLD}>
-                      {deviceType === 'desktop' && 'Add to Dock'}
-                      {(deviceType === 'tablet' || deviceType === 'phone') && 'Add to Home Screen'}
-                    </Text>
-                  </BgContainer>
-                </LineContainer>
-              </ContentContainer>
-            )}
-          />
-        </>
-      )
-      : null
+    <>
+      <ButtonStyled
+        buttonText={(
+          <>
+            <ImDownload fontSize={20} />
+            <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
+          </>
+        )}
+        buttonType={ButtonType.BUTTON}
+        onClick={onOpenModal}
+        $colorMode={colorMode}
+      />
+      <Modal
+        size={Size.MD}
+        width='450px'
+        isOpen={isOpenModal}
+        onClose={onCloseModal}
+        header={(
+          <ButtonTextContainer>
+            <ImDownload fontSize={20} />
+            <Text>Install app</Text>
+          </ButtonTextContainer>
+        )}
+        body={(
+          <ContentContainer>
+            <LineContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>{'Install the app on your device. It\'s the same as downloading from the store! '}</Text>
+            </LineContainer>
+            <LineContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>1. Tap on</Text>
+              <BgContainer $colorMode={colorMode}><Image src={IosShareIcon} width={20} height={20} alt="ios-share-icon" /></BgContainer>
+            </LineContainer>
+            <LineContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
+              <BgContainer $colorMode={colorMode}>
+                <Text fontWeight={FontWeight.SEMIBOLD}>
+                  {(isMacOs) && 'Add to Dock'}
+                  {(isIOs || isIpadOs) && 'Add to Home Screen'}
+                </Text>
+              </BgContainer>
+            </LineContainer>
+          </ContentContainer>
+        )}
+      />
+    </>
   );
 }
 
