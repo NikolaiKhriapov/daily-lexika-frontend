@@ -40,6 +40,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-no-constructed-context-values": "off",
     "no-param-reassign": "off",
+    "no-extra-boolean-cast": "off",
     //    "operator-linebreak": "error",
     //    "@typescript-eslint/comma-dangle": "error",
     "react/no-array-index-key": "off",

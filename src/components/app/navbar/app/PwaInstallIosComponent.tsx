@@ -22,7 +22,7 @@ export default function PwaInstallIosComponent() {
   const checkIsIos = () => detectOS('iOS');
 
   let deviceType;
-  if (navigator) {
+  if (!!navigator) {
     deviceType = detectDeviceType(navigator);
   }
   const checkIsMacOsAndSafari = () => detectOS('Mac') && detectBrowser('WebKit');
