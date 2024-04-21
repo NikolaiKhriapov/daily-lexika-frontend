@@ -15,7 +15,6 @@ export default function MyDocument() {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="theme-color" content={theme.colors.dark.background} />
-        <meta name="format-detection" content="telephone=no" />
       </Head>
       <body>
         <ColorModeScript initialColorMode={theme.initialColorMode} />

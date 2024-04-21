@@ -11,23 +11,23 @@ import Text from '@components/ui-common/basic/Text';
 
 export default function PwaInstallComponent() {
   const { colorMode } = useColorMode();
-  const { deferredPrompt, isPwaInstalled, setPwaInstalled } = useContext(PwaContext);
+  const { deferredPrompt, isPwaInstallable, setPwaInstallable } = useContext(PwaContext);
 
   const handleInstallClick = () => {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult: any) => {
       if (choiceResult.outcome === 'accepted') {
         console.log('User accepted the install prompt');
-        setPwaInstalled(false);
+        setPwaInstallable(false);
       } else {
         console.log('User dismissed the install prompt');
-        setPwaInstalled(false);
+        setPwaInstallable(false);
       }
     });
   };
 
   return (
-    isPwaInstalled
+    isPwaInstallable
       ? (
         <ButtonStyled
           buttonText={(

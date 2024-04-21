@@ -4,14 +4,14 @@ let deferredPrompt: any;
 
 type ContextProps = {
   deferredPrompt: any;
-  isPwaInstalled: boolean;
-  setPwaInstalled: any;
+  isPwaInstallable: boolean;
+  setPwaInstallable: any;
 };
 
 const PwaContext = createContext<ContextProps>({
   deferredPrompt: null,
-  isPwaInstalled: false,
-  setPwaInstalled: () => {},
+  isPwaInstallable: false,
+  setPwaInstallable: () => {},
 });
 
 type Props = {
@@ -20,18 +20,18 @@ type Props = {
 
 function PwaProvider(props: Props) {
   const { children } = props;
-  const [isPwaInstalled, setPwaInstalled] = useState(false);
+  const [isPwaInstallable, setPwaInstallable] = useState(false);
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      setPwaInstalled(true);
+      setPwaInstallable(true);
     });
   }, []);
 
   return (
-    <PwaContext.Provider value={{ deferredPrompt, isPwaInstalled, setPwaInstalled }}>
+    <PwaContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable }}>
       {children}
     </PwaContext.Provider>
   );
