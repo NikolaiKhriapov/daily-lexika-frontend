@@ -3,7 +3,7 @@ import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { detectBrowser, detectOS } from '@chakra-ui/utils';
+import { detectBrowser, detectDeviceType, detectOS } from '@chakra-ui/utils';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -20,6 +20,7 @@ export default function PwaInstallIosComponent() {
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
   const checkIsIos = () => detectOS('iOS');
+  const deviceType = detectDeviceType(navigator);
   const checkIsMacOsAndSafari = () => detectOS('Mac') && detectBrowser('WebKit');
 
   useEffect(() => {
@@ -66,8 +67,8 @@ export default function PwaInstallIosComponent() {
                   <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
                   <BgContainer $colorMode={colorMode}>
                     <Text fontWeight={FontWeight.SEMIBOLD}>
-                      {isIos && 'Add to Home Screen'}
                       {isMacOsAndSafari && 'Add to Dock'}
+                      {isIos && (deviceType === 'tablet' || deviceType === 'phone') && 'Add to Home Screen'}
                     </Text>
                   </BgContainer>
                 </LineContainer>
