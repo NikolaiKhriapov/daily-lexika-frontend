@@ -56,7 +56,8 @@ const Container = styled.div`
     position: sticky;
     top: 100px;
     height: fit-content;
-    width: 220px;
+    width: 225px;
+    min-width: 225px;
   }
 `;
 
