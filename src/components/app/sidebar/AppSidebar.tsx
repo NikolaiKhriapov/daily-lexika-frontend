@@ -32,7 +32,7 @@ export default function AppSidebar(props: Props) {
       <SidebarMain $colorMode={colorMode}>
         {sidebarMainItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
-            <Icon as={item.icon} color={item.selected && theme.colors.mainBlue} />
+            <Icon as={item.icon} color={item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor} />
             <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
@@ -117,7 +117,7 @@ const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
     padding: 16px;
     justify-content: left;
     border-radius: ${theme.stylesToDelete.borderRadius};
-    background-color: ${({ $colorMode, $selected }) => $selected && theme.colors[$colorMode].bgColor};
+    background-color: ${({ $colorMode, $selected }) => $selected && theme.colors[$colorMode].selectedItemBg};
 
     &:hover {
       background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor};

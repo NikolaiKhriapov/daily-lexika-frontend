@@ -70,7 +70,7 @@ const SwiperStyled = styled(ChakraSwiper)<{ $colorMode: ColorMode }>`
     }
 
     .swiper-pagination-bullet-active {
-      background-color: ${theme.colors.mainBlue};
+      background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
     }
   }
 `;

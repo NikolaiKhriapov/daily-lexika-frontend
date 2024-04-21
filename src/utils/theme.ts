@@ -19,6 +19,7 @@ const customColors = {
     progressCircularColor: '#8088A0',
     alert: '#F56565',
     cardAddNew: '#F7FAFC',
+    selectedItemBg: '#E3E8EF',
   },
   dark: {
     background: 'rgb(10,10,10)',
@@ -37,6 +38,7 @@ const customColors = {
     progressCircularColor: '#E4E8EE',
     alert: '#EF4444',
     cardAddNew: '#3C3C3C',
+    selectedItemBg: '#282828',
   },
   telegramBlue: 'rgb(73,150,214)',
   whatsAppGreen: 'rgb(100,205,110)',
