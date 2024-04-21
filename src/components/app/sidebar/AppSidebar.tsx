@@ -39,9 +39,11 @@ export default function AppSidebar(props: Props) {
           </Item>
         ))}
       </SidebarMain>
-      <SidebarExtra $colorMode={colorMode}>
-        {isPwaInstallable ? <PwaInstallComponent /> : <PwaInstallIosComponent />}
-      </SidebarExtra>
+      {
+        isPwaInstallable
+          ? <SidebarExtra $colorMode={colorMode}><PwaInstallComponent /></SidebarExtra>
+          : <SidebarExtra $colorMode={colorMode}><PwaInstallIosComponent /></SidebarExtra>
+      }
     </Container>
   );
 }
