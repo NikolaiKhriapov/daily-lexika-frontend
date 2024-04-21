@@ -29,7 +29,7 @@ export default function PwaInstallIosComponent() {
     if (typeof window !== 'undefined') {
       setDeviceType(detectDeviceType(window.navigator));
     }
-  }, [isIos, isMacOsAndSafari, window]);
+  }, [isIos, isMacOsAndSafari]);
 
   return (
     (isIos || isMacOsAndSafari) && deviceType
