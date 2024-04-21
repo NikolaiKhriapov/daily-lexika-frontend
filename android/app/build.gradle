@@ -56,8 +56,8 @@ android {
         applicationId "com.dailylexika.twa"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 12
-        versionName "12"
+        versionCode 13
+        versionName "2024.5.0"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name
