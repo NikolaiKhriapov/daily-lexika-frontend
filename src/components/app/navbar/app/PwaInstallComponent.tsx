@@ -26,22 +26,20 @@ export default function PwaInstallComponent() {
     });
   };
 
+  if (!isPwaInstallable) return null;
+
   return (
-    isPwaInstallable
-      ? (
-        <ButtonStyled
-          buttonText={(
-            <>
-              <ImDownload fontSize={20} />
-              <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
-            </>
-          )}
-          buttonType={ButtonType.BUTTON}
-          onClick={handleInstallClick}
-          $colorMode={colorMode}
-        />
-      )
-      : null
+    <ButtonStyled
+      buttonText={(
+        <>
+          <ImDownload fontSize={20} />
+          <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
+        </>
+      )}
+      buttonType={ButtonType.BUTTON}
+      onClick={handleInstallClick}
+      $colorMode={colorMode}
+    />
   );
 }
 

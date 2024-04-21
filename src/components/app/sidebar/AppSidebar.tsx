@@ -20,7 +20,7 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
-  const { isPwaInstallable } = useContext(PwaContext);
+  const { isPwaInstallable, isIOsOrMacOs } = useContext(PwaContext);
 
   const sidebarMainItems = [
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
@@ -42,7 +42,7 @@ export default function AppSidebar(props: Props) {
       {
         isPwaInstallable
           ? <SidebarExtra $colorMode={colorMode}><PwaInstallComponent /></SidebarExtra>
-          : <SidebarExtra $colorMode={colorMode}><PwaInstallIosComponent /></SidebarExtra>
+          : isIOsOrMacOs && <SidebarExtra $colorMode={colorMode}><PwaInstallIosComponent /></SidebarExtra>
       }
     </Container>
   );

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -12,14 +13,14 @@ import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComp
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
+  const { isPwaInstallable, isIOsOrMacOs } = useContext(PwaContext);
 
   return (
     <Container $colorMode={colorMode}>
       <SectionsContainer>
         <Section>
           <MobileAndTabletOnlyContainer>
-            <PwaInstallComponent />
-            <PwaInstallIosComponent />
+            {isPwaInstallable ? <PwaInstallComponent /> : isIOsOrMacOs && <PwaInstallIosComponent />}
           </MobileAndTabletOnlyContainer>
         </Section>
         <Section>

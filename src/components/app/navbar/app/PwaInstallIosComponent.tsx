@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -13,25 +14,10 @@ import IosShareIcon from '@components/ui-common/icons/ios-share-icon.png';
 
 export default function PwaInstallIosComponent() {
   const { colorMode } = useColorMode();
-
-  const [userAgent, setUserAgent] = useState<string | null>(null);
-  const [isIOs, setIOs] = useState(false);
-  const [isIpadOs, setIPadOs] = useState(false);
-  const [isMacOs, setMacOs] = useState(false);
+  const { isIOsOrMacOs } = useContext(PwaContext);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
-  useEffect(() => {
-    if (userAgent !== null) {
-      setIOs(/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream);
-      setIPadOs(userAgent.includes('iPad') && userAgent.includes('Mac OS X'));
-      setMacOs(userAgent.includes('Macintosh') && userAgent.includes('Intel Mac OS X'));
-    }
-    if (typeof window !== 'undefined') {
-      setUserAgent(window.navigator.userAgent);
-    }
-  }, [isIOs, isMacOs]);
-
-  if (!(isIOs || isIpadOs || isMacOs)) return null;
+  if (!isIOsOrMacOs) return null;
 
   return (
     <>
@@ -68,12 +54,11 @@ export default function PwaInstallIosComponent() {
             </LineContainer>
             <LineContainer>
               <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
-              <BgContainer $colorMode={colorMode}>
-                <Text fontWeight={FontWeight.SEMIBOLD}>
-                  {(isMacOs) && 'Add to Dock'}
-                  {(isIOs || isIpadOs) && 'Add to Home Screen'}
-                </Text>
-              </BgContainer>
+              <BgContainer $colorMode={colorMode}><Text fontWeight={FontWeight.SEMIBOLD}>Add to Home Screen</Text></BgContainer>
+            </LineContainer>
+            <LineContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>or</Text>
+              <BgContainer $colorMode={colorMode}><Text fontWeight={FontWeight.SEMIBOLD}>Add to Dock</Text></BgContainer>
             </LineContainer>
           </ContentContainer>
         )}
