@@ -8,6 +8,7 @@ import ColorModeSwitchComponent from '@components/app/navbar/app/ColorModeSwitch
 import NotificationsComponent from '@components/app/navbar/app/NotificationsComponent';
 import ProfileComponent from '@components/app/navbar/app/ProfileComponent';
 import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
+import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComponent';
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
@@ -18,6 +19,7 @@ export default function AppNavbar() {
         <Section>
           <MobileAndTabletOnlyContainer>
             <PwaInstallComponent />
+            <PwaInstallIosComponent />
           </MobileAndTabletOnlyContainer>
         </Section>
         <Section>

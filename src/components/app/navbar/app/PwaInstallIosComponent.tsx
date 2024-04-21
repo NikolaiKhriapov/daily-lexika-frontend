@@ -70,7 +70,7 @@ export default function PwaInstallIosComponent() {
                   <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
                   <BgContainer $colorMode={colorMode}>
                     <Text fontWeight={FontWeight.SEMIBOLD}>
-                      {isMacOsAndSafari && 'Add to Dock'}
+                      {isMacOsAndSafari && deviceType === 'desktop' && 'Add to Dock'}
                       {isIos && (deviceType === 'tablet' || deviceType === 'phone') && 'Add to Home Screen'}
                     </Text>
                   </BgContainer>
