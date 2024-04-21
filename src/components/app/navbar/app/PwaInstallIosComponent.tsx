@@ -26,8 +26,10 @@ export default function PwaInstallIosComponent() {
   useEffect(() => {
     setIos(checkIsIos());
     setMacOsAndSafari(checkIsMacOsAndSafari());
-    setDeviceType(detectDeviceType(navigator));
-  }, [isIos, isMacOsAndSafari]);
+    if (typeof window !== 'undefined') {
+      setDeviceType(detectDeviceType(window.navigator));
+    }
+  }, [isIos, isMacOsAndSafari, window]);
 
   return (
     (isIos || isMacOsAndSafari) && deviceType
