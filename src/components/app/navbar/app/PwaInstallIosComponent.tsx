@@ -17,19 +17,16 @@ export default function PwaInstallIosComponent() {
 
   const [isIos, setIos] = useState(false);
   const [isMacOsAndSafari, setMacOsAndSafari] = useState(false);
+  const [deviceType, setDeviceType] = useState<string | null>(null);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
   const checkIsIos = () => detectOS('iOS');
-
-  let deviceType;
-  if (!!navigator) {
-    deviceType = detectDeviceType(navigator);
-  }
   const checkIsMacOsAndSafari = () => detectOS('Mac') && detectBrowser('WebKit');
 
   useEffect(() => {
     setIos(checkIsIos());
     setMacOsAndSafari(checkIsMacOsAndSafari());
+    setDeviceType(detectDeviceType(navigator));
   }, [isIos, isMacOsAndSafari]);
 
   return (
