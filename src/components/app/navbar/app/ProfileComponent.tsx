@@ -56,6 +56,7 @@ const AvatarStyled = styled(Avatar)`
   height: 35px !important;
   width: 35px !important;
   margin: 2px 7px;
+  background-color: ${theme.colors.mainBlue} !important;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 45px !important;

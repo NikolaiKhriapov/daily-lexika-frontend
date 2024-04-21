@@ -6,7 +6,7 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useCreateReviewMutation, useUpdateReviewMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
-import { getOriginalWordPackName } from '@utils/functions';
+import { getOriginalWordPackName, maxNewWordsPerDayValidation, maxReviewWordsPerDayValidation } from '@utils/functions';
 import { ReviewDto, WordPackDto } from '@utils/types';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
@@ -38,14 +38,8 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   };
 
   const validationSchema = Yup.object({
-    maxNewWordsPerDay: Yup.number()
-      .min(1, 'Must be at least 1')
-      .max(20, 'Must be less than 20')
-      .required('Required'),
-    maxReviewWordsPerDay: Yup.number()
-      .min(1, 'Must be at least 1')
-      .max(50, 'Must be less than 50')
-      .required('Required'),
+    maxNewWordsPerDay: maxNewWordsPerDayValidation,
+    maxReviewWordsPerDay: maxReviewWordsPerDayValidation,
   });
 
   const handleOnSubmit = (reviewDTO: ReviewDto) => {

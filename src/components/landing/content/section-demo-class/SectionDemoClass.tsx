@@ -24,8 +24,8 @@ export default function SectionDemoClass() {
       languageLevel: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string().required('Required'),
-      contactId: Yup.string().required('Required'),
+      name: Yup.string().trim().required(' '),
+      contactId: Yup.string().trim().required(' '),
     }),
     handleOnSubmit: (demoSubmitRequest: DemoSubmitRequest, { setSubmitting }: any) => {
       setSubmitting(true);

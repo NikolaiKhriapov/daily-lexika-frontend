@@ -1,3 +1,4 @@
+import * as Yup from 'yup';
 import { ColorMode } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -39,7 +40,7 @@ export const getOriginalWordPackName = (wordPackName: string, user: UserDto | nu
   return wordPackName;
 };
 
-export const removeAccent = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+export const removeAccent = (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 export const sortWordsChinese = (a: WordDataDto, b: WordDataDto) => {
   const nameA = removeAccent(a.transcription).toLowerCase();
@@ -49,3 +50,30 @@ export const sortWordsChinese = (a: WordDataDto, b: WordDataDto) => {
   if (nameA > nameB) return 1;
   return 0;
 };
+
+export const nameValidation = Yup.string().trim()
+  .required(' ')
+  .max(15, 'Must be 15 characters or less');
+
+export const emailValidation = Yup.string().trim()
+  .required(' ')
+  .email('Invalid email address');
+
+export const passwordValidation = Yup.string().trim()
+  .required(' ')
+  .min(8, 'Must be at least 8 characters')
+  .max(20, 'Must be 20 characters or less');
+
+export const passwordRepeatValidation = Yup.string().trim()
+  .required(' ')
+  .oneOf([Yup.ref('passwordNewFirst')], 'Passwords must match');
+
+export const maxNewWordsPerDayValidation = Yup.number()
+  .min(1, 'Must be at least 1')
+  .max(20, 'Must be less than 20')
+  .required(' ');
+
+export const maxReviewWordsPerDayValidation = Yup.number()
+  .min(1, 'Must be at least 1')
+  .max(50, 'Must be less than 50')
+  .required(' ');

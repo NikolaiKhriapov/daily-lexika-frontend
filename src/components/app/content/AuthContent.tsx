@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { toggleAuthFormType } from '@store/reducers/authPageSlice';
 import { AuthFormType, EmailLinks, Platform } from '@utils/app/constants';
 import { Breakpoint, ButtonType, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, emailValidation, mediaBreakpointUp, nameValidation, passwordValidation } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
@@ -51,15 +51,7 @@ export default function AuthContent() {
       linkText: 'Don\'t have an account? Sign up',
       form: {
         initialValues: { email: '', password: '' },
-        validationSchema: Yup.object({
-          email: Yup.string()
-            .email('Invalid email address')
-            .required('Required'),
-          password: Yup.string()
-            .min(8, 'Must be at least 8 characters')
-            .max(20, 'Must be 20 characters or less')
-            .required('Required'),
-        }),
+        validationSchema: Yup.object({ email: emailValidation, password: passwordValidation }),
         handleOnSubmit: (values: AuthenticationRequest) =>
           performLogin({ email: values.email, password: values.password, platform: selectedPlatform! }),
       },
@@ -70,18 +62,7 @@ export default function AuthContent() {
       linkText: 'Already have an account? Sign in',
       form: {
         initialValues: { name: '', email: '', password: '' },
-        validationSchema: Yup.object({
-          name: Yup.string()
-            .max(15, 'Must be 15 characters or less')
-            .required('Required'),
-          email: Yup.string()
-            .email('Invalid email address')
-            .required('Required'),
-          password: Yup.string()
-            .min(8, 'Must be at least 8 characters')
-            .max(20, 'Must be 20 characters or less')
-            .required('Required'),
-        }),
+        validationSchema: Yup.object({ name: nameValidation, email: emailValidation, password: passwordValidation }),
         handleOnSubmit: (values: RegistrationRequest) =>
           performRegister({ ...values, platform: selectedPlatform! }),
       },
@@ -117,11 +98,11 @@ export default function AuthContent() {
           inputElements={(
             <InputElements>
               {authFormType === AuthFormType.REGISTER && (
-                <TextInput label="Name" name="name" type="text" placeholder="Name" />
+                <TextInput label="Name" name="name" type="text" placeholder="Name" isRequired />
               )}
-              <TextInput label="Email" name="email" type="email" placeholder="Email address" />
+              <TextInput label="Email" name="email" type="email" placeholder="Email address" isRequired />
               <PasswordFieldContainer>
-                <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" />
+                <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" isRequired />
                 {authFormType === AuthFormType.LOGIN && (
                   <ForgotPasswordContainer>
                     <Link href={EmailLinks.PasswordRecovery(selectedPlatform?.toString() || 'ENGLISH/CHINESE')}>

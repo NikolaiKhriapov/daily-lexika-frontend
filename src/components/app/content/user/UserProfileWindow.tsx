@@ -5,7 +5,9 @@ import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useDeleteAccountMutation, useUpdatePasswordMutation, useUpdateUserInfoMutation } from '@store/api/userAPI';
-import { ButtonType, LocalStorage, Size } from '@utils/constants';
+import { ButtonType, Size } from '@utils/constants';
+import { emailValidation, nameValidation, passwordRepeatValidation, passwordValidation } from '@utils/functions';
+import { theme } from '@utils/theme';
 import { PasswordUpdateRequest, UserDto } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
@@ -64,8 +66,8 @@ export default function UserProfileWindow(props: Props) {
 
   const userAccountWindowData = {
     name: {
-      initialValues: { name: userDTO && userDTO.name },
-      validationSchema: Yup.object({ name: Yup.string().max(15, 'Must be 15 characters or less') }),
+      initialValues: { name: userDTO && userDTO.name, email: userDTO && userDTO.email },
+      validationSchema: Yup.object({ name: nameValidation }),
       onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
@@ -74,23 +76,18 @@ export default function UserProfileWindow(props: Props) {
       inputElement: <TextInput label='Name' name='name' type='text' placeholder='Name' />,
     },
     email: {
-      initialValues: { email: userDTO && userDTO.email },
-      validationSchema: Yup.object({ email: Yup.string().email('Invalid email address') }),
+      initialValues: { email: userDTO && userDTO.email, name: userDTO && userDTO.name },
+      validationSchema: Yup.object({ email: emailValidation }),
       onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
         handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
-        localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
+        logout();
       },
       inputElement: <TextInput label='Email' name='email' type='email' placeholder='Email' />,
     },
     password: {
       initialValues: { passwordCurrent: '' },
-      validationSchema: Yup.object({
-        passwordCurrent: Yup.string()
-          .required('Password is required')
-          .min(8, 'Must be at least 8 characters')
-          .max(20, 'Must be 20 characters or less'),
-      }),
+      validationSchema: Yup.object({ passwordCurrent: passwordValidation }),
       onSubmit: (values: { passwordCurrent: string }) => {
         passwordCurrentRef.current = values.passwordCurrent;
         onOpenChangePasswordButton();
@@ -101,15 +98,7 @@ export default function UserProfileWindow(props: Props) {
 
   const passwordChangeData = {
     initialValues: { passwordNewFirst: '', passwordNewSecond: '' },
-    validationSchema: Yup.object({
-      passwordNewFirst: Yup.string()
-        .required('Password is required')
-        .min(8, 'Must be at least 8 characters')
-        .max(20, 'Must be 20 characters or less'),
-      passwordNewSecond: Yup.string()
-        .required('Password is required')
-        .oneOf([Yup.ref('passwordNewFirst')], 'Passwords must match'),
-    }),
+    validationSchema: Yup.object({ passwordNewFirst: passwordValidation, passwordNewSecond: passwordRepeatValidation }),
     onSubmit: (values: { passwordNewFirst: string, passwordNewSecond: string }, { setSubmitting }: any) => {
       setSubmitting(true);
       const request: PasswordUpdateRequest = { passwordCurrent: passwordCurrentRef.current, passwordNew: values.passwordNewFirst };
@@ -133,7 +122,7 @@ export default function UserProfileWindow(props: Props) {
       body={(
         <>
           <ProfileImageContainer>
-            <Avatar size='2xl' />
+            <AvatarStyled size='2xl' />
           </ProfileImageContainer>
           <InputFieldWithButton
             buttonText='Change'
@@ -205,4 +194,8 @@ export default function UserProfileWindow(props: Props) {
 const ProfileImageContainer = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${theme.colors.mainBlue} !important;
 `;
