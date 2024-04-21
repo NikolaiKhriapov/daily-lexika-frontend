@@ -9,6 +9,7 @@ import { Breakpoint, Page, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
+import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComponent';
 import Text from '@components/ui-common/basic/Text';
 
 type Props = {
@@ -19,7 +20,7 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
-  const { isPwaInstalled } = useContext(PwaContext);
+  const { isPwaInstallable } = useContext(PwaContext);
 
   const sidebarMainItems = [
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
@@ -38,11 +39,9 @@ export default function AppSidebar(props: Props) {
           </Item>
         ))}
       </SidebarMain>
-      {isPwaInstalled && (
-        <SidebarExtra $colorMode={colorMode}>
-          <PwaInstallComponent />
-        </SidebarExtra>
-      )}
+      <SidebarExtra $colorMode={colorMode}>
+        {isPwaInstallable ? <PwaInstallComponent /> : <PwaInstallIosComponent />}
+      </SidebarExtra>
     </Container>
   );
 }
