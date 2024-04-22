@@ -6,11 +6,13 @@ const baseQuery = (baseQueryOptions: any) => async (args: any, api: any, extraOp
   const result = await fetchBaseQuery(baseQueryOptions)(args, api, extraOptions);
 
   if (result.error) {
-    if (result.error.status === 403 && localStorage.getItem(LocalStorage.ACCESS_TOKEN)) {
-      localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+    if (typeof localStorage !== 'undefined') {
+      if (result.error.status === 403 && localStorage.getItem(LocalStorage.ACCESS_TOKEN)) {
+        localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
     }
     if (result.error.status === 'FETCH_ERROR') {
       errorNotification("Unable to establish a connection", "Please ensure you have an active internet connection and try again.");
