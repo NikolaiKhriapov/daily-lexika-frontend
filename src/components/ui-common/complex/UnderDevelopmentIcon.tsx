@@ -32,6 +32,7 @@ export default function UnderDevelopmentIcon(props: Props) {
           textAlign='center'
           isOpen={isTooltipVisible}
           maxWidth='90vw'
+          borderRadius='10px'
         >
           <span><GoAlert color='yellow' onClick={(e) => onClick(e)} /></span>
         </Tooltip>
@@ -42,8 +43,9 @@ export default function UnderDevelopmentIcon(props: Props) {
           placement='bottom'
           hasArrow
           textAlign='center'
+          borderRadius='10px'
         >
-          <span><GoAlert color='yellow' /></span>
+          <span><GoAlert color='orange' /></span>
         </Tooltip>
       </ContainerDesktop>
     </>

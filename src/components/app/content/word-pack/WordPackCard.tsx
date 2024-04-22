@@ -88,7 +88,7 @@ export default function WordPackCard(props: Props) {
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(wordPack.name, user)}</Text>
             {
               wordPacksUnderDevelopment.includes(getOriginalWordPackName(wordPack.name, user)) && (
-                <UnderDevelopmentIcon tooltipText='The word pack is still under development, but can be used' />
+                <UnderDevelopmentIcon tooltipText='We are still improving the translations for this pack, but you can already use it' />
               )
             }
           </WordPackNameContainer>
