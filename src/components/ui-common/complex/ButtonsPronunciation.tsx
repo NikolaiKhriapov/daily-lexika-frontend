@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { WordDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
+
+enum EngDialects {
+  US = 'en-US',
+  GB = 'en-GB',
+}
 
 type Props = {
   word: WordDto;
@@ -13,6 +18,7 @@ export default function ButtonsPronunciation(props: Props) {
 
   const { data: user } = useGetUserInfoQuery();
   const userRole = user!.role!;
+  const [engDialect, setEngDialect] = useState(EngDialects.US);
 
   const onClickAudio = (event: React.MouseEvent<HTMLButtonElement>, lang: string) => {
     event.stopPropagation();
@@ -36,17 +42,21 @@ export default function ButtonsPronunciation(props: Props) {
     }
   };
 
-  return (
-    <>
-      {userRole === RoleName.USER_ENGLISH && (
-        <>
-          <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={(event: React.MouseEvent<HTMLButtonElement>) => onClickAudio(event, 'en-US')} />
-          <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={(event: React.MouseEvent<HTMLButtonElement>) => onClickAudio(event, 'en-GB')} />
-        </>
-      )}
-      {userRole === RoleName.USER_CHINESE && (
-        <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={(event: React.MouseEvent<HTMLButtonElement>) => onClickAudio(event, 'zh-CN')} />
-      )}
-    </>
-  );
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    switch (userRole) {
+      case RoleName.USER_ENGLISH: {
+        onClickAudio(event, engDialect);
+        setEngDialect((prevState) => (prevState === EngDialects.US ? EngDialects.GB : EngDialects.US));
+        return;
+      }
+      case RoleName.USER_CHINESE: {
+        onClickAudio(event, 'zh-CN');
+        return;
+      }
+      default:
+        return null;
+    }
+  };
+
+  return <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={onClick} />;
 }
