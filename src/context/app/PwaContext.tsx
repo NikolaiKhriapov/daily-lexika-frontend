@@ -7,14 +7,16 @@ type ContextProps = {
   deferredPrompt: any;
   isPwaInstallable: boolean;
   setPwaInstallable: any;
-  isIOsOrMacOs: boolean;
+  isIosOrMacOs: boolean;
+  isStandalone: boolean;
 };
 
 const PwaContext = createContext<ContextProps>({
   deferredPrompt: null,
   isPwaInstallable: false,
   setPwaInstallable: () => {},
-  isIOsOrMacOs: false,
+  isIosOrMacOs: false,
+  isStandalone: true,
 });
 
 type Props = {
@@ -35,21 +37,25 @@ function PwaProvider(props: Props) {
   }, []);
 
   /* Apple */
-  const [isIOs, setIOs] = useState(false);
+  const [isIos, setIos] = useState(false);
   const [isMacOs, setMacOs] = useState(false);
-  const [isIOsOrMacOs, setIOsOrMacOs] = useState(false);
+  const [isIosOrMacOs, setIosOrMacOs] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false); // State for standalone mode
 
   const checkIsIos = () => detectOS('iOS');
   const checkIsMacOs = () => detectOS('Mac');
 
   useEffect(() => {
-    setIOs(checkIsIos());
+    setIos(checkIsIos());
     setMacOs(checkIsMacOs());
-    setIOsOrMacOs(isIOs || isMacOs);
-  }, [isIOs, isMacOs]);
+    setIosOrMacOs(isIos || isMacOs);
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsStandalone(true);
+    }
+  }, [isIos, isMacOs]);
 
   return (
-    <PwaContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIOsOrMacOs }}>
+    <PwaContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIosOrMacOs, isStandalone }}>
       {children}
     </PwaContext.Provider>
   );
