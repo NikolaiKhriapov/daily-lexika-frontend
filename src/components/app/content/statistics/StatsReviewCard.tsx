@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { FontWeight, Size } from '@utils/constants';
-import { borderStyles, getOriginalWordPackName, nonHighlightableTap } from '@utils/functions';
+import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDto } from '@utils/types';
 import StatsReviewWindow from '@components/app/content/statistics/StatsReviewWindow';
 import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   reviewStatistics: ReviewStatisticsDto;
@@ -37,7 +38,7 @@ export default function StatsReviewCard(props: Props) {
     <>
       <Container $colorMode={colorMode} onClick={onOpen}>
         <WordPackNameAndInfoButton>
-          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{getOriginalWordPackName(reviewStatistics.wordPackName, user)}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{WordDataHelper.getOriginalWordPackName(reviewStatistics.wordPackName, user)}</Text>
         </WordPackNameAndInfoButton>
         <Stats>
           <Percentage>

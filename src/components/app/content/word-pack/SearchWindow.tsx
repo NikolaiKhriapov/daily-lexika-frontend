@@ -5,9 +5,8 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { useAddWordToCustomWordPackMutation, useRemoveWordFromCustomWordPackMutation } from '@store/api/wordPacksAPI';
-import { RoleName } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp, removeAccent } from '@utils/functions';
+import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDataDto, WordPackDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
@@ -15,6 +14,7 @@ import Input from '@components/ui-common/basic/Input';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -36,10 +36,10 @@ export default function SearchWindow(props: Props) {
   const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();
   const [removeWordFromCustomWordPack] = useRemoveWordFromCustomWordPackMutation();
 
-  const handleAddWordToCustomWordPack = (wordDataDTO: WordDataDto) => {
-    setDisabled(wordDataDTO.id);
+  const handleAddWordToCustomWordPack = (wordDataDto: WordDataDto) => {
+    setDisabled(wordDataDto.id);
     setOpenAddOrRemoveWord(null);
-    addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
+    addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
       .unwrap()
       .then(() => successNotification('Word added successfully', ''))
       .catch((error) => errorNotification('', error))
@@ -65,32 +65,12 @@ export default function SearchWindow(props: Props) {
   useEffect(() => {
     if (allWordData) {
       if (searchQuery.trim() !== '') {
-        setSearchResult(allWordData.filter((wordData) => getWordInfoForUserRole(wordData).searchResult));
+        setSearchResult(allWordData.filter((wordData) => WordDataHelper.checkAgainstSearchQuery(wordData, searchQuery, user!)));
       } else {
         setSearchResult(allWordData.slice(0, 50));
       }
     }
   }, [searchQuery]);
-
-  const getWordInfoForUserRole = (wordDataDTO: WordDataDto) => {
-    const map: Record<RoleName, any> = {
-      [RoleName.USER_ENGLISH]: {
-        name: wordDataDTO.nameEnglish,
-        transcription: wordDataDTO.transcription,
-        translation: wordDataDTO.nameRussian,
-        searchResult: wordDataDTO.nameEnglish.toLowerCase().startsWith(searchQuery.toLowerCase()),
-      },
-      [RoleName.USER_CHINESE]: {
-        name: wordDataDTO.nameChineseSimplified,
-        transcription: wordDataDTO.transcription,
-        translation: wordDataDTO.nameEnglish,
-        searchResult: removeAccent(wordDataDTO.nameChineseSimplified).toLowerCase().includes(removeAccent(searchQuery).toLowerCase())
-          || removeAccent(wordDataDTO.transcription).toLowerCase().startsWith(removeAccent(searchQuery).toLowerCase()),
-      },
-      [RoleName.ADMIN]: null,
-    };
-    return map[user!.role!];
-  };
 
   const isWordAlreadyAddedToWordPack = (wordData: WordDataDto) =>
     allWordData.some((wordDataDTO) => wordDataDTO.id === wordData.id && wordDataDTO.listOfWordPackNames.includes(wordPack.name));
@@ -119,33 +99,33 @@ export default function SearchWindow(props: Props) {
           <WordInfoContainer>
             {isLoadingAllWordData
               ? <SpinnerContainer><Spinner /></SpinnerContainer>
-              : (searchResult && searchResult.map((wordDataDTO) => (
+              : (searchResult && searchResult.map((wordDataDto) => (
                 <WordInfo
-                  key={wordDataDTO.id}
-                  onClick={() => onClickWordData(wordDataDTO)}
+                  key={wordDataDto.id}
+                  onClick={() => onClickWordData(wordDataDto)}
                   $colorMode={colorMode}
-                  $isWordAdded={isWordAlreadyAddedToWordPack(wordDataDTO)}
+                  $isWordAdded={isWordAlreadyAddedToWordPack(wordDataDto)}
                 >
                   <CharacterAndTranscriptionAndTranslation>
-                    <Text>{getWordInfoForUserRole(wordDataDTO)?.name}&nbsp;&nbsp;{getWordInfoForUserRole(wordDataDTO)?.transcription}</Text>
-                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{getWordInfoForUserRole(wordDataDTO)?.translation}</Text>
+                    <Text>{WordDataHelper.getWordDataNameByUserRole(wordDataDto, user!)}&nbsp;&nbsp;{wordDataDto.transcription}</Text>
+                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslation(wordDataDto, user!)}</Text>
                   </CharacterAndTranscriptionAndTranslation>
                   <RightIconContainer
-                    $isShown={isOpenAddOrRemoveWord === wordDataDTO.id}
-                    $isDisabled={isDisabled === wordDataDTO.id}
+                    $isShown={isOpenAddOrRemoveWord === wordDataDto.id}
+                    $isDisabled={isDisabled === wordDataDto.id}
                   >
-                    {!isWordAlreadyAddedToWordPack(wordDataDTO) && (
+                    {!isWordAlreadyAddedToWordPack(wordDataDto) && (
                       <ButtonWithIcon
                         type={ButtonWithIconType.ADD_WORD}
-                        onClick={() => handleAddWordToCustomWordPack(wordDataDTO)}
-                        isDisabled={isDisabled === wordDataDTO.id}
+                        onClick={() => handleAddWordToCustomWordPack(wordDataDto)}
+                        isDisabled={isDisabled === wordDataDto.id}
                       />
                     )}
-                    {isWordAlreadyAddedToWordPack(wordDataDTO) && (
+                    {isWordAlreadyAddedToWordPack(wordDataDto) && (
                       <ButtonWithIcon
                         type={ButtonWithIconType.REMOVE_WORD}
-                        onClick={() => handleRemoveWordFromCustomWordPack(wordDataDTO)}
-                        isDisabled={isDisabled === wordDataDTO.id}
+                        onClick={() => handleRemoveWordFromCustomWordPack(wordDataDto)}
+                        isDisabled={isDisabled === wordDataDto.id}
                       />
                     )}
                   </RightIconContainer>

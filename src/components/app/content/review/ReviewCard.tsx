@@ -5,7 +5,6 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useDeleteReviewMutation, useRefreshReviewMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
-import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { placeholderReview, ReviewDto, Status } from '@utils/types';
 import CreateOrUpdateReviewWindow from '@components/app/content/review/CreateOrUpdateReviewWindow';
@@ -18,6 +17,7 @@ import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   review: ReviewDto;
@@ -47,7 +47,7 @@ export default function ReviewCard(props: Props) {
     refreshReview(review.id!)
       .unwrap()
       .then(() => {
-        successNotification('Review refreshed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
+        successNotification('Review refreshed successfully', `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
         setFlipped(false);
       })
       .catch((error) => errorNotification('', error));
@@ -57,7 +57,7 @@ export default function ReviewCard(props: Props) {
     onCloseRemoveButton();
     deleteReview(review.id!)
       .unwrap()
-      .then(() => successNotification('Review removed successfully', `${getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
+      .then(() => successNotification('Review removed successfully', `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
       .catch((error) => errorNotification('', error));
   };
 
@@ -93,7 +93,7 @@ export default function ReviewCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {getOriginalWordPackName(review.wordPackDto.name, user)}
+              {WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)}
             </Text>
           </WordPackNameContainer>
           <WordsCountContainer>

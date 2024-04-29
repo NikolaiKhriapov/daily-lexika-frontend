@@ -3,7 +3,7 @@ import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
-import { borderStyles, getOriginalWordPackName, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { ReviewStatisticsDto } from '@utils/types';
 import ReviewWordPackWindow from '@components/app/content/word-pack/ReviewWordPackWindow';
@@ -13,6 +13,7 @@ import ProgressCircular from '@components/ui-common/basic/ProgressCircular';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -40,7 +41,7 @@ export default function StatsReviewWindow(props: Props) {
       width='320px'
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}
+      header={WordDataHelper.getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}
       body={(
         <>
           <PackProgress $colorMode={colorMode}>

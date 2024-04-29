@@ -20,10 +20,12 @@ interface Props extends Omit<ModalProps, 'children'> {
   body: React.ReactNode;
   width?: string;
   height?: string;
+  isHeaderCentered?: boolean;
+  showCloseButton?: boolean;
 }
 
 export default function Modal(props: Props) {
-  const { header, body, width, height, ...rest } = props;
+  const { header, body, width, height, isHeaderCentered = false, showCloseButton = true, ...rest } = props;
 
   const { colorMode } = useColorMode();
 
@@ -31,8 +33,8 @@ export default function Modal(props: Props) {
     <ChakraModal isCentered {...rest} size={Size.XXXL}>
       <ModalOverlay />
       <ModalContentStyled $colorMode={colorMode} $width={width} $height={height}>
-        <ModalCloseButton />
-        <ModalHeaderStyled fontSize={Size.XL}>{header}</ModalHeaderStyled>
+        {showCloseButton && <ModalCloseButton />}
+        <ModalHeaderStyled fontSize={Size.XL} $isCentered={isHeaderCentered} $withCloseButton={showCloseButton}>{header}</ModalHeaderStyled>
         <ModalBodyStyled>{body}</ModalBodyStyled>
         <ModalFooterStyled />
       </ModalContentStyled>
@@ -40,7 +42,11 @@ export default function Modal(props: Props) {
   );
 }
 
-const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width: string | undefined, $height: string | undefined }>`
+const ModalContentStyled = styled(ModalContent)<{
+  $colorMode: ColorMode;
+  $width: string | undefined;
+  $height: string | undefined
+}>`
   padding: 6px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
@@ -59,12 +65,13 @@ const ModalContentStyled = styled(ModalContent)<{ $colorMode: ColorMode, $width:
   }
 `;
 
-const ModalHeaderStyled = styled(ModalHeader)`
+const ModalHeaderStyled = styled(ModalHeader)<{ $isCentered: boolean; $withCloseButton: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-right: 30px;
+  justify-content: ${({ $isCentered }) => ($isCentered ? 'center' : 'space-between')};
+  margin-right: ${({ $withCloseButton }) => ($withCloseButton ? '30px' : '0')};
+  align-items: ${({ $isCentered, $withCloseButton }) => (($isCentered && !$withCloseButton) ? 'center' : 'baseline')};
+  text-align: ${({ $isCentered, $withCloseButton }) => ($isCentered && !$withCloseButton && 'center')};
   padding: 8px 12px !important;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {

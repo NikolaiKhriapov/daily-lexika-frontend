@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import AppContent from '@components/app/content/AppContent';
+import LanguageSelectionWindow from '@components/app/content/LanguageSelectionWindow';
 import AppFooter from '@components/app/footer/AppFooter';
 import AppNavbar from '@components/app/navbar/AppNavbar';
 import AppSidebar from '@components/app/sidebar/AppSidebar';
@@ -26,6 +28,7 @@ export default function AppLayout(props: Props) {
 
   const { colorMode } = useColorMode();
 
+  const { data: user } = useGetUserInfoQuery();
   useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
   useGetStatisticsQuery();
@@ -42,7 +45,10 @@ export default function AppLayout(props: Props) {
         <AppNavbar />
         <SidebarAndContentContainer $colorMode={colorMode}>
           <AppSidebar page={page} />
-          <AppContent>{children}</AppContent>
+          <AppContent>
+            {user && !user.translationLanguage && <LanguageSelectionWindow />}
+            {user && user.translationLanguage && children}
+          </AppContent>
         </SidebarAndContentContainer>
         <AppFooter />
       </Container>

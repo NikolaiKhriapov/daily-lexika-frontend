@@ -54,6 +54,9 @@
       "@context/*": [
         "src/context/*"
       ],
+      "@helpers/*": [
+        "src/helpers/*"
+      ],
       "@services/*": [
         "src/services/*"
       ],
