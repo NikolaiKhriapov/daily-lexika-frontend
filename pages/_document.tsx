@@ -6,7 +6,7 @@ import { theme } from '@utils/theme';
 
 export default function MyDocument() {
   return (
-    <Html lang="en">
+    <Html lang="en" translate="no">
       <Head>
         <link rel="icon" type="image/svg+xml" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
