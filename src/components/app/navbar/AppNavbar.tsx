@@ -13,14 +13,18 @@ import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComp
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
-  const { isPwaInstallable, isIOsOrMacOs } = useContext(PwaContext);
+  const { isPwaInstallable, isIosOrMacOs, isStandalone } = useContext(PwaContext);
 
   return (
     <Container $colorMode={colorMode}>
       <SectionsContainer>
         <Section>
           <MobileAndTabletOnlyContainer>
-            {isPwaInstallable ? <PwaInstallComponent /> : isIOsOrMacOs && <PwaInstallIosComponent />}
+            {!isStandalone && (
+              isPwaInstallable
+                ? <PwaInstallComponent />
+                : isIosOrMacOs && <PwaInstallIosComponent />
+            )}
           </MobileAndTabletOnlyContainer>
         </Section>
         <Section>

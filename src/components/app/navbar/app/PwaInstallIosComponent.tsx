@@ -14,10 +14,10 @@ import IosShareIcon from '@components/ui-common/icons/ios-share-icon.png';
 
 export default function PwaInstallIosComponent() {
   const { colorMode } = useColorMode();
-  const { isIOsOrMacOs } = useContext(PwaContext);
+  const { isIosOrMacOs, isStandalone } = useContext(PwaContext);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
-  if (!isIOsOrMacOs) return null;
+  if (!isIosOrMacOs || isStandalone) return null;
 
   return (
     <>
