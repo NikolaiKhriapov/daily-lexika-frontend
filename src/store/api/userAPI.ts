@@ -35,7 +35,6 @@ export const userAPI = API.injectEndpoints({
           patchResult.undo();
         }
       },
-
     }),
     updatePassword: builder.mutation<void, PasswordUpdateRequest>({
       query: (passwordUpdateRequest: PasswordUpdateRequest) => ({

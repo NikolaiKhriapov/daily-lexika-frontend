@@ -5,13 +5,14 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
-import { WordDto } from '@utils/types';
+import { Language, WordDto } from '@utils/types';
 import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
 import ComingSoon from '@components/ui-common/complex/ComingSoon';
 import Modal from '@components/ui-common/complex/Modal';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -30,30 +31,13 @@ export default function WordDetailedInfo(props: Props) {
   
   if (!user) return <Spinner />;
 
-  const getWordInfoForUserRole = () => {
-    const map: Record<RoleName, any> = {
-      [RoleName.USER_ENGLISH]: {
-        name: word.wordDataDto.nameEnglish,
-        transcription: word.wordDataDto.transcription,
-        translation: word.wordDataDto.nameRussian,
-      },
-      [RoleName.USER_CHINESE]: {
-        name: word.wordDataDto.nameChineseSimplified,
-        transcription: word.wordDataDto.transcription,
-        translation: word.wordDataDto.nameEnglish,
-      },
-      [RoleName.ADMIN]: null,
-    };
-    return map[user.role!];
-  };
-
   return (
     <Modal
       width={modalWidth}
       height={modalHeight}
       isOpen={isOpen}
       onClose={onClose}
-      header={getWordInfoForUserRole().name}
+      header={WordDataHelper.getWordNameByUserRole(word, user)}
       body={(
         <Container>
           <Tabs isFitted variant='enclosed' colorScheme='gray'>
@@ -65,8 +49,8 @@ export default function WordDetailedInfo(props: Props) {
               <TabPanel>
                 <General>
                   <TranscriptionAndTranslationContainer>
-                    <Text>{getWordInfoForUserRole().transcription}</Text>
-                    <Text>{getWordInfoForUserRole().translation}</Text>
+                    <Text>{word.wordDataDto.transcription}</Text>
+                    <Text>{WordDataHelper.getWordTranslation(word, user)}</Text>
                   </TranscriptionAndTranslationContainer>
                   <ProgressBarContainerTablet>
                     <TopContainer>
@@ -106,8 +90,8 @@ export default function WordDetailedInfo(props: Props) {
                       <>
                         <Text key={idx} size={Size.XL} isCentered>{((idx + 1) % 5 === 1 && example)}</Text>{/* Chinese */}
                         <Text key={idx} size={Size.SM} isCentered>{((idx + 5) % 5 === 1 && example)}</Text>{/* Pinyin */}
-                        <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>{/* English */}
-                        {/* <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>/!* Russian *!/ */}
+                        {user.translationLanguage === Language.ENGLISH && <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>}
+                        {user.translationLanguage === Language.RUSSIAN && <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>}
                         {(idx + 2) % 5 === 1 && <Divider marginY={3} />}
                       </>
                     )

@@ -6,11 +6,11 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { Size } from '@utils/constants';
-import { getOriginalWordPackName } from '@utils/functions';
 import { WordPackDto } from '@utils/types';
 import WordsScrollableContainer from '@components/app/content/words/WordsScrollableContainer';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -39,7 +39,7 @@ export default function ReviewWordPackWindow(props: Props) {
       width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(wordPack.name, user)}
+      header={WordDataHelper.getOriginalWordPackName(wordPack.name, user)}
       body={(
         <Container>
           <TotalWords>

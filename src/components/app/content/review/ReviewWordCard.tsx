@@ -13,6 +13,7 @@ import Link from '@components/ui-common/basic/Link';
 import Text from '@components/ui-common/basic/Text';
 import ButtonsPronunciation from '@components/ui-common/complex/ButtonsPronunciation';
 import Card from '@components/ui-common/complex/Card';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   reviewWord?: WordDto | null;
@@ -70,38 +71,23 @@ export default function ReviewWordCard(props: Props) {
   if (!user || !reviewWord) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
 
   const userRole = user.role!;
-  const wordData = {
+
+  const wordDataSize = {
     [RoleName.USER_ENGLISH]: {
-      transcription: {
-        text: reviewWord.wordDataDto.transcription,
-        size: { base: Size.SM, sm: Size.XL, xl: Size.XL },
-      },
       nameWord: {
-        text: reviewWord.wordDataDto.nameEnglish,
         size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
-      nameTranslation: {
-        text: reviewWord.wordDataDto.nameRussian,
-        size: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
-      },
+      transcriptionSize: { base: Size.SM, sm: Size.XL, xl: Size.XL },
+      nameTranslationSize: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
     },
     [RoleName.USER_CHINESE]: {
-      transcription: {
-        text: reviewWord.wordDataDto.transcription,
-        size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
-      },
       nameWord: {
-        text: reviewWord.wordDataDto.nameChineseSimplified,
         size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXXXL },
         font: theme.fonts.bodyCh,
       },
-      nameTranslation: {
-        text: reviewWord.wordDataDto.nameEnglish.length < 100
-          ? reviewWord.wordDataDto.nameEnglish
-          : reviewWord.wordDataDto.nameEnglish.substring(0, 100).concat("..."), // TODO::: remove after revising all Chinese words
-        size: { base: Size.MD, sm: Size.XL, xl: Size.XL },
-      },
+      transcriptionSize: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
+      nameTranslationSize: { base: Size.MD, sm: Size.XL, xl: Size.XL },
     },
     [RoleName.ADMIN]: null,
   };
@@ -148,8 +134,8 @@ export default function ReviewWordCard(props: Props) {
             <ButtonsTopContainer>
               <ButtonsPronunciation word={reviewWord} />
             </ButtonsTopContainer>
-            <Text fontFamily={wordData[userRole]?.nameWord.font} size={wordData[userRole]?.nameWord.size}>
-              {wordData[userRole]?.nameWord.text}
+            <Text fontFamily={wordDataSize[userRole]?.nameWord.font} size={wordDataSize[userRole]?.nameWord.size}>
+              {WordDataHelper.getWordNameByUserRole(reviewWord, user)}
             </Text>
           </ContentsContainer>
         )}
@@ -170,12 +156,12 @@ export default function ReviewWordCard(props: Props) {
               />
             </ButtonsTopContainer>
             <ButtonsBottomContainer>
-              <Link href={EmailLinks.ReportError(wordData[userRole]!.nameWord.text)}>
+              <Link href={EmailLinks.ReportError(WordDataHelper.getWordNameByUserRole(reviewWord, user))}>
                 <ButtonWithIcon type={ButtonWithIconType.ERROR} onClick={onClickError} />
               </Link>
             </ButtonsBottomContainer>
-            <Text size={wordData[userRole]?.transcription.size}>{wordData[userRole]?.transcription.text}</Text>
-            <Text size={wordData[userRole]?.nameTranslation.size}>{wordData[userRole]?.nameTranslation.text}</Text>
+            <Text size={wordDataSize[userRole]?.transcriptionSize}>{reviewWord.wordDataDto.transcription}</Text>
+            <Text size={wordDataSize[userRole]?.nameTranslationSize}>{WordDataHelper.getWordTranslation(reviewWord, user!)}</Text>
           </ContentsContainer>
         )}
       />

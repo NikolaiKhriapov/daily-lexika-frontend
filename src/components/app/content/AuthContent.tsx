@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { toggleAuthFormType } from '@store/reducers/authPageSlice';
 import { AuthFormType, EmailLinks, Platform } from '@utils/app/constants';
 import { Breakpoint, ButtonType, Size } from '@utils/constants';
-import { borderStyles, emailValidation, mediaBreakpointUp, nameValidation, passwordValidation } from '@utils/functions';
+import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { AuthenticationRequest, RegistrationRequest } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
@@ -17,6 +17,7 @@ import Heading from '@components/ui-common/basic/Heading';
 import Link from '@components/ui-common/basic/Link';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import TextInput from '@components/ui-common/complex/TextInput';
+import ValidationHelper from '@helpers/ValidationHelper';
 
 export default function AuthContent() {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ export default function AuthContent() {
       linkText: 'Don\'t have an account? Sign up',
       form: {
         initialValues: { email: '', password: '' },
-        validationSchema: Yup.object({ email: emailValidation, password: passwordValidation }),
+        validationSchema: Yup.object({ email: ValidationHelper.emailValidator(), password: ValidationHelper.passwordValidator() }),
         handleOnSubmit: (values: AuthenticationRequest) =>
           performLogin({ email: values.email, password: values.password, platform: selectedPlatform! }),
       },
@@ -62,7 +63,7 @@ export default function AuthContent() {
       linkText: 'Already have an account? Sign in',
       form: {
         initialValues: { name: '', email: '', password: '' },
-        validationSchema: Yup.object({ name: nameValidation, email: emailValidation, password: passwordValidation }),
+        validationSchema: Yup.object({ name: ValidationHelper.nameValidator(), email: ValidationHelper.emailValidator(), password: ValidationHelper.passwordValidator() }),
         handleOnSubmit: (values: RegistrationRequest) =>
           performRegister({ ...values, platform: selectedPlatform! }),
       },

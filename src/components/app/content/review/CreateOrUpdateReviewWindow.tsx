@@ -6,13 +6,14 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useCreateReviewMutation, useUpdateReviewMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
-import { getOriginalWordPackName, maxNewWordsPerDayValidation, maxReviewWordsPerDayValidation } from '@utils/functions';
 import { ReviewDto, WordPackDto } from '@utils/types';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import Modal from '@components/ui-common/complex/Modal';
 import TextInput from '@components/ui-common/complex/TextInput';
+import ValidationHelper from '@helpers/ValidationHelper';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -38,8 +39,8 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   };
 
   const validationSchema = Yup.object({
-    maxNewWordsPerDay: maxNewWordsPerDayValidation,
-    maxReviewWordsPerDay: maxReviewWordsPerDayValidation,
+    maxNewWordsPerDay: ValidationHelper.maxNewWordsPerDayValidator(),
+    maxReviewWordsPerDay: ValidationHelper.maxReviewWordsPerDayValidator(),
   });
 
   const handleOnSubmit = (reviewDTO: ReviewDto) => {
@@ -48,13 +49,13 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
     if (review) {
       updateReview({ reviewId: review!.id!, reviewDTO })
         .unwrap()
-        .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification('Review saved', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     } else {
       createReview(reviewDTO)
         .unwrap()
-        .then(() => successNotification('Review saved', `${getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification('Review saved', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     }
@@ -66,7 +67,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={getOriginalWordPackName(wordPack.name, user)}
+      header={WordDataHelper.getOriginalWordPackName(wordPack.name, user)}
       body={(
         <>
           <TotalWords>

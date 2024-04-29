@@ -17,9 +17,8 @@ import Text from '@components/ui-common/basic/Text';
 export default function ProfileComponent() {
   const { colorMode } = useColorMode();
   const { logout } = useContext(AuthContext);
-  const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
-
   const { data: user } = useGetUserInfoQuery();
+  const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
 
   return (
     <Menu>
@@ -33,7 +32,7 @@ export default function ProfileComponent() {
         </MenuText>
         <MenuDivider />
         <MenuItem onClick={onOpenProfile}>Edit profile</MenuItem>
-        {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} userDTO={user!} />}
+        {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} />}
         {/* <MenuItem>Preferences</MenuItem> */}
         <MenuDivider />
         <LinkStyled href={EmailLinks.ContactSupport} $colorMode={colorMode} style={{ textDecoration: 'none' }}>

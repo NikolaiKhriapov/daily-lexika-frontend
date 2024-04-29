@@ -5,12 +5,12 @@ import { errorNotification, successNotification } from '@services/app/popup-noti
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
-import { getOriginalWordPackName } from '@utils/functions';
 import { WordPackDto } from '@utils/types';
 import Text from '@components/ui-common/basic/Text';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import Modal from '@components/ui-common/complex/Modal';
 import TextInput from '@components/ui-common/complex/TextInput';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function CreateWordPackWindow(props: Props) {
   const validationSchema = Yup.object({
     name: Yup.string().trim().required(' ')
       .test((value) => {
-        const allWordPackNames = allWordPacks.map((wordPack) => getOriginalWordPackName(wordPack.name, user!));
+        const allWordPackNames = allWordPacks.map((wordPack) => WordDataHelper.getOriginalWordPackName(wordPack.name, user!));
         return !allWordPackNames.includes(value) && !value.includes(';');
       }),
     description: Yup.string().trim().required(' '),

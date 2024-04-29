@@ -28,6 +28,8 @@ export interface UserDto {
   email?: string;
   role?: RoleName;
   roleStatistics?: RoleStatisticsDto[];
+  translationLanguage?: Language,
+  interfaceLanguage?: Language,
 }
 
 export interface RoleStatisticsDto {
@@ -108,6 +110,12 @@ export interface ReviewStatisticsDto {
   wordsNew: number;
   wordsInReview: number;
   wordsKnown: number;
+}
+
+export enum Language {
+  ENGLISH = 'ENGLISH',
+  RUSSIAN = 'RUSSIAN',
+  CHINESE = 'CHINESE',
 }
 
 export enum Status {

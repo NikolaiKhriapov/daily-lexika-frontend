@@ -7,7 +7,6 @@ import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useDeleteCustomWordPackMutation, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
-import { getOriginalWordPackName } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Category, placeholderWordPack, WordPackDto } from '@utils/types';
 import CreateOrUpdateReviewWindow from '@components/app/content/review/CreateOrUpdateReviewWindow';
@@ -22,6 +21,7 @@ import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
 import UnderDevelopmentIcon from '@components/ui-common/complex/UnderDevelopmentIcon';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   wordPack: WordPackDto;
@@ -51,7 +51,7 @@ export default function WordPackCard(props: Props) {
     onCloseDeleteButton();
     deleteWordPack(wordPack.name)
       .unwrap()
-      .then(() => successNotification('Word Pack deleted successfully', `${getOriginalWordPackName(wordPack.name, user)} deleted successfully`))
+      .then(() => successNotification('Word Pack deleted successfully', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} deleted successfully`))
       .catch((error) => errorNotification('', error));
   };
 
@@ -85,9 +85,9 @@ export default function WordPackCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{getOriginalWordPackName(wordPack.name, user)}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{WordDataHelper.getOriginalWordPackName(wordPack.name, user)}</Text>
             {
-              wordPacksUnderDevelopment.includes(getOriginalWordPackName(wordPack.name, user)) && (
+              wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name, user)) && (
                 <UnderDevelopmentIcon tooltipText='We are still improving the translations for this pack, but you can already use it' />
               )
             }

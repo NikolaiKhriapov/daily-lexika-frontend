@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { RoleName } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -11,6 +10,7 @@ import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInf
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   wordsPage: WordDto[];
@@ -54,23 +54,6 @@ export default function WordsScrollableContainer(props: Props) {
 
   if (!user) return <Spinner />;
 
-  const getWordInfoForUserRole = (wordDTO: WordDto) => {
-    const map: Record<RoleName, any> = {
-      [RoleName.USER_ENGLISH]: {
-        name: wordDTO.wordDataDto.nameEnglish,
-        transcription: wordDTO.wordDataDto.transcription,
-        translation: wordDTO.wordDataDto.nameRussian,
-      },
-      [RoleName.USER_CHINESE]: {
-        name: wordDTO.wordDataDto.nameChineseSimplified,
-        transcription: wordDTO.wordDataDto.transcription,
-        translation: wordDTO.wordDataDto.nameEnglish,
-      },
-      [RoleName.ADMIN]: null,
-    };
-    return map[user.role!];
-  };
-
   const onClick = (wordId: number) => {
     setSelectedWord(wordId);
     onOpenDetails();
@@ -83,8 +66,8 @@ export default function WordsScrollableContainer(props: Props) {
         : visibleWords.slice(0, visibleWords.length).map((wordDTO, index) => (
           <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(wordDTO.id)}>
             <CharacterAndTranscriptionAndTranslation>
-              <Text>{getWordInfoForUserRole(wordDTO)?.name}&nbsp;&nbsp;{getWordInfoForUserRole(wordDTO)?.transcription}</Text>
-              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{getWordInfoForUserRole(wordDTO)?.translation}</Text>
+              <Text>{WordDataHelper.getWordNameByUserRole(wordDTO, user)}&nbsp;&nbsp;{wordDTO.wordDataDto.transcription}</Text>
+              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordTranslationWithoutDuplicate(wordDTO, user)}</Text>
             </CharacterAndTranscriptionAndTranslation>
             <BadgeOrStreakCount word={wordDTO} />
             {isOpenDetails && (
