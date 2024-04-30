@@ -69,7 +69,7 @@ const ModalHeaderStyled = styled(ModalHeader)<{ $isCentered: boolean; $withClose
   display: flex;
   flex-direction: column;
   justify-content: ${({ $isCentered }) => ($isCentered ? 'center' : 'space-between')};
-  margin-right: ${({ $withCloseButton }) => ($withCloseButton ? '30px' : '0')};
+  margin-right: ${({ $isCentered }) => ($isCentered ? '0' : '30px')};
   align-items: ${({ $isCentered, $withCloseButton }) => (($isCentered && !$withCloseButton) ? 'center' : 'baseline')};
   text-align: ${({ $isCentered, $withCloseButton }) => ($isCentered && !$withCloseButton && 'center')};
   padding: 8px 12px !important;

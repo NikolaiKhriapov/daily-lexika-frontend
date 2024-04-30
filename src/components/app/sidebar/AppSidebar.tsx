@@ -8,8 +8,8 @@ import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint, Page, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
-import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComponent';
+import PwaInstallComponent from '@components/app/navbar/app/install/PwaInstallComponent';
+import PwaInstallIosComponent from '@components/app/navbar/app/install/PwaInstallIosComponent';
 import Text from '@components/ui-common/basic/Text';
 
 type Props = {

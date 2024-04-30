@@ -5,11 +5,12 @@ import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import ColorModeSwitchComponent from '@components/app/navbar/app/ColorModeSwitchComponent';
-import NotificationsComponent from '@components/app/navbar/app/NotificationsComponent';
-import ProfileComponent from '@components/app/navbar/app/ProfileComponent';
-import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComponent';
+import ColorModeSwitchComponent from '@components/app/navbar/app/color-mode-switch/ColorModeSwitchComponent';
+import NotificationsComponent from '@components/app/navbar/app/notifications/NotificationsComponent';
+import ProfileComponent from '@components/app/navbar/app/profile/ProfileComponent';
+import PwaInstallComponent from '@components/app/navbar/app/install/PwaInstallComponent';
+import PwaInstallIosComponent from '@components/app/navbar/app/install/PwaInstallIosComponent';
+import UpcomingUpdatesComponent from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesComponent';
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
@@ -26,6 +27,7 @@ export default function AppNavbar() {
                 : isIosOrMacOs && <PwaInstallIosComponent />
             )}
           </MobileAndTabletOnlyContainer>
+          <UpcomingUpdatesComponent />
         </Section>
         <Section>
           <NotificationsComponent />
