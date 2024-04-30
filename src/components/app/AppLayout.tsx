@@ -5,7 +5,6 @@ import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
@@ -32,7 +31,6 @@ export default function AppLayout(props: Props) {
   useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
   useGetStatisticsQuery();
-  useGetAllWordDataQuery();
 
   return (
     <>

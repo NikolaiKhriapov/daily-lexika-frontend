@@ -108,7 +108,7 @@ export default function SearchWindow(props: Props) {
                 >
                   <CharacterAndTranscriptionAndTranslation>
                     <Text>{WordDataHelper.getWordDataNameByUserRole(wordDataDto, user!)}&nbsp;&nbsp;{wordDataDto.transcription}</Text>
-                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslation(wordDataDto, user!)}</Text>
+                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslationWithoutDuplicate(wordDataDto, user!)}</Text>
                   </CharacterAndTranscriptionAndTranslation>
                   <RightIconContainer
                     $isShown={isOpenAddOrRemoveWord === wordDataDto.id}

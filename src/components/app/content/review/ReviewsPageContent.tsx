@@ -13,7 +13,7 @@ import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function ReviewsPageContent() {
-  const { data: allReviews = [], isLoading, isError } = useGetAllReviewsQuery();
+  const { data: allReviews = [], isLoading, isError } = useGetAllReviewsQuery(undefined, { refetchOnMountOrArgChange: true });
 
   if (isLoading) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoading} fixed={3} />;
   if (isError) return <ErrorComponent />;
@@ -22,9 +22,7 @@ export default function ReviewsPageContent() {
     return (
       <IndexPageContainer>
         <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
-        <Text size={Size.LG} isCentered>
-          Add a word pack to create a daily review and start growing your vocabulary
-        </Text>
+        <Text size={Size.LG} isCentered>Add a word pack to create a daily review and start growing your vocabulary</Text>
       </IndexPageContainer>
     );
   }

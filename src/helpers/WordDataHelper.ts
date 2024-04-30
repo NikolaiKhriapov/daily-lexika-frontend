@@ -21,7 +21,7 @@ export default class WordDataHelper {
   }
 
   public static getWordNameByUserRole(word: WordDto, user: UserDto) {
-    return this.getWordDataNameByUserRole(word.wordDataDto, user);
+    return WordDataHelper.getWordDataNameByUserRole(word.wordDataDto, user);
   }
 
   public static getWordDataTranslation(wordData: WordDataDto, user: UserDto) {
@@ -36,7 +36,7 @@ export default class WordDataHelper {
   }
 
   public static getWordTranslation(word: WordDto, user: UserDto) {
-    return this.getWordDataTranslation(word.wordDataDto, user);
+    return WordDataHelper.getWordDataTranslation(word.wordDataDto, user);
   }
 
   public static getWordDataTranslationWithoutDuplicate(wordData: WordDataDto, user: UserDto) {
@@ -49,7 +49,7 @@ export default class WordDataHelper {
   }
 
   public static getWordTranslationWithoutDuplicate(word: WordDto, user: UserDto) {
-    return this.getWordDataTranslationWithoutDuplicate(word.wordDataDto, user);
+    return WordDataHelper.getWordDataTranslationWithoutDuplicate(word.wordDataDto, user);
   }
 
   public static getOriginalWordPackName(wordPackName: string, user: UserDto | null) {
@@ -68,8 +68,8 @@ export default class WordDataHelper {
   }
 
   public static sortWordDataChineseByTranscription(a: WordDataDto, b: WordDataDto) {
-    const nameA = this.removeAccent(a.transcription).toLowerCase();
-    const nameB = this.removeAccent(b.transcription).toLowerCase();
+    const nameA = WordDataHelper.removeAccent(a.transcription).toLowerCase();
+    const nameB = WordDataHelper.removeAccent(b.transcription).toLowerCase();
 
     if (nameA < nameB) return -1;
     if (nameA > nameB) return 1;
