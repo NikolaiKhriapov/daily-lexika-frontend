@@ -41,7 +41,7 @@ export default function StatisticsPageContent() {
   return (
     <Container>
       <Section>
-        <Heading size={Size.LG}>Daily Streak</Heading>
+        <HeadingTabletAndDesktop size={Size.LG}>Daily Streak</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
             <StatsCard title="Current Streak" stat={statistics?.currentStreak} icon={<BsFire style={iconStyles} />} isRefreshing={isFetching} />
@@ -50,7 +50,7 @@ export default function StatisticsPageContent() {
         </CardsContainer>
       </Section>
       <Section>
-        <Heading size={Size.LG}>Vocabulary</Heading>
+        <HeadingTabletAndDesktop size={Size.LG}>Vocabulary</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
             <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<PiBookThin style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
@@ -58,12 +58,11 @@ export default function StatisticsPageContent() {
             {user?.role === RoleName.USER_CHINESE && (
               <StatsCard title="Characters Known" stat={statistics?.charactersKnown} icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
             )}
-            <StatsCard title="Idioms Known" icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
           </SkeletonWrapper>
         </CardsContainer>
       </Section>
       <Section>
-        <Heading size={Size.LG}>Daily Reviews</Heading>
+        <HeadingTabletAndDesktop size={Size.LG}>Daily Reviews</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={3} isLoading={!statistics}>
             {statistics?.listOfReviewStatisticsDto && statistics.listOfReviewStatisticsDto.length > 0
@@ -86,11 +85,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 60px;
   width: calc(100vw - 80px);
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    width: calc(100vw - 100px);
+      gap: 40px;
+      width: calc(100vw - 100px);
   }
 `;
 
@@ -106,4 +106,13 @@ const CardsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
+`;
+
+const HeadingTabletAndDesktop = styled(Heading)`
+  display: none;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
+    justify-content: center;
+  }
 `;
