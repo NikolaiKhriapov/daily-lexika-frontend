@@ -4,6 +4,7 @@ import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import ReviewCard from '@components/app/content/review/ReviewCard';
+import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Heading from '@components/ui-common/basic/Heading';
 import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
@@ -37,12 +38,23 @@ export default function ReviewsPageContent() {
             </SwiperSlide>
           ))}
         </Swiper>
+        <WordOfTheDayComponent />
       </ContainerMobile>
-      <ContainerTabletAndDesktop>
+      <ContainerTablet>
+        <Section>
+          {allReviews.map((reviewDTO) => (
+            <ReviewCard key={reviewDTO.id} review={reviewDTO} />
+          ))}
+        </Section>
+        <Section>
+          <WordOfTheDayComponent />
+        </Section>
+      </ContainerTablet>
+      <ContainerDesktop>
         {allReviews.map((reviewDTO) => (
           <ReviewCard key={reviewDTO.id} review={reviewDTO} />
         ))}
-      </ContainerTabletAndDesktop>
+      </ContainerDesktop>
     </>
   );
 }
@@ -52,16 +64,32 @@ const ContainerMobile = styled.div`
   flex-wrap: wrap;
   align-content: baseline;
   width: 100%;
+  justify-content: center;
+  gap: 30px;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     display: none;
   }
 `;
 
-const ContainerTabletAndDesktop = styled.div`
+const ContainerTablet = styled.div`
   display: none;
     
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    display: none;
+  }
+`;
+
+const ContainerDesktop = styled.div`
+  display: none;
+    
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -70,4 +98,14 @@ const ContainerTabletAndDesktop = styled.div`
     gap: 40px;
     width: calc(100vw - 100px);
   }
+`;
+
+const Section = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: baseline;
+    gap: 40px;
+    width: calc(100vw - 100px);
 `;

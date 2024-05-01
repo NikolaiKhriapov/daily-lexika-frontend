@@ -16,53 +16,75 @@ export default function WordOfTheDayComponent() {
   const { data: user } = useGetUserInfoQuery();
   const { data: wordOfTheDay } = useGetWordOfTheDayQuery();
 
-  const cardHeight = '300px';
-  const cardWidth = 'auto';
+  const cardHeight = { base: '280px', xl: '300px' };
+  const cardWidth = { base: '215px', xl: 'auto' };
 
   if (!user || !wordOfTheDay) return <></>;
 
   const wordDataSize = {
     [RoleName.USER_ENGLISH]: {
       nameWord: {
-        size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXL },
+        size: { base: Size.XL, sm: Size.XL, xl: Size.XXL },
         font: theme.fonts.body,
       },
-      transcriptionSize: { base: Size.SM, sm: Size.XL, xl: Size.LG },
-      nameTranslationSize: { base: Size.LG, sm: Size.XXL, xl: Size.MD },
+      transcriptionSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
+      nameTranslationSize: { base: Size.MD, sm: Size.MD, xl: Size.MD },
     },
     [RoleName.USER_CHINESE]: {
       nameWord: {
-        size: { base: Size.XXXXL, sm: Size.XXXXXL, xl: Size.XXXXL },
+        size: { base: Size.XXXL, sm: Size.XXXL, xl: Size.XXXXL },
         font: theme.fonts.bodyCh,
       },
-      transcriptionSize: { base: Size.XL, sm: Size.XXL, xl: Size.LG },
-      nameTranslationSize: { base: Size.MD, sm: Size.XL, xl: Size.MD },
+      transcriptionSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
+      nameTranslationSize: { base: Size.SM, sm: Size.SM, xl: Size.MD },
     },
     [RoleName.ADMIN]: null,
   };
 
   return (
-    <ContainerDesktop>
-      <WordCard
-        cardHeight={cardHeight}
-        cardWidth={cardWidth}
-        word={wordOfTheDay}
-        wordDataSize={wordDataSize}
-        borderColor={theme.colors[colorMode].borderColorMain}
-        bgColor={theme.colors[colorMode].background2}
-        isFlipped={isFlipped}
-        setFlipped={() => setFlipped(!isFlipped)}
-        setUnlocked={() => null}
-        title="Word of the Day"
-      />
-    </ContainerDesktop>
+    <>
+      <ContainerMobileAndTablet>
+        <WordCard
+          cardHeight={cardHeight.base}
+          cardWidth={cardWidth.base}
+          word={wordOfTheDay}
+          wordDataSize={wordDataSize}
+          borderColor={theme.colors[colorMode].borderColor}
+          bgColor={theme.colors[colorMode].bgColor}
+          isFlipped={isFlipped}
+          setFlipped={() => setFlipped(!isFlipped)}
+          setUnlocked={() => null}
+          title="Word of the Day"
+        />
+      </ContainerMobileAndTablet>
+      <ContainerDesktop>
+        <WordCard
+          cardHeight={cardHeight.xl}
+          cardWidth={cardWidth.xl}
+          word={wordOfTheDay}
+          wordDataSize={wordDataSize}
+          borderColor={theme.colors[colorMode].borderColorMain}
+          bgColor={theme.colors[colorMode].background2}
+          isFlipped={isFlipped}
+          setFlipped={() => setFlipped(!isFlipped)}
+          setUnlocked={() => null}
+          title="Word of the Day"
+        />
+      </ContainerDesktop>
+    </>
   );
 }
 
 const ContainerDesktop = styled.div`
-  display: none !important;
+  display: none;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    display: block !important;
+    display: block;
+  }
+`;
+
+const ContainerMobileAndTablet = styled.div`
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+      display: none;
   }
 `;

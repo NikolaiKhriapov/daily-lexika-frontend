@@ -37,7 +37,7 @@ export default function AppSidebar(props: Props) {
           </Item>
         ))}
       </SidebarMain>
-      <WordOfTheDayComponent />
+      <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
       <AppInstallComponent />
     </Container>
   );
@@ -120,5 +120,13 @@ const Icon = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     font-size: 20px;
+  }
+`;
+
+const ContainerDesktop = styled.div`
+  display: none;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    display: block;
   }
 `;

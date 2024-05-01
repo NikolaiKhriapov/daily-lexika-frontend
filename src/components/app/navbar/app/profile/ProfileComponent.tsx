@@ -42,7 +42,7 @@ export default function ProfileComponent() {
           <MenuItem>Leave feedback</MenuItem>
         </LinkStyled>
         <LinkStyled href={Page.PRIVACY_POLICY} $colorMode={colorMode} style={{ textDecoration: 'none' }} target="_blank">
-          <MenuItem>Privacy Policy</MenuItem>
+          <MenuItem>Privacy policy</MenuItem>
         </LinkStyled>
         <MenuDivider />
         <MenuItem onClick={logout}>Log out</MenuItem>
