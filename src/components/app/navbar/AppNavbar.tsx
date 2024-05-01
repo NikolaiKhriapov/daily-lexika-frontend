@@ -6,10 +6,10 @@ import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import ColorModeSwitchComponent from '@components/app/navbar/app/color-mode-switch/ColorModeSwitchComponent';
+import PwaInstallComponent from '@components/app/navbar/app/install-app/PwaInstallComponent';
+import PwaInstallIosComponent from '@components/app/navbar/app/install-app/PwaInstallIosComponent';
 import NotificationsComponent from '@components/app/navbar/app/notifications/NotificationsComponent';
 import ProfileComponent from '@components/app/navbar/app/profile/ProfileComponent';
-import PwaInstallComponent from '@components/app/navbar/app/install/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/install/PwaInstallIosComponent';
 import UpcomingUpdatesComponent from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesComponent';
 
 export default function AppNavbar() {

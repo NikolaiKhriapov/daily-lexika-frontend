@@ -142,7 +142,7 @@ export default function StartReviewWindow(props: Props) {
             />
             <ButtonsContainer>
               <Button
-                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? `Don't know` : 'Forgot'}
+                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? 'Don\'t know' : 'Forgot'}
                 buttonType={ButtonType.BUTTON_RED}
                 onClick={() => pressButton(false)}
                 isDisabled={!isModalVisible || !reviewWord || isLoading}
@@ -167,8 +167,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  //overflow-x: hidden;
-  //overflow-y: hidden;
     
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     gap: 70px;

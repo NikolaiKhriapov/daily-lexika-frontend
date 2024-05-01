@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
 import { TbCalendarCheck } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint, Page, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
-import PwaInstallComponent from '@components/app/navbar/app/install/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/install/PwaInstallIosComponent';
+import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
+import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Text from '@components/ui-common/basic/Text';
 
 type Props = {
@@ -20,7 +19,6 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
-  const { isPwaInstallable, isIosOrMacOs, isStandalone } = useContext(PwaContext);
 
   const sidebarMainItems = [
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
@@ -39,11 +37,8 @@ export default function AppSidebar(props: Props) {
           </Item>
         ))}
       </SidebarMain>
-      {!isStandalone && (
-        isPwaInstallable
-          ? <SidebarExtra $colorMode={colorMode}><PwaInstallComponent /></SidebarExtra>
-          : isIosOrMacOs && <SidebarExtra $colorMode={colorMode}><PwaInstallIosComponent /></SidebarExtra>
-      )}
+      <WordOfTheDayComponent />
+      <AppInstallComponent />
     </Container>
   );
 }
@@ -86,15 +81,6 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
     border: ${({ $colorMode }) => borderStyles($colorMode)};
     border-color: ${({ $colorMode }) => theme.colors[$colorMode].borderColorMain};
     border-radius: ${theme.stylesToDelete.borderRadius};
-  }
-`;
-
-const SidebarExtra = styled(SidebarMain)`
-  display: none;
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    display: unset;
-    padding: 0;
   }
 `;
 
