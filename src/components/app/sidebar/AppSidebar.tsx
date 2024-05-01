@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
-import { TbCalendarCheck } from 'react-icons/tb';
+import { TbCalendarCheck, TbDeviceTabletSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -10,6 +10,7 @@ import { theme } from '@utils/theme';
 import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Text from '@components/ui-common/basic/Text';
+import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 
 type Props = {
   page?: Page;
@@ -36,6 +37,12 @@ export default function AppSidebar(props: Props) {
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
         ))}
+        <Item href='' $colorMode={colorMode} $selected={false}>
+          <Icon as={TbDeviceTabletSearch} color='gray' />
+          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Search</Text>
+          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Search</Text>
+          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
+        </Item>
       </SidebarMain>
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
       <AppInstallComponent />
@@ -86,6 +93,7 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
 
 const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 5px;
   height: 100%;
@@ -128,5 +136,21 @@ const ContainerDesktop = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     display: block;
+  }
+`;
+
+const ComingSoonContainer = styled.div`
+  position: absolute;
+  top: 10%;
+  right: 20%;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    top: 20%;
+    right: 15%;
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    top: 15%;
+    right: 5%;
   }
 `;
