@@ -50,6 +50,7 @@ export const ApiEndpointsWordPacks = {
 const URL_WORDS = `${BASE_URL}/flashcards/words`;
 export const ApiEndpointsWords = {
   getAllWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
+  getWordOfTheDay: () => `${URL_WORDS}/word-of-the-day`,
 };
 
 const URL_WORD_DATA = `${BASE_URL}/flashcards/word-data`;

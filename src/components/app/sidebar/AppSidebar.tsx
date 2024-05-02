@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
-import { TbCalendarCheck } from 'react-icons/tb';
+import { TbCalendarCheck, TbDeviceTabletSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint, Page, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
-import PwaInstallComponent from '@components/app/navbar/app/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/PwaInstallIosComponent';
+import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
+import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Text from '@components/ui-common/basic/Text';
+import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 
 type Props = {
   page?: Page;
@@ -20,7 +20,6 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
-  const { isPwaInstallable, isIosOrMacOs, isStandalone } = useContext(PwaContext);
 
   const sidebarMainItems = [
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
@@ -38,12 +37,15 @@ export default function AppSidebar(props: Props) {
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
         ))}
+        <Item href='' $colorMode={colorMode} $selected={false}>
+          <Icon as={TbDeviceTabletSearch} color='gray' />
+          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Search</Text>
+          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Search</Text>
+          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
+        </Item>
       </SidebarMain>
-      {!isStandalone && (
-        isPwaInstallable
-          ? <SidebarExtra $colorMode={colorMode}><PwaInstallComponent /></SidebarExtra>
-          : isIosOrMacOs && <SidebarExtra $colorMode={colorMode}><PwaInstallIosComponent /></SidebarExtra>
-      )}
+      <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
+      <ContainerDesktop><AppInstallComponent /></ContainerDesktop>
     </Container>
   );
 }
@@ -89,17 +91,9 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
   }
 `;
 
-const SidebarExtra = styled(SidebarMain)`
-  display: none;
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    display: unset;
-    padding: 0;
-  }
-`;
-
 const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 5px;
   height: 100%;
@@ -134,5 +128,29 @@ const Icon = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     font-size: 20px;
+  }
+`;
+
+const ContainerDesktop = styled.div`
+  display: none;
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    display: block;
+  }
+`;
+
+const ComingSoonContainer = styled.div`
+  position: absolute;
+  top: 10%;
+  right: 20%;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    top: 20%;
+    right: 15%;
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    top: 15%;
+    right: 5%;
   }
 `;

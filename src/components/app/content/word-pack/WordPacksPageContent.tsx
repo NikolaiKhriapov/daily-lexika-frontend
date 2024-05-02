@@ -22,7 +22,7 @@ export default function WordPacksPageContent() {
   const wordPackCategoriesStandard = wordPackCategories
     .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
-  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={3} />;
+  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={7} />;
   if (isError) return <ErrorComponent />;
 
   if (!allWordPacks || allWordPacks.length === 0) {
@@ -37,7 +37,9 @@ export default function WordPacksPageContent() {
     <Container>
       {wordPackCategoriesStandard.map((wordPackCategory) => (
         <Section key={wordPackCategory}>
-          <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+          <HeadingContainer>
+            <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+          </HeadingContainer>
           <Swiper>
             {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
               <SwiperSlide key={wordPackDto.name}>
@@ -48,7 +50,9 @@ export default function WordPacksPageContent() {
         </Section>
       ))}
       <Section>
-        <Heading size={Size.LG} isCentered>Custom</Heading>
+        <HeadingContainer>
+          <Heading size={Size.LG} isCentered>Custom</Heading>
+        </HeadingContainer>
         <Swiper>
           {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
             <SwiperSlide key={wordPackDto.name}>
@@ -94,5 +98,14 @@ const Section = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 100%;
+  }
+`;
+
+const HeadingContainer = styled.div`
+  display: none;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
+    justify-content: center;
   }
 `;

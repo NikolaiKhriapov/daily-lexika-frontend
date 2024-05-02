@@ -3,11 +3,12 @@ import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 export enum SkeletonType {
-  DEFAULT = 'DEFAULT',
   REVIEW_CARD = 'REVIEW_CARD',
   WORD_PACK_CARD = 'WORD_PACK_CARD',
   STATS_CARD = 'STATS_CARD',
   TEXT_HEADING = 'TEXT_HEADING',
+  WORD_INFO = 'WORD_INFO',
+  DEFAULT = 'DEFAULT',
 }
 
 interface Props extends SkeletonProps {
@@ -45,6 +46,13 @@ export default function Skeleton(props: Props) {
     case SkeletonType.TEXT_HEADING: {
       height = 5;
       width = 215;
+      border = borderStyles(colorMode);
+      borderRadius = theme.stylesToDelete.borderRadius;
+      break;
+    }
+    case SkeletonType.WORD_INFO: {
+      height = 500;
+      height = 60;
       border = borderStyles(colorMode);
       borderRadius = theme.stylesToDelete.borderRadius;
       break;

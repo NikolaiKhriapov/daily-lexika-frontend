@@ -14,6 +14,7 @@ export default function MenuList({ children, ...rest }: MenuListProps) {
 }
 
 const MenuListStyled = styled(ChakraMenuList)<{ $colorMode: ColorMode }>`
-  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   margin: 0 15px;
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow} !important;
 `;

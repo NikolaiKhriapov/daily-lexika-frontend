@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
-import { useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { EmailLinks, RoleName } from '@utils/app/constants';
+import { RoleName } from '@utils/app/constants';
 import { Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Status, WordDto } from '@utils/types';
-import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInfo';
-import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
-import Link from '@components/ui-common/basic/Link';
-import Text from '@components/ui-common/basic/Text';
-import ButtonsPronunciation from '@components/ui-common/complex/ButtonsPronunciation';
-import Card from '@components/ui-common/complex/Card';
-import WordDataHelper from '@helpers/WordDataHelper';
+import WordCard from '@components/app/content/review/WordCard';
 
 type Props = {
   reviewWord?: WordDto | null;
@@ -29,7 +23,6 @@ export default function ReviewWordCard(props: Props) {
   const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
-  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
@@ -70,8 +63,6 @@ export default function ReviewWordCard(props: Props) {
 
   if (!user || !reviewWord) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
 
-  const userRole = user.role!;
-
   const wordDataSize = {
     [RoleName.USER_ENGLISH]: {
       nameWord: {
@@ -110,60 +101,18 @@ export default function ReviewWordCard(props: Props) {
      ${isThrown ? 'transform 0.6s' : ''}`,
   };
 
-  const onClickDetails = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    onOpenDetails();
-  };
-  const onClickError = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-  };
-
   return (
     <SwipeableContainer {...swipeHandlers} style={dynamicStyles}>
-      <Card
-        height={cardHeight}
-        width={cardWidth}
-        padding="10px"
+      <WordCard
+        cardHeight={cardHeight}
+        cardWidth={cardWidth}
+        word={reviewWord}
+        wordDataSize={wordDataSize}
         borderColor={isNewStatus && theme.colors[colorMode].reviewWordCardBadgeRedColor}
         bgColor={theme.colors[colorMode].reviewWordCardBgColor}
         isFlipped={isFlipped}
         setFlipped={setFlipped}
         setUnlocked={setUnlocked}
-        face={(
-          <ContentsContainer>
-            <ButtonsTopContainer>
-              <ButtonsPronunciation word={reviewWord} />
-            </ButtonsTopContainer>
-            <Text fontFamily={wordDataSize[userRole]?.nameWord.font} size={wordDataSize[userRole]?.nameWord.size}>
-              {WordDataHelper.getWordNameByUserRole(reviewWord, user)}
-            </Text>
-          </ContentsContainer>
-        )}
-        back={(
-          <ContentsContainer>
-            <ButtonsTopContainer>
-              <ButtonWithIcon
-                type={ButtonWithIconType.INFO}
-                onClick={onClickDetails}
-                isOpen={isOpenDetails}
-                modalContent={(
-                  <WordDetailedInfo
-                    isOpen={isOpenDetails}
-                    onClose={onCloseDetails}
-                    word={reviewWord}
-                  />
-                )}
-              />
-            </ButtonsTopContainer>
-            <ButtonsBottomContainer>
-              <Link href={EmailLinks.ReportError(WordDataHelper.getWordNameByUserRole(reviewWord, user))}>
-                <ButtonWithIcon type={ButtonWithIconType.ERROR} onClick={onClickError} />
-              </Link>
-            </ButtonsBottomContainer>
-            <Text size={wordDataSize[userRole]?.transcriptionSize}>{reviewWord.wordDataDto.transcription}</Text>
-            <Text size={wordDataSize[userRole]?.nameTranslationSize}>{WordDataHelper.getWordTranslation(reviewWord, user!)}</Text>
-          </ContentsContainer>
-        )}
       />
     </SwipeableContainer>
   );
@@ -171,33 +120,6 @@ export default function ReviewWordCard(props: Props) {
 
 const SwipeableContainer = styled.div`
   z-index: 1;
-`;
-
-const ButtonsTopContainer = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ButtonsBottomContainer = styled.div`
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ContentsContainer = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  text-align: center;
-  justify-content: center;
 `;
 
 const ReviewWordPlaceholderContainer = styled.div<{

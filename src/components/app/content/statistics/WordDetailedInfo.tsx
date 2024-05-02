@@ -10,7 +10,7 @@ import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
-import ComingSoon from '@components/ui-common/complex/ComingSoon';
+import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 import Modal from '@components/ui-common/complex/Modal';
 import WordDataHelper from '@helpers/WordDataHelper';
 
@@ -85,7 +85,7 @@ export default function WordDetailedInfo(props: Props) {
                 ))}
                 {user.role === RoleName.USER_CHINESE && word.wordDataDto.examples.map((example, idx) => (
                   example === '[TODO]'
-                    ? <ComingSoon key={idx} />
+                    ? <ComingSoon key={idx} type={ComingSoonType.TEXT} />
                     : (
                       <>
                         <Text key={idx} size={Size.XL} isCentered>{((idx + 1) % 5 === 1 && example)}</Text>{/* Chinese */}
