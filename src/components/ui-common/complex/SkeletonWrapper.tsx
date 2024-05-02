@@ -35,6 +35,7 @@ export default function SkeletonWrapper(props: Props) {
     [SkeletonType.WORD_PACK_CARD]: <WordPacksPageContentSkeleton number={number} />,
     [SkeletonType.STATS_CARD]: <StatisticsPageContentSkeleton number={number} />,
     [SkeletonType.TEXT_HEADING]: <Skeleton type={SkeletonType.TEXT_HEADING} />,
+    [SkeletonType.WORD_INFO]: <SearchWindowSkeleton />,
     [SkeletonType.DEFAULT]: <Skeleton type={SkeletonType.DEFAULT} />,
   };
 
@@ -137,6 +138,17 @@ function StatisticsPageContentSkeleton(props: StatisticsPageContentSkeletonProps
   );
 }
 
+function SearchWindowSkeleton() {
+  const number = 10;
+  const type = SkeletonType.WORD_INFO;
+
+  return (
+    <ContainerSearchWindow>
+      {[...Array(number)].map((_, index) => <Skeleton key={index} type={type} />)}
+    </ContainerSearchWindow>
+  );
+}
+
 const ContainerMobile = styled.div`
   display: flex;
   flex-direction: row;
@@ -178,10 +190,19 @@ const ContainerWordPacksTabletAndDesktop = styled.div`
 `;
 
 const ContainerStatistics = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: baseline;
-    gap: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: baseline;
+  gap: 40px;
+`;
+
+const ContainerSearchWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 60vh;
+  overflow-x: hidden;
+  width: 100%;
 `;

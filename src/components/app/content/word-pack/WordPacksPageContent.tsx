@@ -22,7 +22,7 @@ export default function WordPacksPageContent() {
   const wordPackCategoriesStandard = wordPackCategories
     .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
-  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={3} />;
+  if (isLoading) return <SkeletonWrapper type={SkeletonType.WORD_PACK_CARD} isLoading={isLoading} fixed={7} />;
   if (isError) return <ErrorComponent />;
 
   if (!allWordPacks || allWordPacks.length === 0) {

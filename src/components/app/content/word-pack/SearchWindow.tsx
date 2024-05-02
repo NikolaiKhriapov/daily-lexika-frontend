@@ -11,9 +11,10 @@ import { theme } from '@utils/theme';
 import { WordDataDto, WordPackDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Input from '@components/ui-common/basic/Input';
-import Spinner from '@components/ui-common/basic/Spinner';
+import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
@@ -97,9 +98,8 @@ export default function SearchWindow(props: Props) {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <WordInfoContainer>
-            {isLoadingAllWordData
-              ? <SpinnerContainer><Spinner /></SpinnerContainer>
-              : (searchResult && searchResult.map((wordDataDto) => (
+            <SkeletonWrapper type={SkeletonType.WORD_INFO} isLoading={isLoadingAllWordData}>
+              {(searchResult && searchResult.map((wordDataDto) => (
                 <WordInfo
                   key={wordDataDto.id}
                   onClick={() => onClickWordData(wordDataDto)}
@@ -131,6 +131,7 @@ export default function SearchWindow(props: Props) {
                   </RightIconContainer>
                 </WordInfo>
               )))}
+            </SkeletonWrapper>
           </WordInfoContainer>
         </>
       )}
@@ -183,9 +184,4 @@ const CharacterAndTranscriptionAndTranslation = styled.div`
   justify-content: space-between;
   margin: 10px;
   width: 100%;
-`;
-
-const SpinnerContainer = styled.div`
-  display: flex;
-  justify-content: center;
 `;

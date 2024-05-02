@@ -39,13 +39,15 @@ export const upcomingUpdatesTableData: Record<FeaturePeriod, FeaturesColumn> = {
       [RoleName.USER_ENGLISH]: [
         { name: 'Custom combined word packs', progress: 0 },
         { name: 'Interface languages: RU, CN', progress: 0 },
+        { name: 'Section \'Search\'', progress: 0 },
         { name: 'Section \'Grammar\'', progress: 0 },
       ],
       [RoleName.USER_CHINESE]: [
         { name: 'Custom combined word packs', progress: 0 },
         { name: 'Interface languages: RU, CN', progress: 0 },
+        { name: 'Section \'Search\'', progress: 0 },
         { name: 'Section \'Grammar\'', progress: 0 },
-        { name: 'Custom word packs by character', progress: 0 },
+        // { name: 'Custom word packs by character', progress: 0 },
       ],
       [RoleName.ADMIN]: [],
     },
