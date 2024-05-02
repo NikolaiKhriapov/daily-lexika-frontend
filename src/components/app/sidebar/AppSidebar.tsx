@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
 import { TbCalendarCheck, TbDeviceTabletSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { Breakpoint, Page, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -20,6 +21,7 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
+  const { isStandalone } = useContext(AppInstallationContext);
 
   const sidebarMainItems = [
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
@@ -45,7 +47,7 @@ export default function AppSidebar(props: Props) {
         </Item>
       </SidebarMain>
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
-      <ContainerDesktop><AppInstallComponent /></ContainerDesktop>
+      {!isStandalone && <ContainerDesktop><AppInstallComponent /></ContainerDesktop>}
     </Container>
   );
 }

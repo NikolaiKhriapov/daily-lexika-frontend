@@ -11,7 +11,7 @@ type ContextProps = {
   isStandalone: boolean;
 };
 
-const PwaContext = createContext<ContextProps>({
+const AppInstallationContext = createContext<ContextProps>({
   deferredPrompt: null,
   isPwaInstallable: false,
   setPwaInstallable: () => {},
@@ -23,7 +23,7 @@ type Props = {
   children: ReactNode;
 };
 
-function PwaProvider(props: Props) {
+function AppInstallationProvider(props: Props) {
   const { children } = props;
   const [isPwaInstallable, setPwaInstallable] = useState(false);
 
@@ -40,7 +40,7 @@ function PwaProvider(props: Props) {
   const [isIos, setIos] = useState(false);
   const [isMacOs, setMacOs] = useState(false);
   const [isIosOrMacOs, setIosOrMacOs] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false); // State for standalone mode
+  const [isStandalone, setIsStandalone] = useState(false);
 
   const checkIsIos = () => detectOS('iOS');
   const checkIsMacOs = () => detectOS('Mac');
@@ -55,11 +55,11 @@ function PwaProvider(props: Props) {
   }, [isIos, isMacOs]);
 
   return (
-    <PwaContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIosOrMacOs, isStandalone }}>
+    <AppInstallationContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIosOrMacOs, isStandalone }}>
       {children}
-    </PwaContext.Provider>
+    </AppInstallationContext.Provider>
   );
 }
 
-export { PwaContext };
-export default PwaProvider;
+export { AppInstallationContext };
+export default AppInstallationProvider;

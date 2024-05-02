@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
+import AppInstallationProvider from '@context/app/AppInstallationContext';
 import AuthProvider from '@context/app/AuthContext';
-import PwaProvider from '@context/app/PwaContext';
 import { store } from '@store/index';
 import { fonts } from '@utils/fonts';
 import { theme } from '@utils/theme';
@@ -20,11 +20,11 @@ export default function MyApp({ Component, pageProps }: { Component: any; pagePr
       </style>
       <ChakraProvider theme={theme}>
         <Provider store={store}>
-          <PwaProvider>
+          <AppInstallationProvider>
             <AuthProvider>
               <Component {...pageProps} />
             </AuthProvider>
-          </PwaProvider>
+          </AppInstallationProvider>
         </Provider>
       </ChakraProvider>
     </>

@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
-import { PwaContext } from '@context/app/PwaContext';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import PwaInstallAndroidComponent from '@components/app/navbar/app/install-app/PwaInstallAndroidComponent';
 import PwaInstallAppleComponent from '@components/app/navbar/app/install-app/PwaInstallAppleComponent';
 
 export default function PwaInstallComponent() {
-  const { isPwaInstallable, isIosOrMacOs, isStandalone } = useContext(PwaContext);
+  const { isPwaInstallable, isIosOrMacOs } = useContext(AppInstallationContext);
 
   return (
-    !isStandalone
-      ? (isPwaInstallable
-        ? <PwaInstallAndroidComponent />
-        : isIosOrMacOs
-          ? <PwaInstallAppleComponent />
-          : <></>
-      ) : <></>
+    isPwaInstallable
+      ? <PwaInstallAndroidComponent />
+      : isIosOrMacOs
+        ? <PwaInstallAppleComponent />
+        : <></>
   );
 }

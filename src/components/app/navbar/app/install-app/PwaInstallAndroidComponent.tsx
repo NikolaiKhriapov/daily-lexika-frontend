@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { PwaContext } from '@context/app/PwaContext';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { ButtonType } from '@utils/constants';
 import { theme } from '@utils/theme';
 import Button from '@components/ui-common/basic/Button';
@@ -10,7 +10,7 @@ import PwaBadge from '@components/ui-common/icons/pwa-badge.png';
 
 export default function PwaInstallAndroidComponent() {
   const { colorMode } = useColorMode();
-  const { deferredPrompt, isPwaInstallable, setPwaInstallable, isStandalone } = useContext(PwaContext);
+  const { deferredPrompt, isPwaInstallable, setPwaInstallable, isStandalone } = useContext(AppInstallationContext);
 
   if (!isPwaInstallable || isStandalone) return null;
 

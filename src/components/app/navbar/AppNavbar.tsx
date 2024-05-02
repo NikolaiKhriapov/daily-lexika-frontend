@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -12,12 +13,13 @@ import UpcomingUpdatesComponent from '@components/app/navbar/app/upcoming-update
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
+  const { isStandalone } = useContext(AppInstallationContext);
 
   return (
     <Container $colorMode={colorMode}>
       <SectionsContainer>
         <Section>
-          <ContainerMobileAndTablet><AppInstallComponent /></ContainerMobileAndTablet>
+          {!isStandalone && <ContainerMobileAndTablet><AppInstallComponent /></ContainerMobileAndTablet>}
           <UpcomingUpdatesComponent />
         </Section>
         <Section>

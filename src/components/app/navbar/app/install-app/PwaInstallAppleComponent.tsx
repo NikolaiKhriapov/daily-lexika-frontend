@@ -3,7 +3,7 @@ import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { PwaContext } from '@context/app/PwaContext';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import Button from '@components/ui-common/basic/Button';
@@ -14,7 +14,7 @@ import PwaBadge from '@components/ui-common/icons/pwa-badge.png';
 
 export default function PwaInstallAppleComponent() {
   const { colorMode } = useColorMode();
-  const { isIosOrMacOs, isStandalone } = useContext(PwaContext);
+  const { isIosOrMacOs, isStandalone } = useContext(AppInstallationContext);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
   if (!isIosOrMacOs || isStandalone) return null;
