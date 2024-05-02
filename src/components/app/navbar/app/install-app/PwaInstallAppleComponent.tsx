@@ -4,15 +4,15 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { PwaContext } from '@context/app/PwaContext';
-import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import Button from '@components/ui-common/basic/Button';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
 import IosShareIcon from '@components/ui-common/icons/ios-share-icon.png';
+import PwaBadge from '@components/ui-common/icons/pwa-badge.png';
 
-export default function PwaInstallIosComponent() {
+export default function PwaInstallAppleComponent() {
   const { colorMode } = useColorMode();
   const { isIosOrMacOs, isStandalone } = useContext(PwaContext);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -23,10 +23,9 @@ export default function PwaInstallIosComponent() {
     <>
       <ButtonStyled
         buttonText={(
-          <>
-            <ImDownload fontSize={20} />
-            <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
-          </>
+          <ButtonTextContainer $colorMode={colorMode}>
+            <Image src={PwaBadge} width={165} alt="pwa-badge" />
+          </ButtonTextContainer>
         )}
         buttonType={ButtonType.BUTTON}
         onClick={onOpenModal}
@@ -38,7 +37,7 @@ export default function PwaInstallIosComponent() {
         isOpen={isOpenModal}
         onClose={onCloseModal}
         header={(
-          <ButtonTextContainer>
+          <ButtonTextContainer $colorMode={colorMode}>
             <ImDownload fontSize={20} />
             <Text>Install app</Text>
           </ButtonTextContainer>
@@ -68,31 +67,17 @@ export default function PwaInstallIosComponent() {
 }
 
 const ButtonStyled = styled(Button)<{ $colorMode: ColorMode }>`
+  width: fit-content !important;
+  height: fit-content !important;
+  padding: 0 !important;
   border: none !important;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2} !important;
-
-  &:hover {
-    background-color: ${({ $colorMode }) => theme.colors[$colorMode].hoverBgColor} !important;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
-    border: ${({ $colorMode }) => borderStyles($colorMode)} !important;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    box-shadow: none;
-    border: none !important;
-    border-radius: ${theme.stylesToDelete.borderRadius} !important;
-    height: 60px !important;
-    width: 100%;
-  }
 `;
 
-const ButtonTextContainer = styled.div`
+const ButtonTextContainer = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 18px;
 `;
 
 const ContentContainer = styled.div`

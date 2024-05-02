@@ -1,32 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { PwaContext } from '@context/app/PwaContext';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import ColorModeSwitchComponent from '@components/app/navbar/app/color-mode-switch/ColorModeSwitchComponent';
-import PwaInstallComponent from '@components/app/navbar/app/install-app/PwaInstallComponent';
-import PwaInstallIosComponent from '@components/app/navbar/app/install-app/PwaInstallIosComponent';
+import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import NotificationsComponent from '@components/app/navbar/app/notifications/NotificationsComponent';
 import ProfileComponent from '@components/app/navbar/app/profile/ProfileComponent';
 import UpcomingUpdatesComponent from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesComponent';
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
-  const { isPwaInstallable, isIosOrMacOs, isStandalone } = useContext(PwaContext);
 
   return (
     <Container $colorMode={colorMode}>
       <SectionsContainer>
         <Section>
-          <MobileAndTabletOnlyContainer>
-            {!isStandalone && (
-              isPwaInstallable
-                ? <PwaInstallComponent />
-                : isIosOrMacOs && <PwaInstallIosComponent />
-            )}
-          </MobileAndTabletOnlyContainer>
+          <ContainerMobileAndTablet><AppInstallComponent /></ContainerMobileAndTablet>
           <UpcomingUpdatesComponent />
         </Section>
         <Section>
@@ -78,7 +69,7 @@ const Section = styled.div`
   }
 `;
 
-const MobileAndTabletOnlyContainer = styled.div`
+const ContainerMobileAndTablet = styled.div`
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     display: none;
   }

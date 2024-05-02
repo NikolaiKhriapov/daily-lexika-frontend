@@ -45,7 +45,7 @@ export default function AppSidebar(props: Props) {
         </Item>
       </SidebarMain>
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
-      <AppInstallComponent />
+      <ContainerDesktop><AppInstallComponent /></ContainerDesktop>
     </Container>
   );
 }
