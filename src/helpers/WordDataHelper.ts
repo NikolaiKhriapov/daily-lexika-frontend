@@ -13,9 +13,9 @@ export default class WordDataHelper {
   public static getWordDataNameByUserRole(wordData: WordDataDto, user: UserDto) {
     switch (user.role) {
       case RoleName.USER_ENGLISH: return wordData.nameEnglish;
-      case RoleName.USER_CHINESE: return wordData.nameChineseSimplified.length < 100
-        ? wordData.nameChineseSimplified
-        : wordData.nameChineseSimplified.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
+      case RoleName.USER_CHINESE: return wordData.nameChinese.length < 100
+        ? wordData.nameChinese
+        : wordData.nameChinese.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
       default: return '';
     }
   }
@@ -28,9 +28,9 @@ export default class WordDataHelper {
     switch (user.translationLanguage) {
       case Language.ENGLISH: return wordData.nameEnglish;
       case Language.RUSSIAN: return wordData.nameRussian;
-      case Language.CHINESE: return wordData.nameChineseSimplified.length < 100
-        ? wordData.nameChineseSimplified
-        : wordData.nameChineseSimplified.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
+      case Language.CHINESE: return wordData.nameChinese.length < 100
+        ? wordData.nameChinese
+        : wordData.nameChinese.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
       default: return '';
     }
   }
@@ -43,7 +43,7 @@ export default class WordDataHelper {
     switch (user.translationLanguage) {
       case Language.ENGLISH: return user.role !== RoleName.USER_ENGLISH ? wordData.nameEnglish : '';
       case Language.RUSSIAN: return wordData.nameRussian;
-      case Language.CHINESE: return user.role !== RoleName.USER_CHINESE ? wordData.nameChineseSimplified : '';
+      case Language.CHINESE: return user.role !== RoleName.USER_CHINESE ? wordData.nameChinese : '';
       default: return wordData.nameEnglish;
     }
   }
@@ -87,7 +87,7 @@ export default class WordDataHelper {
   public static checkAgainstSearchQuery(wordData: WordDataDto, searchQuery: string, user: UserDto) {
     switch (user.role) {
       case RoleName.USER_ENGLISH: return wordData.nameEnglish.toLowerCase().startsWith(searchQuery.toLowerCase());
-      case RoleName.USER_CHINESE: return WordDataHelper.removeAccent(wordData.nameChineseSimplified).toLowerCase().includes(searchQuery.toLowerCase())
+      case RoleName.USER_CHINESE: return WordDataHelper.removeAccent(wordData.nameChinese).toLowerCase().includes(searchQuery.toLowerCase())
         || WordDataHelper.removeAccent(wordData.transcription).toLowerCase().startsWith(searchQuery.toLowerCase());
       default: return null;
     }

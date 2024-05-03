@@ -65,7 +65,7 @@ export interface ReviewDto {
 
 export interface WordDataDto {
   id: number;
-  nameChineseSimplified: string;
+  nameChinese: string;
   transcription: string;
   nameEnglish: string;
   nameRussian: string;

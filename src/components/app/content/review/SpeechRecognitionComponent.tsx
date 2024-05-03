@@ -57,9 +57,13 @@ export default function SpeechRecognitionComponent(props: Props) {
 
   return (
     <>
-      {isMatch(transcript, '') && <ButtonWithIcon type={ButtonWithIconType.MICROPHONE} onClick={startRecognition} />}
-      {isMatch(transcript, word) && <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_GREEN} onClick={startRecognition} />}
-      {!isMatch(transcript, word) && isMatch(transcript, '') && <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_RED} onClick={startRecognition} />}
+      {
+        isMatch(transcript, '')
+          ? <ButtonWithIcon type={ButtonWithIconType.MICROPHONE} onClick={startRecognition} />
+          : isMatch(transcript, word)
+            ? <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_GREEN} onClick={startRecognition} />
+            : <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_RED} onClick={startRecognition} />
+      }
       {listening && (
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />

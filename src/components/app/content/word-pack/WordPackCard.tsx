@@ -86,11 +86,9 @@ export default function WordPackCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{WordDataHelper.getOriginalWordPackName(wordPack.name, user)}</Text>
-            {
-              wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name, user)) && (
-                <UnderDevelopmentIcon tooltipText='We are still improving the translations for this pack, but you can already use it' />
-              )
-            }
+            {wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name, user)) && (
+              <UnderDevelopmentIcon tooltipText='We are still improving the translations for this pack, but you can already use it' />
+            )}
           </WordPackNameContainer>
           <WordsCountContainer>
             <TbCards size={20} />&nbsp;<Text size={Size.MD}>{wordPack.totalWords}</Text>
@@ -181,6 +179,7 @@ export default function WordPackCard(props: Props) {
 }
 
 const ContentsContainer = styled.div`
+    position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
