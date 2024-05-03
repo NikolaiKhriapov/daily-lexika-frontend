@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { useDeleteCustomWordPackMutation, wordPacksAPI } from '@store/api/wordPacksAPI';
-import { useAppDispatch } from '@store/hooks/hooks';
+import { useDeleteCustomWordPackMutation } from '@store/api/wordPacksAPI';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Category, placeholderWordPack, WordPackDto } from '@utils/types';
@@ -30,7 +29,6 @@ type Props = {
 export default function WordPackCard(props: Props) {
   const { wordPack } = props;
 
-  const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
@@ -41,7 +39,6 @@ export default function WordPackCard(props: Props) {
 
   const { data: user } = useGetUserInfoQuery();
   const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
-  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: 0, size: 20 }, { force: false }));
 
   if (!user || wordPack.name === placeholderWordPack.name) {
     return <Skeleton type={SkeletonType.WORD_PACK_CARD} />;
