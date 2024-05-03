@@ -52,6 +52,10 @@ export default class WordDataHelper {
     return WordDataHelper.getWordDataTranslationWithoutDuplicate(word.wordDataDto, user);
   }
 
+  public static splitTranscriptions(transcription: string) {
+    return transcription.split(' ');
+  }
+
   public static getOriginalWordPackName(wordPackName: string, user: UserDto | null) {
     const postfix = `__${user?.id}`;
     const prefixEn = 'EN__';

@@ -4,6 +4,7 @@ import { BiMessageSquareError } from 'react-icons/bi';
 import { CiEdit, CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { GoTrash } from 'react-icons/go';
 import { HiOutlineSpeakerWave } from 'react-icons/hi2';
+import { IoMdMic } from 'react-icons/io';
 import { SlRefresh } from 'react-icons/sl';
 import { VscInfo } from 'react-icons/vsc';
 import styled from 'styled-components';
@@ -20,6 +21,9 @@ export enum ButtonWithIconType {
   REMOVE_WORD = 'remove-word',
   INFO = 'info',
   AUDIO = 'audio',
+  MICROPHONE = 'microphone',
+  MICROPHONE_GREEN = 'microphone_green',
+  MICROPHONE_RED = 'microphone_red',
   ERROR = 'error',
 }
 
@@ -46,6 +50,9 @@ export default function ButtonWithIcon(props: Props) {
     [ButtonWithIconType.REMOVE_WORD]: <CiSquareMinus size={20} />,
     [ButtonWithIconType.INFO]: <VscInfo size={20} />,
     [ButtonWithIconType.AUDIO]: <HiOutlineSpeakerWave size={20} />,
+    [ButtonWithIconType.MICROPHONE]: <IoMdMic size={20} />,
+    [ButtonWithIconType.MICROPHONE_GREEN]: <IoMdMic size={20} color='green' />,
+    [ButtonWithIconType.MICROPHONE_RED]: <IoMdMic size={20} color='red' />,
     [ButtonWithIconType.ERROR]: <BiMessageSquareError size={20} />,
   };
 

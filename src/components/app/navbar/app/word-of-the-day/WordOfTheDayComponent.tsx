@@ -55,6 +55,7 @@ export default function WordOfTheDayComponent() {
           setFlipped={() => setFlipped(!isFlipped)}
           setUnlocked={() => null}
           title="Word of the Day"
+          withSpeechRecognition={false}
         />
       </ContainerMobileAndTablet>
       <ContainerDesktop>
@@ -69,6 +70,7 @@ export default function WordOfTheDayComponent() {
           setFlipped={() => setFlipped(!isFlipped)}
           setUnlocked={() => null}
           title="Word of the Day"
+          withSpeechRecognition={false}
         />
       </ContainerDesktop>
     </>
