@@ -73,7 +73,7 @@ export default function StatisticsPageContent() {
                   isRefreshing={isFetching}
                 />
               )))
-              : <Text size={Size.LG}>You do not have any daily reviews</Text>}
+              : <TextTabletAndDesktop size={Size.LG}>You do not have any daily reviews</TextTabletAndDesktop>}
           </SkeletonWrapper>
         </CardsContainer>
       </Section>
@@ -114,5 +114,13 @@ const HeadingTabletAndDesktop = styled(Heading)`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     display: flex;
     justify-content: center;
+  }
+`;
+
+const TextTabletAndDesktop = styled(Text)`
+  display: none;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: flex;
   }
 `;

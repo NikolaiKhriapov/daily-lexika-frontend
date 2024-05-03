@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { EmailLinks } from '@utils/app/constants';
+import { EmailLinks, RoleName } from '@utils/app/constants';
 import { FontWeight } from '@utils/constants';
 import { WordDto } from '@utils/types';
 import SpeechRecognitionComponent from '@components/app/content/review/SpeechRecognitionComponent';
@@ -81,7 +81,9 @@ export default function WordCard(props: Props) {
                 />
               )}
             />
-            {withSpeechRecognition && <SpeechRecognitionComponent word={word.wordDataDto.nameEnglish} />}
+            {withSpeechRecognition && user.role === RoleName.USER_ENGLISH && (
+              <SpeechRecognitionComponent word={WordDataHelper.getWordNameByUserRole(word, user)} />
+            )}
           </ButtonsTopContainer>
           <ButtonsBottomContainer>
             <Link href={EmailLinks.ReportError(WordDataHelper.getWordNameByUserRole(word, user))}>

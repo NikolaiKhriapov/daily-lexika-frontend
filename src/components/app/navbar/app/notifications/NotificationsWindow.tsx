@@ -68,7 +68,7 @@ const Container = styled.div`
   justify-content: space-between;
   gap: 0;
   width: 320px;
-  max-width: 320px;
+  max-width: 75vw;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 460px;

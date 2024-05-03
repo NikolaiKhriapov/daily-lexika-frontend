@@ -9,7 +9,6 @@ import { Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Text from '@components/ui-common/basic/Text';
-import WordDataHelper from '@helpers/WordDataHelper';
 
 interface Props {
   word: string;
@@ -52,15 +51,12 @@ export default function SpeechRecognitionComponent(props: Props) {
     recognition.start();
   };
 
-  const isMatch = (wordOne: string, wordTwo: string) =>
-    WordDataHelper.removeAccent(wordOne).toLowerCase() === WordDataHelper.removeAccent(wordTwo).toLowerCase();
-
   return (
     <>
       {
-        isMatch(transcript, '')
+        transcript.toLowerCase() === ''
           ? <ButtonWithIcon type={ButtonWithIconType.MICROPHONE} onClick={startRecognition} />
-          : isMatch(transcript, word)
+          : transcript.toLowerCase() === word.toLowerCase()
             ? <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_GREEN} onClick={startRecognition} />
             : <ButtonWithIcon type={ButtonWithIconType.MICROPHONE_RED} onClick={startRecognition} />
       }
