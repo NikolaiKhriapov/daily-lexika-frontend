@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { errorNotification } from '@services/app/popup-notification';
 import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store/api/notificationsAPI';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
@@ -16,6 +15,7 @@ import MenuList from '@components/ui-common/basic/MenuList';
 import RedDot from '@components/ui-common/basic/RedDot';
 import Text from '@components/ui-common/basic/Text';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
+import DateHelper from '@helpers/DateHelper';
 
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
@@ -25,22 +25,12 @@ export default function NotificationsComponent() {
   const { data: allNotifications = [] } = useGetAllNotificationsQuery();
   const [readNotification] = useReadNotificationMutation();
 
-  const handleNotificationClick = (notificationDTO: NotificationDto) => {
-    readNotification(notificationDTO.notificationId)
-      .unwrap()
-      .catch((error) => errorNotification('', error));
-    setSelectedNotification(notificationDTO);
-  };
-
-  const handleCloseNotificationModal = () => setSelectedNotification(null);
-
-  const formattedDate = (dateString: string) => {
-    const [year, month, day] = dateString as unknown as number[];
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(year, month - 1, day).toLocaleDateString(undefined, options);
-  };
-
   const unreadNotifications = allNotifications.filter((notificationDTO) => !notificationDTO.isRead);
+
+  const handleNotificationClick = (notification: NotificationDto) => {
+    readNotification(notification.notificationId);
+    setSelectedNotification(notification);
+  };
 
   return (
     <Notifications $colorMode={colorMode}>
@@ -66,7 +56,7 @@ export default function NotificationsComponent() {
                     fontWeight={FontWeight.SEMIBOLD}
                     display={{ base: 'none', md: 'unset' }}
                   >
-                    {formattedDate(notificationDTO.sentAt)}
+                    {DateHelper.convertStringToDate(notificationDTO.sentAt)}
                   </Text>
                 </MenuItemStyled>
                 {index < allNotifications.length - 1 && <MenuDivider />}
@@ -89,17 +79,14 @@ export default function NotificationsComponent() {
                 <NotificationsWindow
                   isOpen={isOpen}
                   onClose={onClose}
-                  formattedDate={formattedDate}
                   allNotificationsDTO={allNotifications}
-                  handleNotificationClick={handleNotificationClick}
                 />
               )}
             />
             {selectedNotification && (
               <NotificationWindow
-                formattedDate={formattedDate}
-                handleCloseNotificationModal={handleCloseNotificationModal}
                 selectedNotification={selectedNotification}
+                onClose={() => setSelectedNotification(null)}
               />
             )}
           </ButtonsContainer>
