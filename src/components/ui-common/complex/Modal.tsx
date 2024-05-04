@@ -56,8 +56,6 @@ const ModalContentStyled = styled(ModalContent)<{
   max-height: 90vh;
   width: ${({ $width }) => $width || 'fit-content'} !important;
   height: ${({ $height }) => $height || 'fit-content'} !important;
-  overflow-y: auto;
-  ${hiddenScrollbar};
   ${nonHighlightableTap};
   
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
@@ -85,6 +83,8 @@ const ModalBodyStyled = styled(ModalBody)`
   flex-direction: column;
   gap: 20px;
   padding: 8px 12px !important;
+  overflow-y: auto;
+  ${hiddenScrollbar};
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     padding: 8px 24px !important;

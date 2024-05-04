@@ -22,12 +22,14 @@ export const upcomingUpdatesTableData: Record<FeaturePeriod, FeaturesColumn> = {
       [RoleName.USER_ENGLISH]: [
         { name: 'Covers for word packs', progress: 0 },
         { name: 'Word of the Day', progress: 100 },
+        { name: 'Speech recognition', progress: 90 },
         { name: 'Minor updates', progress: 60 },
       ],
       [RoleName.USER_CHINESE]: [
-        { name: 'Updated translations', progress: 0 },
+        // { name: 'Updated translations', progress: 0 },
         { name: 'Covers for word packs', progress: 0 },
         { name: 'Word of the Day', progress: 100 },
+        { name: 'Speech recognition', progress: 90 },
         { name: 'Minor updates', progress: 60 },
       ],
       [RoleName.ADMIN]: [],

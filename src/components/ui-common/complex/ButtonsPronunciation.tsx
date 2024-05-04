@@ -36,7 +36,7 @@ export default function ButtonsPronunciation(props: Props) {
       window.speechSynthesis.speak(utterance);
     }
     if (userRole === RoleName.USER_CHINESE) {
-      const utterance = new SpeechSynthesisUtterance(word.wordDataDto.nameChineseSimplified);
+      const utterance = new SpeechSynthesisUtterance(word.wordDataDto.nameChinese);
       utterance.lang = lang;
       window.speechSynthesis.speak(utterance);
     }

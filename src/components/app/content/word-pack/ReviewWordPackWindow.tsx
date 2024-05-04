@@ -5,11 +5,14 @@ import { Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
-import { Size } from '@utils/constants';
+import { Breakpoint, Size } from '@utils/constants';
+import { mediaBreakpointUp } from '@utils/functions';
 import { WordPackDto } from '@utils/types';
 import WordsScrollableContainer from '@components/app/content/words/WordsScrollableContainer';
+import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
@@ -27,7 +30,7 @@ export default function ReviewWordPackWindow(props: Props) {
   const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
 
   const { data: user } = useGetUserInfoQuery();
-  const { data: wordsPage = [], isLoading } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
+  const { data: wordsPage = [], isLoading: isLoadingWordsPage } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
   dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
   dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
 
@@ -47,12 +50,14 @@ export default function ReviewWordPackWindow(props: Props) {
             <Text>{wordPack.totalWords}</Text>
           </TotalWords>
           <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPack.description}</Text>
-          <WordsScrollableContainer
-            wordsPage={wordsPage}
-            isLoading={isLoading}
-            page={page}
-            setPage={setPage}
-          />
+          <SkeletonWrapper type={SkeletonType.WORD_INFO} isLoading={isLoadingWordsPage}>
+            <WordsScrollableContainer
+              wordsPage={wordsPage}
+              isLoading={isLoadingWordsPage}
+              page={page}
+              setPage={setPage}
+            />
+          </SkeletonWrapper>
         </Container>
       )}
     />
@@ -63,6 +68,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+      width: 500px;
+  }
 `;
 
 const TotalWords = styled.div`

@@ -84,13 +84,13 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             inputElements={(
               <>
                 <TextInput
-                  label="Max New Words Per Day (max 20)"
+                  label="Max New Words Per Day"
                   name="maxNewWordsPerDay"
                   type="number"
                   placeholder="1"
                 />
                 <TextInput
-                  label="Max Review Words Per Day (max 50)"
+                  label="Max Review Words Per Day"
                   name="maxReviewWordsPerDay"
                   type="number"
                   placeholder="1"

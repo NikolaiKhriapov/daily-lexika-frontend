@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button as ChakraButton, ColorMode, MenuDivider, useColorMode } from '@chakra-ui/react';
+import { useReadNotificationMutation } from '@store/api/notificationsAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { NotificationDto } from '@utils/types';
+import NotificationWindow from '@components/app/navbar/app/notifications/NotificationWindow';
 import RedDot from '@components/ui-common/basic/RedDot';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
+import DateHelper from '@helpers/DateHelper';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  formattedDate: (dateString: string) => string;
   allNotificationsDTO: NotificationDto[];
-  handleNotificationClick: (notificationDTO: NotificationDto) => void;
 };
 
 export default function NotificationsWindow(props: Props) {
-  const { isOpen, onClose, formattedDate, allNotificationsDTO, handleNotificationClick } = props;
+  const { isOpen, onClose, allNotificationsDTO } = props;
 
   const { colorMode } = useColorMode();
+  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
+  const [readNotification] = useReadNotificationMutation();
+
+  const onClick = (notification: NotificationDto) => {
+    readNotification(notification.notificationId);
+    setSelectedNotification(notification);
+  };
 
   return (
     <Modal
@@ -32,7 +40,7 @@ export default function NotificationsWindow(props: Props) {
         <Container>
           {allNotificationsDTO.map((notificationDTO, index) => (
             <ButtonContainer key={index}>
-              <NotificationButton $colorMode={colorMode} onClick={() => handleNotificationClick(notificationDTO)}>
+              <NotificationButton $colorMode={colorMode} onClick={() => onClick(notificationDTO)}>
                 <SubjectAndDateContainer>
                   <Text
                     size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}
@@ -46,7 +54,7 @@ export default function NotificationsWindow(props: Props) {
                     fontWeight={notificationDTO.isRead ? FontWeight.NORMAL : FontWeight.SEMIBOLD}
                     display={{ base: 'none', md: 'unset' }}
                   >
-                    {formattedDate(notificationDTO.sentAt)}
+                    {DateHelper.convertStringToDate(notificationDTO.sentAt)}
                   </Text>
                 </SubjectAndDateContainer>
                 <RedDotContainer>
@@ -56,6 +64,12 @@ export default function NotificationsWindow(props: Props) {
               {index < allNotificationsDTO.length - 1 && <MenuDivider />}
             </ButtonContainer>
           ))}
+          {selectedNotification && (
+            <NotificationWindow
+              selectedNotification={selectedNotification}
+              onClose={() => setSelectedNotification(null)}
+            />
+          )}
         </Container>
       )}
     />
@@ -68,7 +82,7 @@ const Container = styled.div`
   justify-content: space-between;
   gap: 0;
   width: 320px;
-  max-width: 320px;
+  max-width: 75vw;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 460px;
@@ -91,13 +105,13 @@ const NotificationButton = styled(ChakraButton)<{ $colorMode: ColorMode }>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between !important;
-  padding: 0 5px 0 0 !important;
+  padding-left: 7px !important;
+  padding-right: 7px !important;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   height: 30px !important;
   width: 100%;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    padding: 0 16px 0 0 !important;
     height: 35px !important;
     width: 460px;
   }

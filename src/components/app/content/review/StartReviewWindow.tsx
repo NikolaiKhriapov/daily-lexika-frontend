@@ -113,7 +113,7 @@ export default function StartReviewWindow(props: Props) {
   const getReviewWordName = (reviewWordDto: WordDto): string => {
     const map: Record<RoleName, string> = {
       [RoleName.USER_ENGLISH]: reviewWordDto.wordDataDto.nameEnglish,
-      [RoleName.USER_CHINESE]: reviewWordDto.wordDataDto.nameChineseSimplified,
+      [RoleName.USER_CHINESE]: reviewWordDto.wordDataDto.nameChinese,
       [RoleName.ADMIN]: '',
     };
     return map[user!.role!];

@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { EmailLinks } from '@utils/app/constants';
+import { EmailLinks, RoleName } from '@utils/app/constants';
 import { FontWeight } from '@utils/constants';
 import { WordDto } from '@utils/types';
+import SpeechRecognitionComponent from '@components/app/content/review/SpeechRecognitionComponent';
 import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInfo';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Link from '@components/ui-common/basic/Link';
@@ -24,10 +25,11 @@ type Props = {
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
   setUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
   title?: string;
+  withSpeechRecognition?: boolean;
 };
 
 export default function WordCard(props: Props) {
-  const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title } = props;
+  const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title, withSpeechRecognition = true } = props;
 
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const { data: user } = useGetUserInfoQuery();
@@ -79,13 +81,20 @@ export default function WordCard(props: Props) {
                 />
               )}
             />
+            {withSpeechRecognition && user.role === RoleName.USER_ENGLISH && (
+              <SpeechRecognitionComponent word={WordDataHelper.getWordNameByUserRole(word, user)} />
+            )}
           </ButtonsTopContainer>
           <ButtonsBottomContainer>
             <Link href={EmailLinks.ReportError(WordDataHelper.getWordNameByUserRole(word, user))}>
               <ButtonWithIcon type={ButtonWithIconType.ERROR} onClick={onClickError} />
             </Link>
           </ButtonsBottomContainer>
-          <Text size={wordDataSize[user.role]?.transcriptionSize}>{word.wordDataDto.transcription}</Text>
+          <TranscriptionContainer>
+            {WordDataHelper.splitTranscriptions(word.wordDataDto.transcription).map((transcription, index) => (
+              <Text key={index} size={wordDataSize[user.role!]?.transcriptionSize}>{transcription}</Text>
+            ))}
+          </TranscriptionContainer>
           <Text size={wordDataSize[user.role]?.nameTranslationSize}>{WordDataHelper.getWordTranslation(word, user)}</Text>
         </ContentsContainer>
       )}
@@ -130,4 +139,7 @@ const ReviewWordPlaceholderContainer = styled.div<{
   $height: string | { base: string, sm: string, xl: string };
 }>`
   height: ${({ $height }) => (typeof $height === 'string' ? $height : useBreakpointValue($height))};
+`;
+
+const TranscriptionContainer = styled.div`
 `;
