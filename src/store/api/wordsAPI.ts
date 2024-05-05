@@ -18,10 +18,17 @@ export const wordsAPI = API.injectEndpoints({
         method: QueryMethods.GET,
       }),
     }),
+    getWordByWordDataId: builder.query<WordDto, number>({
+      query: (wordDataId) => ({
+        url: ApiEndpointsWords.getWordByWordDataId(wordDataId),
+        method: QueryMethods.GET,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllWordsByStatusQuery,
   useGetWordOfTheDayQuery,
+  useGetWordByWordDataIdQuery,
 } = wordsAPI;

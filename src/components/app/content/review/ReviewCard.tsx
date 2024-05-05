@@ -11,7 +11,7 @@ import CreateOrUpdateReviewWindow from '@components/app/content/review/CreateOrU
 import StartReviewWindow from '@components/app/content/review/StartReviewWindow';
 import Button from '@components/ui-common/basic/Button';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
-import Skeleton, { SkeletonType } from '@components/ui-common/basic/Skeleton';
+import Skeleton from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
@@ -37,9 +37,7 @@ export default function ReviewCard(props: Props) {
   const [refreshReview, { isLoading: isLoadingRefreshReview }] = useRefreshReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
 
-  if (!user || review.id === placeholderReview.id) {
-    return <Skeleton type={SkeletonType.REVIEW_CARD} />;
-  }
+  if (!user || review.id === placeholderReview.id) return <Skeleton height={280} width={215} />;
 
   const isNoWordsLeftInReview = review.listOfWordDto?.length === 0;
 

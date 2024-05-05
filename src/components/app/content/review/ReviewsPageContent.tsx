@@ -7,11 +7,10 @@ import { mediaBreakpointUp } from '@utils/functions';
 import ReviewCard from '@components/app/content/review/ReviewCard';
 import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Heading from '@components/ui-common/basic/Heading';
-import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
 import IndexPageContainer from '@components/ui-common/complex/IndexPageContainer';
-import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
+import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function ReviewsPageContent() {

@@ -20,6 +20,7 @@ export enum Page {
   REVIEWS = '/reviews',
   WORD_PACKS = '/word-packs',
   STATISTICS = '/statistics',
+  SEARCH = '/search',
 }
 
 export const WHITE_LIST = [

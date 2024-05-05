@@ -2,8 +2,17 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
-import Skeleton, { SkeletonType } from '@components/ui-common/basic/Skeleton';
+import Skeleton from '@components/ui-common/basic/Skeleton';
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
+
+export enum SkeletonType {
+  REVIEW_CARD = 'REVIEW_CARD',
+  WORD_PACK_CARD = 'WORD_PACK_CARD',
+  STATS_CARD = 'STATS_CARD',
+  TEXT_HEADING = 'TEXT_HEADING',
+  WORD_INFO = 'WORD_INFO',
+  WORD_STREAK_STATS = 'WORD_STREAK_STATS',
+}
 
 type Props = {
   children?: ReactNode;
@@ -34,9 +43,9 @@ export default function SkeletonWrapper(props: Props) {
     [SkeletonType.REVIEW_CARD]: <ReviewsPageContentSkeleton number={number} />,
     [SkeletonType.WORD_PACK_CARD]: <WordPacksPageContentSkeleton number={number} />,
     [SkeletonType.STATS_CARD]: <StatisticsPageContentSkeleton number={number} />,
-    [SkeletonType.TEXT_HEADING]: <Skeleton type={SkeletonType.TEXT_HEADING} />,
+    [SkeletonType.TEXT_HEADING]: <Skeleton height={5} width={215} />,
     [SkeletonType.WORD_INFO]: <SearchWindowSkeleton />,
-    [SkeletonType.DEFAULT]: <Skeleton type={SkeletonType.DEFAULT} />,
+    [SkeletonType.WORD_STREAK_STATS]: <Skeleton height='40px' width='150px' />,
   };
 
   return (
@@ -57,13 +66,11 @@ type ReviewsPageContentSkeletonProps = {
 function ReviewsPageContentSkeleton(props: ReviewsPageContentSkeletonProps) {
   const { number } = props;
 
-  const type = SkeletonType.REVIEW_CARD;
-
   const swiperElement = (cards: number) => (
     <Swiper>
       {[...Array(cards)].map((_, index) => (
         <SwiperSlide key={index}>
-          <Skeleton type={type} />
+          <Skeleton height={280} width={215} />
         </SwiperSlide>
       ))}
     </Swiper>
@@ -75,7 +82,9 @@ function ReviewsPageContentSkeleton(props: ReviewsPageContentSkeletonProps) {
         {swiperElement(number)}
       </ContainerMobile>
       <ContainerReviewsTabletAndDesktop>
-        {[...Array(number)].map((_, index) => <Skeleton key={index} type={type} />)}
+        {[...Array(number)].map((_, index) => (
+          <Skeleton key={index} height={280} width={215} />
+        ))}
       </ContainerReviewsTabletAndDesktop>
     </>
   );
@@ -88,13 +97,11 @@ type WordPacksPageContentSkeletonProps = {
 function WordPacksPageContentSkeleton(props: WordPacksPageContentSkeletonProps) {
   const { number } = props;
 
-  const type = SkeletonType.WORD_PACK_CARD;
-
   const swiperElement = (cards: number) => (
     <Swiper>
       {[...Array(cards)].map((_, index) => (
         <SwiperSlide key={index}>
-          <Skeleton type={type} />
+          <Skeleton key={index} height={280} width={215} />
         </SwiperSlide>
       ))}
     </Swiper>
@@ -103,19 +110,19 @@ function WordPacksPageContentSkeleton(props: WordPacksPageContentSkeletonProps) 
   return (
     <>
       <ContainerMobile>
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(1)}
       </ContainerMobile>
       <ContainerWordPacksTabletAndDesktop>
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton type={SkeletonType.TEXT_HEADING} />
+        <Skeleton height={5} width={215} />
         {swiperElement(1)}
       </ContainerWordPacksTabletAndDesktop>
     </>
@@ -129,22 +136,19 @@ type StatisticsPageContentSkeletonProps = {
 function StatisticsPageContentSkeleton(props: StatisticsPageContentSkeletonProps) {
   const { number } = props;
 
-  const type = SkeletonType.STATS_CARD;
-
   return (
     <ContainerStatistics>
-      {[...Array(number)].map((_, index) => <Skeleton key={index} type={type} />)}
+      {[...Array(number)].map((_, index) => <Skeleton key={index} height={100} width={220} />)}
     </ContainerStatistics>
   );
 }
 
 function SearchWindowSkeleton() {
   const number = 10;
-  const type = SkeletonType.WORD_INFO;
 
   return (
     <ContainerSearchWindow>
-      {[...Array(number)].map((_, index) => <Skeleton key={index} type={type} />)}
+      {[...Array(number)].map((_, index) => <Skeleton key={index} height='60px' width='auto' />)}
     </ContainerSearchWindow>
   );
 }
@@ -202,7 +206,6 @@ const ContainerSearchWindow = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 60vh;
   overflow-x: hidden;
   width: 100%;
 `;

@@ -11,7 +11,6 @@ import { theme } from '@utils/theme';
 import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Text from '@components/ui-common/basic/Text';
-import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 
 type Props = {
   page?: Page;
@@ -27,6 +26,7 @@ export default function AppSidebar(props: Props) {
     { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
     { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS },
     { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
+    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH },
   ];
 
   return (
@@ -39,12 +39,12 @@ export default function AppSidebar(props: Props) {
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
         ))}
-        <Item href='' $colorMode={colorMode} $selected={false}>
-          <Icon as={TbDeviceTabletSearch} color='gray' />
-          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Search</Text>
-          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Search</Text>
-          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
-        </Item>
+        {/* <Item href='' $colorMode={colorMode} $selected={false}> */}
+        {/*  <Icon as={TbDeviceTabletSearch} color='gray' /> */}
+        {/*  <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Search</Text> */}
+        {/*  <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Search</Text> */}
+        {/*  <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer> */}
+        {/* </Item> */}
       </SidebarMain>
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
       {!isStandalone && <ContainerDesktop><AppInstallComponent /></ContainerDesktop>}
@@ -141,18 +141,18 @@ const ContainerDesktop = styled.div`
   }
 `;
 
-const ComingSoonContainer = styled.div`
-  position: absolute;
-  top: 10%;
-  right: 20%;
-
-  ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    top: 20%;
-    right: 15%;
-  }
-
-  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-    top: 15%;
-    right: 5%;
-  }
-`;
+// const ComingSoonContainer = styled.div`
+//   position: absolute;
+//   top: 10%;
+//   right: 20%;
+//
+//   ${mediaBreakpointUp(Breakpoint.TABLET)} {
+//     top: 20%;
+//     right: 15%;
+//   }
+//
+//   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+//     top: 15%;
+//     right: 5%;
+//   }
+// `;

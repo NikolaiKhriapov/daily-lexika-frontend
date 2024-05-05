@@ -2,71 +2,17 @@ import { Skeleton as ChakraSkeleton, SkeletonProps, useColorMode } from '@chakra
 import { borderStyles } from '@utils/functions';
 import { theme } from '@utils/theme';
 
-export enum SkeletonType {
-  REVIEW_CARD = 'REVIEW_CARD',
-  WORD_PACK_CARD = 'WORD_PACK_CARD',
-  STATS_CARD = 'STATS_CARD',
-  TEXT_HEADING = 'TEXT_HEADING',
-  WORD_INFO = 'WORD_INFO',
-  DEFAULT = 'DEFAULT',
-}
-
-interface Props extends SkeletonProps {
-  type: SkeletonType;
-}
-
-export default function Skeleton(props: Props) {
-  const { type, ...rest } = props;
-  let { height, width, border, borderRadius } = props;
+export default function Skeleton(props: SkeletonProps) {
+  const { height, width, ...rest } = props;
 
   const { colorMode } = useColorMode();
-
-  switch (type) {
-    case SkeletonType.REVIEW_CARD: {
-      height = 280;
-      width = 215;
-      border = borderStyles(colorMode);
-      borderRadius = theme.stylesToDelete.borderRadius;
-      break;
-    }
-    case SkeletonType.WORD_PACK_CARD: {
-      height = 280;
-      width = 215;
-      border = borderStyles(colorMode);
-      borderRadius = theme.stylesToDelete.borderRadius;
-      break;
-    }
-    case SkeletonType.STATS_CARD: {
-      height = 100;
-      width = 220;
-      border = borderStyles(colorMode);
-      borderRadius = theme.stylesToDelete.borderRadius;
-      break;
-    }
-    case SkeletonType.TEXT_HEADING: {
-      height = 5;
-      width = 215;
-      border = borderStyles(colorMode);
-      borderRadius = theme.stylesToDelete.borderRadius;
-      break;
-    }
-    case SkeletonType.WORD_INFO: {
-      height = 500;
-      height = 60;
-      border = borderStyles(colorMode);
-      borderRadius = theme.stylesToDelete.borderRadius;
-      break;
-    }
-    default:
-      break;
-  }
 
   return (
     <ChakraSkeleton
       startColor={theme.colors[colorMode].cardAddNew}
       endColor={theme.colors[colorMode].bgColor}
-      border={border}
-      borderRadius={borderRadius}
+      border={borderStyles(colorMode)}
+      borderRadius={theme.stylesToDelete.borderRadius}
       height={height}
       width={width}
       {...rest}

@@ -6,7 +6,7 @@ import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDto } from '@utils/types';
-import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInfo';
+import WordDetailedInfo from '@components/app/content/words/WordDetailedInfo';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
@@ -63,18 +63,19 @@ export default function WordsScrollableContainer(props: Props) {
     <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
       {isLoading && page === 0
         ? <SpinnerContainer><Spinner /></SpinnerContainer>
-        : visibleWords.slice(0, visibleWords.length).map((wordDTO, index) => (
-          <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(wordDTO.id)}>
+        : visibleWords.slice(0, visibleWords.length).map((word, index) => (
+          <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(word.id)}>
             <CharacterAndTranscriptionAndTranslation>
-              <Text>{WordDataHelper.getWordNameByUserRole(wordDTO, user)}&nbsp;&nbsp;{wordDTO.wordDataDto.transcription}</Text>
-              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordTranslationWithoutDuplicate(wordDTO, user)}</Text>
+              <Text>{WordDataHelper.getWordNameByUserRole(word, user)}&nbsp;&nbsp;{word.wordDataDto.transcription}</Text>
+              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordTranslationWithoutDuplicate(word, user)}</Text>
             </CharacterAndTranscriptionAndTranslation>
-            <BadgeOrStreakCount word={wordDTO} />
+            <BadgeOrStreakCount word={word} />
             {isOpenDetails && (
               <WordDetailedInfo
-                isOpen={isOpenDetails && wordDTO.id === selectedWord}
+                isOpen={isOpenDetails && word.id === selectedWord}
                 onClose={onCloseDetails}
-                word={wordDTO}
+                wordData={word.wordDataDto}
+                word={word}
               />
             )}
           </WordInfo>
