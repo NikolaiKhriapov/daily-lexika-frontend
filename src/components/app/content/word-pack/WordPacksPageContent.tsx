@@ -7,10 +7,9 @@ import { Category } from '@utils/types';
 import WordPackCard from '@components/app/content/word-pack/WordPackCard';
 import WordPackCardAddNew from '@components/app/content/word-pack/WordPackCardAddNew';
 import Heading from '@components/ui-common/basic/Heading';
-import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
 import IndexPageContainer from '@components/ui-common/complex/IndexPageContainer';
-import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
+import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function WordPacksPageContent() {

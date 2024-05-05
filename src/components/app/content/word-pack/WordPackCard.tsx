@@ -13,7 +13,7 @@ import ReviewWordPackWindow from '@components/app/content/word-pack/ReviewWordPa
 import SearchWindow from '@components/app/content/word-pack/SearchWindow';
 import Button from '@components/ui-common/basic/Button';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
-import Skeleton, { SkeletonType } from '@components/ui-common/basic/Skeleton';
+import Skeleton from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
@@ -40,9 +40,7 @@ export default function WordPackCard(props: Props) {
   const { data: user } = useGetUserInfoQuery();
   const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
 
-  if (!user || wordPack.name === placeholderWordPack.name) {
-    return <Skeleton type={SkeletonType.WORD_PACK_CARD} />;
-  }
+  if (!user || wordPack.name === placeholderWordPack.name) return <Skeleton height={280} width={215} />;
 
   const handleDeleteCustomWordPack = () => {
     onCloseDeleteButton();

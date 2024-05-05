@@ -6,7 +6,7 @@ import { EmailLinks, RoleName } from '@utils/app/constants';
 import { FontWeight } from '@utils/constants';
 import { WordDto } from '@utils/types';
 import SpeechRecognitionComponent from '@components/app/content/review/SpeechRecognitionComponent';
-import WordDetailedInfo from '@components/app/content/statistics/WordDetailedInfo';
+import WordDetailedInfo from '@components/app/content/words/WordDetailedInfo';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Link from '@components/ui-common/basic/Link';
 import Text from '@components/ui-common/basic/Text';
@@ -77,6 +77,7 @@ export default function WordCard(props: Props) {
                 <WordDetailedInfo
                   isOpen={isOpenDetails}
                   onClose={onCloseDetails}
+                  wordData={word.wordDataDto}
                   word={word}
                 />
               )}

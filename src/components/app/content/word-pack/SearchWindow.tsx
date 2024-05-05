@@ -11,10 +11,9 @@ import { theme } from '@utils/theme';
 import { WordDataDto, WordPackDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Input from '@components/ui-common/basic/Input';
-import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
-import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
+import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
@@ -95,6 +94,7 @@ export default function SearchWindow(props: Props) {
             type="text"
             placeholder="Start typing a word..."
             width={{ base: '100%', md: '500px' }}
+            height='40px'
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <WordInfoContainer>
@@ -143,9 +143,13 @@ const WordInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  height: 60vh;
+  height: 70vh;
   overflow-x: hidden;
   width: 100%;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    height: 60vh;
+  }
 `;
 
 const WordInfo = styled.div<{ $colorMode: ColorMode; $isWordAdded: boolean }>`

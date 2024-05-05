@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetWordByWordDataIdQuery } from '@store/api/wordsAPI';
 import { RoleName } from '@utils/app/constants';
-import { Breakpoint, FontWeight, Size } from '@utils/constants';
+import { Breakpoint, Size } from '@utils/constants';
 import { hiddenScrollbar, mediaBreakpointUp } from '@utils/functions';
-import { Language, WordDto } from '@utils/types';
-import ProgressBar from '@components/ui-common/basic/ProgressBar';
+import { Language, WordDataDto, WordDto } from '@utils/types';
+import WordStreakStats from '@components/app/content/statistics/WordStreakStats';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
-import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
 import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 import Modal from '@components/ui-common/complex/Modal';
 import WordDataHelper from '@helpers/WordDataHelper';
@@ -17,18 +17,21 @@ import WordDataHelper from '@helpers/WordDataHelper';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  word: WordDto;
+  wordData: WordDataDto;
+  word?: WordDto;
+  selectedWordDataId?: number;
 };
 
 export default function WordDetailedInfo(props: Props) {
-  const { isOpen, onClose, word } = props;
+  const { isOpen, onClose, wordData, word, selectedWordDataId } = props;
 
   const { data: user } = useGetUserInfoQuery();
+  const { data: wordFromQuery } = useGetWordByWordDataIdQuery(wordData.id, { skip: word !== undefined || wordData.id !== selectedWordDataId });
 
-  const streakProgress = (word.totalStreak / 5) * 100;
+  const wordDto = word || wordFromQuery;
   const modalWidth = useBreakpointValue({ base: '80vw', md: '575px' });
   const modalHeight = useBreakpointValue({ base: '550px', md: '600px' });
-  
+
   if (!user) return <Spinner />;
 
   return (
@@ -37,7 +40,7 @@ export default function WordDetailedInfo(props: Props) {
       height={modalHeight}
       isOpen={isOpen}
       onClose={onClose}
-      header={WordDataHelper.getWordNameByUserRole(word, user)}
+      header={WordDataHelper.getWordDataNameByUserRole(wordData, user)}
       body={(
         <Container>
           <Tabs isFitted variant='enclosed' colorScheme='gray'>
@@ -49,41 +52,33 @@ export default function WordDetailedInfo(props: Props) {
               <TabPanel>
                 <General>
                   <TranscriptionAndTranslationContainer>
-                    <Text>{word.wordDataDto.transcription}</Text>
-                    <Text>{WordDataHelper.getWordTranslation(word, user)}</Text>
+                    <Text>{wordData.transcription}</Text>
+                    <Text>{WordDataHelper.getWordDataTranslation(wordData, user)}</Text>
                   </TranscriptionAndTranslationContainer>
                   <ProgressBarContainerTablet>
-                    <TopContainer>
-                      <Text fontSize={Size.MD} fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
-                      <BadgeOrStreakCount word={word} />
-                    </TopContainer>
-                    <ProgressBar value={streakProgress} colorScheme='green' />
+                    <WordStreakStats word={wordDto} />
                   </ProgressBarContainerTablet>
                 </General>
                 <ProgressBarContainerMobile>
                   <Divider marginY={3} />
-                  <TopContainer>
-                    <Text fontWeight={FontWeight.SEMIBOLD} color='green.200'>{`${word.totalStreak} / 5`}</Text>
-                    <BadgeOrStreakCount word={word} />
-                  </TopContainer>
-                  <ProgressBar value={(word.totalStreak / 5) * 100} colorScheme='green' />
+                  <WordStreakStats word={wordDto} />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
-                {word.wordDataDto.definition !== '[TODO]' && (
+                {wordData.definition !== '[TODO]' && (
                   <>
-                    <Text>{word.wordDataDto.definition}</Text>
+                    <Text>{wordData.definition}</Text>
                     <Divider marginY={3} />
                   </>
                 )}
               </TabPanel>
               <TabPanel>
-                {user.role === RoleName.USER_ENGLISH && word.wordDataDto.examples.map((example, index) => (
+                {user.role === RoleName.USER_ENGLISH && wordData.examples.map((example, index) => (
                   <>
                     <Text key={index}>{example}</Text>
                     <Divider marginY={3} />
                   </>
                 ))}
-                {user.role === RoleName.USER_CHINESE && word.wordDataDto.examples.map((example, idx) => (
+                {user.role === RoleName.USER_CHINESE && wordData.examples.map((example, idx) => (
                   example === '[TODO]'
                     ? <ComingSoon key={idx} type={ComingSoonType.TEXT} />
                     : (
@@ -142,14 +137,6 @@ const ProgressBarContainerTablet = styled.div`
 const TranscriptionAndTranslationContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const TopContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  height: fit-content;
 `;
 
 const TabPanelsStyled = styled(TabPanels)`

@@ -9,10 +9,9 @@ import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { WordPackDto } from '@utils/types';
 import WordsScrollableContainer from '@components/app/content/words/WordsScrollableContainer';
-import { SkeletonType } from '@components/ui-common/basic/Skeleton';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
-import SkeletonWrapper from '@components/ui-common/complex/SkeletonWrapper';
+import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
