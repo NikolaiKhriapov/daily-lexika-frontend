@@ -112,6 +112,7 @@ export default function ReviewWordCard(props: Props) {
         isFlipped={isFlipped}
         setFlipped={setFlipped}
         setUnlocked={setUnlocked}
+        infoGap='60px'
       />
     </SwipeableContainer>
   );

@@ -3,6 +3,7 @@ export enum AppInfo {
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'kolyakhryapov@gmail.com',
   APP_VERSION = '2024.5.0',
+  WEBSITE = 'https://dailylexika.com',
 }
 
 export const DbInfo = {

@@ -41,10 +41,12 @@ export default function ReviewsPageContent() {
                     <ReviewCard review={reviewDTO} />
                   </SwiperSlide>
                 ))}
+                <SwiperSlide>
+                  <WordOfTheDayComponent />
+                </SwiperSlide>
               </Swiper>
             )
         }
-        <WordOfTheDayComponent />
       </ContainerMobile>
       <ContainerTablet>
         <Section>

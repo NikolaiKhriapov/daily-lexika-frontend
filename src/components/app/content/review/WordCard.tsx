@@ -24,12 +24,13 @@ type Props = {
   isFlipped: boolean;
   setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
   setUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
+  infoGap: string;
   title?: string;
   withSpeechRecognition?: boolean;
 };
 
 export default function WordCard(props: Props) {
-  const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title, withSpeechRecognition = true } = props;
+  const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title, infoGap, withSpeechRecognition = true } = props;
 
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const { data: user } = useGetUserInfoQuery();
@@ -66,7 +67,7 @@ export default function WordCard(props: Props) {
         </ContentsContainer>
       )}
       back={(
-        <ContentsContainer>
+        <ContentsContainer $title={title} $gap={infoGap}>
           {title && <TextStyled fontWeight={FontWeight.SEMIBOLD} opacity={0.5}>{title}</TextStyled>}
           <ButtonsTopContainer>
             <ButtonWithIcon
@@ -103,11 +104,12 @@ export default function WordCard(props: Props) {
   );
 }
 
-const ContentsContainer = styled.div`
+const ContentsContainer = styled.div<{ $title?: string; $gap?: string }>`
   width: 80%;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  padding-top: ${({ $title }) => $title && '25px'};
+  gap: ${({ $gap }) => $gap && $gap};
   text-align: center;
   justify-content: center;
 `;

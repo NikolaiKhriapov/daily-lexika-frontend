@@ -55,6 +55,7 @@ export default function WordOfTheDayComponent() {
           setUnlocked={() => null}
           title="Word of the Day"
           withSpeechRecognition={false}
+          infoGap='20px'
         />
       </ContainerMobileAndTablet>
       <ContainerDesktop>
@@ -70,6 +71,7 @@ export default function WordOfTheDayComponent() {
           setUnlocked={() => null}
           title="Word of the Day"
           withSpeechRecognition={false}
+          infoGap='25px'
         />
       </ContainerDesktop>
     </>
