@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoAlert } from 'react-icons/go';
+import { RiErrorWarningFill } from 'react-icons/ri';
 import styled from 'styled-components';
 import { Tooltip } from '@chakra-ui/react';
 import { Breakpoint } from '@utils/constants';
@@ -34,7 +34,7 @@ export default function UnderDevelopmentIcon(props: Props) {
           maxWidth='90vw'
           borderRadius='10px'
         >
-          <span><GoAlert color='yellow' onClick={(e) => onClick(e)} /></span>
+          <span><RiErrorWarningFill color='orange' size='20px' onClick={(e) => onClick(e)} /></span>
         </Tooltip>
       </ContainerMobileAndTablet>
       <ContainerDesktop>
@@ -45,7 +45,7 @@ export default function UnderDevelopmentIcon(props: Props) {
           textAlign='center'
           borderRadius='10px'
         >
-          <span><GoAlert color='orange' /></span>
+          <span><RiErrorWarningFill color='orange' size='20px' /></span>
         </Tooltip>
       </ContainerDesktop>
     </>
