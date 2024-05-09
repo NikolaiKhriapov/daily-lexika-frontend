@@ -7,7 +7,7 @@ import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, Page } from '@utils/constants';
-import { mediaBreakpointUp, nonHighlightableTap } from '@utils/functions';
+import { mediaBreakpointUp, nonHighlightableTap, nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 import AppContent from '@components/app/content/AppContent';
 import LanguageSelectionWindow from '@components/app/content/LanguageSelectionWindow';
@@ -60,7 +60,8 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   min-height: 100vh;
   width: 100vw;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
-  ${nonHighlightableTap};
+  ${nonHighlightableTap}; 
+  ${nonSelectableText};
 `;
 
 const SidebarAndContentContainer = styled.div<{ $colorMode: ColorMode }>`

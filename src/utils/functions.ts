@@ -19,3 +19,10 @@ export const hiddenScrollbar = () => `
 export const nonHighlightableTap = () => `
   -webkit-tap-highlight-color: transparent;
 `;
+
+export const nonSelectableText = () => `
+  -webkit-user-select:none !important;
+  -moz-user-select:-moz-none !important;
+  -ms-user-select:none !important;
+  user-select:none !important;
+`;
