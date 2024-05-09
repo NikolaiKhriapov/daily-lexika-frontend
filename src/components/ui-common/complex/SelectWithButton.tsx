@@ -28,7 +28,7 @@ export default function SelectWithButton(props: Props) {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ isValid, isSubmitting }) => (
+      {({ isValid }) => (
         <FormStyled>
           <SelectContainer>
             <Select
@@ -46,7 +46,7 @@ export default function SelectWithButton(props: Props) {
           <Button
             buttonText={buttonText}
             buttonType={ButtonType.SUBMIT}
-            isDisabled={!isValid || isSubmitting || isDisabled}
+            isDisabled={!isValid || isDisabled}
           />
         </FormStyled>
       )}
