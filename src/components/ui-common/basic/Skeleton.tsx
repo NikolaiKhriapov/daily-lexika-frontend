@@ -9,8 +9,8 @@ export default function Skeleton(props: SkeletonProps) {
 
   return (
     <ChakraSkeleton
-      startColor={theme.colors[colorMode].cardAddNew}
-      endColor={theme.colors[colorMode].bgColor}
+      startColor={theme.colors[colorMode].skeletonStart}
+      endColor={theme.colors[colorMode].skeletonEnd}
       border={borderStyles(colorMode)}
       borderRadius={theme.stylesToDelete.borderRadius}
       height={height}

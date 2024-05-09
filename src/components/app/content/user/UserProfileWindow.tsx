@@ -10,7 +10,7 @@ import {
   useUpdatePasswordMutation,
   useUpdateUserInfoMutation,
 } from '@store/api/userAPI';
-import { RoleName } from '@utils/app/constants';
+import { RoleName, RoleNameBase } from '@utils/app/constants';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { Language, PasswordUpdateRequest, UserDto } from '@utils/types';
@@ -45,10 +45,9 @@ export default function UserProfileWindow(props: Props) {
   const [updatePassword] = useUpdatePasswordMutation();
   const [deleteAccount] = useDeleteAccountMutation();
 
-  const availableTranslationLanguages: Record<RoleName, Language[]> = {
+  const availableTranslationLanguages = {
     [RoleName.USER_ENGLISH]: [Language.ENGLISH, Language.RUSSIAN],
     [RoleName.USER_CHINESE]: [Language.ENGLISH, Language.CHINESE],
-    [RoleName.ADMIN]: [],
   };
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
@@ -159,7 +158,7 @@ export default function UserProfileWindow(props: Props) {
             validateOnMount
             initialValues={selectedTranslationLanguage}
             onSubmit={() => handleChangeInfo({ ...user, translationLanguage: selectedTranslationLanguage })}
-            selectElements={availableTranslationLanguages[user!.role!].map((language, index) => (
+            selectElements={availableTranslationLanguages[user!.role! as RoleNameBase].map((language, index) => (
               <option key={index} value={language}>{WordDataHelper.toSentenceCase(language)}</option>
             ))}
           />

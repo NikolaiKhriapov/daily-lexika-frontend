@@ -38,7 +38,6 @@ export default function WordOfTheDayComponent() {
       transcriptionSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
       nameTranslationSize: { base: Size.SM, sm: Size.SM, xl: Size.MD },
     },
-    [RoleName.ADMIN]: null,
   };
 
   return (

@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
-import { Breakpoint, Size } from '@utils/constants';
+import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDataDto } from '@utils/types';
 import WordDetailedInfo from '@components/app/content/words/WordDetailedInfo';
-import Input from '@components/ui-common/basic/Input';
+import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
-import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
+import SearchInput from '@components/ui-common/complex/SearchInput';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 export default function SearchPageContent() {
@@ -44,38 +44,46 @@ export default function SearchPageContent() {
     onOpenDetails();
   };
 
+  if (!user) return <Spinner />;
+
   return (
     <Container>
-      <Input
-        name="search"
-        type="text"
-        placeholder="Start typing a word..."
-        width={{ base: '100%', md: '500px' }}
-        onChange={(e) => setSearchQuery(e.target.value)}
+      <SearchInput
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        isLoading={isLoadingAllWordData}
       />
       <WordInfoContainer>
-        <SkeletonWrapper type={SkeletonType.WORD_INFO} isLoading={isLoadingAllWordData}>
-          {(searchResult && searchResult.map((wordDataDto) => (
-            <WordInfo
-              key={wordDataDto.id}
-              onClick={() => onClickWordData(wordDataDto.id)}
-              $colorMode={colorMode}
-            >
-              <CharacterAndTranscriptionAndTranslation>
-                <Text>{WordDataHelper.getWordDataNameByUserRole(wordDataDto, user!)}&nbsp;&nbsp;{wordDataDto.transcription}</Text>
-                <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslationWithoutDuplicate(wordDataDto, user!)}</Text>
-              </CharacterAndTranscriptionAndTranslation>
-              {isOpenDetails && (
-                <WordDetailedInfo
-                  isOpen={isOpenDetails && wordDataDto.id === selectedWordDataId}
-                  onClose={onCloseDetails}
-                  wordData={wordDataDto}
-                  selectedWordDataId={selectedWordDataId}
-                />
-              )}
-            </WordInfo>
-          )))}
-        </SkeletonWrapper>
+        {
+          searchQuery === '' || isLoadingAllWordData
+            ? (
+              <Text fontWeight={FontWeight.MEDIUM} isCentered opacity='50%' style={{ width: '90%' }}>
+                {WordDataHelper.getSearchInfoText(user)}
+              </Text>
+            )
+            : (
+              searchResult.map((wordDataDto) => (
+                <WordInfo
+                  key={wordDataDto.id}
+                  onClick={() => onClickWordData(wordDataDto.id)}
+                  $colorMode={colorMode}
+                >
+                  <CharacterAndTranscriptionAndTranslation>
+                    <Text>{WordDataHelper.getWordDataNameByUserRole(wordDataDto, user!)}&nbsp;&nbsp;{wordDataDto.transcription}</Text>
+                    <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslationWithoutDuplicate(wordDataDto, user!)}</Text>
+                  </CharacterAndTranscriptionAndTranslation>
+                  {isOpenDetails && (
+                    <WordDetailedInfo
+                      isOpen={isOpenDetails && wordDataDto.id === selectedWordDataId}
+                      onClose={onCloseDetails}
+                      wordData={wordDataDto}
+                      selectedWordDataId={selectedWordDataId}
+                    />
+                  )}
+                </WordInfo>
+              ))
+            )
+        }
       </WordInfoContainer>
     </Container>
   );
@@ -92,6 +100,7 @@ const Container = styled.div`
 const WordInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 5px;
   width: 100%;
 

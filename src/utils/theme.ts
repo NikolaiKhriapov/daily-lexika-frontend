@@ -20,6 +20,8 @@ const customColors = {
     alert: '#F56565',
     cardAddNew: '#F7FAFC',
     selectedItemBg: '#E3E8EF',
+    skeletonStart: '#E3E8EF',
+    skeletonEnd: '#CBD5E0',
   },
   dark: {
     background: 'rgb(10,10,10)',
@@ -39,6 +41,8 @@ const customColors = {
     alert: '#EF4444',
     cardAddNew: '#3C3C3C',
     selectedItemBg: '#282828',
+    skeletonStart: '#3C3C3C',
+    skeletonEnd: '#282828',
   },
   telegramBlue: 'rgb(73,150,214)',
   whatsAppGreen: 'rgb(100,205,110)',

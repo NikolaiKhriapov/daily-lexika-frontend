@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
@@ -40,10 +39,7 @@ export default function CreateWordPackWindow(props: Props) {
 
   const handleOnSubmit = (wordPack: WordPackDto) => {
     onClose();
-    createCustomWordPack(wordPack)
-      .unwrap()
-      .then(() => successNotification('Word Pack saved', `${wordPack.name} was successfully saved`))
-      .catch((error) => errorNotification('', error));
+    createCustomWordPack(wordPack);
   };
 
   return (
@@ -75,7 +71,7 @@ export default function CreateWordPackWindow(props: Props) {
               <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
             </>
           )}
-          buttonText="Submit"
+          buttonText="Create"
           onSubmit={handleOnSubmit}
           isButtonDisabled={isLoadingCreateCustomWordPack}
         />
