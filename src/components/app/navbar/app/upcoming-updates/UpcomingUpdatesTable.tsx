@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { AppInfo } from '@utils/app/constants';
+import { AppInfo, RoleNameBase } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -25,7 +25,7 @@ export default function UpcomingUpdatesTable() {
           <ColumnContainer key={index} $colorMode={colorMode}>
             <Heading size={Size.SM} isCentered>{upcomingUpdatesTableData[featurePeriod].title}</Heading>
             <RowsContainer $colorMode={colorMode}>
-              {upcomingUpdatesTableData[featurePeriod].features[user.role!].map((item, index2) => (
+              {upcomingUpdatesTableData[featurePeriod].features[user.role! as RoleNameBase].map((item, index2) => (
                 <RowContainer key={index2}>
                   <Text width='300px'>{item.name}</Text>
                   <ProgressBar width='100px' value={item.progress} />
