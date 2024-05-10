@@ -4,7 +4,6 @@ import { useBreakpointValue } from '@chakra-ui/react';
 import { successNotification } from '@services/app/popup-notification';
 import { useProcessReviewActionMutation } from '@store/api/reviewsAPI';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { RoleName } from '@utils/app/constants';
 import { Breakpoint, ButtonType } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { ReviewDto, Status, WordDto } from '@utils/types';
@@ -13,6 +12,7 @@ import Button from '@components/ui-common/basic/Button';
 import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import Modal from '@components/ui-common/complex/Modal';
+import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   review: ReviewDto;
@@ -44,10 +44,16 @@ export default function StartReviewWindow(props: Props) {
         }
         if ((answer === true && reviewWord !== null && (reviewWord.status.toString() === Status[Status.NEW]
           || (reviewWord.status.toString() === Status[Status.IN_REVIEW] && reviewWord.totalStreak === 4)))) {
-          successNotification(`'${getReviewWordName(reviewWord)}' is a known word.`, 'This word will still be shown occasionally during reviews');
+          successNotification(
+            `'${WordDataHelper.getWordNameByUserRole(reviewWord, user!)}' is a known word.`,
+            'This word will still be shown occasionally during reviews',
+          );
         }
         if (answer === false && reviewWord?.status.toString() === Status[Status.KNOWN]) {
-          successNotification(`Keep reviewing '${getReviewWordName(reviewWord)}'`, 'This word will be shown more frequently so that you can relearn it');
+          successNotification(
+            `Keep reviewing '${WordDataHelper.getWordNameByUserRole(reviewWord, user!)}'`,
+            'This word will be shown more frequently so that you can relearn it',
+          );
         }
       })
       .finally(() => {
@@ -109,15 +115,6 @@ export default function StartReviewWindow(props: Props) {
   const reviewProgress = ((review.actualSize - review.listOfWordDto!.length) / review.actualSize) * 100;
   const modalWidth = useBreakpointValue({ base: '90%', xl: '1000px' });
   const buttonWidth = useBreakpointValue({ base: '109px', sm: '139px' });
-
-  const getReviewWordName = (reviewWordDto: WordDto): string => {
-    const map: Record<RoleName, string> = {
-      [RoleName.USER_ENGLISH]: reviewWordDto.wordDataDto.nameEnglish,
-      [RoleName.USER_CHINESE]: reviewWordDto.wordDataDto.nameChinese,
-      [RoleName.ADMIN]: '',
-    };
-    return map[user!.role!];
-  };
 
   return (
     <Modal

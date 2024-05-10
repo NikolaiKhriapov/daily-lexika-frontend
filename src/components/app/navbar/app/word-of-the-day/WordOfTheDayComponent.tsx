@@ -38,7 +38,6 @@ export default function WordOfTheDayComponent() {
       transcriptionSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
       nameTranslationSize: { base: Size.SM, sm: Size.SM, xl: Size.MD },
     },
-    [RoleName.ADMIN]: null,
   };
 
   return (
@@ -56,6 +55,7 @@ export default function WordOfTheDayComponent() {
           setUnlocked={() => null}
           title="Word of the Day"
           withSpeechRecognition={false}
+          infoGap='20px'
         />
       </ContainerMobileAndTablet>
       <ContainerDesktop>
@@ -71,6 +71,7 @@ export default function WordOfTheDayComponent() {
           setUnlocked={() => null}
           title="Word of the Day"
           withSpeechRecognition={false}
+          infoGap='25px'
         />
       </ContainerDesktop>
     </>

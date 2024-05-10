@@ -10,20 +10,17 @@ import {
   useUpdatePasswordMutation,
   useUpdateUserInfoMutation,
 } from '@store/api/userAPI';
-import { RoleName } from '@utils/app/constants';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { Language, PasswordUpdateRequest, UserDto } from '@utils/types';
+import { PasswordUpdateRequest, UserDto } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import InputFieldWithButton from '@components/ui-common/complex/InputFieldWithButton';
 import Modal from '@components/ui-common/complex/Modal';
-import SelectWithButton from '@components/ui-common/complex/SelectWithButton';
 import TextInput from '@components/ui-common/complex/TextInput';
 import ValidationHelper from '@helpers/ValidationHelper';
-import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -39,17 +36,10 @@ export default function UserProfileWindow(props: Props) {
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const passwordCurrentRef = useRef<string>('');
-  const [selectedTranslationLanguage, setSelectedTranslationLanguage] = useState<Language>(user!.translationLanguage!);
 
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [updatePassword] = useUpdatePasswordMutation();
   const [deleteAccount] = useDeleteAccountMutation();
-
-  const availableTranslationLanguages: Record<RoleName, Language[]> = {
-    [RoleName.USER_ENGLISH]: [Language.ENGLISH, Language.RUSSIAN],
-    [RoleName.USER_CHINESE]: [Language.ENGLISH, Language.CHINESE],
-    [RoleName.ADMIN]: [],
-  };
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
     updateUserInfo(userUpdatedInfoDTO)
@@ -146,22 +136,6 @@ export default function UserProfileWindow(props: Props) {
             validationSchema={userAccountWindowData.name.validationSchema}
             onSubmit={userAccountWindowData.name.onSubmit}
             inputElements={userAccountWindowData.name.inputElement}
-          />
-          <SelectWithButton
-            id="translationLanguage"
-            name="translationLanguage"
-            label="Translation language"
-            value={selectedTranslationLanguage}
-            buttonText='Change'
-            onChange={(e: any) => setSelectedTranslationLanguage(e.target.value as Language)}
-            isDisabled={selectedTranslationLanguage === user!.translationLanguage}
-            isRequired
-            validateOnMount
-            initialValues={selectedTranslationLanguage}
-            onSubmit={() => handleChangeInfo({ ...user, translationLanguage: selectedTranslationLanguage })}
-            selectElements={availableTranslationLanguages[user!.role!].map((language, index) => (
-              <option key={index} value={language}>{WordDataHelper.toSentenceCase(language)}</option>
-            ))}
           />
           <InputFieldWithButton
             buttonText='Change'

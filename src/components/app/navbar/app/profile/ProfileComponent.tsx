@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { AuthContext } from '@context/app/AuthContext';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { EmailLinks } from '@utils/app/constants';
+import { AppInfo, EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
+import UserPreferencesWindow from '@components/app/content/user/UserPreferencesWindow';
 import UserProfileWindow from '@components/app/content/user/UserProfileWindow';
 import Link from '@components/ui-common/basic/Link';
 import MenuDivider from '@components/ui-common/basic/MenuDivider';
@@ -17,8 +19,10 @@ import Text from '@components/ui-common/basic/Text';
 export default function ProfileComponent() {
   const { colorMode } = useColorMode();
   const { logout } = useContext(AuthContext);
+  const { isStandalone } = useContext(AppInstallationContext);
   const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
+  const { isOpen: isOpenPreferences, onOpen: onOpenPreferences, onClose: onClosePreferences } = useDisclosure();
 
   return (
     <Menu>
@@ -31,9 +35,16 @@ export default function ProfileComponent() {
           {user?.email}
         </MenuText>
         <MenuDivider />
-        <MenuItem onClick={onOpenProfile}>Edit profile</MenuItem>
+        <MenuItem onClick={onOpenProfile}>Profile</MenuItem>
         {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} />}
-        {/* <MenuItem>Preferences</MenuItem> */}
+        <MenuItem onClick={onOpenPreferences}>Preferences</MenuItem>
+        {isOpenPreferences && <UserPreferencesWindow isOpen={isOpenPreferences} onClose={onClosePreferences} />}
+        <MenuDivider />
+        {isStandalone && (
+          <LinkStyled href={AppInfo.WEBSITE} $colorMode={colorMode} style={{ textDecoration: 'none' }} target="_blank">
+            <MenuItem>Open in browser</MenuItem>
+          </LinkStyled>
+        )}
         <MenuDivider />
         <LinkStyled href={EmailLinks.ContactSupport} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
           <MenuItem>Contact support</MenuItem>

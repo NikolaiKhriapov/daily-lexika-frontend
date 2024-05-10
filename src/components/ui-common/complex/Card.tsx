@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
-import { borderStyles, nonHighlightableTap } from '@utils/functions';
+import { borderStyles, nonHighlightableTap, nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 type Props = {
@@ -79,6 +79,7 @@ const Container = styled.div<{
   background-color: ${({ $bgColor }) => $bgColor};
   cursor: pointer;
   ${nonHighlightableTap};
+  ${nonSelectableText};
 
   transform: ${({ $isFlipped }) => ($isFlipped ? 'rotateY(180deg) scaleX(-1)' : 'rotateY(0deg)')};
   transition: transform 0.3s;

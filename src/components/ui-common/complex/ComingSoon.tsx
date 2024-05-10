@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { borderStyles, mediaBreakpointUp, nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/ui-common/basic/Text';
 
@@ -22,7 +22,7 @@ export default function ComingSoon(props: Props) {
 
   switch (type) {
     case ComingSoonType.TEXT:
-      return <Text fontWeight={FontWeight.SEMIBOLD} isCentered opacity='50%'>Coming soon</Text>;
+      return <TextStyled fontWeight={FontWeight.SEMIBOLD} isCentered opacity='50%'>Coming soon</TextStyled>;
     case ComingSoonType.BADGE:
       return (
         <BadgeContainer $colorMode={colorMode}>
@@ -41,8 +41,12 @@ const BadgeContainer = styled.div<{ $colorMode: ColorMode }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   z-index: 1000;
-    
+
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     padding: 3px 10px;
   }
+`;
+
+const TextStyled = styled(Text)`
+  ${nonSelectableText} !important;
 `;

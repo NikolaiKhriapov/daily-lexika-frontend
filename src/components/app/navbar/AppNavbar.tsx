@@ -5,7 +5,6 @@ import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { Breakpoint } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import ColorModeSwitchComponent from '@components/app/navbar/app/color-mode-switch/ColorModeSwitchComponent';
 import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import NotificationsComponent from '@components/app/navbar/app/notifications/NotificationsComponent';
 import ProfileComponent from '@components/app/navbar/app/profile/ProfileComponent';
@@ -24,7 +23,6 @@ export default function AppNavbar() {
         </Section>
         <Section>
           <NotificationsComponent />
-          <ColorModeSwitchComponent />
           <ProfileComponent />
         </Section>
       </SectionsContainer>

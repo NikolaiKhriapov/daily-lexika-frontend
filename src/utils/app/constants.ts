@@ -3,7 +3,15 @@ export enum AppInfo {
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'kolyakhryapov@gmail.com',
   APP_VERSION = '2024.5.0',
+  WEBSITE = 'https://dailylexika.com',
 }
+
+export const DbInfo = {
+  EXAMS_EN: 'IELTS/TOEFL',
+  EXAMS_CH: 'HSK',
+  WORDS_EN: 5000,
+  WORDS_CH: 11000,
+};
 
 export const EmailLinks = {
   Blank: `mailto:${AppInfo.EMAIL}`,
@@ -20,10 +28,13 @@ enum EmailTemplates {
 }
 
 export enum RoleName {
-  ADMIN = 'ADMIN',
-  USER_CHINESE = 'USER_CHINESE',
   USER_ENGLISH = 'USER_ENGLISH',
+  USER_CHINESE = 'USER_CHINESE',
+  ADMIN = 'ADMIN',
 }
+
+export type RoleNameBase = RoleName.USER_ENGLISH | RoleName.USER_CHINESE;
+export type RoleNameAdmin = RoleName.ADMIN;
 
 export enum Platform {
   ENGLISH = 'ENGLISH',

@@ -80,7 +80,6 @@ export default function ReviewWordCard(props: Props) {
       transcriptionSize: { base: Size.XL, sm: Size.XXL, xl: Size.XXXL },
       nameTranslationSize: { base: Size.MD, sm: Size.XL, xl: Size.XL },
     },
-    [RoleName.ADMIN]: null,
   };
 
   const isNewStatus = reviewWord.status.toString() === Status[Status.NEW];
@@ -113,6 +112,7 @@ export default function ReviewWordCard(props: Props) {
         isFlipped={isFlipped}
         setFlipped={setFlipped}
         setUnlocked={setUnlocked}
+        infoGap='60px'
       />
     </SwipeableContainer>
   );

@@ -1,4 +1,4 @@
-import { RoleName } from '@utils/app/constants';
+import { DbInfo, RoleName, RoleNameBase } from '@utils/app/constants';
 import { Language, UserDto, WordDataDto, WordDto } from '@utils/types';
 
 export default class WordDataHelper {
@@ -91,5 +91,16 @@ export default class WordDataHelper {
         || WordDataHelper.removeAccent(wordData.transcription).toLowerCase().startsWith(searchQuery.toLowerCase());
       default: return null;
     }
+  }
+
+  public static getSearchInfoText(user: UserDto) {
+    const appDataMapping = {
+      [RoleName.USER_ENGLISH]: { totalWords: DbInfo.WORDS_EN, exams: DbInfo.EXAMS_EN },
+      [RoleName.USER_CHINESE]: { totalWords: DbInfo.WORDS_CH, exams: DbInfo.EXAMS_CH },
+    };
+
+    return `When searching for a word, please keep in mind that Daily Lexika is primarily designed to help you prepare 
+      for the ${appDataMapping[user.role as RoleNameBase].exams} exam, it is not a dictionary app. Our database 
+      contains around ${appDataMapping[user.role as RoleNameBase].totalWords} officially recommended words.`;
   }
 }

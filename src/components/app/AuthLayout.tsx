@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
+import { nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 import AuthFooter from '@components/app/footer/AuthFooter';
 
@@ -37,4 +38,5 @@ const Container = styled.div<{ $colorMode: ColorMode }>`
   min-height: 100vh;
   width: 100%;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
+  ${nonSelectableText};
 `;
