@@ -28,8 +28,9 @@ export interface UserDto {
   email?: string;
   role?: RoleName;
   roleStatistics?: RoleStatisticsDto[];
-  translationLanguage?: Language,
-  interfaceLanguage?: Language,
+  translationLanguage?: Language;
+  interfaceLanguage?: Language;
+  dateOfRegistration?: string;
 }
 
 export interface RoleStatisticsDto {
@@ -100,7 +101,6 @@ export interface StatisticsDto {
   recordStreak?: number;
   wordsKnown: number;
   charactersKnown: number;
-  // idiomsKnown: number;
   listOfReviewStatisticsDto: ReviewStatisticsDto[];
 }
 

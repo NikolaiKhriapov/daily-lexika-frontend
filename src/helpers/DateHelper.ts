@@ -1,7 +1,9 @@
 export default class DateHelper {
-  public static convertStringToDate(dateString: string) {
-    const [year, month, day] = dateString as unknown as number[];
+  public static convertOffsetDateTimeToDateString(offsetDateTimeString: string) {
+    const timestampInMilliseconds = parseFloat(offsetDateTimeString) * 1000;
+    const date = new Date(timestampInMilliseconds);
+
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(year, month - 1, day).toLocaleDateString(undefined, options);
+    return date.toLocaleDateString(undefined, options);
   }
 }
