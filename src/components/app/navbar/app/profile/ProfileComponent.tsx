@@ -39,14 +39,6 @@ export default function ProfileComponent() {
         {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} />}
         <MenuItem onClick={onOpenPreferences}>Preferences</MenuItem>
         {isOpenPreferences && <UserPreferencesWindow isOpen={isOpenPreferences} onClose={onClosePreferences} />}
-        {isStandalone && (
-          <>
-            <MenuDivider />
-            <LinkStyled href={AppInfo.WEBSITE} $colorMode={colorMode} style={{ textDecoration: 'none' }} target="_blank">
-              <MenuItem>Open in browser</MenuItem>
-            </LinkStyled>
-          </>
-        )}
         <MenuDivider />
         <LinkStyled href={EmailLinks.ContactSupport} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
           <MenuItem>Contact support</MenuItem>

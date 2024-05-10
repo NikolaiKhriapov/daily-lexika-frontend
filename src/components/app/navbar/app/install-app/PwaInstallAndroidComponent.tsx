@@ -6,7 +6,7 @@ import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { ButtonType } from '@utils/constants';
 import { theme } from '@utils/theme';
 import Button from '@components/ui-common/basic/Button';
-import PwaBadge from '@components/ui-common/icons/pwa-badge.png';
+import PwaBadge from '@components/ui-common/icons/app-install/pwa-badge.png';
 
 export default function PwaInstallAndroidComponent() {
   const { colorMode } = useColorMode();

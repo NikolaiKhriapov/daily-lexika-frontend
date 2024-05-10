@@ -4,8 +4,8 @@ import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { Category } from '@utils/types';
+import FloatingPlus from '@components/app/content/word-pack/floating-plus/FloatingPlus';
 import WordPackCard from '@components/app/content/word-pack/WordPackCard';
-import WordPackCardAddNew from '@components/app/content/word-pack/WordPackCardAddNew';
 import Heading from '@components/ui-common/basic/Heading';
 import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
 import IndexPageContainer from '@components/ui-common/complex/IndexPageContainer';
@@ -48,21 +48,21 @@ export default function WordPacksPageContent() {
           </Swiper>
         </Section>
       ))}
-      <Section>
-        <HeadingContainer>
-          <Heading size={Size.LG} isCentered>Custom</Heading>
-        </HeadingContainer>
-        <Swiper>
-          {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
-            <SwiperSlide key={wordPackDto.name}>
-              <WordPackCard wordPack={wordPackDto} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide key='add-new'>
-            <WordPackCardAddNew />
-          </SwiperSlide>
-        </Swiper>
-      </Section>
+      {wordPacksDtoByCategory(Category.CUSTOM).length > 0 && (
+        <Section>
+          <HeadingContainer>
+            <Heading size={Size.LG} isCentered>Custom</Heading>
+          </HeadingContainer>
+          <Swiper>
+            {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
+              <SwiperSlide key={wordPackDto.name}>
+                <WordPackCard wordPack={wordPackDto} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Section>
+      )}
+      <FloatingPlus />
     </Container>
   );
 }

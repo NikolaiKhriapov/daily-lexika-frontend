@@ -7,7 +7,7 @@ import InstagramLogo from '@public/landing/logo-instagram.svg';
 import TelegramLogo from '@public/landing/logo-telegram.png';
 import WhatsappLogo from '@public/landing/logo-whatsapp.svg';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
-import { toggleVisibility } from '@store/reducers/floatingChatSlice';
+import { toggleVisibility } from '@store/reducers/landing/floatingChatSlice';
 import { theme } from '@utils/theme';
 import MessengerIconLink from '@components/landing/content/floating-chat/MessengerIconLink';
 

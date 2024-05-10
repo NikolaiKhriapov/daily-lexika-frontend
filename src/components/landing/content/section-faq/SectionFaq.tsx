@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
-import { toggleVisibility } from '@store/reducers/floatingChatSlice';
+import { toggleVisibility } from '@store/reducers/landing/floatingChatSlice';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import FaqQuestionAnswer, { FaqQuestionAnswerProps } from '@components/landing/content/section-faq/FaqQuestionAnswer';
