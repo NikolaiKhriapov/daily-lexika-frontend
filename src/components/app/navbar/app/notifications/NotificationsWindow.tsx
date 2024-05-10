@@ -54,7 +54,7 @@ export default function NotificationsWindow(props: Props) {
                     fontWeight={notificationDTO.isRead ? FontWeight.NORMAL : FontWeight.SEMIBOLD}
                     display={{ base: 'none', md: 'unset' }}
                   >
-                    {DateHelper.convertStringToDate(notificationDTO.sentAt)}
+                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt)}
                   </Text>
                 </SubjectAndDateContainer>
                 <RedDotContainer>

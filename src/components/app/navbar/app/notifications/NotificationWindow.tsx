@@ -21,7 +21,7 @@ export default function NotificationWindow(props: Props) {
       header={(
         <>
           {selectedNotification.subject}
-          <Text size={Size.XS}>{DateHelper.convertStringToDate(selectedNotification.sentAt)}</Text>
+          <Text size={Size.XS}>{DateHelper.convertOffsetDateTimeToDateString(selectedNotification.sentAt)}</Text>
         </>
       )}
       body={<Text dangerouslySetInnerHTML={{ __html: selectedNotification.message.replaceAll('\n', '<br/>') }} />}

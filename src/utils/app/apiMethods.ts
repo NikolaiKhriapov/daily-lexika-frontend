@@ -26,10 +26,10 @@ export const ApiEndpointsReviews = {
 
 const URL_USERS = `${BASE_URL}/user`;
 export const ApiEndpointsUsers = {
-  getUserInfo: () => `${URL_USERS}/account/info`,
-  updateUserInfo: () => `${URL_USERS}/account/info`,
-  updatePassword: () => `${URL_USERS}/account/password`,
-  deleteAccount: () => `${URL_USERS}/account`,
+  getUserInfo: () => `${URL_USERS}/info`,
+  updateUserInfo: () => `${URL_USERS}/info`,
+  updatePassword: () => `${URL_USERS}/password`,
+  deleteAccount: () => `${URL_USERS}`,
 };
 
 const URL_STATISTICS = `${BASE_URL}/statistics`;

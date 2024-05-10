@@ -56,7 +56,7 @@ export default function NotificationsComponent() {
                     fontWeight={FontWeight.SEMIBOLD}
                     display={{ base: 'none', md: 'unset' }}
                   >
-                    {DateHelper.convertStringToDate(notificationDTO.sentAt)}
+                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt)}
                   </Text>
                 </MenuItemStyled>
                 {index < allNotifications.length - 1 && <MenuDivider />}
