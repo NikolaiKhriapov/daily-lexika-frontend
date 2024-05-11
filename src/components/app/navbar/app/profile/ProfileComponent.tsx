@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { AppInstallationContext } from '@context/app/AppInstallationContext';
 import { AuthContext } from '@context/app/AuthContext';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { AppInfo, EmailLinks } from '@utils/app/constants';
+import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -19,7 +18,6 @@ import Text from '@components/ui-common/basic/Text';
 export default function ProfileComponent() {
   const { colorMode } = useColorMode();
   const { logout } = useContext(AuthContext);
-  const { isStandalone } = useContext(AppInstallationContext);
   const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
   const { isOpen: isOpenPreferences, onOpen: onOpenPreferences, onClose: onClosePreferences } = useDisclosure();

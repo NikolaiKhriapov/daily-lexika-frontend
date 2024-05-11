@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetWordOfTheDayQuery } from '@store/api/wordsAPI';
-import { Breakpoint, Size } from '@utils/constants';
+import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
+import { setSlideUp } from '@store/reducers/app/reviewsPageTransitionSlice';
+import { Breakpoint, Page, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
+import FloatingArrowButton, { ArrowDirection } from '@components/app/content/review/FloatingArrowButton';
 import ReviewCard from '@components/app/content/review/ReviewCard';
 import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Heading from '@components/ui-common/basic/Heading';
@@ -14,8 +18,16 @@ import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/Ske
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function ReviewsPageContent() {
+  const dispatch = useAppDispatch();
+  const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
+
   const { data: allReviews = [], isLoading: isLoadingAllReviews, isError } = useGetAllReviewsQuery(undefined, { refetchOnMountOrArgChange: true });
   useGetWordOfTheDayQuery(undefined, { refetchOnMountOrArgChange: true });
+
+  const noReviewsText = useBreakpointValue({
+    base: 'Get started by creating a daily review by clicking the button below',
+    md: 'Get started by creating a daily review in the \'Word Packs\' section',
+  });
 
   if (isLoadingAllReviews) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoadingAllReviews} fixed={3} />;
   if (isError) return <ErrorComponent />;
@@ -23,14 +35,14 @@ export default function ReviewsPageContent() {
   const noReviewsComponent = (
     <IndexPageContainer>
       <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
-      <Text size={Size.LG} isCentered>{'Get started by creating a daily review in the \'Word Packs\' section'}</Text>
+      <Text size={Size.LG} isCentered>{noReviewsText}</Text>
       <Text />
     </IndexPageContainer>
   );
 
   return (
     <>
-      <ContainerMobile>
+      <ContainerMobile className={slideUp ? 'slide-up-r' : slideDown ? 'slide-down-r' : ''}>
         {
           allReviews.length === 0
             ? noReviewsComponent
@@ -48,18 +60,24 @@ export default function ReviewsPageContent() {
             )
         }
       </ContainerMobile>
+      <MobileOnly>
+        <FloatingArrowButton
+          arrowDirection={ArrowDirection.DOWN}
+          setAnimateTrue={() => dispatch(setSlideUp(true))}
+          setAnimateFalse={() => dispatch(setSlideUp(false))}
+          targetPage={Page.WORD_PACKS}
+        />
+      </MobileOnly>
+
       <ContainerTablet>
-        <Section>
-          {
-            allReviews.length === 0
-              ? noReviewsComponent
-              : allReviews.map((reviewDTO) => <ReviewCard key={reviewDTO.id} review={reviewDTO} />)
-          }
-        </Section>
-        <Section>
-          <WordOfTheDayComponent />
-        </Section>
+        {
+          allReviews.length === 0
+            ? noReviewsComponent
+            : allReviews.map((reviewDTO) => <ReviewCard key={reviewDTO.id} review={reviewDTO} />)
+        }
+        {allReviews.length !== 0 && <WordOfTheDayComponent />}
       </ContainerTablet>
+
       <ContainerDesktop>
         {
           allReviews.length === 0
@@ -78,7 +96,40 @@ const ContainerMobile = styled.div`
   width: 100%;
   justify-content: center;
   gap: 30px;
+  min-height: calc(100vh - 200px);
 
+  &.slide-up-r {
+    animation: slideUpR 0.3s forwards !important;
+  }
+
+  &.slide-down-r {
+    animation: slideDownR 0.3s forwards !important;
+  }
+
+  @keyframes slideUpR {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  @keyframes slideDownR {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+    
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: none;
+  }
+`;
+
+const MobileOnly = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     display: none;
   }
@@ -89,8 +140,12 @@ const ContainerTablet = styled.div`
     
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     display: flex;
-    flex-direction: column;
-    gap: 50px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: baseline;
+    gap: 40px;
+    width: calc(100vw - 100px);
   }
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
@@ -110,14 +165,4 @@ const ContainerDesktop = styled.div`
     gap: 40px;
     width: calc(100vw - 100px);
   }
-`;
-
-const Section = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: baseline;
-    gap: 40px;
-    width: calc(100vw - 100px);
 `;
