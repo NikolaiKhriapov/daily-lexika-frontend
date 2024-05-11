@@ -1,12 +1,16 @@
 import { API } from '@store/api/API';
-import authPageSlice from '@store/reducers/authPageSlice';
-import floatingChatSlice from '@store/reducers/floatingChatSlice';
+import authPageSlice from '@store/reducers/app/authPageSlice';
+import floatingPlusButtonSlice from '@store/reducers/app/floatingPlusButtonSlice';
+import reviewsPageTransitionSlice from '@store/reducers/app/reviewsPageTransitionSlice';
+import floatingChatSlice from '@store/reducers/landing/floatingChatSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { combineReducers } from 'redux';
 
 export const rootReducer = combineReducers({
   authPageSlice,
+  reviewsPageTransitionSlice,
+  floatingPlusButtonSlice,
   floatingChatSlice,
   [API.reducerPath]: API.reducer,
 });

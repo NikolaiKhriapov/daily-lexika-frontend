@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
-import { Breakpoint, Size } from '@utils/constants';
+import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
+import { setSlideDown } from '@store/reducers/app/reviewsPageTransitionSlice';
+import { Breakpoint, Page, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { Category } from '@utils/types';
+import FloatingArrowButton, { ArrowDirection } from '@components/app/content/review/FloatingArrowButton';
+import FloatingPlusButton from '@components/app/content/word-pack/FloatingPlusButton';
 import WordPackCard from '@components/app/content/word-pack/WordPackCard';
-import WordPackCardAddNew from '@components/app/content/word-pack/WordPackCardAddNew';
 import Heading from '@components/ui-common/basic/Heading';
 import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
 import IndexPageContainer from '@components/ui-common/complex/IndexPageContainer';
@@ -13,6 +16,9 @@ import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/Ske
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function WordPacksPageContent() {
+  const dispatch = useAppDispatch();
+  const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
+
   const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
 
   const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDto) => wordPackDto.category)));
@@ -33,39 +39,63 @@ export default function WordPacksPageContent() {
   }
 
   return (
-    <Container>
-      {wordPackCategoriesStandard.map((wordPackCategory) => (
-        <Section key={wordPackCategory}>
-          <HeadingContainer>
-            <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
-          </HeadingContainer>
-          <Swiper>
-            {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
-              <SwiperSlide key={wordPackDto.name}>
-                <WordPackCard wordPack={wordPackDto} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Section>
-      ))}
-      <Section>
-        <HeadingContainer>
-          <Heading size={Size.LG} isCentered>Custom</Heading>
-        </HeadingContainer>
-        <Swiper>
-          {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
-            <SwiperSlide key={wordPackDto.name}>
-              <WordPackCard wordPack={wordPackDto} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide key='add-new'>
-            <WordPackCardAddNew />
-          </SwiperSlide>
-        </Swiper>
-      </Section>
-    </Container>
+    <>
+      <Container className={slideUp ? 'slide-up-wp' : slideDown ? 'slide-down-wp' : ''}>
+        {wordPackCategoriesStandard.map((wordPackCategory) => (
+          <Section key={wordPackCategory}>
+            <HeadingContainer>
+              <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+            </HeadingContainer>
+            <Swiper>
+              {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
+                <SwiperSlide key={wordPackDto.name}>
+                  <WordPackCard wordPack={wordPackDto} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </Section>
+        ))}
+        {wordPacksDtoByCategory(Category.CUSTOM).length > 0 && (
+          <Section>
+            <HeadingContainer>
+              <Heading size={Size.LG} isCentered>Custom</Heading>
+            </HeadingContainer>
+            <Swiper>
+              {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
+                <SwiperSlide key={wordPackDto.name}>
+                  <WordPackCard wordPack={wordPackDto} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </Section>
+        )}
+      </Container>
+      <ContainerMobile>
+        <FloatingArrowButton
+          arrowDirection={ArrowDirection.UP}
+          setAnimateTrue={() => dispatch(setSlideDown(true))}
+          setAnimateFalse={() => dispatch(setSlideDown(false))}
+          targetPage={Page.REVIEWS}
+          order={2}
+        />
+      </ContainerMobile>
+      <FloatingPlusButton />
+    </>
   );
 }
+
+const ContainerMobile = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: baseline;
+  width: 100%;
+  justify-content: center;
+  gap: 30px;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: none;
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -75,9 +105,37 @@ const Container = styled.div`
   align-content: baseline;
   gap: 30px;
   width: 100%;
-  
+  min-height: calc(100vh - 200px);
+
+  &.slide-up-wp {
+    animation: slideUpWp 0.3s forwards !important;
+  }
+
+  &.slide-down-wp {
+    animation: slideDownWp 0.3s forwards !important;
+  }
+
+  @keyframes slideUpWp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDownWp {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: calc(100vw - 100px);
+    animation: none;
   }
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {

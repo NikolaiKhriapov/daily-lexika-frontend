@@ -6,7 +6,7 @@ import { AuthContext } from '@context/app/AuthContext';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
-import { toggleAuthFormType } from '@store/reducers/authPageSlice';
+import { toggleAuthFormType } from '@store/reducers/app/authPageSlice';
 import { AuthFormType, EmailLinks, Platform } from '@utils/app/constants';
 import { Breakpoint, ButtonType, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';

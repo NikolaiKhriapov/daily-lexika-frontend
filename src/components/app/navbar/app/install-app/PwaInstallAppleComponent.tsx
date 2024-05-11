@@ -9,8 +9,8 @@ import { theme } from '@utils/theme';
 import Button from '@components/ui-common/basic/Button';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
-import IosShareIcon from '@components/ui-common/icons/ios-share-icon.png';
-import PwaBadge from '@components/ui-common/icons/pwa-badge.png';
+import IosShareIcon from '@components/ui-common/icons/app-install/ios-share-icon.png';
+import PwaBadge from '@components/ui-common/icons/app-install/pwa-badge.png';
 
 export default function PwaInstallAppleComponent() {
   const { colorMode } = useColorMode();

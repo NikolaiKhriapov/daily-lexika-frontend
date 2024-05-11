@@ -11,8 +11,8 @@ import PwaInstallComponent from '@components/app/navbar/app/install-app/PwaInsta
 import MenuList from '@components/ui-common/basic/MenuList';
 import Text from '@components/ui-common/basic/Text';
 import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
-import AppStoreBadge from '@components/ui-common/icons/app-store-badge.png';
-import GooglePlayBadge from '@components/ui-common/icons/google-play-badge.png';
+import AppStoreBadge from '@components/ui-common/icons/app-install/app-store-badge.png';
+import GooglePlayBadge from '@components/ui-common/icons/app-install/google-play-badge.png';
 
 export default function AppInstallComponent() {
   const { colorMode } = useColorMode();

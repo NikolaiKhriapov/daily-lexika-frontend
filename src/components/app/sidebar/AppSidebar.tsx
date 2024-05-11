@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
-import { TbCalendarCheck, TbDeviceTabletSearch } from 'react-icons/tb';
+import { RxReader } from 'react-icons/rx';
+import { TbCards, TbDeviceTabletSearch } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -11,6 +12,7 @@ import { theme } from '@utils/theme';
 import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import WordOfTheDayComponent from '@components/app/navbar/app/word-of-the-day/WordOfTheDayComponent';
 import Text from '@components/ui-common/basic/Text';
+import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
 
 type Props = {
   page?: Page;
@@ -22,32 +24,57 @@ export default function AppSidebar(props: Props) {
   const { colorMode } = useColorMode();
   const { isStandalone } = useContext(AppInstallationContext);
 
-  const sidebarMainItems = [
-    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCalendarCheck, selected: page === Page.REVIEWS },
-    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
+  const sidebarMainMobileItems = [
+    { name: 'Dailies', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS },
     { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
+  ];
+
+  const sidebarMainTabletAndDesktopItems = [
+    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS },
+    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS },
+    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
   ];
 
   return (
     <Container>
-      <SidebarMain $colorMode={colorMode}>
-        {sidebarMainItems.map((item) => (
+
+      <SidebarMainMobile $colorMode={colorMode}>
+        {sidebarMainMobileItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
             <Icon as={item.icon} color={item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor} />
             <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
             <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
           </Item>
         ))}
-        {/* <Item href='' $colorMode={colorMode} $selected={false}> */}
-        {/*  <Icon as={TbDeviceTabletSearch} color='gray' /> */}
-        {/*  <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Search</Text> */}
-        {/*  <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Search</Text> */}
-        {/*  <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer> */}
-        {/* </Item> */}
-      </SidebarMain>
+        <Item href='' $colorMode={colorMode} $selected={false}>
+          <Icon as={RxReader} color='gray' />
+          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Reading</Text>
+          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Reading</Text>
+          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
+        </Item>
+      </SidebarMainMobile>
+
+      <SidebarMainTabletAndDesktop $colorMode={colorMode}>
+        {sidebarMainTabletAndDesktopItems.map((item) => (
+          <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
+            <Icon as={item.icon} color={item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor} />
+            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
+          </Item>
+        ))}
+        <Item href='' $colorMode={colorMode} $selected={false}>
+          <Icon as={RxReader} color='gray' />
+          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Reading</Text>
+          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Reading</Text>
+          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
+        </Item>
+      </SidebarMainTabletAndDesktop>
+
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
       {!isStandalone && <ContainerDesktop><AppInstallComponent /></ContainerDesktop>}
+
     </Container>
   );
 }
@@ -66,11 +93,13 @@ const Container = styled.div`
   }
 `;
 
-const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
+const SidebarMainMobile = styled.div<{ $colorMode: ColorMode }>`
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -78,6 +107,29 @@ const SidebarMain = styled.div<{ $colorMode: ColorMode }>`
   box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
   z-index: 1000;
 
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    display: none;
+  }
+`;
+
+const SidebarMainTabletAndDesktop = styled.div<{ $colorMode: ColorMode }>`
+  display: none;
+    
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].background2};
+    box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow};
+    z-index: 1000;
+  }
+    
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     padding: 30px 20px;
     position: inherit;
@@ -107,7 +159,7 @@ const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     flex-direction: row;
-    gap: 18px;
+    gap: 10px;
   }
     
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
@@ -141,18 +193,18 @@ const ContainerDesktop = styled.div`
   }
 `;
 
-// const ComingSoonContainer = styled.div`
-//   position: absolute;
-//   top: 10%;
-//   right: 20%;
-//
-//   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-//     top: 20%;
-//     right: 15%;
-//   }
-//
-//   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
-//     top: 15%;
-//     right: 5%;
-//   }
-// `;
+const ComingSoonContainer = styled.div`
+  position: absolute;
+  top: 10%;
+  right: 20%;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    top: 20%;
+    right: 15%;
+  }
+
+  ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
+    top: 15%;
+    right: 5%;
+  }
+`;
