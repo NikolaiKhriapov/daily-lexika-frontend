@@ -1,6 +1,5 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
@@ -45,7 +44,7 @@ export default function CreateWordPackWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
-      width={useBreakpointValue({ base: '350px', md: '450px' })}
+      width='450px'
       isOpen={isOpen}
       onClose={onClose}
       header='Create Word Pack'

@@ -40,6 +40,7 @@ export default function UserPreferencesWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
+      width='450px'
       isOpen={isOpen}
       onClose={onClose}
       header='Preferences'

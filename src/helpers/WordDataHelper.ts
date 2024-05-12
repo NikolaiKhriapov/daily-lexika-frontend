@@ -13,9 +13,7 @@ export default class WordDataHelper {
   public static getWordDataNameByUserRole(wordData: WordDataDto, user: UserDto) {
     switch (user.role) {
       case RoleName.USER_ENGLISH: return wordData.nameEnglish;
-      case RoleName.USER_CHINESE: return wordData.nameChinese.length < 100
-        ? wordData.nameChinese
-        : wordData.nameChinese.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
+      case RoleName.USER_CHINESE: return wordData.nameChinese;
       default: return '';
     }
   }
@@ -26,11 +24,11 @@ export default class WordDataHelper {
 
   public static getWordDataTranslation(wordData: WordDataDto, user: UserDto) {
     switch (user.translationLanguage) {
-      case Language.ENGLISH: return wordData.nameEnglish;
+      case Language.CHINESE: return wordData.nameChinese;
       case Language.RUSSIAN: return wordData.nameRussian;
-      case Language.CHINESE: return wordData.nameChinese.length < 100
-        ? wordData.nameChinese
-        : wordData.nameChinese.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
+      case Language.ENGLISH: return wordData.nameEnglish.length < 100
+        ? wordData.nameEnglish
+        : wordData.nameEnglish.substring(0, 100).concat('...');// TODO::: remove after revising all Chinese words
       default: return '';
     }
   }
@@ -100,7 +98,7 @@ export default class WordDataHelper {
     };
 
     return `When searching for a word, please keep in mind that Daily Lexika is primarily designed to help you prepare 
-      for the ${appDataMapping[user.role as RoleNameBase].exams} exam, it is not a dictionary app. Our database 
+      for exams like ${appDataMapping[user.role as RoleNameBase].exams}, it is not a dictionary app. Our database 
       contains around ${appDataMapping[user.role as RoleNameBase].totalWords} officially recommended words.`;
   }
 }

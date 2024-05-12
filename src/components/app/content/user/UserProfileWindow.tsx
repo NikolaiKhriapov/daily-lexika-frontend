@@ -121,6 +121,7 @@ export default function UserProfileWindow(props: Props) {
   return (
     <Modal
       size={Size.MD}
+      width='450px'
       isOpen={isOpen}
       onClose={onClose}
       header='Account'
