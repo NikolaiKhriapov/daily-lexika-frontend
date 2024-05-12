@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
+import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { useGetWordOfTheDayQuery } from '@store/api/wordsAPI';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { setSlideUp } from '@store/reducers/app/reviewsPageTransitionSlice';
@@ -22,6 +23,7 @@ export default function ReviewsPageContent() {
   const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
 
   const { data: allReviews = [], isLoading: isLoadingAllReviews, isError } = useGetAllReviewsQuery(undefined, { refetchOnMountOrArgChange: true });
+  const { data: allWordPacks } = useGetAllWordPacksQuery();
   useGetWordOfTheDayQuery(undefined, { refetchOnMountOrArgChange: true });
 
   const noReviewsText = useBreakpointValue({
@@ -60,14 +62,16 @@ export default function ReviewsPageContent() {
             )
         }
       </ContainerMobile>
-      <MobileOnly>
-        <FloatingArrowButton
-          arrowDirection={ArrowDirection.DOWN}
-          setAnimateTrue={() => dispatch(setSlideUp(true))}
-          setAnimateFalse={() => dispatch(setSlideUp(false))}
-          targetPage={Page.WORD_PACKS}
-        />
-      </MobileOnly>
+      {allWordPacks && (
+        <MobileOnly>
+          <FloatingArrowButton
+            arrowDirection={ArrowDirection.DOWN}
+            setAnimateTrue={() => dispatch(setSlideUp(true))}
+            setAnimateFalse={() => dispatch(setSlideUp(false))}
+            targetPage={Page.WORD_PACKS}
+          />
+        </MobileOnly>
+      )}
 
       <ContainerTablet>
         {

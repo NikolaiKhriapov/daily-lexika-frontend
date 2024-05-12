@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { setSlideDown } from '@store/reducers/app/reviewsPageTransitionSlice';
@@ -20,6 +21,7 @@ export default function WordPacksPageContent() {
   const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
 
   const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
+  const { data: allReviews } = useGetAllReviewsQuery();
 
   const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDto) => wordPackDto.category)));
   const wordPacksDtoByCategory = (category: Category) => allWordPacks
@@ -70,15 +72,17 @@ export default function WordPacksPageContent() {
           </Section>
         )}
       </Container>
-      <ContainerMobile>
-        <FloatingArrowButton
-          arrowDirection={ArrowDirection.UP}
-          setAnimateTrue={() => dispatch(setSlideDown(true))}
-          setAnimateFalse={() => dispatch(setSlideDown(false))}
-          targetPage={Page.REVIEWS}
-          order={2}
-        />
-      </ContainerMobile>
+      {allReviews && (
+        <ContainerMobile>
+          <FloatingArrowButton
+            arrowDirection={ArrowDirection.UP}
+            setAnimateTrue={() => dispatch(setSlideDown(true))}
+            setAnimateFalse={() => dispatch(setSlideDown(false))}
+            targetPage={Page.REVIEWS}
+            order={2}
+          />
+        </ContainerMobile>
+      )}
       <FloatingPlusButton />
     </>
   );
