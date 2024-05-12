@@ -110,12 +110,8 @@ function WordPacksPageContentSkeleton(props: WordPacksPageContentSkeletonProps) 
   return (
     <>
       <ContainerMobile>
-        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton height={5} width={215} />
         {swiperElement(number)}
-        <Skeleton height={5} width={215} />
-        {swiperElement(1)}
       </ContainerMobile>
       <ContainerWordPacksTabletAndDesktop>
         <Skeleton height={5} width={215} />

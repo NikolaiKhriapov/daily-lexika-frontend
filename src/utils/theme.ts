@@ -20,8 +20,8 @@ const customColors = {
     alert: '#F56565',
     cardAddNew: '#F7FAFC',
     selectedItemBg: '#E3E8EF',
-    skeletonStart: '#E3E8EF',
-    skeletonEnd: '#CBD5E0',
+    skeletonStart: '#F7FAFC',
+    skeletonEnd: 'rgb(255,255,255)',
   },
   dark: {
     background: 'rgb(10,10,10)',
@@ -65,9 +65,11 @@ const customBreakpoints = {
 const stylesToDelete = {
   light: {
     boxShadow: '0 10px 10px rgba(0, 0, 0, 0.1)',
+    boxShadowButton: '0 0 10px rgba(0, 0, 0, 0.3)',
   },
   dark: {
     boxShadow: '0 10px 10px rgba(0, 0, 0, 0.4)',
+    boxShadowButton: '0 0 10px rgba(255, 255, 255, 0.3)',
   },
   borderWidth: '1px',
   borderStyle: 'solid',

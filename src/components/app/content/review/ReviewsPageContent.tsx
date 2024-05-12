@@ -29,7 +29,7 @@ export default function ReviewsPageContent() {
     md: 'Get started by creating a daily review in the \'Word Packs\' section',
   });
 
-  if (isLoadingAllReviews) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoadingAllReviews} fixed={3} />;
+  if (isLoadingAllReviews) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoadingAllReviews} fixed={7} />;
   if (isError) return <ErrorComponent />;
 
   const noReviewsComponent = (

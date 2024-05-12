@@ -5,7 +5,7 @@ import { ColorMode, useBreakpointValue, useColorMode, useDisclosure } from '@cha
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { toggleExpanded } from '@store/reducers/app/floatingPlusButtonSlice';
 import { Breakpoint, Size } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import CreateWordPackWindow from '@components/app/content/word-pack/CreateWordPackWindow';
 import Text from '@components/ui-common/basic/Text';
@@ -75,9 +75,8 @@ const FloatingButton = styled.button<{ $colorMode: ColorMode }>`
   align-items: center;
   height: 50px;
   width: 50px;
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: 100%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadowButton};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].cardAddNew};
   transition: background-color 0.3s ease-in-out;
   z-index: 1000;
@@ -107,7 +106,6 @@ const FloatingOptionContainer = styled.div<{ $order: number; $isVisible: boolean
   height: 40px;
   width: 40px;
   border-radius: 100%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   transition: bottom ease 0.3s;
 
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
@@ -123,7 +121,7 @@ const FloatingIcon = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   height: 40px;
   width: 40px;
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadowButton};
   border-radius: 100%;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].cardAddNew};
   cursor: pointer;
@@ -141,7 +139,7 @@ const FloatingText = styled(Text)<{ $colorMode: ColorMode; $isVisible: boolean }
   padding: 3px 10px;
   border-radius: 15px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].cardAddNew};
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadowButton};
   opacity: ${({ $isVisible }) => ($isVisible ? '100%' : '0')};
   transition: opacity ease-out 0.3s;
 

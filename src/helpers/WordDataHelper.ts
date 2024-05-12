@@ -53,7 +53,7 @@ export default class WordDataHelper {
   }
 
   public static splitTranscriptions(transcription: string) {
-    return transcription.split(' ');
+    return transcription.split(', ');
   }
 
   public static getOriginalWordPackName(wordPackName: string, user: UserDto | null) {

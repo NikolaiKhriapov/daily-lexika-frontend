@@ -6,7 +6,7 @@ import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { setExpanded } from '@store/reducers/app/floatingPlusButtonSlice';
 import { Breakpoint, Page } from '@utils/constants';
-import { borderStyles, mediaBreakpointUp } from '@utils/functions';
+import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 
 export enum ArrowDirection {
@@ -72,10 +72,9 @@ const FloatingButton = styled.div<{ $colorMode: ColorMode }>`
   align-items: center;
   height: 50px;
   width: 50px;
-  border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: 100%;
   z-index: 1000;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadowButton};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].cardAddNew};
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
