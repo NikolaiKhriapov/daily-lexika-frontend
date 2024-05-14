@@ -20,8 +20,8 @@
     "path": "/Users/Nikolai/Documents/JavaWorkspaces/MyWorkspace/daily-lexika-frontend/android/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "15",
-  "appVersionCode": 15,
+  "appVersionName": "2024.5.0",
+  "appVersionCode": 16,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://dailylexika.com/manifest.json",
@@ -39,5 +39,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "15"
+  "appVersion": "2024.5.0"
 }
