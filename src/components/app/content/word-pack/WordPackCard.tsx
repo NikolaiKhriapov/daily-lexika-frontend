@@ -67,7 +67,7 @@ export default function WordPackCard(props: Props) {
     onOpenDeleteButton();
   };
 
-  const wordPacksUnderDevelopment = ['HSK 4', 'HSK 5', 'HSK 6', 'HSK 7-9'];
+  const wordPacksUnderDevelopment = ['HSK 5', 'HSK 6', 'HSK 7-9'];
 
   return (
     <Card
