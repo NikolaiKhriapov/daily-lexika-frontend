@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, useColorMode } from '@chakra-ui/react';
+import { AppInfo } from '@utils/app/constants';
 import { Breakpoint } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -30,9 +31,8 @@ export default function AppInstallComponent() {
           <InstallOptionLink href='' $colorMode={colorMode}>
             <PwaInstallComponent />
           </InstallOptionLink>
-          <InstallOptionLink href='' $colorMode={colorMode}>
-            <ContainerUnavailable><Image src={GooglePlayBadge} width={165} alt="play-store-badge" /></ContainerUnavailable>
-            <ContainerComingSoon><ComingSoon type={ComingSoonType.BADGE} /></ContainerComingSoon>
+          <InstallOptionLink href={AppInfo.LINK_GOOGLE_PLAY} target="_blank" $colorMode={colorMode}>
+            <Image src={GooglePlayBadge} width={165} alt="play-store-badge" />
           </InstallOptionLink>
           <InstallOptionLink href='' $colorMode={colorMode}>
             <ContainerUnavailable><Image src={AppStoreBadge} width={165} alt="app-store-badge" /></ContainerUnavailable>

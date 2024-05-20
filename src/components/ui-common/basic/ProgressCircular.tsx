@@ -4,6 +4,8 @@ import {
 import { FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import Text from '@components/ui-common/basic/Text';
+import { nonSelectableText } from '@utils/functions';
+import styled from 'styled-components';
 
 interface Props extends CircularProgressProps {
   text: string;
@@ -15,7 +17,7 @@ export default function ProgressCircular(props: Props) {
   const { colorMode } = useColorMode();
 
   return (
-    <CircularProgress
+    <CircularProgressStyled
       value={value}
       size={useBreakpointValue({ base: '105px', md: '175px', xl: '175px' })}
       thickness='6px'
@@ -28,6 +30,10 @@ export default function ProgressCircular(props: Props) {
           <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>{text}</Text>
         </CircularProgressLabel>
       )}
-    </CircularProgress>
+    </CircularProgressStyled>
   );
 }
+
+const CircularProgressStyled = styled(CircularProgress)`
+  ${nonSelectableText};
+`;

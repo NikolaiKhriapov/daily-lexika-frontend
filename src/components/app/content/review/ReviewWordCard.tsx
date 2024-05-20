@@ -66,11 +66,11 @@ export default function ReviewWordCard(props: Props) {
   const wordDataSize = {
     [RoleName.USER_ENGLISH]: {
       nameWord: {
-        size: { base: Size.XXL, sm: Size.XXXXL, xl: Size.XXXXL },
+        size: { base: Size.XL, sm: Size.XXL, xl: Size.XXXXL },
         font: theme.fonts.body,
       },
-      transcriptionSize: { base: Size.SM, sm: Size.XL, xl: Size.XL },
-      nameTranslationSize: { base: Size.LG, sm: Size.XXL, xl: Size.XXL },
+      transcriptionSize: { base: Size.SM, sm: Size.MD, xl: Size.XL },
+      nameTranslationSize: { base: Size.MD, sm: Size.XL, xl: Size.XXL },
     },
     [RoleName.USER_CHINESE]: {
       nameWord: {

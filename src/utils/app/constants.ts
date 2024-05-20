@@ -3,6 +3,7 @@ export enum AppInfo {
   DESCRIPTION = 'Language Learning Application',
   EMAIL = 'kolyakhryapov@gmail.com',
   APP_VERSION = '2024.5.0',
+  LINK_GOOGLE_PLAY = 'https://play.google.com/store/apps/details?id=com.dailylexika.twa',
 }
 
 export const DbInfo = {

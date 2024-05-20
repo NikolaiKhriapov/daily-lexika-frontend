@@ -132,7 +132,7 @@ export default function ReviewCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text isCentered>{review.wordPackDto.description}</Text>
+            <Text size={Size.SM} isCentered>{review.wordPackDto.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon

@@ -89,8 +89,8 @@ const WordInfoContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   height: 60vh;
-  overflow-y: auto;
   width: 100%;
+  overflow-y: auto;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 500px;

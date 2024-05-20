@@ -10,7 +10,7 @@ export enum SkeletonType {
   WORD_PACK_CARD = 'WORD_PACK_CARD',
   STATS_CARD = 'STATS_CARD',
   TEXT_HEADING = 'TEXT_HEADING',
-  WORD_INFO = 'WORD_INFO',
+  WORDS_SCROLLABLE_CONTAINER = 'WORDS_SCROLLABLE_CONTAINER',
   WORD_STREAK_STATS = 'WORD_STREAK_STATS',
 }
 
@@ -44,7 +44,7 @@ export default function SkeletonWrapper(props: Props) {
     [SkeletonType.WORD_PACK_CARD]: <WordPacksPageContentSkeleton number={number} />,
     [SkeletonType.STATS_CARD]: <StatisticsPageContentSkeleton number={number} />,
     [SkeletonType.TEXT_HEADING]: <Skeleton height={5} width={215} />,
-    [SkeletonType.WORD_INFO]: <SearchWindowSkeleton />,
+    [SkeletonType.WORDS_SCROLLABLE_CONTAINER]: <WordsScrollableContainerSkeleton />,
     [SkeletonType.WORD_STREAK_STATS]: <Skeleton height='40px' width='150px' />,
   };
 
@@ -139,13 +139,13 @@ function StatisticsPageContentSkeleton(props: StatisticsPageContentSkeletonProps
   );
 }
 
-function SearchWindowSkeleton() {
+function WordsScrollableContainerSkeleton() {
   const number = 10;
 
   return (
-    <ContainerSearchWindow>
-      {[...Array(number)].map((_, index) => <Skeleton key={index} height='60px' width='auto' />)}
-    </ContainerSearchWindow>
+    <ContainerWordsScrollable>
+      {[...Array(number)].map((_, index) => <Skeleton key={index} height='65px' width='auto' />)}
+    </ContainerWordsScrollable>
   );
 }
 
@@ -198,10 +198,15 @@ const ContainerStatistics = styled.div`
   gap: 40px;
 `;
 
-const ContainerSearchWindow = styled.div`
+const ContainerWordsScrollable = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-x: hidden;
+  height: 60vh;
   width: 100%;
+  overflow-x: hidden;
+
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    width: 500px;
+  }
 `;

@@ -24,11 +24,11 @@ export default function WordOfTheDayComponent() {
   const wordDataSize = {
     [RoleName.USER_ENGLISH]: {
       nameWord: {
-        size: { base: Size.XL, sm: Size.XL, xl: Size.XXL },
+        size: { base: Size.LG, sm: Size.LG, xl: Size.XL },
         font: theme.fonts.body,
       },
-      transcriptionSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
-      nameTranslationSize: { base: Size.MD, sm: Size.MD, xl: Size.MD },
+      transcriptionSize: { base: Size.SM, sm: Size.SM, xl: Size.MD },
+      nameTranslationSize: { base: Size.MD, sm: Size.MD, xl: Size.LG },
     },
     [RoleName.USER_CHINESE]: {
       nameWord: {

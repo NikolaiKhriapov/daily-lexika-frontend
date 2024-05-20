@@ -49,7 +49,7 @@ export default function ReviewWordPackWindow(props: Props) {
             <Text>{wordPack.totalWords}</Text>
           </TotalWords>
           <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPack.description}</Text>
-          <SkeletonWrapper type={SkeletonType.WORD_INFO} isLoading={isLoadingWordsPage}>
+          <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>
             <WordsScrollableContainer
               wordsPage={wordsPage}
               isLoading={isLoadingWordsPage}
@@ -69,7 +69,7 @@ const Container = styled.div`
   gap: 20px;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-      width: 500px;
+    width: 500px;
   }
 `;
 

@@ -67,7 +67,7 @@ export default function WordCard(props: Props) {
         </ContentsContainer>
       )}
       back={(
-        <ContentsContainer $title={title} $gap={infoGap}>
+        <ContentsContainer $gap={infoGap}>
           {title && <TextStyled fontWeight={FontWeight.SEMIBOLD} opacity={0.5}>{title}</TextStyled>}
           <ButtonsTopContainer>
             <ButtonWithIcon
@@ -104,11 +104,10 @@ export default function WordCard(props: Props) {
   );
 }
 
-const ContentsContainer = styled.div<{ $title?: string; $gap?: string }>`
+const ContentsContainer = styled.div<{ $gap?: string }>`
   width: 80%;
   display: flex;
   flex-direction: column;
-  padding-top: ${({ $title }) => $title && '25px'};
   gap: ${({ $gap }) => $gap && $gap};
   text-align: center;
   justify-content: center;
