@@ -98,7 +98,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
                 <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
               </>
             )}
-            buttonText="Submit"
+            buttonText="Update"
             onSubmit={handleOnSubmit}
             isButtonDisabled={false}
           />

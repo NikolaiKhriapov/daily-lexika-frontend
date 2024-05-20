@@ -115,7 +115,7 @@ export default function WordPackCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text isCentered>{wordPack.description}</Text>
+            <Text size={Size.SM} isCentered>{wordPack.description}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon
