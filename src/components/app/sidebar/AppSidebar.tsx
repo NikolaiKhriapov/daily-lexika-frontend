@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
+import { IoBookmarkOutline, IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
 import { RxReader } from 'react-icons/rx';
 import { TbCards, TbDeviceTabletSearch } from 'react-icons/tb';
 import Link from 'next/link';
@@ -25,16 +25,20 @@ export default function AppSidebar(props: Props) {
   const { isStandalone } = useContext(AppInstallationContext);
 
   const sidebarMainMobileItems = [
-    { name: 'Dailies', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS },
-    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
+    { name: 'Dailies', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS, isReady: true },
+    { name: 'Grammar', route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    { name: 'Reading', route: '', icon: RxReader, selected: false, isReady: false },
+    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];
 
   const sidebarMainTabletAndDesktopItems = [
-    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS },
-    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS },
-    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS },
+    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS, isReady: true },
+    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS, isReady: true },
+    { name: 'Grammar', route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    { name: 'Reading', route: '', icon: RxReader, selected: false, isReady: false },
+    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
+    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];
 
   return (
@@ -43,33 +47,23 @@ export default function AppSidebar(props: Props) {
       <SidebarMainMobile $colorMode={colorMode}>
         {sidebarMainMobileItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
-            <Icon as={item.icon} color={item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor} />
-            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
-            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
+            <Icon as={item.icon} color={item.isReady ? (item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor) : 'gray'} />
+            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            {!item.isReady && <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>}
           </Item>
         ))}
-        <Item href='' $colorMode={colorMode} $selected={false}>
-          <Icon as={RxReader} color='gray' />
-          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Reading</Text>
-          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Reading</Text>
-          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
-        </Item>
       </SidebarMainMobile>
 
       <SidebarMainTabletAndDesktop $colorMode={colorMode}>
         {sidebarMainTabletAndDesktopItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
-            <Icon as={item.icon} color={item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor} />
-            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
-            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.selected && theme.colors.mainBlue}>{item.name}</Text>
+            <Icon as={item.icon} color={item.isReady ? (item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor) : 'gray'} />
+            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            {!item.isReady && <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>}
           </Item>
         ))}
-        <Item href='' $colorMode={colorMode} $selected={false}>
-          <Icon as={RxReader} color='gray' />
-          <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color='gray'>Reading</Text>
-          <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color='gray'>Reading</Text>
-          <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>
-        </Item>
       </SidebarMainTabletAndDesktop>
 
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>

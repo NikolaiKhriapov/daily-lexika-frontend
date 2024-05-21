@@ -1,11 +1,11 @@
+import styled from 'styled-components';
 import {
   CircularProgress, CircularProgressLabel, CircularProgressProps, useBreakpointValue, useColorMode,
 } from '@chakra-ui/react';
 import { FontWeight, Size } from '@utils/constants';
+import { nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 import Text from '@components/ui-common/basic/Text';
-import { nonSelectableText } from '@utils/functions';
-import styled from 'styled-components';
 
 interface Props extends CircularProgressProps {
   text: string;

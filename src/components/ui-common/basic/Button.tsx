@@ -37,6 +37,7 @@ export default function Button(props: Props) {
           color={theme.stylesToDelete.link}
           fontWeight={FontWeight.NORMAL}
           isDisabled={isDisabled}
+          aria-label={buttonType}
           {...rest}
         >
           {buttonText}
@@ -53,6 +54,7 @@ export default function Button(props: Props) {
         type={getButtonType()}
         $colorMode={colorMode}
         isDisabled={isDisabled}
+        aria-label={buttonType}
         {...rest}
       >
         {buttonText}

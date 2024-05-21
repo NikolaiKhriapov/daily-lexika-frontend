@@ -109,7 +109,6 @@ const Container = styled.div`
   align-content: baseline;
   gap: 30px;
   width: 100%;
-  min-height: calc(100vh - 200px);
 
   &.slide-up-wp {
     animation: slideUpWp 0.3s forwards !important;

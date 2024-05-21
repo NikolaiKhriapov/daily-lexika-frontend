@@ -174,7 +174,7 @@ export default function WordPackCard(props: Props) {
 }
 
 const ContentsContainer = styled.div`
-    position: relative;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

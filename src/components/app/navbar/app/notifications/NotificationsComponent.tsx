@@ -35,7 +35,7 @@ export default function NotificationsComponent() {
   return (
     <Notifications $colorMode={colorMode}>
       <Menu>
-        <MenuButton>
+        <MenuButton aria-label="notifications-button">
           <ButtonContainer>
             <FiBell />{unreadNotifications.length > 0 && <RedDot />}
           </ButtonContainer>

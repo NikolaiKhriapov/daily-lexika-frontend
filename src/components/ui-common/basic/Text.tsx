@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Text as ChakraText, TextProps } from '@chakra-ui/react';
 import { Size } from '@utils/constants';
-import { theme } from '@utils/theme';
 import { nonSelectableText } from '@utils/functions';
+import { theme } from '@utils/theme';
 
 interface Props extends TextProps {
   size?: Size | { base: Size, sm: Size, xl: Size } | { base: string, md: string, xl: string };
