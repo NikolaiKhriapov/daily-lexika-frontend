@@ -9,10 +9,11 @@ import Text from '@components/ui-common/basic/Text';
 interface Props extends InputProps {
   label: string;
   name: string;
+  isError?: boolean;
 }
 
 export default function TextInput(props: Props) {
-  const { label, name, isRequired, type, placeholder } = props;
+  const { label, name, isRequired, type, placeholder, isError = false } = props;
 
   const { errors, touched } = useFormikContext<any>();
   const [isShown, setShown] = React.useState(false);
@@ -33,7 +34,7 @@ export default function TextInput(props: Props) {
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 value={field.value}
-                borderColor={errors[name] && touched[name] ? theme.colors.red['400'] : 'inherit'}
+                borderColor={isError || (errors[name] && touched[name]) ? theme.colors.red['400'] : 'inherit'}
               />
               {type === 'password' && (
                 <InputRightElement width="2.9rem">

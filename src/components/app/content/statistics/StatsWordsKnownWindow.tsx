@@ -13,7 +13,7 @@ type Props = {
   onClose: any;
 };
 
-export default function StatsWordsWindow(props: Props) {
+export default function StatsWordsKnownWindow(props: Props) {
   const { isOpen, onClose } = props;
 
   const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ export default function StatsWordsWindow(props: Props) {
       onClose={onClose}
       header='Words Known'
       body={(
-        <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={!isLoadingWordsPage}>
+        <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>
           <WordsScrollableContainer
             wordsPage={wordsPage}
             isLoading={isLoadingWordsPage}

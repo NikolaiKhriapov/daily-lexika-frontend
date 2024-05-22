@@ -167,10 +167,10 @@ export default function UserProfileWindow(props: Props) {
             <Modal
               onClose={onCloseChangePasswordButton}
               isOpen={isOpenChangePasswordButton}
-              header='Change Password'
+              header='New Password'
               body={(
                 <InputFieldsWithButton
-                  buttonText='Submit'
+                  buttonText='Update'
                   validateOnMount
                   initialValues={passwordChangeData.initialValues}
                   validationSchema={passwordChangeData.validationSchema}

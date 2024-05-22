@@ -22,7 +22,7 @@ export const EmailLinks = {
 };
 enum EmailTemplates {
   PASSWORD_RECOVERY_SUBJECT = 'Password Recovery',
-  PASSWORD_RECOVERY_BODY = 'Hi there, I seem to have forgotten my password for the {0} platform. Could you please assist me in resetting it?',
+  PASSWORD_RECOVERY_BODY = 'Hi there, I seem to have forgotten my password for the {0} platform. Could you please provide assistance in resetting it?',
   REPORT_ERROR_SUBJECT = 'Content Inaccuracy',
   REPORT_ERROR_BODY = 'Hi there, I seem to have found an inaccuracy with the content for the word \'{0}\'. Additional information: ',
 }

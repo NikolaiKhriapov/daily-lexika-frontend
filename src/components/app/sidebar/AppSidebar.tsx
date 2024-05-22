@@ -48,8 +48,8 @@ export default function AppSidebar(props: Props) {
         {sidebarMainMobileItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
             <Icon as={item.icon} color={item.isReady ? (item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor) : 'gray'} />
-            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
-            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.XS} display={{ base: 'unset', xl: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', xl: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
             {!item.isReady && <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>}
           </Item>
         ))}
@@ -59,8 +59,8 @@ export default function AppSidebar(props: Props) {
         {sidebarMainTabletAndDesktopItems.map((item) => (
           <Item key={item.name} href={item.route} $colorMode={colorMode} $selected={item.selected}>
             <Icon as={item.icon} color={item.isReady ? (item.selected ? theme.colors.mainBlue : theme.colors[colorMode].buttonColor) : 'gray'} />
-            <Text size={Size.XS} display={{ base: 'unset', md: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
-            <Text size={Size.MD} display={{ base: 'none', md: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.XS} display={{ base: 'unset', xl: 'none' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
+            <Text size={Size.MD} display={{ base: 'none', xl: 'unset' }} color={item.isReady ? (item.selected && theme.colors.mainBlue) : 'gray'}>{item.name}</Text>
             {!item.isReady && <ComingSoonContainer><ComingSoon type={ComingSoonType.BADGE} /></ComingSoonContainer>}
           </Item>
         ))}
@@ -152,13 +152,13 @@ const Item = styled(Link)<{ $colorMode: ColorMode; $selected: boolean }>`
   ${nonHighlightableTap};
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
-    flex-direction: row;
     gap: 10px;
   }
     
   ${mediaBreakpointUp(Breakpoint.DESKTOP)} {
     width: 100%;
     padding: 16px;
+    flex-direction: row;
     justify-content: left;
     border-radius: ${theme.stylesToDelete.borderRadius};
     background-color: ${({ $colorMode, $selected }) => $selected && theme.colors[$colorMode].selectedItemBg};

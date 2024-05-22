@@ -11,7 +11,7 @@ import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import StatsCard from '@components/app/content/statistics/StatsCard';
 import StatsReviewCard from '@components/app/content/statistics/StatsReviewCard';
-import StatsWordsWindow from '@components/app/content/statistics/StatsWordsWindow';
+import StatsWordsKnownWindow from '@components/app/content/statistics/StatsWordsKnownWindow';
 import Heading from '@components/ui-common/basic/Heading';
 import Text from '@components/ui-common/basic/Text';
 import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
@@ -47,7 +47,7 @@ export default function StatisticsPageContent() {
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
             <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<PiBookThin style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
-            {isOpenStatsWords && (<StatsWordsWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
+            {isOpenStatsWords && (<StatsWordsKnownWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
             {user?.role === RoleName.USER_CHINESE && (
               <StatsCard title="Characters Known" stat={statistics?.charactersKnown} icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
             )}

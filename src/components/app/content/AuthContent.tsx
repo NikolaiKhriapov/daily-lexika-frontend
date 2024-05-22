@@ -25,6 +25,7 @@ export default function AuthContent() {
   const { setUserFromToken } = useContext(AuthContext);
   const { authFormType } = useAppSelector((state) => state.authPageSlice);
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
+  const [isCredentialsInvalid, setCredentialsInvalid] = useState(false);
 
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
@@ -33,7 +34,10 @@ export default function AuthContent() {
     login(authenticationRequest)
       .unwrap()
       .then((response) => setUserFromToken(response.token))
-      .catch((error) => errorNotification('', error));
+      .catch((error) => {
+        errorNotification('', error);
+        setCredentialsInvalid(true);
+      });
   };
 
   const performRegister = (registrationRequest: RegistrationRequest) => {
@@ -71,7 +75,10 @@ export default function AuthContent() {
     },
   };
 
-  const onClickSwitchAuthFormType = () => dispatch(toggleAuthFormType());
+  const onClickSwitchAuthFormType = () => {
+    setCredentialsInvalid(false);
+    dispatch(toggleAuthFormType());
+  };
 
   return (
     <Container $colorMode={colorMode}>
@@ -85,6 +92,7 @@ export default function AuthContent() {
           value={selectedPlatform || ''}
           onChange={(e) => setSelectedPlatform(e.target.value as Platform)}
           focusBorderColor={theme.colors.gray['400']}
+          borderRadius={theme.stylesToDelete.borderRadius}
         >
           <option value={Platform.ENGLISH}>English</option>
           <option value={Platform.CHINESE}>Chinese</option>
@@ -101,9 +109,9 @@ export default function AuthContent() {
               {authFormType === AuthFormType.REGISTER && (
                 <TextInput label="Name" name="name" type="text" placeholder="Name" isRequired />
               )}
-              <TextInput label="Email" name="email" type="email" placeholder="Email address" isRequired />
+              <TextInput label="Email" name="email" type="email" placeholder="Email address" isRequired isError={isCredentialsInvalid} />
               <PasswordFieldContainer>
-                <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" isRequired />
+                <TextInput label="Password" name="password" type="password" placeholder="Password (8-20 characters)" isRequired isError={isCredentialsInvalid} />
                 {authFormType === AuthFormType.LOGIN && (
                   <ForgotPasswordContainer>
                     <Link href={EmailLinks.PasswordRecovery(selectedPlatform?.toString() || 'ENGLISH/CHINESE')}>
