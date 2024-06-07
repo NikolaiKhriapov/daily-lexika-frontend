@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -15,13 +16,13 @@ import WordDataHelper from '@helpers/WordDataHelper';
 
 export default function SearchPageContent() {
   const { colorMode } = useColorMode();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
-  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
-  const [selectedWordDataId, setSelectedWordDataId] = useState<number>();
-
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
+  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
+  const [selectedWordDataId, setSelectedWordDataId] = useState<number>();
 
   useEffect(() => {
     if (allWordData) {
@@ -58,7 +59,7 @@ export default function SearchPageContent() {
           searchQuery === '' || isLoadingAllWordData
             ? (
               <Text fontWeight={FontWeight.MEDIUM} isCentered opacity='50%' style={{ width: '90%' }}>
-                {WordDataHelper.getSearchInfoText(user)}
+                {WordDataHelper.getSearchInfoText(user, t)}
               </Text>
             )
             : (

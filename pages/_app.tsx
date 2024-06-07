@@ -3,28 +3,26 @@ import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
 import AppInstallationProvider from '@context/app/AppInstallationContext';
 import AuthProvider from '@context/app/AuthContext';
+import LanguageProvider from '@context/app/LanguageContext';
 import { store } from '@store/index';
-import { fonts } from '@utils/fonts';
 import { theme } from '@utils/theme';
+import { GlobalStyle } from '@components/GlobalStyle';
+
+import '../i18n';
 
 export default function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
   return (
     <>
-      <style jsx global>
-        {`
-            :root {
-                --font-rubik: ${fonts.rubik.style.fontFamily};
-                --font-noto-serif-sc: ${fonts.notoSerifSC.style.fontFamily};
-            }
-        `}
-      </style>
+      <GlobalStyle />
       <ChakraProvider theme={theme}>
         <Provider store={store}>
-          <AppInstallationProvider>
-            <AuthProvider>
-              <Component {...pageProps} />
-            </AuthProvider>
-          </AppInstallationProvider>
+          <LanguageProvider>
+            <AppInstallationProvider>
+              <AuthProvider>
+                <Component {...pageProps} />
+              </AuthProvider>
+            </AppInstallationProvider>
+          </LanguageProvider>
         </Provider>
       </ChakraProvider>
     </>

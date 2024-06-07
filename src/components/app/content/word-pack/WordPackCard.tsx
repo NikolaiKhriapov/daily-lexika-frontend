@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
@@ -20,7 +21,9 @@ import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
 import UnderDevelopmentIcon from '@components/ui-common/complex/UnderDevelopmentIcon';
+import I18nHelper from '@helpers/I18nHelper';
 import WordDataHelper from '@helpers/WordDataHelper';
+import WordPackHelper from '@helpers/WordPackHelper';
 
 type Props = {
   wordPack: WordPackDto;
@@ -30,15 +33,15 @@ export default function WordPackCard(props: Props) {
   const { wordPack } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const { isOpen: isOpenDeleteButton, onOpen: onOpenDeleteButton, onClose: onCloseDeleteButton } = useDisclosure();
   const { isOpen: isOpenSearch, onOpen: onOpenSearch, onClose: onCloseSearch } = useDisclosure();
+  const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
   const [isFlipped, setFlipped] = useState(false);
   const [isDisabledCreateButton, setDisabledCreateButton] = useState(false);
-
-  const { data: user } = useGetUserInfoQuery();
-  const [deleteWordPack, { isLoading: isLoadingDeleteWordPack }] = useDeleteCustomWordPackMutation();
 
   if (!user || wordPack.name === placeholderWordPack.name) return <Skeleton height={280} width={215} />;
 
@@ -46,7 +49,7 @@ export default function WordPackCard(props: Props) {
     onCloseDeleteButton();
     deleteWordPack(wordPack.name)
       .unwrap()
-      .then(() => successNotification('Word Pack deleted successfully', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} deleted successfully`))
+      .then(() => successNotification(t('WordPackCard.AlertDialog.successMessage')))
       .catch((error) => errorNotification('', error));
   };
 
@@ -80,9 +83,11 @@ export default function WordPackCard(props: Props) {
       face={(
         <ContentsContainer>
           <WordPackNameContainer>
-            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>{WordDataHelper.getOriginalWordPackName(wordPack.name, user)}</Text>
+            <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
+              {I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
+            </Text>
             {wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name, user)) && (
-              <UnderDevelopmentIcon tooltipText='We are still improving the translations for this pack, but you can already use it' />
+              <UnderDevelopmentIcon tooltipText={t('WordPackCard.underDevelopmentMessage')} />
             )}
           </WordPackNameContainer>
           <WordsCountContainer>
@@ -90,11 +95,11 @@ export default function WordPackCard(props: Props) {
           </WordsCountContainer>
           <ButtonsContainer>
             {wordPack.reviewId !== null
-              ? <ButtonUnavailable text='Added' isWithIcon />
+              ? <ButtonUnavailable text={t('buttonText.added')} isWithIcon />
               : (
                 <Button
                   size={Size.SM}
-                  buttonText="Create Daily Review"
+                  buttonText={t('buttonText.createDailyReview')}
                   buttonType={ButtonType.BUTTON}
                   onClick={onClickCreateButton}
                   isOpen={isOpenCreateButton}
@@ -115,7 +120,7 @@ export default function WordPackCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text size={Size.SM} isCentered>{wordPack.description}</Text>
+            <Text size={Size.SM} isCentered>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon
@@ -156,9 +161,10 @@ export default function WordPackCard(props: Props) {
                       isOpen={isOpenDeleteButton}
                       onClose={onCloseDeleteButton}
                       handleDelete={handleDeleteCustomWordPack}
-                      header="Delete this word pack?"
-                      body="If you have a review for this word pack, it will also be removed."
-                      deleteButtonText="Delete"
+                      header={t('WordPackCard.AlertDialog.header')}
+                      body={t('WordPackCard.AlertDialog.body')}
+                      cancelButtonText={t('buttonText.cancel')}
+                      deleteButtonText={t('buttonText.delete')}
                       isButtonDisabled={isLoadingDeleteWordPack}
                       width='600px'
                     />

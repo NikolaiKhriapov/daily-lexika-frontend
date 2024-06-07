@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { successNotification } from '@services/app/popup-notification';
@@ -23,14 +24,14 @@ type Props = {
 export default function StartReviewWindow(props: Props) {
   const { review, isOpen, onClose } = props;
 
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
+  const [processReviewAction, { isLoading }] = useProcessReviewActionMutation();
   const [reviewWord, setReviewWord] = useState<WordDto | null>(null);
   const [isModalVisible, setModalVisible] = useState(true);
   const [isFlipped, setFlipped] = useState(false);
   const [isUnlocked, setUnlocked] = useState(false);
   const [isThrown, setThrown] = useState(false);
-
-  const { data: user } = useGetUserInfoQuery();
-  const [processReviewAction, { isLoading }] = useProcessReviewActionMutation();
 
   const fetchReviewAction = (answer: boolean | null) => {
     processReviewAction({ reviewId: review.id!, answer })
@@ -45,14 +46,14 @@ export default function StartReviewWindow(props: Props) {
         if ((answer === true && reviewWord !== null && (reviewWord.status.toString() === Status[Status.NEW]
           || (reviewWord.status.toString() === Status[Status.IN_REVIEW] && reviewWord.totalStreak === 4)))) {
           successNotification(
-            `'${WordDataHelper.getWordNameByUserRole(reviewWord, user!)}' is a known word.`,
-            'This word will still be shown occasionally during reviews',
+            t('StartReviewWindow.answerYes.title').replace('{0}', WordDataHelper.getWordNameByUserRole(reviewWord, user!)),
+            t('StartReviewWindow.answerYes.description'),
           );
         }
         if (answer === false && reviewWord?.status.toString() === Status[Status.KNOWN]) {
           successNotification(
-            `Keep reviewing '${WordDataHelper.getWordNameByUserRole(reviewWord, user!)}'`,
-            'This word will be shown more frequently so that you can relearn it',
+            t('StartReviewWindow.answerNo.title').replace('{0}', WordDataHelper.getWordNameByUserRole(reviewWord, user!)),
+            t('StartReviewWindow.answerNo.description'),
           );
         }
       })
@@ -139,14 +140,14 @@ export default function StartReviewWindow(props: Props) {
             />
             <ButtonsContainer>
               <Button
-                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? 'Don\'t know' : 'Forgot'}
+                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? t('StartReviewWindow.buttonText.dontKnow') : t('StartReviewWindow.buttonText.forgot')}
                 buttonType={ButtonType.BUTTON_RED}
                 onClick={() => pressButton(false)}
                 isDisabled={!isModalVisible || !reviewWord || isLoading}
                 width={buttonWidth}
               />
               <Button
-                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? 'Know' : 'Remembered'}
+                buttonText={reviewWord?.status.toString() === Status.NEW.toString() ? t('StartReviewWindow.buttonText.know') : t('StartReviewWindow.buttonText.remembered')}
                 buttonType={ButtonType.BUTTON}
                 onClick={() => pressButton(true)}
                 isDisabled={!isModalVisible || !reviewWord || isLoading}

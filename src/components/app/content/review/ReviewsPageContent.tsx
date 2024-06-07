@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
@@ -20,15 +21,15 @@ import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
 
 export default function ReviewsPageContent() {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
-
   const { data: allReviews = [], isLoading: isLoadingAllReviews, isError } = useGetAllReviewsQuery(undefined, { refetchOnMountOrArgChange: true });
   const { data: allWordPacks } = useGetAllWordPacksQuery();
   useGetWordOfTheDayQuery(undefined, { refetchOnMountOrArgChange: true });
 
   const noReviewsText = useBreakpointValue({
-    base: 'Get started by creating a daily review by clicking the button below',
-    md: 'Get started by creating a daily review in the \'Word Packs\' section',
+    base: t('ReviewsPage.noReviews.text.base'),
+    md: t('ReviewsPage.noReviews.text.md'),
   });
 
   if (isLoadingAllReviews) return <SkeletonWrapper type={SkeletonType.REVIEW_CARD} isLoading={isLoadingAllReviews} fixed={7} />;
@@ -36,7 +37,7 @@ export default function ReviewsPageContent() {
 
   const noReviewsComponent = (
     <IndexPageContainer>
-      <Heading size={Size.LG} isCentered>You do not have any daily reviews</Heading>
+      <Heading size={Size.LG} isCentered>{t('ReviewsPage.noReviews.heading')}</Heading>
       <Text size={Size.LG} isCentered>{noReviewsText}</Text>
       <Text />
     </IndexPageContainer>

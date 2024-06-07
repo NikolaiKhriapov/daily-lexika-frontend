@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
@@ -26,15 +27,15 @@ export default function SearchWindow(props: Props) {
   const { isOpen, onClose, wordPack } = props;
 
   const { colorMode } = useColorMode();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
-  const [isDisabled, setDisabled] = useState<number | null>(null);
-  const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
-
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();
   const [removeWordFromCustomWordPack] = useRemoveWordFromCustomWordPackMutation();
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
+  const [isDisabled, setDisabled] = useState<number | null>(null);
+  const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
 
   const modalWidth = useBreakpointValue({ base: '450px', md: 'auto' });
 
@@ -43,7 +44,7 @@ export default function SearchWindow(props: Props) {
     setOpenAddOrRemoveWord(null);
     addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
       .unwrap()
-      .then(() => successNotification('Word added successfully', ''))
+      .then(() => successNotification(t('SearchWindow.successMessage.addWord')))
       .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
@@ -53,7 +54,7 @@ export default function SearchWindow(props: Props) {
     setOpenAddOrRemoveWord(null);
     removeWordFromCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
       .unwrap()
-      .then(() => successNotification('Word removed successfully', ''))
+      .then(() => successNotification(t('SearchWindow.successMessage.removeWord')))
       .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
@@ -90,7 +91,7 @@ export default function SearchWindow(props: Props) {
       width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
-      header="Add or remove words"
+      header={t('SearchWindow.header')}
       body={(
         <Container>
           <SearchInput
@@ -103,7 +104,7 @@ export default function SearchWindow(props: Props) {
               searchQuery === '' || isLoadingAllWordData
                 ? (
                   <Text fontWeight={FontWeight.MEDIUM} isCentered opacity="50%" style={{ width: '90%' }}>
-                    {WordDataHelper.getSearchInfoText(user)}
+                    {WordDataHelper.getSearchInfoText(user, t)}
                   </Text>
                 )
                 : (

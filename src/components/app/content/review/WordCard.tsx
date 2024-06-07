@@ -32,8 +32,8 @@ type Props = {
 export default function WordCard(props: Props) {
   const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title, infoGap, withSpeechRecognition = true } = props;
 
-  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const { data: user } = useGetUserInfoQuery();
+  const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
 
   if (!user || !user.role || !word) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
 

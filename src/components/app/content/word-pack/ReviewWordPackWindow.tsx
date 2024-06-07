@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
 import { Spinner, useBreakpointValue } from '@chakra-ui/react';
@@ -12,7 +13,8 @@ import WordsScrollableContainer from '@components/app/content/words/WordsScrolla
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
 import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
-import WordDataHelper from '@helpers/WordDataHelper';
+import I18nHelper from '@helpers/I18nHelper';
+import WordPackHelper from '@helpers/WordPackHelper';
 
 type Props = {
   isOpen: boolean;
@@ -24,11 +26,13 @@ export default function ReviewWordPackWindow(props: Props) {
   const { isOpen, onClose, wordPack } = props;
 
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const [page, setPage] = useState(0);
+
   const pageSize = 20;
   const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
 
-  const { data: user } = useGetUserInfoQuery();
   const { data: wordsPage = [], isLoading: isLoadingWordsPage } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
   dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
   dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
@@ -41,14 +45,14 @@ export default function ReviewWordPackWindow(props: Props) {
       width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
-      header={WordDataHelper.getOriginalWordPackName(wordPack.name, user)}
+      header={I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
       body={(
         <Container>
           <TotalWords>
             <CopyIcon />
             <Text>{wordPack.totalWords}</Text>
           </TotalWords>
-          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{wordPack.description}</Text>
+          <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
           <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>
             <WordsScrollableContainer
               wordsPage={wordsPage}

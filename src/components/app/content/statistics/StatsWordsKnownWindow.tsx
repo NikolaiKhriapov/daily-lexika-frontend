@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { useGetAllWordsByStatusQuery, wordsAPI } from '@store/api/wordsAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
@@ -17,7 +18,9 @@ export default function StatsWordsKnownWindow(props: Props) {
   const { isOpen, onClose } = props;
 
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const [page, setPage] = useState(0);
+
   const pageSize = 20;
 
   dispatch(wordsAPI.util.prefetch('getAllWordsByStatus', { status: Status.KNOWN, page: page + 1, size: pageSize }, { force: true }));
@@ -34,7 +37,7 @@ export default function StatsWordsKnownWindow(props: Props) {
       width={useBreakpointValue({ base: '475px', md: 'min-content' })}
       isOpen={isOpen}
       onClose={onClose}
-      header='Words Known'
+      header={t('StatsWordsKnownWindow.header')}
       body={(
         <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>
           <WordsScrollableContainer

@@ -27,7 +27,9 @@ export default function ProgressCircular(props: Props) {
     >
       {isWithLabel && (
         <CircularProgressLabel>{value}%
-          <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>{text}</Text>
+          <TextContainer>
+            <TextStyled size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>{text}</TextStyled>
+          </TextContainer>
         </CircularProgressLabel>
       )}
     </CircularProgressStyled>
@@ -36,4 +38,13 @@ export default function ProgressCircular(props: Props) {
 
 const CircularProgressStyled = styled(CircularProgress)`
   ${nonSelectableText};
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const TextStyled = styled(Text)`
+  max-width: 90px;
 `;

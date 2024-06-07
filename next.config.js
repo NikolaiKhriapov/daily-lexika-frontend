@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: false,
   compiler: {
     styledComponents: {
@@ -8,6 +9,4 @@ module.exports = {
   },
 };
 
-process.on('unhandledRejection', error => {
-  console.log('unhandledRejection', error);
-});
+module.exports = nextConfig;

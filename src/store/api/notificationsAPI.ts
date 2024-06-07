@@ -1,6 +1,6 @@
 import { API, providesList } from '@store/api/API';
 import { ApiEndpointsNotifications } from '@utils/app/apiMethods';
-import { QueryMethods } from '@utils/constants';
+import { QueryMethod } from '@utils/constants';
 import { NotificationDto } from '@utils/types';
 
 export const notificationsAPI = API.injectEndpoints({
@@ -8,14 +8,14 @@ export const notificationsAPI = API.injectEndpoints({
     getAllNotifications: builder.query<NotificationDto[], void>({
       query: () => ({
         url: ApiEndpointsNotifications.getAllNotifications(),
-        method: QueryMethods.GET,
+        method: QueryMethod.GET,
       }),
       providesTags: (result) => providesList(result, 'Notifications'),
     }),
     readNotification: builder.mutation<void, number>({
       query: (notificationId: number) => ({
         url: ApiEndpointsNotifications.readNotification(notificationId),
-        method: QueryMethods.PATCH,
+        method: QueryMethod.PATCH,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(notificationsAPI.util?.updateQueryData('getAllNotifications', undefined, (draft) => {

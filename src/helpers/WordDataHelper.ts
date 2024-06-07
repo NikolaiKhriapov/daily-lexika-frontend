@@ -1,5 +1,6 @@
 import { DbInfo, RoleName, RoleNameBase } from '@utils/app/constants';
 import { Language, UserDto, WordDataDto, WordDto } from '@utils/types';
+import { TFunction } from 'i18next';
 
 export default class WordDataHelper {
   public static getAvailableTranslationLanguages(user: UserDto) {
@@ -91,14 +92,14 @@ export default class WordDataHelper {
     }
   }
 
-  public static getSearchInfoText(user: UserDto) {
+  public static getSearchInfoText(user: UserDto, t: TFunction<"translation", undefined>) {
     const appDataMapping = {
       [RoleName.USER_ENGLISH]: { totalWords: DbInfo.WORDS_EN, exams: DbInfo.EXAMS_EN },
       [RoleName.USER_CHINESE]: { totalWords: DbInfo.WORDS_CH, exams: DbInfo.EXAMS_CH },
     };
 
-    return `When searching for a word, please keep in mind that Daily Lexika is primarily designed to help you prepare 
-      for exams like ${appDataMapping[user.role as RoleNameBase].exams}, it is not a dictionary app. Our database 
-      contains around ${appDataMapping[user.role as RoleNameBase].totalWords} officially recommended words.`;
+    return t('Search.message')
+      .replace('{0}', appDataMapping[user.role as RoleNameBase].exams)
+      .replace('{1}', appDataMapping[user.role as RoleNameBase].totalWords.toString());
   }
 }

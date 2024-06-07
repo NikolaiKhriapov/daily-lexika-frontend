@@ -15,16 +15,17 @@ type Props = {
   handleDelete: () => void;
   header: string;
   body: string;
+  cancelButtonText: string;
   deleteButtonText: string;
   isButtonDisabled: boolean;
   width?: string;
 };
 
 export default function AlertDialog(props: Props) {
-  const { isOpen, onClose, handleDelete, header, body, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
+  const { isOpen, onClose, handleDelete, header, body, cancelButtonText, deleteButtonText, isButtonDisabled, width = 'fit-content' } = props;
 
-  const { colorMode } = useColorMode();
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const { colorMode } = useColorMode();
 
   return (
     <ChakraAlertDialog
@@ -39,7 +40,7 @@ export default function AlertDialog(props: Props) {
           <AlertDialogBody>{body}</AlertDialogBody>
           <AlertDialogFooterStyled>
             <Button
-              buttonText='Cancel'
+              buttonText={cancelButtonText}
               buttonType={ButtonType.BUTTON}
               onClick={onClose}
               isDisabled={isButtonDisabled}

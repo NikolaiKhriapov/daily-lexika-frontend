@@ -8,7 +8,9 @@ interface Props extends SelectProps {
   label: string;
 }
 
-export default function Select({ name, label, children, ...rest }: Props) {
+export default function Select(props: Props) {
+  const { name, label, children, ...rest } = props;
+
   return (
     <Box>
       <FormLabel htmlFor={name}>{label}</FormLabel>

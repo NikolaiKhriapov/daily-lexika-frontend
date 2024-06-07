@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -12,8 +13,10 @@ import Text from '@components/ui-common/basic/Text';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import Modal from '@components/ui-common/complex/Modal';
 import TextInput from '@components/ui-common/complex/TextInput';
+import I18nHelper from '@helpers/I18nHelper';
 import ValidationHelper from '@helpers/ValidationHelper';
 import WordDataHelper from '@helpers/WordDataHelper';
+import WordPackHelper from '@helpers/WordPackHelper';
 
 type Props = {
   isOpen: boolean;
@@ -26,6 +29,7 @@ type Props = {
 export default function CreateOrUpdateReviewWindow(props: Props) {
   const { isOpen, onClose, wordPack, review = null, setDisabledButton } = props;
 
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const [updateReview] = useUpdateReviewMutation();
   const [createReview] = useCreateReviewMutation();
@@ -39,8 +43,8 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   };
 
   const validationSchema = Yup.object({
-    maxNewWordsPerDay: ValidationHelper.maxNewWordsPerDayValidator(),
-    maxReviewWordsPerDay: ValidationHelper.maxReviewWordsPerDayValidator(),
+    maxNewWordsPerDay: ValidationHelper.maxNewWordsPerDayValidator(t),
+    maxReviewWordsPerDay: ValidationHelper.maxReviewWordsPerDayValidator(t),
   });
 
   const handleOnSubmit = (reviewDTO: ReviewDto) => {
@@ -49,13 +53,13 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
     if (review) {
       updateReview({ reviewId: review!.id!, reviewDTO })
         .unwrap()
-        .then(() => successNotification('Review saved', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewUpdated'), `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     } else {
       createReview(reviewDTO)
         .unwrap()
-        .then(() => successNotification('Review saved', `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewSaved'), `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     }
@@ -67,7 +71,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={WordDataHelper.getOriginalWordPackName(wordPack.name, user)}
+      header={I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
       body={(
         <>
           <TotalWords>
@@ -75,7 +79,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             <Text>{wordPack.totalWords}</Text>
           </TotalWords>
           <Description>
-            <Text>{wordPack.description}</Text>
+            <Text>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
           </Description>
           <InputFieldsWithButton
             validateOnMount
@@ -84,21 +88,21 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             inputElements={(
               <>
                 <TextInput
-                  label="Max New Words Per Day"
+                  label={t('CreateOrUpdateReviewWindow.maxNewWordsPerDay')}
                   name="maxNewWordsPerDay"
                   type="number"
                   placeholder="1"
                 />
                 <TextInput
-                  label="Max Review Words Per Day"
+                  label={t('CreateOrUpdateReviewWindow.maxReviewWordsPerDay')}
                   name="maxReviewWordsPerDay"
                   type="number"
                   placeholder="1"
                 />
-                <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
+                <Text>{t('CreateOrUpdateReviewWindow.hint')}</Text>
               </>
             )}
-            buttonText="Update"
+            buttonText={!review ? t('buttonText.create') : t('buttonText.update')}
             onSubmit={handleOnSubmit}
             isButtonDisabled={false}
           />

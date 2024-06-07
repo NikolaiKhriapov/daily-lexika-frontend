@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -14,10 +15,11 @@ import PwaBadge from '@components/ui-common/icons/app-install/pwa-badge.png';
 
 export default function PwaInstallAppleComponent() {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { isIosOrMacOs, isStandalone } = useContext(AppInstallationContext);
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
 
-  if (!isIosOrMacOs || isStandalone) return null;
+  if (!isIosOrMacOs || isStandalone) return <></>;
 
   return (
     <>
@@ -33,31 +35,37 @@ export default function PwaInstallAppleComponent() {
       />
       <Modal
         size={Size.MD}
-        width='450px'
+        width='490px'
         isOpen={isOpenModal}
         onClose={onCloseModal}
         header={(
           <ButtonTextContainer $colorMode={colorMode}>
             <ImDownload fontSize={20} />
-            <Text>Install app</Text>
+            <Text>{t('AppInstallComponent.header')}</Text>
           </ButtonTextContainer>
         )}
         body={(
           <ContentContainer>
             <LineContainer>
-              <Text fontWeight={FontWeight.MEDIUM}>{'Install the app on your device. It\'s the same as downloading from the store! '}</Text>
+              <Text fontWeight={FontWeight.MEDIUM}>{t('AppInstallComponent.message')}</Text>
             </LineContainer>
             <LineContainer>
-              <Text fontWeight={FontWeight.MEDIUM}>1. Tap on</Text>
-              <BgContainer $colorMode={colorMode}><Image src={IosShareIcon} width={20} height={20} alt="ios-share-icon" /></BgContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>{t('AppInstallComponent.stepOne')}</Text>
+              <BgContainer $colorMode={colorMode}>
+                <Image src={IosShareIcon} width={20} height={20} alt="ios-share-icon" />
+              </BgContainer>
             </LineContainer>
             <LineContainer>
-              <Text fontWeight={FontWeight.MEDIUM}>2. Select</Text>
-              <BgContainer $colorMode={colorMode}><Text fontWeight={FontWeight.SEMIBOLD}>Add to Home Screen</Text></BgContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>{t('AppInstallComponent.stepTwo.textOne')}</Text>
+              <BgContainer $colorMode={colorMode}>
+                <Text fontWeight={FontWeight.SEMIBOLD}>{t('AppInstallComponent.stepTwo.buttonOne')}</Text>
+              </BgContainer>
             </LineContainer>
             <LineContainer>
-              <Text fontWeight={FontWeight.MEDIUM}>or</Text>
-              <BgContainer $colorMode={colorMode}><Text fontWeight={FontWeight.SEMIBOLD}>Add to Dock</Text></BgContainer>
+              <Text fontWeight={FontWeight.MEDIUM}>{t('AppInstallComponent.stepTwo.textTwo')}</Text>
+              <BgContainer $colorMode={colorMode}>
+                <Text fontWeight={FontWeight.SEMIBOLD}>{t('AppInstallComponent.stepTwo.buttonTwo')}</Text>
+              </BgContainer>
             </LineContainer>
           </ContentContainer>
         )}

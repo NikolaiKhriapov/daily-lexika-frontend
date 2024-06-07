@@ -4,7 +4,10 @@ import AuthContent from '@components/app/content/AuthContent';
 
 export default function AuthIndex() {
   return (
-    <AuthLayout title={AppInfo.TITLE} description={AppInfo.DESCRIPTION}>
+    <AuthLayout
+      title={AppInfo.TITLE}
+      description={AppInfo.DESCRIPTION}
+    >
       <AuthContent />
     </AuthLayout>
   );

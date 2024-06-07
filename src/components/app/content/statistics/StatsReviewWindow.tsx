@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -13,7 +14,7 @@ import ProgressCircular from '@components/ui-common/basic/ProgressCircular';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
-import WordDataHelper from '@helpers/WordDataHelper';
+import I18nHelper from '@helpers/I18nHelper';
 
 type Props = {
   isOpen: boolean;
@@ -27,10 +28,11 @@ export default function StatsReviewWindow(props: Props) {
   const { isOpen, onClose, reviewStatisticsDTO, wordsPercentage, wordsTotal } = props;
 
   const { colorMode } = useColorMode();
-  const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
-
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
+  const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
+
   const wordPack = allWordPacks.find((item) => item.name === reviewStatisticsDTO.wordPackName);
 
   if (!user) return <Spinner />;
@@ -41,19 +43,15 @@ export default function StatsReviewWindow(props: Props) {
       width='360px'
       isOpen={isOpen}
       onClose={onClose}
-      header={WordDataHelper.getOriginalWordPackName(reviewStatisticsDTO.wordPackName, user)}
+      header={I18nHelper.getWordPackNameTranslated(reviewStatisticsDTO.wordPackName, user, t)}
       body={(
         <>
           <PackProgress $colorMode={colorMode}>
             <WordPackNameAndInfoButton>
-              <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Pack Progress</Text>
+              <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{t('StatsReviewWindow.packProgress.title')}</Text>
               <ArrowRightButton onClick={onOpenDrawer} />
               {isOpenDrawer && wordPack && (
-                <ReviewWordPackWindow
-                  isOpen={isOpenDrawer}
-                  onClose={onCloseDrawer}
-                  wordPack={wordPack}
-                />
+                <ReviewWordPackWindow isOpen={isOpenDrawer} onClose={onCloseDrawer} wordPack={wordPack} />
               )}
             </WordPackNameAndInfoButton>
             <StatsRow>
@@ -62,7 +60,7 @@ export default function StatsReviewWindow(props: Props) {
                   {`${wordsPercentage.known}%`}
                 </Text>
                 <Text size={{ base: Size.XS, md: Size.SM, xl: Size.SM }} fontWeight={FontWeight.SEMIBOLD}>
-                  {' known'}
+                  {t('StatsReviewWindow.packProgress.known')}
                 </Text>
               </Percentage>
               <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
@@ -72,16 +70,20 @@ export default function StatsReviewWindow(props: Props) {
             <ProgressBar value={wordsPercentage.known} />
           </PackProgress>
           <ReviewStatus $colorMode={colorMode}>
-            <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>Review Status</Text>
+            <Text size={Size.XL} fontWeight={FontWeight.SEMIBOLD}>{t('StatsReviewWindow.reviewStatus.title')}</Text>
             <StatsContainer>
-              <ProgressCircular value={wordsPercentage.inReviewAndKnown} text='In Review' isWithLabel />
+              <ProgressCircular
+                value={wordsPercentage.inReviewAndKnown}
+                text={t('StatsReviewWindow.reviewStatus.inReview')}
+                isWithLabel
+              />
               <StatsColumn>
                 <Stat>
                   <Text size={{ base: Size.XL, md: Size.XXXL, xl: Size.XXXL }}>
                     {reviewStatisticsDTO.wordsInReview + reviewStatisticsDTO.wordsKnown}
                   </Text>
                   <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
-                    Words In Review
+                    {t('StatsReviewWindow.reviewStatus.wordsInReview')}
                   </Text>
                 </Stat>
                 <Stat>
@@ -89,7 +91,7 @@ export default function StatsReviewWindow(props: Props) {
                     {reviewStatisticsDTO.wordsNew}
                   </Text>
                   <Text size={{ base: Size.XS, md: Size.MD, xl: Size.MD }} fontWeight={FontWeight.SEMIBOLD}>
-                    Unseen Words
+                    {t('StatsReviewWindow.reviewStatus.unseenWords')}
                   </Text>
                 </Stat>
               </StatsColumn>

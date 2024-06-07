@@ -1,6 +1,6 @@
 import { API } from '@store/api/API';
 import { ApiEndpointsAuthorization } from '@utils/app/apiMethods';
-import { QueryMethods } from '@utils/constants';
+import { QueryMethod } from '@utils/constants';
 import { AuthenticationRequest, AuthenticationResponse, RegistrationRequest } from '@utils/types';
 
 export const authAPI = API.injectEndpoints({
@@ -8,14 +8,14 @@ export const authAPI = API.injectEndpoints({
     register: builder.mutation<AuthenticationResponse, RegistrationRequest>({
       query: (registrationRequest: RegistrationRequest) => ({
         url: ApiEndpointsAuthorization.register(),
-        method: QueryMethods.POST,
+        method: QueryMethod.POST,
         body: registrationRequest,
       }),
     }),
     login: builder.mutation<AuthenticationResponse, AuthenticationRequest>({
       query: (authenticationRequest: AuthenticationRequest) => ({
         url: ApiEndpointsAuthorization.login(),
-        method: QueryMethods.POST,
+        method: QueryMethod.POST,
         body: authenticationRequest,
       }),
     }),

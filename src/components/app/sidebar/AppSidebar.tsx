@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoBookmarkOutline, IoLayersOutline, IoStatsChartOutline } from 'react-icons/io5';
 import { RxReader } from 'react-icons/rx';
 import { TbCards, TbDeviceTabletSearch } from 'react-icons/tb';
@@ -22,23 +23,24 @@ export default function AppSidebar(props: Props) {
   const { page } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { isStandalone } = useContext(AppInstallationContext);
 
   const sidebarMainMobileItems = [
-    { name: 'Dailies', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS, isReady: true },
-    { name: 'Grammar', route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
-    { name: 'Reading', route: '', icon: RxReader, selected: false, isReady: false },
-    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
+    { name: t('AppSidebar.Dailies.mobile'), route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS, isReady: true },
+    { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
+    { name: t('AppSidebar.Search'), route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
+    { name: t('AppSidebar.Statistics'), route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];
 
   const sidebarMainTabletAndDesktopItems = [
-    { name: 'Daily Reviews', route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS, isReady: true },
-    { name: 'Word Packs', route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS, isReady: true },
-    { name: 'Grammar', route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
-    { name: 'Reading', route: '', icon: RxReader, selected: false, isReady: false },
-    { name: 'Search', route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
-    { name: 'Statistics', route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
+    { name: t('AppSidebar.Dailies.tabletAndDesktop'), route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS, isReady: true },
+    { name: t('AppSidebar.WordPacks'), route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS, isReady: true },
+    { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
+    { name: t('AppSidebar.Search'), route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
+    { name: t('AppSidebar.Statistics'), route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];
 
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
@@ -15,11 +16,12 @@ import ErrorComponent from '@components/ui-common/complex/ErrorComponent';
 import IndexPageContainer from '@components/ui-common/complex/IndexPageContainer';
 import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/SkeletonWrapper';
 import Swiper, { SwiperSlide } from '@components/ui-common/complex/Swiper';
+import I18nHelper from '@helpers/I18nHelper';
 
 export default function WordPacksPageContent() {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { slideUp, slideDown } = useAppSelector((state) => state.reviewsPageTransitionSlice);
-
   const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
   const { data: allReviews } = useGetAllReviewsQuery();
 
@@ -35,7 +37,7 @@ export default function WordPacksPageContent() {
   if (!allWordPacks || allWordPacks.length === 0) {
     return (
       <IndexPageContainer>
-        <Heading size={Size.LG} isCentered>No Word Packs available</Heading>
+        <Heading size={Size.LG} isCentered>{t('WordPackPage.noWordPacks')}</Heading>
       </IndexPageContainer>
     );
   }
@@ -43,13 +45,13 @@ export default function WordPacksPageContent() {
   return (
     <>
       <Container className={slideUp ? 'slide-up-wp' : slideDown ? 'slide-down-wp' : ''}>
-        {wordPackCategoriesStandard.map((wordPackCategory) => (
-          <Section key={wordPackCategory}>
+        {wordPackCategoriesStandard.map((category) => (
+          <Section key={category}>
             <HeadingContainer>
-              <Heading size={Size.LG} isCentered>{Category[wordPackCategory as keyof typeof Category]}</Heading>
+              <Heading size={Size.LG} isCentered>{I18nHelper.getWordPackCategoryTranslated(category, t)}</Heading>
             </HeadingContainer>
             <Swiper>
-              {wordPacksDtoByCategory(wordPackCategory).map((wordPackDto) => (
+              {wordPacksDtoByCategory(category).map((wordPackDto) => (
                 <SwiperSlide key={wordPackDto.name}>
                   <WordPackCard wordPack={wordPackDto} />
                 </SwiperSlide>
@@ -60,7 +62,7 @@ export default function WordPacksPageContent() {
         {wordPacksDtoByCategory(Category.CUSTOM).length > 0 && (
           <Section>
             <HeadingContainer>
-              <Heading size={Size.LG} isCentered>Custom</Heading>
+              <Heading size={Size.LG} isCentered>{I18nHelper.getWordPackCategoryTranslated(Category.CUSTOM, t)}</Heading>
             </HeadingContainer>
             <Swiper>
               {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (

@@ -1,23 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  ColorMode,
-  Modal as ChakraModal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay, ModalProps,
-  useColorMode,
+  ColorMode, Modal as ChakraModal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
+  ModalProps, useColorMode,
 } from '@chakra-ui/react';
 import { Breakpoint, Size } from '@utils/constants';
 import {
-  borderStyles,
-  hiddenScrollbar,
-  mediaBreakpointUp,
-  nonHighlightableTap,
-  nonSelectableText,
+  borderStyles, hiddenScrollbar, mediaBreakpointUp, nonHighlightableTap, nonSelectableText,
 } from '@utils/functions';
 import { theme } from '@utils/theme';
 

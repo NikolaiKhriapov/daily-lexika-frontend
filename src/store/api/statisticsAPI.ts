@@ -1,6 +1,6 @@
 import { API } from '@store/api/API';
 import { ApiEndpointsStatistics } from '@utils/app/apiMethods';
-import { QueryMethods } from '@utils/constants';
+import { QueryMethod } from '@utils/constants';
 import { StatisticsDto } from '@utils/types';
 
 export const statisticsAPI = API.injectEndpoints({
@@ -8,7 +8,7 @@ export const statisticsAPI = API.injectEndpoints({
     getStatistics: builder.query<StatisticsDto, void>({
       query: () => ({
         url: ApiEndpointsStatistics.getStatistics(),
-        method: QueryMethods.GET,
+        method: QueryMethod.GET,
       }),
       transformResponse: (response: StatisticsDto) => {
         response.listOfReviewStatisticsDto

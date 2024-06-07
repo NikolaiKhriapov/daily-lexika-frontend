@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
@@ -17,7 +18,9 @@ import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
+import I18nHelper from '@helpers/I18nHelper';
 import WordDataHelper from '@helpers/WordDataHelper';
+import WordPackHelper from '@helpers/WordPackHelper';
 
 type Props = {
   review: ReviewDto;
@@ -27,15 +30,15 @@ export default function ReviewCard(props: Props) {
   const { review } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();
-  const [isFlipped, setFlipped] = useState(false);
-  const [isDisabledChangeButton, setDisabledChangeButton] = useState(false);
-
-  const { data: user } = useGetUserInfoQuery();
   const [refreshReview, { isLoading: isLoadingRefreshReview }] = useRefreshReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
+  const [isFlipped, setFlipped] = useState(false);
+  const [isDisabledChangeButton, setDisabledChangeButton] = useState(false);
 
   if (!user || review.id === placeholderReview.id) return <Skeleton height={280} width={215} />;
 
@@ -45,7 +48,7 @@ export default function ReviewCard(props: Props) {
     refreshReview(review.id!)
       .unwrap()
       .then(() => {
-        successNotification('Review refreshed successfully', `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
+        successNotification(t('ReviewCard.reviewRefreshed'), `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
         setFlipped(false);
       })
       .catch((error) => errorNotification('', error));
@@ -55,7 +58,7 @@ export default function ReviewCard(props: Props) {
     onCloseRemoveButton();
     deleteReview(review.id!)
       .unwrap()
-      .then(() => successNotification('Review removed successfully', `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
+      .then(() => successNotification(t('ReviewCard.reviewRemoved'), `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
       .catch((error) => errorNotification('', error));
   };
 
@@ -91,17 +94,17 @@ export default function ReviewCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)}
+              {I18nHelper.getWordPackNameTranslated(review.wordPackDto.name, user, t)}
             </Text>
           </WordPackNameContainer>
           <WordsCountContainer>
             <WordsContainer>
               <Text size={Size.XXL}>{totalNewWords}</Text>
-              <Text size={Size.SM}>{' New Words'}</Text>
+              <Text size={Size.SM}>{t('ReviewCard.newWords')}</Text>
             </WordsContainer>
             <WordsContainer>
               <Text size={Size.XXL}>{totalInReviewWords}</Text>
-              <Text size={Size.SM}>{' Review Words'}</Text>
+              <Text size={Size.SM}>{t('ReviewCard.reviewWords')}</Text>
             </WordsContainer>
           </WordsCountContainer>
           <ButtonsContainer>
@@ -109,7 +112,7 @@ export default function ReviewCard(props: Props) {
               !isNoWordsLeftInReview
                 ? (
                   <Button
-                    buttonText="Start"
+                    buttonText={t('buttonText.start')}
                     buttonType={ButtonType.BUTTON}
                     size={Size.SM}
                     onClick={onClickStartButton}
@@ -124,7 +127,7 @@ export default function ReviewCard(props: Props) {
                     )}
                   />
                 )
-                : <ButtonUnavailable text="Completed" isWithIcon />
+                : <ButtonUnavailable text={t('buttonText.completed')} isWithIcon />
             }
           </ButtonsContainer>
         </ContentsContainer>
@@ -132,7 +135,7 @@ export default function ReviewCard(props: Props) {
       back={(
         <ContentsContainer>
           <DescriptionContainer>
-            <Text size={Size.SM} isCentered>{review.wordPackDto.description}</Text>
+            <Text size={Size.SM} isCentered>{WordPackHelper.getDescriptionForLanguage(review.wordPackDto, user)}</Text>
           </DescriptionContainer>
           <ButtonsContainer>
             <ButtonWithIcon
@@ -162,14 +165,15 @@ export default function ReviewCard(props: Props) {
               isOpen={isOpenRemoveButton}
               modalContent={(
                 <AlertDialog
+                  width="600px"
                   isOpen={isOpenRemoveButton}
                   onClose={onCloseRemoveButton}
                   handleDelete={handleRemoveReview}
-                  header="Remove this daily review?"
-                  body="Your known words and review progress will be saved if you choose to add this review again later."
-                  deleteButtonText="Remove"
+                  header={t('ReviewCard.AlertDialog.header')}
+                  body={t('ReviewCard.AlertDialog.body')}
+                  cancelButtonText={t('buttonText.cancel')}
+                  deleteButtonText={t('buttonText.remove')}
                   isButtonDisabled={false}
-                  width="600px"
                 />
               )}
             />

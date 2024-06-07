@@ -8,10 +8,10 @@ import Card from '@components/ui-common/complex/Card';
 
 export default function WordPackCardAddNew() {
   const { colorMode } = useColorMode();
-  const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Container onClick={onOpenCreateButton}>
+    <Container onClick={onOpen}>
       <Card
         face={<BsPlusSquareDotted size={50} />}
         back={null}
@@ -22,10 +22,10 @@ export default function WordPackCardAddNew() {
         isFlipped={false}
         setFlipped={() => null}
       />
-      {isOpenCreateButton && (
+      {isOpen && (
         <CreateWordPackWindow
-          isOpen={isOpenCreateButton}
-          onClose={onCloseCreateButton}
+          isOpen={isOpen}
+          onClose={onClose}
         />
       )}
     </Container>

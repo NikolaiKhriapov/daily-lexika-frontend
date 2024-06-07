@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button as ChakraButton, ColorMode, MenuDivider, useColorMode } from '@chakra-ui/react';
 import { useReadNotificationMutation } from '@store/api/notificationsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -11,6 +13,7 @@ import RedDot from '@components/ui-common/basic/RedDot';
 import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
 import DateHelper from '@helpers/DateHelper';
+import LocaleHelper from '@helpers/LocaleHelper';
 
 type Props = {
   isOpen: boolean;
@@ -22,20 +25,24 @@ export default function NotificationsWindow(props: Props) {
   const { isOpen, onClose, allNotificationsDTO } = props;
 
   const { colorMode } = useColorMode();
-  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const [readNotification] = useReadNotificationMutation();
+  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
 
   const onClick = (notification: NotificationDto) => {
     readNotification(notification.notificationId);
     setSelectedNotification(notification);
   };
 
+  if (!user) return <></>;
+
   return (
     <Modal
       size={Size.LG}
       isOpen={isOpen}
       onClose={onClose}
-      header='Notifications'
+      header={t('NotificationsWindow.header')}
       body={(
         <Container>
           {allNotificationsDTO.map((notificationDTO, index) => (
@@ -54,7 +61,7 @@ export default function NotificationsWindow(props: Props) {
                     fontWeight={notificationDTO.isRead ? FontWeight.NORMAL : FontWeight.SEMIBOLD}
                     display={{ base: 'none', md: 'unset' }}
                   >
-                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt)}
+                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt, LocaleHelper.getLocaleFromUser(user))}
                   </Text>
                 </SubjectAndDateContainer>
                 <RedDotContainer>

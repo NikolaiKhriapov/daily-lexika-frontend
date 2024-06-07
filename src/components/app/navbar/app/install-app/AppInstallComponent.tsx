@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImDownload } from 'react-icons/im';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ import GooglePlayBadge from '@components/ui-common/icons/app-install/google-play
 
 export default function AppInstallComponent() {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   return (
     <Container>
@@ -24,17 +26,17 @@ export default function AppInstallComponent() {
         <MenuButton>
           <ContainerButton $colorMode={colorMode}>
             <ImDownload fontSize={20} />
-            <Text display={{ base: 'none', md: 'unset' }}>&nbsp;&nbsp;&nbsp;Install app</Text>
+            <Text display={{ base: 'none', md: 'unset' }}>{t('AppInstallComponent.buttonText')}</Text>
           </ContainerButton>
         </MenuButton>
         <MenuListStyled $colorMode={colorMode}>
           <InstallOptionLink href='' $colorMode={colorMode}>
             <PwaInstallComponent />
           </InstallOptionLink>
-          <InstallOptionLink href={AppInfo.LINK_GOOGLE_PLAY} target="_blank" $colorMode={colorMode}>
+          <InstallOptionLink $colorMode={colorMode} href={AppInfo.LINK_GOOGLE_PLAY} target="_blank">
             <Image src={GooglePlayBadge} width={165} alt="play-store-badge" />
           </InstallOptionLink>
-          <InstallOptionLink href='' $colorMode={colorMode}>
+          <InstallOptionLink $colorMode={colorMode} href=''>
             <ContainerUnavailable><Image src={AppStoreBadge} width={165} alt="app-store-badge" /></ContainerUnavailable>
             <ContainerComingSoon><ComingSoon type={ComingSoonType.BADGE} /></ContainerComingSoon>
           </InstallOptionLink>
@@ -57,6 +59,7 @@ const ContainerButton = styled.div<{ $colorMode: ColorMode }>`
   justify-content: center;
   align-items: center;
   padding-left: 0;
+  gap: 12px;
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: auto;
