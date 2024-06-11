@@ -263,6 +263,7 @@ export const resourcesRu = {
       addWord: 'Слово успешно добавлено',
       removeWord: 'Слово успешно удалено',
     },
+    addAllWordsFromWordPackButton: 'Добавить все слова из',
   },
 
   WordPackCard: {

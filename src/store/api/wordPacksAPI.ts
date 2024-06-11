@@ -91,6 +91,13 @@ export const wordPacksAPI = API.injectEndpoints({
         }
       },
     }),
+    addAllWordsFromWordPackToCustomWordPack: builder.mutation<WordDataDto, { wordPackNameTo: string, wordPackNameFrom: string }>({
+      query: ({ wordPackNameTo, wordPackNameFrom }) => ({
+        url: ApiEndpointsWordPacks.addAllWordsFromWordPackToCustomWordPack(wordPackNameTo, wordPackNameFrom),
+        method: QueryMethod.GET,
+      }),
+      invalidatesTags: ['WordPacks', 'AllWordsForWordPack'],
+    }),
     removeWordFromCustomWordPack: builder.mutation<WordDataDto, { wordPackName: string, wordDataId: number }>({
       query: ({ wordPackName, wordDataId }) => ({
         url: ApiEndpointsWordPacks.removeWordFromCustomWordPack(wordPackName, wordDataId),
@@ -126,5 +133,6 @@ export const {
   useDeleteCustomWordPackMutation,
   useGetAllWordsForWordPackQuery,
   useAddWordToCustomWordPackMutation,
+  useAddAllWordsFromWordPackToCustomWordPackMutation,
   useRemoveWordFromCustomWordPackMutation,
 } = wordPacksAPI;

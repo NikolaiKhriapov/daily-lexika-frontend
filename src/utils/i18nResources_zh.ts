@@ -263,6 +263,7 @@ export const resourcesZh = {
       addWord: '单词已成功添加',
       removeWord: '单词已成功删除',
     },
+    addAllWordsFromWordPackButton: '添加所有单词来自',
   },
 
   WordPackCard: {

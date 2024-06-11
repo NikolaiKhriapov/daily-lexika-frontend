@@ -263,6 +263,7 @@ export const resourcesEn = {
       addWord: 'Word added successfully',
       removeWord: 'Word removed successfully',
     },
+    addAllWordsFromWordPackButton: 'Add all words from',
   },
 
   WordPackCard: {
