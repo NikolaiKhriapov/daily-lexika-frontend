@@ -63,9 +63,16 @@ export enum ButtonType {
   LINK = 'link',
 }
 
-export enum QueryMethods {
+export enum QueryMethod {
   GET = 'GET',
   POST = 'POST',
   PATCH = 'PATCH',
   DELETE = 'DELETE',
+}
+
+export enum Locale {
+  EN_US = 'en-US',
+  EN_GB = 'en-GB',
+  CN = 'zh-CN',
+  RU = 'ru-RU',
 }

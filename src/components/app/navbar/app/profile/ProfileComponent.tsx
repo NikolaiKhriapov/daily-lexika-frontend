@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
@@ -17,6 +18,7 @@ import Text from '@components/ui-common/basic/Text';
 
 export default function ProfileComponent() {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
   const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
@@ -33,22 +35,22 @@ export default function ProfileComponent() {
           {user?.email}
         </MenuText>
         <MenuDivider />
-        <MenuItem onClick={onOpenProfile}>Profile</MenuItem>
+        <MenuItem onClick={onOpenProfile}>{t('ProfileComponent.profile')}</MenuItem>
         {isOpenProfile && <UserProfileWindow isOpen={isOpenProfile} onClose={onCloseProfile} />}
-        <MenuItem onClick={onOpenPreferences}>Preferences</MenuItem>
+        <MenuItem onClick={onOpenPreferences}>{t('ProfileComponent.preferences')}</MenuItem>
         {isOpenPreferences && <UserPreferencesWindow isOpen={isOpenPreferences} onClose={onClosePreferences} />}
         <MenuDivider />
         <LinkStyled href={EmailLinks.ContactSupport} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
-          <MenuItem>Contact support</MenuItem>
+          <MenuItem>{t('ProfileComponent.support')}</MenuItem>
         </LinkStyled>
         <LinkStyled href={EmailLinks.Feedback} $colorMode={colorMode} style={{ textDecoration: 'none' }}>
-          <MenuItem>Leave feedback</MenuItem>
+          <MenuItem>{t('ProfileComponent.feedback')}</MenuItem>
         </LinkStyled>
         <LinkStyled href={Page.PRIVACY_POLICY} $colorMode={colorMode} style={{ textDecoration: 'none' }} target="_blank">
-          <MenuItem>Privacy policy</MenuItem>
+          <MenuItem>{t('ProfileComponent.privacy')}</MenuItem>
         </LinkStyled>
         <MenuDivider />
-        <MenuItem onClick={logout}>Log out</MenuItem>
+        <MenuItem onClick={logout}>{t('ProfileComponent.logout')}</MenuItem>
       </MenuList>
     </Menu>
   );

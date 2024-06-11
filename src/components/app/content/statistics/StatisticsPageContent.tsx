@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsFire } from 'react-icons/bs';
 import { ImFire } from 'react-icons/im';
 import { PiBookThin } from 'react-icons/pi';
@@ -20,6 +21,7 @@ import SkeletonWrapper, { SkeletonType } from '@components/ui-common/complex/Ske
 export default function StatisticsPageContent() {
   const { isOpen: isOpenStatsWords, onOpen: onOpenStatsWords, onClose: onCloseStatsWords } = useDisclosure();
 
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: statistics, isFetching, isError, refetch } = useGetStatisticsQuery();
 
@@ -34,39 +36,57 @@ export default function StatisticsPageContent() {
   return (
     <Container>
       <Section>
-        <HeadingTabletAndDesktop size={Size.LG}>Daily Streak</HeadingTabletAndDesktop>
+        <HeadingTabletAndDesktop size={Size.LG}>{t('StatisticsPage.dailyStreak.heading')}</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
-            <StatsCard title="Current Streak" stat={statistics?.currentStreak} icon={<BsFire style={iconStyles} />} isRefreshing={isFetching} />
-            <StatsCard title="Record Streak" stat={statistics?.recordStreak} icon={<ImFire style={iconStyles} />} isRefreshing={isFetching} />
+            <StatsCard
+              title={t('StatisticsPage.dailyStreak.currentStreak')}
+              stat={statistics?.currentStreak}
+              icon={<BsFire style={iconStyles} />}
+              isRefreshing={isFetching}
+            />
+            <StatsCard
+              title={t('StatisticsPage.dailyStreak.recordStreak')}
+              stat={statistics?.recordStreak}
+              icon={<ImFire style={iconStyles} />}
+              isRefreshing={isFetching}
+            />
           </SkeletonWrapper>
         </CardsContainer>
       </Section>
       <Section>
-        <HeadingTabletAndDesktop size={Size.LG}>Vocabulary</HeadingTabletAndDesktop>
+        <HeadingTabletAndDesktop size={Size.LG}>{t('StatisticsPage.vocabulary.heading')}</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={2} isLoading={!statistics}>
-            <StatsCard title="Words Known" stat={statistics?.wordsKnown} icon={<PiBookThin style={iconStyles} />} isClickable onOpen={onOpenStatsWords} isRefreshing={isFetching} />
+            <StatsCard
+              title={t('StatisticsPage.vocabulary.wordsKnown')}
+              stat={statistics?.wordsKnown}
+              icon={<PiBookThin style={iconStyles} />}
+              isRefreshing={isFetching}
+              isClickable
+              onOpen={onOpenStatsWords}
+            />
             {isOpenStatsWords && (<StatsWordsKnownWindow isOpen={isOpenStatsWords} onClose={onCloseStatsWords} />)}
             {user?.role === RoleName.USER_CHINESE && (
-              <StatsCard title="Characters Known" stat={statistics?.charactersKnown} icon={<PiBookThin style={iconStyles} />} isRefreshing={isFetching} />
+              <StatsCard
+                title={t('StatisticsPage.vocabulary.charactersKnown')}
+                stat={statistics?.charactersKnown}
+                icon={<PiBookThin style={iconStyles} />}
+                isRefreshing={isFetching}
+              />
             )}
           </SkeletonWrapper>
         </CardsContainer>
       </Section>
       <Section>
-        <HeadingTabletAndDesktop size={Size.LG}>Daily Reviews</HeadingTabletAndDesktop>
+        <HeadingTabletAndDesktop size={Size.LG}>{t('StatisticsPage.dailyReviews.heading')}</HeadingTabletAndDesktop>
         <CardsContainer>
           <SkeletonWrapper type={SkeletonType.STATS_CARD} fixed={3} isLoading={!statistics}>
             {statistics?.listOfReviewStatisticsDto && statistics.listOfReviewStatisticsDto.length > 0
               ? (statistics.listOfReviewStatisticsDto.map((reviewStatisticsDTO, index) => (
-                <StatsReviewCard
-                  key={index}
-                  reviewStatistics={reviewStatisticsDTO}
-                  isRefreshing={isFetching}
-                />
+                <StatsReviewCard key={index} reviewStatistics={reviewStatisticsDTO} isRefreshing={isFetching} />
               )))
-              : <TextTabletAndDesktop size={Size.LG}>You do not have any daily reviews</TextTabletAndDesktop>}
+              : <TextTabletAndDesktop size={Size.LG}>{t('StatisticsPage.dailyReviews.noReviews')}</TextTabletAndDesktop>}
           </SkeletonWrapper>
         </CardsContainer>
       </Section>

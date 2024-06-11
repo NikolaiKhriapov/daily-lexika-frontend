@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -25,6 +26,7 @@ type Props = {
 export default function WordDetailedInfo(props: Props) {
   const { isOpen, onClose, wordData, word, selectedWordDataId } = props;
 
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: wordFromQuery } = useGetWordByWordDataIdQuery(wordData.id, { skip: word !== undefined || wordData.id !== selectedWordDataId });
 
@@ -45,8 +47,8 @@ export default function WordDetailedInfo(props: Props) {
         <Container>
           <Tabs isFitted variant='enclosed' colorScheme='gray'>
             <TabList mb='10px'>
-              <Tab>General</Tab>
-              <Tab>Examples</Tab>
+              <Tab>{t('WordDetailedInfo.tabGeneral')}</Tab>
+              <Tab>{t('WordDetailedInfo.tabExamples')}</Tab>
             </TabList>
             <TabPanelsStyled>
               <TabPanel>
@@ -64,6 +66,7 @@ export default function WordDetailedInfo(props: Props) {
                   <WordStreakStats word={wordDto} />
                 </ProgressBarContainerMobile>
                 <Divider marginY={3} />
+                {/* TODO::: get rid of all [TODO] */}
                 {wordData.definition !== '[TODO]' && (
                   <>
                     <Text>{wordData.definition}</Text>

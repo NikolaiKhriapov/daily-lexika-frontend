@@ -1,15 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MdOutlineWidgets } from 'react-icons/md';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
-import UpcomingUpdatesTable from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesTable';
+import UpcomingUpdates from '@components/app/navbar/app/upcoming-updates/UpcomingUpdates';
 import Button from '@components/ui-common/basic/Button';
 import Modal from '@components/ui-common/complex/Modal';
 
 export default function UpcomingUpdatesComponent() {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -24,9 +26,9 @@ export default function UpcomingUpdatesComponent() {
           size={Size.MD}
           isOpen={isOpen}
           onClose={onClose}
-          header='Coming Soon'
+          header={t('UpcomingUpdatesComponent.header')}
           isHeaderCentered
-          body={<UpcomingUpdatesTable />}
+          body={<UpcomingUpdates />}
         />
       )}
     />

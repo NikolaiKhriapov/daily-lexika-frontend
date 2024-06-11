@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
@@ -18,13 +19,14 @@ type Props = {
 export default function CreateWordPackWindow(props: Props) {
   const { isOpen, onClose } = props;
 
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [createCustomWordPack, { isLoading: isLoadingCreateCustomWordPack }] = useCreateCustomWordPackMutation();
 
   const initialValues = {
     name: '',
-    description: 'Custom word pack',
+    description: t('CreateWordPackWindow.description.initValue'),
   };
 
   const validationSchema = Yup.object({
@@ -47,7 +49,7 @@ export default function CreateWordPackWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header='Create Word Pack'
+      header={t('CreateWordPackWindow.header')}
       body={(
         <InputFieldsWithButton
           validateOnMount
@@ -56,18 +58,18 @@ export default function CreateWordPackWindow(props: Props) {
           inputElements={(
             <>
               <TextInput
-                label="Name"
+                label={t('CreateWordPackWindow.name')}
                 name="name"
                 type="text"
-                placeholder="Name"
+                placeholder={t('CreateWordPackWindow.name')}
               />
               <TextInput
-                label="Description"
+                label={t('CreateWordPackWindow.description.label')}
                 name="description"
                 type="text"
-                placeholder="Description"
+                placeholder={t('CreateWordPackWindow.description.label')}
               />
-              <Text>{'These settings can be edited at any time. Stick with the defaults if you\'re not sure.'}</Text>
+              <Text>{t('CreateWordPackWindow.hint')}</Text>
             </>
           )}
           buttonText="Create"

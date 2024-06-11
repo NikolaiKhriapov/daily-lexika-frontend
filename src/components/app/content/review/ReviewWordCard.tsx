@@ -23,11 +23,10 @@ export default function ReviewWordCard(props: Props) {
   const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
+  const { data: user } = useGetUserInfoQuery();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
-
-  const { data: user } = useGetUserInfoQuery();
 
   const cardHeight = { base: '312px', sm: '390px', xl: '520px' };
   const cardWidth = { base: '240px', sm: '300px', xl: '400px' };

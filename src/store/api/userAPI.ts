@@ -1,6 +1,6 @@
 import { API } from '@store/api/API';
 import { ApiEndpointsUsers } from '@utils/app/apiMethods';
-import { QueryMethods } from '@utils/constants';
+import { QueryMethod } from '@utils/constants';
 import { PasswordUpdateRequest, UserDto } from '@utils/types';
 
 export const userAPI = API.injectEndpoints({
@@ -8,14 +8,14 @@ export const userAPI = API.injectEndpoints({
     getUserInfo: builder.query<UserDto, void>({
       query: () => ({
         url: ApiEndpointsUsers.getUserInfo(),
-        method: QueryMethods.GET,
+        method: QueryMethod.GET,
       }),
       providesTags: ['User'],
     }),
     updateUserInfo: builder.mutation<UserDto, UserDto>({
       query: (userDTO: UserDto) => ({
         url: ApiEndpointsUsers.updateUserInfo(),
-        method: QueryMethods.PATCH,
+        method: QueryMethod.PATCH,
         body: userDTO,
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
@@ -39,14 +39,14 @@ export const userAPI = API.injectEndpoints({
     updatePassword: builder.mutation<void, PasswordUpdateRequest>({
       query: (passwordUpdateRequest: PasswordUpdateRequest) => ({
         url: ApiEndpointsUsers.updatePassword(),
-        method: QueryMethods.PATCH,
+        method: QueryMethod.PATCH,
         body: passwordUpdateRequest,
       }),
     }),
     deleteAccount: builder.mutation<void, void>({
       query: () => ({
         url: ApiEndpointsUsers.deleteAccount(),
-        method: QueryMethods.DELETE,
+        method: QueryMethod.DELETE,
       }),
       invalidatesTags: ['User'],
     }),

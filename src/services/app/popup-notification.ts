@@ -20,8 +20,8 @@ const popupNotification = (title: string, description: string, status: AlertStat
   });
 };
 
-export const successNotification = (title: string, description: string) => {
-  popupNotification(title, description, 'success', 'gray');
+export const successNotification = (title: string, description?: string) => {
+  popupNotification(title, description || '', 'success', 'gray');
 };
 
 export const errorNotification = (title: string, description: string | any) => {
@@ -31,5 +31,5 @@ export const errorNotification = (title: string, description: string | any) => {
     popupNotification(title, description.data.message, 'error', 'red');
   } else {
     errorNotification("Unable to establish a connection", "Please ensure you have an active internet connection and try again.");
-  }
+  } // TODO::: translate
 };

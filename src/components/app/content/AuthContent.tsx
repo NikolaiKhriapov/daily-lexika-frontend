@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Box, ColorMode, FormLabel, Select as ChakraSelect, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
-import { errorNotification, successNotification } from '@services/app/popup-notification';
+import { errorNotification } from '@services/app/popup-notification';
 import { useLoginMutation, useRegisterMutation } from '@store/api/authAPI';
 import { useAppDispatch, useAppSelector } from '@store/hooks/hooks';
 import { toggleAuthFormType } from '@store/reducers/app/authPageSlice';
@@ -22,13 +23,13 @@ import ValidationHelper from '@helpers/ValidationHelper';
 export default function AuthContent() {
   const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { setUserFromToken } = useContext(AuthContext);
   const { authFormType } = useAppSelector((state) => state.authPageSlice);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
-  const [isCredentialsInvalid, setCredentialsInvalid] = useState(false);
-
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
+  const [isCredentialsInvalid, setCredentialsInvalid] = useState(false);
 
   const performLogin = (authenticationRequest: AuthenticationRequest) => {
     login(authenticationRequest)
@@ -43,10 +44,7 @@ export default function AuthContent() {
   const performRegister = (registrationRequest: RegistrationRequest) => {
     register(registrationRequest)
       .unwrap()
-      .then((response) => {
-        setUserFromToken(response.token);
-        successNotification('User registered', `${registrationRequest.name} was successfully registered`);
-      })
+      .then((response) => setUserFromToken(response.token))
       .catch((error) => errorNotification('', error));
   };
 
@@ -56,7 +54,7 @@ export default function AuthContent() {
       linkText: 'Don\'t have an account? Sign up',
       form: {
         initialValues: { email: '', password: '' },
-        validationSchema: Yup.object({ email: ValidationHelper.emailValidator(), password: ValidationHelper.passwordValidator() }),
+        validationSchema: Yup.object({ email: ValidationHelper.emailValidator(t), password: ValidationHelper.passwordValidator(t) }),
         handleOnSubmit: (values: AuthenticationRequest) =>
           performLogin({ email: values.email, password: values.password, platform: selectedPlatform! }),
       },
@@ -67,7 +65,7 @@ export default function AuthContent() {
       linkText: 'Already have an account? Sign in',
       form: {
         initialValues: { name: '', email: '', password: '' },
-        validationSchema: Yup.object({ name: ValidationHelper.nameValidator(), email: ValidationHelper.emailValidator(), password: ValidationHelper.passwordValidator() }),
+        validationSchema: Yup.object({ name: ValidationHelper.nameValidator(t), email: ValidationHelper.emailValidator(t), password: ValidationHelper.passwordValidator(t) }),
         handleOnSubmit: (values: RegistrationRequest) =>
           performRegister({ ...values, platform: selectedPlatform! }),
       },

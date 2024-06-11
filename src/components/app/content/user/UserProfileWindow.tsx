@@ -1,14 +1,12 @@
 import React, { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import {
-  useDeleteAccountMutation,
-  useGetUserInfoQuery,
-  useUpdatePasswordMutation,
-  useUpdateUserInfoMutation,
+  useDeleteAccountMutation, useGetUserInfoQuery, useUpdatePasswordMutation, useUpdateUserInfoMutation,
 } from '@store/api/userAPI';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -30,29 +28,29 @@ type Props = {
 export default function UserProfileWindow(props: Props) {
   const { isOpen, onClose } = props;
 
+  const passwordCurrentRef = useRef<string>('');
+  const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
   const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const passwordCurrentRef = useRef<string>('');
-
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [updatePassword] = useUpdatePasswordMutation();
   const [deleteAccount] = useDeleteAccountMutation();
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
-  const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
+  const handleUpdateInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
     updateUserInfo(userUpdatedInfoDTO)
       .unwrap()
-      .then(() => successNotification('User information updated successfully', ''))
+      .then(() => successNotification(t('UserProfileWindow.successMessage.updateInfo')))
       .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting && setSubmitting(false));
   };
 
-  const handleChangePassword = (passwordUpdateRequest: PasswordUpdateRequest, setSubmitting: any) => {
+  const handleUpdatePassword = (passwordUpdateRequest: PasswordUpdateRequest, setSubmitting: any) => {
     updatePassword(passwordUpdateRequest)
       .unwrap()
-      .then(() => successNotification('Password updated successfully', ''))
+      .then(() => successNotification(t('UserProfileWindow.successMessage.updatePassword')))
       .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting(false));
   };
@@ -62,7 +60,7 @@ export default function UserProfileWindow(props: Props) {
     deleteAccount()
       .unwrap()
       .then(() => {
-        successNotification('Account deleted successfully', '');
+        successNotification(t('UserProfileWindow.successMessage.deleteAccount'));
         logout();
       })
       .catch((error) => errorNotification('', error))
@@ -72,48 +70,79 @@ export default function UserProfileWindow(props: Props) {
   const userAccountWindowData = {
     name: {
       initialValues: { name: user && user.name, email: user && user.email },
-      validationSchema: Yup.object({ name: ValidationHelper.nameValidator() }),
+      validationSchema: Yup.object({ name: ValidationHelper.nameValidator(t) }),
       onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
-        handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
+        handleUpdateInfo(userUpdatedInfoDTO, setSubmitting);
         onClose();
       },
-      inputElement: <TextInput label='Name' name='name' type='text' placeholder='Name' />,
+      inputElement: (
+        <TextInput
+          name='name'
+          type='text'
+          label={t('UserProfileWindow.name')}
+          placeholder={t('UserProfileWindow.name')}
+        />
+      ),
     },
     email: {
       initialValues: { email: user && user.email, name: user && user.name },
-      validationSchema: Yup.object({ email: ValidationHelper.emailValidator() }),
+      validationSchema: Yup.object({ email: ValidationHelper.emailValidator(t) }),
       onSubmit: (userUpdatedInfoDTO: UserDto, { setSubmitting }: any) => {
         setSubmitting(true);
-        handleChangeInfo(userUpdatedInfoDTO, setSubmitting);
+        handleUpdateInfo(userUpdatedInfoDTO, setSubmitting);
         logout();
       },
-      inputElement: <TextInput label='Email' name='email' type='email' placeholder='Email' />,
+      inputElement: (
+        <TextInput
+          name='email'
+          type='email'
+          label={t('UserProfileWindow.email')}
+          placeholder={t('UserProfileWindow.email')}
+        />
+      ),
     },
     password: {
       initialValues: { passwordCurrent: '' },
-      validationSchema: Yup.object({ passwordCurrent: ValidationHelper.passwordValidator() }),
+      validationSchema: Yup.object({ passwordCurrent: ValidationHelper.passwordValidator(t) }),
       onSubmit: (values: { passwordCurrent: string }) => {
         passwordCurrentRef.current = values.passwordCurrent;
         onOpenChangePasswordButton();
       },
-      inputElement: <TextInput label='Password' name='passwordCurrent' type='password' placeholder='Current password' />,
+      inputElement: (
+        <TextInput
+          name='passwordCurrent'
+          type='password'
+          label={t('UserProfileWindow.password.current.label')}
+          placeholder={t('UserProfileWindow.password.current.placeholder')}
+        />
+      ),
     },
   };
 
   const passwordChangeData = {
     initialValues: { passwordNewFirst: '', passwordNewSecond: '' },
-    validationSchema: Yup.object({ passwordNewFirst: ValidationHelper.passwordValidator(), passwordNewSecond: ValidationHelper.passwordRepeatValidator() }),
+    validationSchema: Yup.object({ passwordNewFirst: ValidationHelper.passwordValidator(t), passwordNewSecond: ValidationHelper.passwordRepeatValidator(t) }),
     onSubmit: (values: { passwordNewFirst: string, passwordNewSecond: string }, { setSubmitting }: any) => {
       setSubmitting(true);
       const request: PasswordUpdateRequest = { passwordCurrent: passwordCurrentRef.current, passwordNew: values.passwordNewFirst };
-      handleChangePassword(request, setSubmitting);
+      handleUpdatePassword(request, setSubmitting);
       onClose();
     },
     inputElement: (
       <>
-        <TextInput label="Password" name="passwordNewFirst" type="password" placeholder="New password" />
-        <TextInput label="Repeat Password" name="passwordNewSecond" type="password" placeholder="Repeat password" />
+        <TextInput
+          name="passwordNew"
+          type="password"
+          label={t('UserProfileWindow.password.new.label')}
+          placeholder={t('UserProfileWindow.password.new.placeholder')}
+        />
+        <TextInput
+          name="passwordNewRepeat"
+          type="password"
+          label={t('UserProfileWindow.password.repeat.label')}
+          placeholder={t('UserProfileWindow.password.repeat.placeholder')}
+        />
       </>
     ),
   };
@@ -124,14 +153,14 @@ export default function UserProfileWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header='Account'
+      header={t('UserProfileWindow.header')}
       body={(
         <>
           <ProfileImageContainer>
             <AvatarStyled size='2xl' />
           </ProfileImageContainer>
           <InputFieldWithButton
-            buttonText='Change'
+            buttonText={t('buttonText.change')}
             validateOnMount
             initialValues={userAccountWindowData.name.initialValues}
             validationSchema={userAccountWindowData.name.validationSchema}
@@ -139,7 +168,7 @@ export default function UserProfileWindow(props: Props) {
             inputElements={userAccountWindowData.name.inputElement}
           />
           <InputFieldWithButton
-            buttonText='Change'
+            buttonText={t('buttonText.change')}
             validateOnMount={false}
             initialValues={userAccountWindowData.email.initialValues}
             validationSchema={userAccountWindowData.email.validationSchema}
@@ -147,7 +176,7 @@ export default function UserProfileWindow(props: Props) {
             inputElements={userAccountWindowData.email.inputElement}
           />
           <InputFieldWithButton
-            buttonText='Change'
+            buttonText={t('buttonText.change')}
             validateOnMount={false}
             initialValues={userAccountWindowData.password.initialValues}
             validationSchema={userAccountWindowData.password.validationSchema}
@@ -157,7 +186,7 @@ export default function UserProfileWindow(props: Props) {
           <ButtonsContainer>
             <Stack>
               <Button
-                buttonText='Delete Account'
+                buttonText={t('UserProfileWindow.deleteAccountButton')}
                 buttonType={ButtonType.BUTTON_RED}
                 onClick={onOpenDeleteAccountButton}
               />
@@ -167,10 +196,10 @@ export default function UserProfileWindow(props: Props) {
             <Modal
               onClose={onCloseChangePasswordButton}
               isOpen={isOpenChangePasswordButton}
-              header='New Password'
+              header={t('UserProfileWindow.password.new.header')}
               body={(
                 <InputFieldsWithButton
-                  buttonText='Update'
+                  buttonText={t('buttonText.update')}
                   validateOnMount
                   initialValues={passwordChangeData.initialValues}
                   validationSchema={passwordChangeData.validationSchema}
@@ -185,9 +214,10 @@ export default function UserProfileWindow(props: Props) {
               isOpen={isOpenDeleteAccountButton}
               onClose={onCloseDeleteAccountButton}
               handleDelete={handleDeleteAccount}
-              header='Delete Account'
-              body={`Are you sure you want to delete account? You can't undo this action.`}
-              deleteButtonText='Delete'
+              header={t('UserProfileWindow.AlertDialog.header')}
+              body={t('UserProfileWindow.AlertDialog.body')}
+              cancelButtonText={t('buttonText.cancel')}
+              deleteButtonText={t('buttonText.delete')}
               isButtonDisabled={isButtonDisabled}
             />
           )}

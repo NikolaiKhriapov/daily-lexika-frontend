@@ -12,7 +12,7 @@ export default function PwaInstallAndroidComponent() {
   const { colorMode } = useColorMode();
   const { deferredPrompt, isPwaInstallable, setPwaInstallable, isStandalone } = useContext(AppInstallationContext);
 
-  if (!isPwaInstallable || isStandalone) return null;
+  if (!isPwaInstallable || isStandalone) return <></>;
 
   const handleInstallClick = () => {
     deferredPrompt.prompt();

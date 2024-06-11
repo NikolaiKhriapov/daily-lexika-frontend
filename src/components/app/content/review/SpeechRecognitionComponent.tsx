@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoMdMic } from 'react-icons/io';
 import styled from 'styled-components';
 import { Modal } from '@chakra-ui/modal';
 import { ColorMode, ModalBody, ModalContent, ModalOverlay, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
-import { Size } from '@utils/constants';
+import { Locale, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Text from '@components/ui-common/basic/Text';
@@ -18,10 +19,11 @@ export default function SpeechRecognitionComponent(props: Props) {
   const { word } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!user || !user.role) return <></>;
 
@@ -34,13 +36,13 @@ export default function SpeechRecognitionComponent(props: Props) {
     let lang;
     switch (user.role) {
       case RoleName.USER_ENGLISH:
-        lang = 'en-US';
+        lang = Locale.EN_US;
         break;
       case RoleName.USER_CHINESE: {
-        lang = 'zh-CN';
+        lang = Locale.CN;
         break;
       }
-      default: lang = 'en-US';
+      default: lang = Locale.EN_US;
     }
     recognition.lang = lang;
 
@@ -67,7 +69,7 @@ export default function SpeechRecognitionComponent(props: Props) {
             <ModalBodyStyled>
               <IoMdMic size={60} />
               <TextContainer>
-                <Text size={Size.LG}>Listening&nbsp;</Text>
+                <Text size={Size.LG}>{t('SpeechRecognitionComponent.listening')}&nbsp;</Text>
                 <LoadingDots $colorMode={colorMode} />
               </TextContainer>
             </ModalBodyStyled>

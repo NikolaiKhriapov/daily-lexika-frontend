@@ -22,13 +22,12 @@ type Props = {
 export default function WordsScrollableContainer(props: Props) {
   const { wordsPage, isLoading, page, setPage } = props;
 
-  const { colorMode } = useColorMode();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { colorMode } = useColorMode();
+  const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [selectedWord, setSelectedWord] = useState<number | null>();
   const [visibleWords, setVisibleWords] = useState<WordDto[]>([]);
-
-  const { data: user } = useGetUserInfoQuery();
 
   useEffect(() => {
     updateVisibleWords();

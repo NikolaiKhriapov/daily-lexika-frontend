@@ -10,7 +10,8 @@ import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp, nonHighlightableTap, nonSelectableText } from '@utils/functions';
 import { theme } from '@utils/theme';
 import AppContent from '@components/app/content/AppContent';
-import LanguageSelectionWindow from '@components/app/content/LanguageSelectionWindow';
+import InterfaceLanguageSelectionWindow from '@components/app/content/InterfaceLanguageSelectionWindow';
+import TranslationLanguageSelectionWindow from '@components/app/content/TranslationLanguageSelectionWindow';
 import AppFooter from '@components/app/footer/AppFooter';
 import AppNavbar from '@components/app/navbar/AppNavbar';
 import AppSidebar from '@components/app/sidebar/AppSidebar';
@@ -26,7 +27,6 @@ export default function AppLayout(props: Props) {
   const { page, title, description, children } = props;
 
   const { colorMode } = useColorMode();
-
   const { data: user } = useGetUserInfoQuery();
   useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
@@ -44,8 +44,9 @@ export default function AppLayout(props: Props) {
         <SidebarAndContentContainer $colorMode={colorMode}>
           <AppSidebar page={page} />
           <AppContent>
-            {user && !user.translationLanguage && <LanguageSelectionWindow />}
-            {user && user.translationLanguage && children}
+            {user && !user.interfaceLanguage && <InterfaceLanguageSelectionWindow />}
+            {user && user.interfaceLanguage && !user.translationLanguage && <TranslationLanguageSelectionWindow />}
+            {user && user.interfaceLanguage && user.translationLanguage && children}
           </AppContent>
         </SidebarAndContentContainer>
         <AppFooter />

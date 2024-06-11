@@ -1,6 +1,6 @@
 import { API, providesList } from '@store/api/API';
 import { ApiEndpointsReviews } from '@utils/app/apiMethods';
-import { QueryMethods } from '@utils/constants';
+import { QueryMethod } from '@utils/constants';
 import { placeholderReview, ReviewDto } from '@utils/types';
 
 export const reviewsAPI = API.injectEndpoints({
@@ -8,7 +8,7 @@ export const reviewsAPI = API.injectEndpoints({
     getAllReviews: builder.query<ReviewDto[], void>({
       query: () => ({
         url: ApiEndpointsReviews.getAllReviews(),
-        method: QueryMethods.GET,
+        method: QueryMethod.GET,
       }),
       transformResponse: (response: ReviewDto[]) => response.sort((a, b) => a.wordPackDto.name.localeCompare(b.wordPackDto.name)),
       providesTags: (result) => providesList(result, 'Reviews'),
@@ -17,7 +17,7 @@ export const reviewsAPI = API.injectEndpoints({
       query: (reviewDTO) => ({
         url: ApiEndpointsReviews.createReview(),
         body: reviewDTO,
-        method: QueryMethods.POST,
+        method: QueryMethod.POST,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }, 'Statistics'],
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
@@ -36,7 +36,7 @@ export const reviewsAPI = API.injectEndpoints({
     updateReview: builder.mutation<ReviewDto, { reviewId: number, reviewDTO: ReviewDto }>({
       query: ({ reviewId, reviewDTO }) => ({
         url: ApiEndpointsReviews.updateReview(reviewId),
-        method: QueryMethods.PATCH,
+        method: QueryMethod.PATCH,
         body: reviewDTO,
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
@@ -56,7 +56,7 @@ export const reviewsAPI = API.injectEndpoints({
     refreshReview: builder.mutation<ReviewDto, number>({
       query: (reviewId) => ({
         url: ApiEndpointsReviews.refreshReview(reviewId),
-        method: QueryMethods.PATCH,
+        method: QueryMethod.PATCH,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -75,7 +75,7 @@ export const reviewsAPI = API.injectEndpoints({
     deleteReview: builder.mutation<void, number>({
       query: (reviewId) => ({
         url: ApiEndpointsReviews.deleteReview(reviewId),
-        method: QueryMethods.DELETE,
+        method: QueryMethod.DELETE,
       }),
       invalidatesTags: [{ type: 'Reviews', id: 'LIST' }, { type: 'WordPacks', id: 'LIST' }, 'Statistics'],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -95,7 +95,7 @@ export const reviewsAPI = API.injectEndpoints({
     processReviewAction: builder.mutation<ReviewDto, { reviewId: number; answer: boolean | null }>({
       query: ({ reviewId, answer = null }) => ({
         url: ApiEndpointsReviews.processReviewAction(reviewId, answer),
-        method: QueryMethods.GET,
+        method: QueryMethod.GET,
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         try {

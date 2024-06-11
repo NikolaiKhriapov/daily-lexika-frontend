@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store/api/notificationsAPI';
+import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -16,14 +18,16 @@ import RedDot from '@components/ui-common/basic/RedDot';
 import Text from '@components/ui-common/basic/Text';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import DateHelper from '@helpers/DateHelper';
+import LocaleHelper from '@helpers/LocaleHelper';
 
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
-
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const { data: allNotifications = [] } = useGetAllNotificationsQuery();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [readNotification] = useReadNotificationMutation();
+  const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
 
   const unreadNotifications = allNotifications.filter((notificationDTO) => !notificationDTO.isRead);
 
@@ -31,6 +35,8 @@ export default function NotificationsComponent() {
     readNotification(notification.notificationId);
     setSelectedNotification(notification);
   };
+
+  if (!user) return <></>;
 
   return (
     <Notifications $colorMode={colorMode}>
@@ -45,18 +51,11 @@ export default function NotificationsComponent() {
             ? (unreadNotifications.map((notificationDTO, index) => (
               <NotificationContainer key={index}>
                 <MenuItemStyled onClick={() => handleNotificationClick(notificationDTO)}>
-                  <Text
-                    size={Size.MD}
-                    fontWeight={FontWeight.SEMIBOLD}
-                  >
+                  <Text size={Size.MD} fontWeight={FontWeight.SEMIBOLD}>
                     {notificationDTO.subject}
                   </Text>
-                  <Text
-                    size={Size.SM}
-                    fontWeight={FontWeight.SEMIBOLD}
-                    display={{ base: 'none', md: 'unset' }}
-                  >
-                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt)}
+                  <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD} display={{ base: 'none', md: 'unset' }}>
+                    {DateHelper.convertOffsetDateTimeToDateString(notificationDTO.sentAt, LocaleHelper.getLocaleFromUser(user))}
                   </Text>
                 </MenuItemStyled>
                 {index < allNotifications.length - 1 && <MenuDivider />}
@@ -64,13 +63,13 @@ export default function NotificationsComponent() {
             )))
             : (
               <NoNotificationsContainer>
-                <Text>No new notifications</Text>
+                <Text>{t('NotificationsComponent.noNewNotifications')}</Text>
               </NoNotificationsContainer>
             )}
           <MenuDivider />
           <ButtonsContainer>
             <Button
-              buttonText='Show all notifications'
+              buttonText={t('NotificationsComponent.showAllButton')}
               buttonType={ButtonType.BUTTON}
               size={Size.SM}
               onClick={onOpen}

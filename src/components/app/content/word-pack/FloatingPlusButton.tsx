@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { RxCardStackPlus, RxCross1 } from 'react-icons/rx';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode, useDisclosure } from '@chakra-ui/react';
@@ -13,6 +14,7 @@ import Text from '@components/ui-common/basic/Text';
 export default function FloatingPlusButton() {
   const dispatch = useAppDispatch();
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { isExpanded } = useAppSelector((state) => state.floatingPlusButtonSlice);
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
 
@@ -20,7 +22,7 @@ export default function FloatingPlusButton() {
   const optionsMapping = [
     {
       icon: <RxCardStackPlus size={optionIconSize} style={{ rotate: '90deg' }} color={theme.colors[colorMode].buttonColor} />,
-      text: 'Add\u00a0new\u00a0word\u00a0pack',
+      text: t('FloatingPlusButton.addWordPack'),
       onClick: onOpenCreateButton,
     },
   ];
@@ -33,7 +35,12 @@ export default function FloatingPlusButton() {
             <FloatingIcon $colorMode={colorMode} onClick={onOpenCreateButton}>
               {option.icon}
             </FloatingIcon>
-            <FloatingText size={{ base: Size.SM, md: Size.SM, xl: Size.MD }} $colorMode={colorMode} $isVisible={isExpanded}>
+            <FloatingText
+              size={{ base: Size.SM, md: Size.SM, xl: Size.MD }}
+              $colorMode={colorMode}
+              $isVisible={isExpanded}
+              style={{ whiteSpace: 'nowrap' }}
+            >
               {option.text}
             </FloatingText>
           </FloatingOptionContainer>

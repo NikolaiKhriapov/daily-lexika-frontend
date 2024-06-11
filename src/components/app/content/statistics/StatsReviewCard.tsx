@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -9,7 +10,7 @@ import StatsReviewWindow from '@components/app/content/statistics/StatsReviewWin
 import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
-import WordDataHelper from '@helpers/WordDataHelper';
+import I18nHelper from '@helpers/I18nHelper';
 
 type Props = {
   reviewStatistics: ReviewStatisticsDto;
@@ -20,12 +21,11 @@ export default function StatsReviewCard(props: Props) {
   const { reviewStatistics, isRefreshing } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
+  const { data: user } = useGetUserInfoQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: user } = useGetUserInfoQuery();
-
   const wordsTotal = reviewStatistics.wordsNew + reviewStatistics.wordsInReview + reviewStatistics.wordsKnown;
-
   const wordsPercentage = {
     inReview: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : (reviewStatistics.wordsInReview / wordsTotal) * 100),
     known: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : (reviewStatistics.wordsKnown / wordsTotal) * 100),
@@ -38,16 +38,16 @@ export default function StatsReviewCard(props: Props) {
     <>
       <Container $colorMode={colorMode} onClick={onOpen}>
         <WordPackNameAndInfoButton>
-          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{WordDataHelper.getOriginalWordPackName(reviewStatistics.wordPackName, user)}</Text>
+          <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>
+            {I18nHelper.getWordPackNameTranslated(reviewStatistics.wordPackName, user, t)}
+          </Text>
         </WordPackNameAndInfoButton>
         <Stats>
           <Percentage>
-            <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{`${wordsPercentage.known}%`}</Text>
-            <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>&nbsp;known</Text>
+            <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>{wordsPercentage.known}%&nbsp;</Text>
+            <Text size={Size.SM} fontWeight={FontWeight.SEMIBOLD}>{t('StatsReviewCard.known')}</Text>
           </Percentage>
-          <Text fontWeight={FontWeight.SEMIBOLD}>
-            {`${reviewStatistics.wordsKnown}/${wordsTotal}`}
-          </Text>
+          <Text fontWeight={FontWeight.SEMIBOLD}>{reviewStatistics.wordsKnown}/{wordsTotal}</Text>
         </Stats>
         <ProgressBar value={wordsPercentage.known || 0} />
         {isRefreshing && <SpinnerContainer><Spinner size={Size.SM} /></SpinnerContainer>}

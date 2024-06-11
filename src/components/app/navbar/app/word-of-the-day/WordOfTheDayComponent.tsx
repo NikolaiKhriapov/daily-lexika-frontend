@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useColorMode } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -11,10 +12,10 @@ import WordCard from '@components/app/content/review/WordCard';
 
 export default function WordOfTheDayComponent() {
   const { colorMode } = useColorMode();
-  const [isFlipped, setFlipped] = useState(false);
-
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: wordOfTheDay } = useGetWordOfTheDayQuery();
+  const [isFlipped, setFlipped] = useState(false);
 
   const cardHeight = { base: '280px', xl: '300px' };
   const cardWidth = { base: '215px', xl: 'auto' };
@@ -53,7 +54,7 @@ export default function WordOfTheDayComponent() {
           isFlipped={isFlipped}
           setFlipped={() => setFlipped(!isFlipped)}
           setUnlocked={() => null}
-          title="Word of the Day"
+          title={t('WordOfTheDayComponent.title')}
           withSpeechRecognition={false}
           infoGap='20px'
         />
@@ -69,7 +70,7 @@ export default function WordOfTheDayComponent() {
           isFlipped={isFlipped}
           setFlipped={() => setFlipped(!isFlipped)}
           setUnlocked={() => null}
-          title="Word of the Day"
+          title={t('WordOfTheDayComponent.title')}
           withSpeechRecognition={false}
           infoGap='25px'
         />

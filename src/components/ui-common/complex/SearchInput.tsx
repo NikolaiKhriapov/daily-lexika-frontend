@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import { Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -15,6 +16,7 @@ export default function SearchInput(props: Props) {
   const { searchQuery, setSearchQuery, isLoading } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSearchQuery('');
@@ -25,7 +27,7 @@ export default function SearchInput(props: Props) {
       <Input
         name="search"
         type="text"
-        placeholder="Start typing a word..."
+        placeholder={t('Search.input')}
         width={{ base: '100%', md: '500px' }}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

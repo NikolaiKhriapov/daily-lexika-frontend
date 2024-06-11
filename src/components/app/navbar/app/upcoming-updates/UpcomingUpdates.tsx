@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
@@ -6,14 +7,15 @@ import { AppInfo, RoleNameBase } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { FeaturePeriod, upcomingUpdatesTableData } from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesTable.data';
+import { FeaturePeriod, upcomingUpdatesData } from '@components/app/navbar/app/upcoming-updates/UpcomingUpdates.data';
 import Heading from '@components/ui-common/basic/Heading';
 import ProgressBar from '@components/ui-common/basic/ProgressBar';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 
-export default function UpcomingUpdatesTable() {
+export default function UpcomingUpdates() {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
 
   if (!user) return <Spinner />;
@@ -23,9 +25,9 @@ export default function UpcomingUpdatesTable() {
       <ColumnsContainer>
         {Object.values(FeaturePeriod).map((featurePeriod, index) => (
           <ColumnContainer key={index} $colorMode={colorMode}>
-            <Heading size={Size.SM} isCentered>{upcomingUpdatesTableData[featurePeriod].title}</Heading>
+            <Heading size={Size.SM} isCentered>{upcomingUpdatesData(featurePeriod, t).title}</Heading>
             <RowsContainer $colorMode={colorMode}>
-              {upcomingUpdatesTableData[featurePeriod].features[user.role! as RoleNameBase].map((item, index2) => (
+              {upcomingUpdatesData(featurePeriod, t).features[user.role! as RoleNameBase].map((item, index2) => (
                 <RowContainer key={index2}>
                   <Text width='300px'>{item.name}</Text>
                   <ProgressBar width='100px' value={item.progress} />
@@ -35,7 +37,7 @@ export default function UpcomingUpdatesTable() {
           </ColumnContainer>
         ))}
       </ColumnsContainer>
-      <Text size={Size.SM} isCentered>App version: {AppInfo.APP_VERSION}</Text>
+      <Text size={Size.SM} isCentered>{t('UpcomingUpdatesComponent.version')}: {AppInfo.APP_VERSION}</Text>
     </>
   );
 }

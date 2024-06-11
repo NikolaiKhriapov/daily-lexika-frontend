@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
@@ -19,14 +20,15 @@ export default function ComingSoon(props: Props) {
   const { type } = props;
 
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   switch (type) {
     case ComingSoonType.TEXT:
-      return <TextStyled fontWeight={FontWeight.SEMIBOLD} isCentered opacity='50%'>Coming soon</TextStyled>;
+      return <TextStyled fontWeight={FontWeight.SEMIBOLD} isCentered opacity='50%'>{t('ComingSoon.text')}</TextStyled>;
     case ComingSoonType.BADGE:
       return (
-        <BadgeContainer $colorMode={colorMode}>
-          <Text fontSize={Size.XS} isCentered opacity='50%'>Soon</Text>
+        <BadgeContainer $colorMode={colorMode} style={{ whiteSpace: 'nowrap' }}>
+          <Text fontSize={Size.XS} isCentered opacity='50%'>{t('ComingSoon.badge')}</Text>
         </BadgeContainer>
       );
     default:

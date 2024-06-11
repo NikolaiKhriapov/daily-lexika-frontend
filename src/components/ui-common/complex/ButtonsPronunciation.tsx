@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
+import { Locale } from '@utils/constants';
 import { WordDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
-
-enum EngDialects {
-  US = 'en-US',
-  GB = 'en-GB',
-}
 
 type Props = {
   word: WordDto;
@@ -17,8 +13,9 @@ export default function ButtonsPronunciation(props: Props) {
   const { word } = props;
 
   const { data: user } = useGetUserInfoQuery();
+  const [engDialect, setEngDialect] = useState(Locale.EN_US);
+
   const userRole = user!.role!;
-  const [engDialect, setEngDialect] = useState(EngDialects.US);
 
   const onClickAudio = (event: React.MouseEvent<HTMLButtonElement>, lang: string) => {
     event.stopPropagation();
@@ -46,11 +43,11 @@ export default function ButtonsPronunciation(props: Props) {
     switch (userRole) {
       case RoleName.USER_ENGLISH: {
         onClickAudio(event, engDialect);
-        setEngDialect((prevState) => (prevState === EngDialects.US ? EngDialects.GB : EngDialects.US));
+        setEngDialect((prevState) => (prevState === Locale.EN_US ? Locale.EN_GB : Locale.EN_US));
         return;
       }
       case RoleName.USER_CHINESE: {
-        onClickAudio(event, 'zh-CN');
+        onClickAudio(event, Locale.CN);
         return;
       }
       default:

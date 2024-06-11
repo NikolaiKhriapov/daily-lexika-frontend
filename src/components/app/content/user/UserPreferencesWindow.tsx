@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
@@ -7,7 +8,6 @@ import { Size } from '@utils/constants';
 import { Language, UserDto } from '@utils/types';
 import Modal from '@components/ui-common/complex/Modal';
 import SelectWithButton from '@components/ui-common/complex/SelectWithButton';
-import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
   isOpen: boolean;
@@ -18,21 +18,37 @@ export default function UserPreferencesWindow(props: Props) {
   const { isOpen, onClose } = props;
 
   const { colorMode, setColorMode } = useColorMode();
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
+  const [updateUserInfo] = useUpdateUserInfoMutation();
   const [selectedColorMode, setSelectedColorMode] = useState(colorMode);
   const [selectedTranslationLanguage, setSelectedTranslationLanguage] = useState(user!.translationLanguage!);
+  const [selectedInterfaceLanguage, setSelectedInterfaceLanguage] = useState(user!.interfaceLanguage!);
 
-  const [updateUserInfo] = useUpdateUserInfoMutation();
-
+  const availableColorSchemes: Record<ColorMode, string> = {
+    light: t('UserPreferencesWindow.colorScheme.light'),
+    dark: t('UserPreferencesWindow.colorScheme.dark'),
+  };
+  const availableInterfaceLanguages = {
+    [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
+    [Language.RUSSIAN]: t('UserPreferencesWindow.language.russian'),
+    [Language.CHINESE]: t('UserPreferencesWindow.language.chinese'),
+  };
   const availableTranslationLanguages = {
-    [RoleName.USER_ENGLISH]: [Language.ENGLISH, Language.RUSSIAN],
-    [RoleName.USER_CHINESE]: [Language.ENGLISH, Language.CHINESE],
+    [RoleName.USER_ENGLISH]: {
+      [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
+      [Language.RUSSIAN]: t('UserPreferencesWindow.language.russian'),
+    },
+    [RoleName.USER_CHINESE]: {
+      [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
+      [Language.CHINESE]: t('UserPreferencesWindow.language.chinese'),
+    },
   };
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
     updateUserInfo(userUpdatedInfoDTO)
       .unwrap()
-      .then(() => successNotification('User information updated successfully', ''))
+      .then(() => successNotification(t('UserPreferencesWindow.updateInfoSuccessMessage')))
       .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting && setSubmitting(false));
   };
@@ -43,39 +59,55 @@ export default function UserPreferencesWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header='Preferences'
+      header={t('UserPreferencesWindow.header')}
       body={(
         <>
           <SelectWithButton
             id="colorScheme"
             name="colorScheme"
-            label="Color scheme"
+            label={t('UserPreferencesWindow.colorScheme.label')}
             value={selectedColorMode}
-            buttonText='Change'
+            buttonText={t('buttonText.change')}
             onChange={(e) => setSelectedColorMode(e.target.value as ColorMode)}
             isDisabled={selectedColorMode === colorMode}
             isRequired
             validateOnMount
             initialValues={selectedColorMode}
             onSubmit={() => setColorMode(selectedColorMode)}
-            selectElements={['light', 'dark'].map((colorScheme, index) => (
-              <option key={index} value={colorScheme}>{WordDataHelper.toSentenceCase(colorScheme)}</option>
+            selectElements={Object.entries(availableColorSchemes).map(([colorScheme, text], index) => (
+              <option key={index} value={colorScheme}>{text}</option>
+            ))}
+          />
+          <SelectWithButton
+            id="interfaceLanguage"
+            name="interfaceLanguage"
+            label={t('UserPreferencesWindow.interfaceLanguage')}
+            value={selectedInterfaceLanguage}
+            buttonText={t('buttonText.change')}
+            onChange={(e) => setSelectedInterfaceLanguage(e.target.value as Language)}
+            isDisabled={selectedInterfaceLanguage === user!.interfaceLanguage}
+            isRequired
+            validateOnMount
+            initialValues={selectedInterfaceLanguage}
+            onSubmit={() => handleChangeInfo({ ...user, interfaceLanguage: selectedInterfaceLanguage })}
+            selectElements={Object.entries(availableInterfaceLanguages).map(([language, text], index) => (
+              <option key={index} value={language}>{text}</option>
             ))}
           />
           <SelectWithButton
             id="translationLanguage"
             name="translationLanguage"
-            label="Translation language"
+            label={t('UserPreferencesWindow.translationLanguage')}
             value={selectedTranslationLanguage}
-            buttonText='Change'
+            buttonText={t('buttonText.change')}
             onChange={(e) => setSelectedTranslationLanguage(e.target.value as Language)}
             isDisabled={selectedTranslationLanguage === user!.translationLanguage}
             isRequired
             validateOnMount
             initialValues={selectedTranslationLanguage}
             onSubmit={() => handleChangeInfo({ ...user, translationLanguage: selectedTranslationLanguage })}
-            selectElements={availableTranslationLanguages[user!.role! as RoleNameBase].map((language, index) => (
-              <option key={index} value={language}>{WordDataHelper.toSentenceCase(language)}</option>
+            selectElements={Object.entries(availableTranslationLanguages[user!.role! as RoleNameBase]).map(([language, text], index) => (
+              <option key={index} value={language}>{text}</option>
             ))}
           />
         </>

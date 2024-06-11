@@ -127,8 +127,8 @@ export enum Status {
 export enum Category {
   HSK = 'HSK',
   CEFR = 'CEFR',
-  OTHER = 'Other',
-  CUSTOM = 'Custom',
+  OTHER = 'OTHER',
+  CUSTOM = 'CUSTOM',
 }
 
 export const placeholderWordPack: WordPackDto = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { errorNotification } from '@services/app/popup-notification';
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
@@ -9,15 +10,18 @@ import Text from '@components/ui-common/basic/Text';
 import Modal from '@components/ui-common/complex/Modal';
 import WordDataHelper from '@helpers/WordDataHelper';
 
-export default function LanguageSelectionWindow() {
+export default function TranslationLanguageSelectionWindow() {
+  const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
-  const onClickTranslationLanguage = (language: Language) => {
+  const onClick = (language: Language) => {
     updateUserInfo({ ...user, translationLanguage: language.toUpperCase() as Language })
       .unwrap()
       .catch((error) => errorNotification('', error));
   };
+
+  if (!user) return <></>;
 
   return (
     <Modal
@@ -26,21 +30,21 @@ export default function LanguageSelectionWindow() {
       isOpen
       onClose={() => null}
       showCloseButton={false}
-      header='Please select your primary language.'
+      header={t('TranslationLanguageSelectionWindow.header')}
       isHeaderCentered
       body={(
         <>
           <TextContainer>
-            <Text isCentered>This language will be used for word translations.</Text>
-            <Text isCentered>You can change it later in the settings.</Text>
+            <Text isCentered>{t('TranslationLanguageSelectionWindow.messageLineOne')}</Text>
+            <Text isCentered>{t('TranslationLanguageSelectionWindow.messageLineTwo')}</Text>
           </TextContainer>
           <ButtonsContainer>
-            {WordDataHelper.getAvailableTranslationLanguages(user!).map((language, index) => (
+            {WordDataHelper.getAvailableTranslationLanguages(user).map((language, index) => (
               <Button
                 key={index}
                 buttonType={ButtonType.SUBMIT}
                 buttonText={WordDataHelper.toSentenceCase(language)}
-                onClick={() => onClickTranslationLanguage(language)}
+                onClick={() => onClick(language)}
               />
             ))}
           </ButtonsContainer>
