@@ -5,11 +5,16 @@ import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
-import { useAddWordToCustomWordPackMutation, useRemoveWordFromCustomWordPackMutation } from '@store/api/wordPacksAPI';
+import {
+  useAddAllWordsFromWordPackToCustomWordPackMutation,
+  useAddWordToCustomWordPackMutation,
+  useGetAllWordPacksQuery,
+  useRemoveWordFromCustomWordPackMutation,
+} from '@store/api/wordPacksAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { WordDataDto, WordPackDto } from '@utils/types';
+import { Category, WordDataDto, WordPackDto } from '@utils/types';
 import ButtonWithIcon, { ButtonWithIconType } from '@components/ui-common/basic/ButtonWithIcon';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
@@ -30,12 +35,15 @@ export default function SearchWindow(props: Props) {
   const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
+  const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();
   const [removeWordFromCustomWordPack] = useRemoveWordFromCustomWordPackMutation();
+  const [addAllWordsFromWordPackToCustomWordPack, { isLoading: isLoadingAddAllWords }] = useAddAllWordsFromWordPackToCustomWordPackMutation();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
   const [isDisabled, setDisabled] = useState<number | null>(null);
   const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
+  const [valueLoading, setValueLoading] = useState<string>('');
 
   const modalWidth = useBreakpointValue({ base: '450px', md: 'auto' });
 
@@ -84,6 +92,13 @@ export default function SearchWindow(props: Props) {
     }
   };
 
+  const onClickAddAllWordsFromWordPackToCustomWordPack = (wordPackName: string) => {
+    setValueLoading(wordPackName);
+    addAllWordsFromWordPackToCustomWordPack({ wordPackNameTo: wordPack.name, wordPackNameFrom: wordPackName })
+      .unwrap()
+      .then(() => setValueLoading(''));
+  };
+
   if (!user) return <Spinner />;
 
   return (
@@ -103,9 +118,27 @@ export default function SearchWindow(props: Props) {
             {
               searchQuery === '' || isLoadingAllWordData
                 ? (
-                  <Text fontWeight={FontWeight.MEDIUM} isCentered opacity="50%" style={{ width: '90%' }}>
-                    {WordDataHelper.getSearchInfoText(user, t)}
-                  </Text>
+                  <>
+                    <Text fontWeight={FontWeight.MEDIUM} isCentered opacity="50%" style={{ width: '90%' }}>
+                      {WordDataHelper.getSearchInfoText(user, t)}
+                    </Text>
+                    <WordPackNameBadges>
+                      {
+                        allWordPacks
+                          .filter((oneWordPack) => [Category.CEFR, Category.HSK].includes(oneWordPack.category))
+                          .map((oneWordPack) => (
+                            <WordPackNameBadge
+                              key={oneWordPack.name}
+                              $colorMode={colorMode}
+                              onClick={() => onClickAddAllWordsFromWordPackToCustomWordPack(oneWordPack.name)}
+                            >
+                              {t('SearchWindow.addAllWordsFromWordPackButton')} {WordDataHelper.getOriginalWordPackName(oneWordPack.name, user)}
+                              {isLoadingAddAllWords && valueLoading === oneWordPack.name && <Spinner size={Size.SM} />}
+                            </WordPackNameBadge>
+                          ))
+                      }
+                    </WordPackNameBadges>
+                  </>
                 )
                 : (
                   searchResult && searchResult.map((wordDataDto) => (
@@ -168,6 +201,29 @@ const WordInfoContainer = styled.div`
 
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     height: 60vh;
+  }
+`;
+
+const WordPackNameBadges = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+`;
+
+const WordPackNameBadge = styled.div<{ $colorMode: ColorMode }>`
+  display: flex;
+  gap: 7px;
+  padding: 6px 10px;
+  border: ${({ $colorMode }) => borderStyles($colorMode)};
+  border-radius: ${theme.stylesToDelete.borderRadius};
+  cursor: pointer;
+    
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].hoverBgColor};
+  &:hover {
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonHoverBgColor};
   }
 `;
 

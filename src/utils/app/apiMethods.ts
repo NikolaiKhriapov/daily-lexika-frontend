@@ -44,6 +44,7 @@ export const ApiEndpointsWordPacks = {
   createCustomWordPack: () => `${URL_WORD_PACKS}`,
   deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   addWordToCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/add-word/${wordId}`,
+  addAllWordsFromWordPackToCustomWordPack: (wordPackNameTo: string, wordPackNameFrom: string) => `${URL_WORD_PACKS}/${wordPackNameTo}/add-words-from-wordpack/${wordPackNameFrom}`,
   removeWordFromCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/remove-word/${wordId}`,
 };
 
