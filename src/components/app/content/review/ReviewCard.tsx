@@ -18,6 +18,7 @@ import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
 import ButtonUnavailable from '@components/ui-common/complex/ButtonUnavailable';
 import Card from '@components/ui-common/complex/Card';
+import Countdown from '@components/ui-common/complex/Countdown';
 import I18nHelper from '@helpers/I18nHelper';
 import WordDataHelper from '@helpers/WordDataHelper';
 import WordPackHelper from '@helpers/WordPackHelper';
@@ -134,6 +135,7 @@ export default function ReviewCard(props: Props) {
       )}
       back={(
         <ContentsContainer>
+          <Countdown />
           <DescriptionContainer>
             <Text size={Size.SM} isCentered>{WordPackHelper.getDescriptionForLanguage(review.wordPackDto, user)}</Text>
           </DescriptionContainer>
