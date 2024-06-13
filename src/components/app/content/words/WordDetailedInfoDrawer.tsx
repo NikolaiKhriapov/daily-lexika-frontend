@@ -12,7 +12,7 @@ import WordStreakStats from '@components/app/content/statistics/WordStreakStats'
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import ComingSoon, { ComingSoonType } from '@components/ui-common/complex/ComingSoon';
-import Modal from '@components/ui-common/complex/Modal';
+import Drawer from '@components/ui-common/complex/Drawer';
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
   selectedWordDataId?: number;
 };
 
-export default function WordDetailedInfo(props: Props) {
+export default function WordDetailedInfoDrawer(props: Props) {
   const { isOpen, onClose, wordData, word, selectedWordDataId } = props;
 
   const { t } = useTranslation();
@@ -31,22 +31,20 @@ export default function WordDetailedInfo(props: Props) {
   const { data: wordFromQuery } = useGetWordByWordDataIdQuery(wordData.id, { skip: word !== undefined || wordData.id !== selectedWordDataId });
 
   const wordDto = word || wordFromQuery;
-  const modalWidth = useBreakpointValue({ base: '80vw', md: '575px' });
-  const modalHeight = useBreakpointValue({ base: '550px', md: '600px' });
+  const drawerWidth = useBreakpointValue({ base: '80vw', md: '600px' });
 
   if (!user) return <Spinner />;
 
   return (
-    <Modal
-      width={modalWidth}
-      height={modalHeight}
+    <Drawer
       isOpen={isOpen}
       onClose={onClose}
+      width={drawerWidth}
       header={WordDataHelper.getWordDataNameByUserRole(wordData, user)}
       body={(
         <Container>
-          <Tabs isFitted variant='enclosed' colorScheme='gray'>
-            <TabList mb='10px'>
+          <Tabs isFitted variant="enclosed" colorScheme="gray">
+            <TabList mb="10px">
               <Tab>{t('WordDetailedInfo.tabGeneral')}</Tab>
               <Tab>{t('WordDetailedInfo.tabExamples')}</Tab>
             </TabList>
@@ -88,8 +86,12 @@ export default function WordDetailedInfo(props: Props) {
                       <>
                         <Text key={idx} size={Size.XL} isCentered>{((idx + 1) % 5 === 1 && example)}</Text>{/* Chinese */}
                         <Text key={idx} size={Size.SM} isCentered>{((idx + 5) % 5 === 1 && example)}</Text>{/* Pinyin */}
-                        {user.translationLanguage === Language.ENGLISH && <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>}
-                        {user.translationLanguage === Language.RUSSIAN && <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>}
+                        {user.translationLanguage === Language.ENGLISH && (
+                          <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>
+                        )}
+                        {user.translationLanguage === Language.RUSSIAN && (
+                          <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>
+                        )}
                         {(idx + 2) % 5 === 1 && <Divider marginY={3} />}
                       </>
                     )

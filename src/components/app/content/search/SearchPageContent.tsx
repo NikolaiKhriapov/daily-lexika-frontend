@@ -8,7 +8,7 @@ import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDataDto } from '@utils/types';
-import WordDetailedInfo from '@components/app/content/words/WordDetailedInfo';
+import WordDetailedInfoDrawer from '@components/app/content/words/WordDetailedInfoDrawer';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import SearchInput from '@components/ui-common/complex/SearchInput';
@@ -74,7 +74,7 @@ export default function SearchPageContent() {
                     <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordDataTranslationWithoutDuplicate(wordDataDto, user!)}</Text>
                   </CharacterAndTranscriptionAndTranslation>
                   {isOpenDetails && (
-                    <WordDetailedInfo
+                    <WordDetailedInfoDrawer
                       isOpen={isOpenDetails && wordDataDto.id === selectedWordDataId}
                       onClose={onCloseDetails}
                       wordData={wordDataDto}

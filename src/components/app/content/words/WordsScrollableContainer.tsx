@@ -6,7 +6,7 @@ import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { WordDto } from '@utils/types';
-import WordDetailedInfo from '@components/app/content/words/WordDetailedInfo';
+import WordDetailedInfoDrawer from '@components/app/content/words/WordDetailedInfoDrawer';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
 import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount';
@@ -70,7 +70,7 @@ export default function WordsScrollableContainer(props: Props) {
             </CharacterAndTranscriptionAndTranslation>
             <BadgeOrStreakCount word={word} />
             {isOpenDetails && (
-              <WordDetailedInfo
+              <WordDetailedInfoDrawer
                 isOpen={isOpenDetails && word.id === selectedWord}
                 onClose={onCloseDetails}
                 wordData={word.wordDataDto}

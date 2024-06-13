@@ -45,7 +45,7 @@ const ModalContentStyled = styled(ModalContent)<{
   padding: 6px;
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
   border: ${({ $colorMode }) => borderStyles($colorMode)};
-  border-radius: ${theme.stylesToDelete.borderRadius};
+  border-radius: ${theme.stylesToDelete.borderRadius} !important;
   max-width: 90% !important;
   min-height: fit-content;
   max-height: 90vh;
