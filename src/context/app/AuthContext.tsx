@@ -41,9 +41,9 @@ function AuthProvider(props: Props) {
   };
 
   const logout = () => {
-    localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
     dispatch(API.util.resetApiState());
     router.push(Page.AUTH);
+    localStorage.removeItem(LocalStorage.ACCESS_TOKEN);
   };
 
   useEffect(() => {
