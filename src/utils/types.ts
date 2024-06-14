@@ -92,7 +92,8 @@ export interface WordPackDto {
   description: string;
   category: Category;
   platform?: Platform;
-  totalWords?: number;
+  wordsTotal?: number;
+  wordsNew?: number;
   reviewId?: number;
 }
 

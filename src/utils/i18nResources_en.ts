@@ -120,7 +120,10 @@ export const resourcesEn = {
   CreateOrUpdateReviewWindow: {
     reviewUpdated: 'Review updated',
     reviewSaved: 'Review saved',
-    maxNewWordsPerDay: 'Max New Words Per Day',
+    maxNewWordsPerDay: {
+      label: 'Max New Words Per Day',
+      hint: 'Review all words in {0} days (by {1})',
+    },
     maxReviewWordsPerDay: 'Max Review Words Per Day',
     hint: 'These settings can be edited at any time. Stick with the defaults if you\'re not sure.',
   },

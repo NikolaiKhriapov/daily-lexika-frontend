@@ -9,16 +9,19 @@ import Text from '@components/ui-common/basic/Text';
 interface Props extends InputProps {
   label: string;
   name: string;
+  getHint?: any;
   isError?: boolean;
 }
 
 export default function TextInput(props: Props) {
-  const { label, name, isRequired, type, placeholder, isError = false } = props;
+  const { label, name, getHint, isRequired, type, placeholder, isError = false } = props;
 
   const { errors, touched } = useFormikContext<any>();
   const [isShown, setShown] = React.useState(false);
 
   const onClickShow = () => setShown(!isShown);
+
+  const hint = (value: string) => (getHint(value));
 
   return (
     <FormControl isRequired={isRequired}>
@@ -47,6 +50,7 @@ export default function TextInput(props: Props) {
                 </InputRightElement>
               )}
             </InputGroup>
+            {getHint && !errors[name] && <Text opacity='50%'>{hint(field.value)}</Text>}
             {errors[name] && touched[name] && <Text color={theme.colors.red['400']}>{errors[name]?.toString()}</Text>}
           </>
         )}

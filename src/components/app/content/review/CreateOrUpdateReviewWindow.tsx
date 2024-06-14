@@ -13,7 +13,9 @@ import Text from '@components/ui-common/basic/Text';
 import InputFieldsWithButton from '@components/ui-common/complex/InputFieldsWithButton';
 import Modal from '@components/ui-common/complex/Modal';
 import TextInput from '@components/ui-common/complex/TextInput';
+import DateHelper from '@helpers/DateHelper';
 import I18nHelper from '@helpers/I18nHelper';
+import LocaleHelper from '@helpers/LocaleHelper';
 import ValidationHelper from '@helpers/ValidationHelper';
 import WordDataHelper from '@helpers/WordDataHelper';
 import WordPackHelper from '@helpers/WordPackHelper';
@@ -65,6 +67,16 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
     }
   };
 
+  const calculateDaysToFinish = (value: number) => wordPack.wordsNew && (wordPack.wordsNew / value + 1).toFixed(0);
+  const getHint = (value: string) => {
+    const days = calculateDaysToFinish(Number(value));
+    return days
+      ? t('CreateOrUpdateReviewWindow.maxNewWordsPerDay.hint')
+        .replace('{0}', days)
+        .replace('{1}', DateHelper.getDateAfterDaysMidnightUtcAsDateString(Number(days), LocaleHelper.getLocaleFromUser(user)))
+      : '';
+  };
+
   return (
     <Modal
       size={Size.MD}
@@ -76,7 +88,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
         <>
           <TotalWords>
             <TbCards />
-            <Text>{wordPack.totalWords}</Text>
+            <Text>{wordPack.wordsTotal}</Text>
           </TotalWords>
           <Description>
             <Text>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
@@ -88,10 +100,11 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
             inputElements={(
               <>
                 <TextInput
-                  label={t('CreateOrUpdateReviewWindow.maxNewWordsPerDay')}
+                  label={t('CreateOrUpdateReviewWindow.maxNewWordsPerDay.label')}
                   name="maxNewWordsPerDay"
                   type="number"
                   placeholder="1"
+                  getHint={getHint}
                 />
                 <TextInput
                   label={t('CreateOrUpdateReviewWindow.maxReviewWordsPerDay')}

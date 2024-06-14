@@ -120,7 +120,10 @@ export const resourcesRu = {
   CreateOrUpdateReviewWindow: {
     reviewUpdated: 'Подборка успешно обновлена',
     reviewSaved: 'Подборка успешно сохранена',
-    maxNewWordsPerDay: 'Количество новых слов в день',
+    maxNewWordsPerDay: {
+      label: 'Количество новых слов в день',
+      hint: 'Количество дней для изучения всей коллекции слов: {0} ({1})',
+    },
     maxReviewWordsPerDay: 'Количество слов на повторение в день',
     hint: 'Эти настройки можно изменить в любое время. Если не уверены, используйте значения по умолчанию.',
   },

@@ -11,7 +11,7 @@ export const wordPacksAPI = API.injectEndpoints({
         url: ApiEndpointsWordPacks.getAllWordPacks(),
         method: QueryMethod.GET,
       }),
-      transformResponse: (response: WordPackDto[]) => response.filter((wordPack) => ((wordPack.category.toLowerCase() !== Category.CUSTOM.toLowerCase()) ? (wordPack.totalWords! > 0) : wordPack)),
+      transformResponse: (response: WordPackDto[]) => response.filter((wordPack) => ((wordPack.category.toLowerCase() !== Category.CUSTOM.toLowerCase()) ? (wordPack.wordsTotal! > 0) : wordPack)),
       providesTags: (result) => providesList(result, 'WordPacks'),
     }),
     createCustomWordPack: builder.mutation<void, WordPackDto>({
@@ -71,10 +71,10 @@ export const wordPacksAPI = API.injectEndpoints({
         const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
           const wordPack = draft?.find((item) => item.name === args.wordPackName);
           if (wordPack) {
-            if (wordPack && wordPack.totalWords) {
-              wordPack.totalWords += 1;
+            if (wordPack && wordPack.wordsTotal) {
+              wordPack.wordsTotal += 1;
             } else {
-              wordPack.totalWords = 1;
+              wordPack.wordsTotal = 1;
             }
           }
         }));
@@ -107,8 +107,8 @@ export const wordPacksAPI = API.injectEndpoints({
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         const patchResult = dispatch(wordPacksAPI.util?.updateQueryData('getAllWordPacks', undefined, (draft) => {
           const wordPack = draft?.find((item) => item?.name === args.wordPackName);
-          if (wordPack && wordPack.totalWords) {
-            wordPack.totalWords -= 1;
+          if (wordPack && wordPack.wordsTotal) {
+            wordPack.wordsTotal -= 1;
           }
         }));
         try {

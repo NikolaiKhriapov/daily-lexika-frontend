@@ -1,15 +1,30 @@
-export default class DateHelper {
-  public static convertOffsetDateTimeToDateString(offsetDateTimeString: string, locale: string) {
-    const timestampInMilliseconds = parseFloat(offsetDateTimeString) * 1000;
-    const date = new Date(timestampInMilliseconds);
+import { Locale } from '@utils/constants';
 
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString(locale, options);
+export default class DateHelper {
+  private static OPTIONS_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+
+  public static convertDateToLocaleDateString(date: Date, locale: string) {
+    return date.toLocaleDateString(locale, this.OPTIONS_DATE_TIME_FORMAT);
   }
 
-  public static getNextMidnightUtc() {
+  public static convertOffsetDateTimeToDateString(offsetDateTimeString: string, locale: Locale) {
+    const timestampInMilliseconds = parseFloat(offsetDateTimeString) * 1000;
+    const date = new Date(timestampInMilliseconds);
+    return this.convertDateToLocaleDateString(date, locale);
+  }
+
+  public static getDateAfterDaysMidnightUtc(days: number) {
     const now = new Date();
-    return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+    return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + days));
+  }
+
+  public static getDateAfterDaysMidnightUtcAsDateString(days: number, locale: Locale) {
+    const date = this.getDateAfterDaysMidnightUtc(days);
+    return this.convertDateToLocaleDateString(date, locale);
+  }
+
+  public static getTimeUntilMidnightUtcPlusDays(days: number) {
+    return this.getDateAfterDaysMidnightUtc(days + 1).getTime() - new Date().getTime();
   }
 
   public static formatTimeDifference(diff: number) {

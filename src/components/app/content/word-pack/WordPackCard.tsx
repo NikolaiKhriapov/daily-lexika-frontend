@@ -91,7 +91,7 @@ export default function WordPackCard(props: Props) {
             )}
           </WordPackNameContainer>
           <WordsCountContainer>
-            <TbCards size={20} />&nbsp;<Text size={Size.MD}>{wordPack.totalWords}</Text>
+            <TbCards size={20} />&nbsp;<Text size={Size.MD}>{wordPack.wordsTotal}</Text>
           </WordsCountContainer>
           <ButtonsContainer>
             {wordPack.reviewId !== null

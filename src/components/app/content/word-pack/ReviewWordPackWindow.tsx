@@ -50,7 +50,7 @@ export default function ReviewWordPackWindow(props: Props) {
         <Container>
           <TotalWords>
             <CopyIcon />
-            <Text>{wordPack.totalWords}</Text>
+            <Text>{wordPack.wordsTotal}</Text>
           </TotalWords>
           <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
           <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>

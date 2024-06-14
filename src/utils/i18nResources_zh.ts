@@ -120,7 +120,10 @@ export const resourcesZh = {
   CreateOrUpdateReviewWindow: {
     reviewUpdated: '每日复习已更改',
     reviewSaved: '每日复习已保存',
-    maxNewWordsPerDay: '每天最多新词数',
+    maxNewWordsPerDay: {
+      label: '每日最多新词数',
+      hint: '在 {0} 天内复习所有词汇（到 {1}）',
+    },
     maxReviewWordsPerDay: '每天最多复习词数',
     hint: '这些设置随时可编辑。如果不确定，请使用默认设置。',
   },
