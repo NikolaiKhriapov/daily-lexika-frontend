@@ -22,6 +22,10 @@ export interface PasswordUpdateRequest {
   passwordNew: string;
 }
 
+export interface AccountDeletionRequest {
+  passwordCurrent: string;
+}
+
 export interface UserDto {
   id?: number;
   name?: string;

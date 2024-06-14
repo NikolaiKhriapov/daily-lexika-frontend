@@ -10,7 +10,7 @@ import {
 } from '@store/api/userAPI';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
-import { PasswordUpdateRequest, UserDto } from '@utils/types';
+import { AccountDeletionRequest, PasswordUpdateRequest, UserDto } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
 import AlertDialog from '@components/ui-common/complex/AlertDialog';
 import ButtonsContainer from '@components/ui-common/complex/ButtonsContainer';
@@ -34,10 +34,12 @@ export default function UserProfileWindow(props: Props) {
   const { data: user } = useGetUserInfoQuery();
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
+  const { isOpen: isOpenDeleteAccountAlertDialog, onOpen: onOpenDeleteAccountAlertDialog, onClose: onCloseDeleteAccountAlertDialog } = useDisclosure();
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [updatePassword] = useUpdatePasswordMutation();
   const [deleteAccount] = useDeleteAccountMutation();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [accountDeletionRequest, setAccountDeletionRequest] = useState<AccountDeletionRequest>({ passwordCurrent: '' });
 
   const handleUpdateInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
     updateUserInfo(userUpdatedInfoDTO)
@@ -47,17 +49,17 @@ export default function UserProfileWindow(props: Props) {
       .finally(() => setSubmitting && setSubmitting(false));
   };
 
-  const handleUpdatePassword = (passwordUpdateRequest: PasswordUpdateRequest, setSubmitting: any) => {
-    updatePassword(passwordUpdateRequest)
+  const handleUpdatePassword = (request: PasswordUpdateRequest, setSubmitting: any) => {
+    updatePassword(request)
       .unwrap()
       .then(() => successNotification(t('UserProfileWindow.successMessage.updatePassword')))
       .catch((error) => errorNotification('', error))
       .finally(() => setSubmitting(false));
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = (request: AccountDeletionRequest) => {
     setButtonDisabled(true);
-    deleteAccount()
+    deleteAccount(request)
       .unwrap()
       .then(() => {
         successNotification(t('UserProfileWindow.successMessage.deleteAccount'));
@@ -132,18 +134,37 @@ export default function UserProfileWindow(props: Props) {
     inputElement: (
       <>
         <TextInput
-          name="passwordNew"
+          name="passwordNewFirst"
           type="password"
           label={t('UserProfileWindow.password.new.label')}
           placeholder={t('UserProfileWindow.password.new.placeholder')}
         />
         <TextInput
-          name="passwordNewRepeat"
+          name="passwordNewSecond"
           type="password"
           label={t('UserProfileWindow.password.repeat.label')}
           placeholder={t('UserProfileWindow.password.repeat.placeholder')}
         />
       </>
+    ),
+  };
+
+  const accountDeletionData = {
+    initialValues: { passwordCurrent: '' },
+    validationSchema: Yup.object({ passwordCurrent: ValidationHelper.passwordValidator(t) }),
+    onSubmit: (values: { passwordCurrent: string }, { setSubmitting }: any) => {
+      setSubmitting(true);
+      const request: AccountDeletionRequest = { passwordCurrent: values.passwordCurrent };
+      setAccountDeletionRequest(request);
+      onOpenDeleteAccountAlertDialog();
+    },
+    inputElement: (
+      <TextInput
+        name="passwordCurrent"
+        type="password"
+        label={t('UserProfileWindow.password.new.label')}
+        placeholder={t('UserProfileWindow.password.new.label')}
+      />
     ),
   };
 
@@ -210,16 +231,33 @@ export default function UserProfileWindow(props: Props) {
             />
           )}
           {isOpenDeleteAccountButton && (
-            <AlertDialog
-              isOpen={isOpenDeleteAccountButton}
-              onClose={onCloseDeleteAccountButton}
-              handleDelete={handleDeleteAccount}
-              header={t('UserProfileWindow.AlertDialog.header')}
-              body={t('UserProfileWindow.AlertDialog.body')}
-              cancelButtonText={t('buttonText.cancel')}
-              deleteButtonText={t('buttonText.delete')}
-              isButtonDisabled={isButtonDisabled}
-            />
+            <>
+              <Modal
+                onClose={onCloseDeleteAccountButton}
+                isOpen={isOpenDeleteAccountButton}
+                header={t('UserProfileWindow.AlertDialog.header')}
+                body={(
+                  <InputFieldsWithButton
+                    buttonText={t('buttonText.delete')}
+                    validateOnMount
+                    initialValues={accountDeletionData.initialValues}
+                    validationSchema={accountDeletionData.validationSchema}
+                    onSubmit={accountDeletionData.onSubmit}
+                    inputElements={accountDeletionData.inputElement}
+                  />
+                )}
+              />
+              <AlertDialog
+                isOpen={isOpenDeleteAccountAlertDialog}
+                onClose={onCloseDeleteAccountAlertDialog}
+                handleDelete={() => handleDeleteAccount(accountDeletionRequest)}
+                header={t('UserProfileWindow.AlertDialog.header')}
+                body={t('UserProfileWindow.AlertDialog.body')}
+                cancelButtonText={t('buttonText.cancel')}
+                deleteButtonText={t('buttonText.delete')}
+                isButtonDisabled={isButtonDisabled}
+              />
+            </>
           )}
         </>
       )}

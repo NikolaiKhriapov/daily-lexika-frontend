@@ -1,7 +1,7 @@
 import { API } from '@store/api/API';
 import { ApiEndpointsUsers } from '@utils/app/apiMethods';
 import { QueryMethod } from '@utils/constants';
-import { PasswordUpdateRequest, UserDto } from '@utils/types';
+import { AccountDeletionRequest, PasswordUpdateRequest, UserDto } from '@utils/types';
 
 export const userAPI = API.injectEndpoints({
   endpoints: (builder) => ({
@@ -37,16 +37,17 @@ export const userAPI = API.injectEndpoints({
       },
     }),
     updatePassword: builder.mutation<void, PasswordUpdateRequest>({
-      query: (passwordUpdateRequest: PasswordUpdateRequest) => ({
+      query: (request: PasswordUpdateRequest) => ({
         url: ApiEndpointsUsers.updatePassword(),
         method: QueryMethod.PATCH,
-        body: passwordUpdateRequest,
+        body: request,
       }),
     }),
-    deleteAccount: builder.mutation<void, void>({
-      query: () => ({
+    deleteAccount: builder.mutation<void, AccountDeletionRequest>({
+      query: (request: AccountDeletionRequest) => ({
         url: ApiEndpointsUsers.deleteAccount(),
         method: QueryMethod.DELETE,
+        body: request,
       }),
       invalidatesTags: ['User'],
     }),
