@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Size } from '@utils/constants';
+import { addShakeKeyframes } from '@utils/functions';
 import { theme } from '@utils/theme';
 import { Status, WordDto } from '@utils/types';
 import WordCard from '@components/app/content/review/WordCard';
@@ -12,21 +13,32 @@ import WordCard from '@components/app/content/review/WordCard';
 type Props = {
   reviewWord?: WordDto | null;
   isFlipped: boolean;
-  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
-  setUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
+  setFlipped: Dispatch<SetStateAction<boolean>>;
+  setUnlocked: Dispatch<SetStateAction<boolean>>;
   isThrown: boolean;
+  isShaking: boolean;
+  setShaking: Dispatch<SetStateAction<boolean>>;
   pressButton: (answer: boolean | null) => void;
   isLoading: boolean;
 };
 
 export default function ReviewWordCard(props: Props) {
-  const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, pressButton, isLoading } = props;
+  const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, isShaking, setShaking, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
   const { data: user } = useGetUserInfoQuery();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);
+
+  useEffect(() => {
+    if (isShaking) {
+      addShakeKeyframes();
+      setTimeout(() => {
+        setShaking(false);
+      }, 500);
+    }
+  }, [isShaking]);
 
   const cardHeight = { base: '312px', sm: '390px', xl: '520px' };
   const cardWidth = { base: '240px', sm: '300px', xl: '400px' };
@@ -91,12 +103,10 @@ export default function ReviewWordCard(props: Props) {
       : isFlipped
         ? `rotateY(180deg) scaleX(-1)`
         : `rotateY(0deg)`
-    } ${isThrown
-      ? `rotateY(90deg)`
-      : ''
-    }`,
+    } ${isThrown ? `rotateY(90deg)` : ''}`,
     transition: `${isFollowingSwipe ? 'transform 0s' : 'transform 0.3s'}
      ${isThrown ? 'transform 0.6s' : ''}`,
+    animation: `${isShaking ? `shake 0.3s linear` : ''}`,
   };
 
   return (

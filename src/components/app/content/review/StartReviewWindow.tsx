@@ -32,6 +32,7 @@ export default function StartReviewWindow(props: Props) {
   const [isFlipped, setFlipped] = useState(false);
   const [isUnlocked, setUnlocked] = useState(false);
   const [isThrown, setThrown] = useState(false);
+  const [isShaking, setShaking] = useState(false);
 
   const fetchReviewAction = (answer: boolean | null) => {
     processReviewAction({ reviewId: review.id!, answer })
@@ -68,6 +69,8 @@ export default function StartReviewWindow(props: Props) {
       fetchReviewAction(answer);
       setFlipped(false);
       setThrown(true);
+    } else {
+      setShaking(true);
     }
   };
 
@@ -135,6 +138,8 @@ export default function StartReviewWindow(props: Props) {
               setFlipped={setFlipped}
               setUnlocked={setUnlocked}
               isThrown={isThrown}
+              isShaking={isShaking}
+              setShaking={setShaking}
               pressButton={pressButton}
               isLoading={!isModalVisible || !reviewWord || isLoading}
             />

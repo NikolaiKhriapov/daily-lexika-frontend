@@ -26,3 +26,20 @@ export const nonSelectableText = () => `
   -ms-user-select:none !important;
   user-select:none !important;
 `;
+
+export const addShakeKeyframes = () => {
+  if (!document.querySelector('#shake-keyframes')) {
+    const style = document.createElement('style');
+    style.id = 'shake-keyframes';
+    style.innerHTML = `
+      @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        50% { transform: translateX(10px); }
+        75% { transform: translateX(-10px); }
+        100% { transform: translateX(0); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+};
