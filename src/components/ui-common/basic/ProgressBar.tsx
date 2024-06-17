@@ -19,4 +19,8 @@ export default function ProgressBar({ ...rest }: ProgressProps) {
 
 const ProgressStyled = styled(Progress)<{ $colorMode: ColorMode }>`
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].progressBarBgColor};
+
+  & > div {
+    transition: width 0.4s ease;
+  }
 `;
