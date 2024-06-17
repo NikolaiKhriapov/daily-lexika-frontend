@@ -46,8 +46,8 @@ export const API = createApi({
     'WordPacks',
     'Statistics',
     'WordData',
-    'Words',
-    'AllWordsForWordPack',
+    'PageOfWordsByStatus',
+    'PageOfWordsForWordPack',
   ],
   endpoints: () => ({}),
 });

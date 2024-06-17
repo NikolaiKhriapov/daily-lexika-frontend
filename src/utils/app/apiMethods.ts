@@ -40,7 +40,7 @@ export const ApiEndpointsStatistics = {
 const URL_WORD_PACKS = `${BASE_URL}/flashcards/word-packs`;
 export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
-  getAllWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
+  getPageOfWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
   createCustomWordPack: () => `${URL_WORD_PACKS}`,
   deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
   addWordToCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/add-word/${wordId}`,
@@ -50,7 +50,7 @@ export const ApiEndpointsWordPacks = {
 
 const URL_WORDS = `${BASE_URL}/flashcards/words`;
 export const ApiEndpointsWords = {
-  getAllWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
+  getPageOfWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
   getWordOfTheDay: () => `${URL_WORDS}/word-of-the-day`,
   getWordByWordDataId: (wordDataId: number) => `${URL_WORDS}/by-word-data/${wordDataId}`,
 };

@@ -49,7 +49,7 @@ export default function ReviewCard(props: Props) {
     refreshReview(review.id!)
       .unwrap()
       .then(() => {
-        successNotification(t('ReviewCard.reviewRefreshed'), `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} refreshed successfully`);
+        successNotification(t('ReviewCard.reviewRefreshed'));
         setFlipped(false);
       })
       .catch((error) => errorNotification('', error));
@@ -59,7 +59,7 @@ export default function ReviewCard(props: Props) {
     onCloseRemoveButton();
     deleteReview(review.id!)
       .unwrap()
-      .then(() => successNotification(t('ReviewCard.reviewRemoved'), `${WordDataHelper.getOriginalWordPackName(review.wordPackDto.name, user)} removed successfully`))
+      .then(() => successNotification(t('ReviewCard.reviewRemoved')))
       .catch((error) => errorNotification('', error));
   };
 

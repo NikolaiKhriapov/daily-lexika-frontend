@@ -1,16 +1,16 @@
-import { API, providesList } from '@store/api/API';
+import { API } from '@store/api/API';
 import { ApiEndpointsWords } from '@utils/app/apiMethods';
 import { QueryMethod } from '@utils/constants';
-import { Status, WordDto } from '@utils/types';
+import { PageResponse, Status, WordDto } from '@utils/types';
 
 export const wordsAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getAllWordsByStatus: builder.query<WordDto[], { status: Status, page: number, size: number }>({
+    getPageOfWordsByStatus: builder.query<PageResponse<WordDto>, { status: Status, page: number, size: number }>({
       query: ({ status, page, size }) => ({
-        url: ApiEndpointsWords.getAllWordsByStatus(status, page, size),
+        url: ApiEndpointsWords.getPageOfWordsByStatus(status, page, size),
         method: QueryMethod.GET,
       }),
-      providesTags: (result) => providesList(result, 'Words'),
+      providesTags: ['PageOfWordsByStatus'],
     }),
     getWordOfTheDay: builder.query<WordDto, void>({
       query: () => ({
@@ -28,7 +28,7 @@ export const wordsAPI = API.injectEndpoints({
 });
 
 export const {
-  useGetAllWordsByStatusQuery,
+  useGetPageOfWordsByStatusQuery,
   useGetWordOfTheDayQuery,
   useGetWordByWordDataIdQuery,
 } = wordsAPI;

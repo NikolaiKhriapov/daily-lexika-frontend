@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
-import { WordDto } from '@utils/types';
+import { PageResponse, WordDto } from '@utils/types';
 import WordDetailedInfoDrawer from '@components/app/content/words/WordDetailedInfoDrawer';
 import Spinner from '@components/ui-common/basic/Spinner';
 import Text from '@components/ui-common/basic/Text';
@@ -13,14 +13,12 @@ import BadgeOrStreakCount from '@components/ui-common/complex/BadgeOrStreakCount
 import WordDataHelper from '@helpers/WordDataHelper';
 
 type Props = {
-  wordsPage: WordDto[];
-  isLoading: boolean;
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageResponse: PageResponse<WordDto>;
+  setPage: Dispatch<SetStateAction<number>>;
 };
 
 export default function WordsScrollableContainer(props: Props) {
-  const { wordsPage, isLoading, page, setPage } = props;
+  const { pageResponse, setPage } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { colorMode } = useColorMode();
@@ -29,24 +27,26 @@ export default function WordsScrollableContainer(props: Props) {
   const [selectedWord, setSelectedWord] = useState<number | null>();
   const [visibleWords, setVisibleWords] = useState<WordDto[]>([]);
 
+  const pageOfWords = pageResponse.content;
+
   useEffect(() => {
     updateVisibleWords();
-  }, [wordsPage, page]);
+  }, [pageOfWords, pageResponse.number]);
 
   const updateVisibleWords = () => {
-    if (wordsPage && wordsPage.length > 0) {
+    if (pageOfWords && pageOfWords.length > 0) {
       setVisibleWords((prevWords) => {
-        if (page === 0) {
-          return wordsPage;
+        if (pageResponse.first) {
+          return pageOfWords;
         }
-        return [...prevWords, ...wordsPage.filter((word) => !prevWords.some((prevWord) => prevWord.id === word.id))];
+        return [...prevWords, ...pageOfWords.filter((word) => !prevWords.some((prevWord) => prevWord.id === word.id))];
       });
     }
   };
 
   const handleScroll = () => {
     const container = containerRef.current;
-    if (container!.scrollTop + container!.clientHeight >= container!.scrollHeight - 10) {
+    if ((container!.scrollTop + container!.clientHeight >= container!.scrollHeight - 10) && !pageResponse.last) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -60,25 +60,23 @@ export default function WordsScrollableContainer(props: Props) {
 
   return (
     <WordInfoContainer ref={containerRef} onScroll={handleScroll}>
-      {isLoading && page === 0
-        ? <SpinnerContainer><Spinner /></SpinnerContainer>
-        : visibleWords.slice(0, visibleWords.length).map((word, index) => (
-          <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(word.id)}>
-            <CharacterAndTranscriptionAndTranslation>
-              <Text>{WordDataHelper.getWordNameByUserRole(word, user)}&nbsp;&nbsp;{word.wordDataDto.transcription}</Text>
-              <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordTranslationWithoutDuplicate(word, user)}</Text>
-            </CharacterAndTranscriptionAndTranslation>
-            <BadgeOrStreakCount word={word} />
-            {isOpenDetails && (
-              <WordDetailedInfoDrawer
-                isOpen={isOpenDetails && word.id === selectedWord}
-                onClose={onCloseDetails}
-                wordData={word.wordDataDto}
-                word={word}
-              />
-            )}
-          </WordInfo>
-        ))}
+      {visibleWords.slice(0, visibleWords.length).map((word, index) => (
+        <WordInfo $colorMode={colorMode} key={index} onClick={() => onClick(word.id)}>
+          <CharacterAndTranscriptionAndTranslation>
+            <Text>{WordDataHelper.getWordNameByUserRole(word, user)}&nbsp;&nbsp;{word.wordDataDto.transcription}</Text>
+            <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordDataHelper.getWordTranslationWithoutDuplicate(word, user)}</Text>
+          </CharacterAndTranscriptionAndTranslation>
+          <BadgeOrStreakCount word={word} />
+          {isOpenDetails && (
+            <WordDetailedInfoDrawer
+              isOpen={isOpenDetails && word.id === selectedWord}
+              onClose={onCloseDetails}
+              wordData={word.wordDataDto}
+              word={word}
+            />
+          )}
+        </WordInfo>
+      ))}
     </WordInfoContainer>
   );
 }
@@ -94,11 +92,6 @@ const WordInfoContainer = styled.div`
   ${mediaBreakpointUp(Breakpoint.TABLET)} {
     width: 500px;
   }
-`;
-
-const SpinnerContainer = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 const WordInfo = styled.div<{ $colorMode: ColorMode }>`

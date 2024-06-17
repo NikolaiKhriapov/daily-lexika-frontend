@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
 import { Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { useGetUserInfoQuery } from '@store/api/userAPI';
-import { useGetAllWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
+import { useGetPageOfWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
@@ -22,6 +22,8 @@ type Props = {
   wordPack: WordPackDto;
 };
 
+const pageSize = 20;
+
 export default function ReviewWordPackWindow(props: Props) {
   const { isOpen, onClose, wordPack } = props;
 
@@ -29,13 +31,12 @@ export default function ReviewWordPackWindow(props: Props) {
   const { t } = useTranslation();
   const { data: user } = useGetUserInfoQuery();
   const [page, setPage] = useState(0);
+  const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
 
-  const pageSize = 20;
+  dispatch(wordPacksAPI.util.prefetch('getPageOfWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
+  dispatch(wordPacksAPI.util.prefetch('getPageOfWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
+
   const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
-
-  const { data: wordsPage = [], isLoading: isLoadingWordsPage } = useGetAllWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
-  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
-  dispatch(wordPacksAPI.util.prefetch('getAllWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
 
   if (!user) return <Spinner />;
 
@@ -53,13 +54,10 @@ export default function ReviewWordPackWindow(props: Props) {
             <Text>{wordPack.wordsTotal}</Text>
           </TotalWords>
           <Text size={{ base: Size.SM, md: Size.MD, xl: Size.MD }}>{WordPackHelper.getDescriptionForLanguage(wordPack, user)}</Text>
-          <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingWordsPage}>
-            <WordsScrollableContainer
-              wordsPage={wordsPage}
-              isLoading={isLoadingWordsPage}
-              page={page}
-              setPage={setPage}
-            />
+          <SkeletonWrapper type={SkeletonType.WORDS_SCROLLABLE_CONTAINER} isLoading={isLoadingPageResponse}>
+            {pageResponse && (
+              <WordsScrollableContainer pageResponse={pageResponse} setPage={setPage} />
+            )}
           </SkeletonWrapper>
         </Container>
       )}
