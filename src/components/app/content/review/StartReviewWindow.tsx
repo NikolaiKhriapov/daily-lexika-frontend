@@ -125,12 +125,13 @@ export default function StartReviewWindow(props: Props) {
       width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
-      header={null}
+      header={(
+        <ProgressBarContainer>
+          <ProgressBar value={reviewProgress} />
+        </ProgressBarContainer>
+      )}
       body={(
         <Container>
-          <ProgressBarContainer>
-            <ProgressBar value={reviewProgress} />
-          </ProgressBarContainer>
           <CardContainer>
             <ReviewWordCard
               reviewWord={reviewWord}
@@ -178,10 +179,12 @@ const Container = styled.div`
 `;
 
 const ProgressBarContainer = styled.div`
-  margin: 20px 10px;
+  width: 50%;
+  margin: 10px;
 
   ${mediaBreakpointUp('450px')} {
-    margin: 20px 50px;
+    width: 200px;
+    margin: 10px;
   }
 `;
 
@@ -191,4 +194,8 @@ const CardContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 30px;
+    
+  ${mediaBreakpointUp(Breakpoint.TABLET)} {
+    margin-top: 50px;
+  }
 `;

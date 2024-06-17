@@ -68,6 +68,7 @@ const ChakraButtonStyled = styled(ChakraButton)<{ $colorMode: ColorMode }>`
   color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
   background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonBgColor};
   border: ${({ $colorMode }) => borderStyles($colorMode)};
+  min-width: fit-content !important;
   ${nonHighlightableTap};
 
   &.redOnHover:hover {
