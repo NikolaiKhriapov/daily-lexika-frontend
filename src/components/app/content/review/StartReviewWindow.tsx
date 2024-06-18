@@ -70,7 +70,9 @@ export default function StartReviewWindow(props: Props) {
       setFlipped(false);
       setThrown(true);
     } else {
-      setShaking(true);
+      setTimeout(() => {
+        setShaking(true);
+      }, 300);
     }
   };
 
