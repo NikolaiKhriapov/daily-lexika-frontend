@@ -33,9 +33,11 @@ export default function ReviewWordCard(props: Props) {
 
   useEffect(() => {
     if (isShaking) {
-      addShakeKeyframes();
       setTimeout(() => {
-        setShaking(false);
+        addShakeKeyframes();
+        setTimeout(() => {
+          setShaking(false);
+        }, 300);
       }, 500);
     }
   }, [isShaking]);
