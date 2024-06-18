@@ -105,7 +105,7 @@ export default function WordCard(props: Props) {
 }
 
 const ContentsContainer = styled.div<{ $gap?: string }>`
-  width: 80%;
+  width: 83%;
   display: flex;
   flex-direction: column;
   gap: ${({ $gap }) => $gap && $gap};

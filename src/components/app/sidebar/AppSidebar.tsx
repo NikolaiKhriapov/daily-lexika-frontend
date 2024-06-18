@@ -28,8 +28,8 @@ export default function AppSidebar(props: Props) {
 
   const sidebarMainMobileItems = [
     { name: t('AppSidebar.Dailies.mobile'), route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS || page === Page.WORD_PACKS, isReady: true },
-    { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
-    { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
+    // { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    // { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
     { name: t('AppSidebar.Search'), route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
     { name: t('AppSidebar.Statistics'), route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];
@@ -37,8 +37,8 @@ export default function AppSidebar(props: Props) {
   const sidebarMainTabletAndDesktopItems = [
     { name: t('AppSidebar.Dailies.tabletAndDesktop'), route: Page.REVIEWS, icon: TbCards, selected: page === Page.REVIEWS, isReady: true },
     { name: t('AppSidebar.WordPacks'), route: Page.WORD_PACKS, icon: IoLayersOutline, selected: page === Page.WORD_PACKS, isReady: true },
-    { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
-    { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
+    // { name: t('AppSidebar.Grammar'), route: '', icon: IoBookmarkOutline, selected: false, isReady: false },
+    // { name: t('AppSidebar.Reading'), route: '', icon: RxReader, selected: false, isReady: false },
     { name: t('AppSidebar.Search'), route: Page.SEARCH, icon: TbDeviceTabletSearch, selected: page === Page.SEARCH, isReady: true },
     { name: t('AppSidebar.Statistics'), route: Page.STATISTICS, icon: IoStatsChartOutline, selected: page === Page.STATISTICS, isReady: true },
   ];

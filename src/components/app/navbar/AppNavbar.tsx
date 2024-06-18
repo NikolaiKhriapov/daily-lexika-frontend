@@ -8,7 +8,6 @@ import { theme } from '@utils/theme';
 import AppInstallComponent from '@components/app/navbar/app/install-app/AppInstallComponent';
 import NotificationsComponent from '@components/app/navbar/app/notifications/NotificationsComponent';
 import ProfileComponent from '@components/app/navbar/app/profile/ProfileComponent';
-import UpcomingUpdatesComponent from '@components/app/navbar/app/upcoming-updates/UpcomingUpdatesComponent';
 
 export default function AppNavbar() {
   const { colorMode } = useColorMode();
@@ -19,7 +18,7 @@ export default function AppNavbar() {
       <SectionsContainer>
         <Section>
           {!isStandalone && <ContainerMobileAndTablet><AppInstallComponent /></ContainerMobileAndTablet>}
-          <UpcomingUpdatesComponent />
+          {/* <UpcomingUpdatesComponent /> */}
         </Section>
         <Section>
           <NotificationsComponent />
