@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import * as Yup from 'yup';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useCreateReviewMutation, useUpdateReviewMutation } from '@store/api/reviewsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
 import { ReviewDto, WordPackDto } from '@utils/types';
 import Spinner from '@components/ui-common/basic/Spinner';
@@ -32,7 +32,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   const { isOpen, onClose, wordPack, review = null, setDisabledButton } = props;
 
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [updateReview] = useUpdateReviewMutation();
   const [createReview] = useCreateReviewMutation();
 

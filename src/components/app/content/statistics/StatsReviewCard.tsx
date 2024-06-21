@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { FontWeight, Size } from '@utils/constants';
 import { borderStyles, nonHighlightableTap } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -22,7 +22,7 @@ export default function StatsReviewCard(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const wordsTotal = reviewStatistics.wordsNew + reviewStatistics.wordsInReview + reviewStatistics.wordsKnown;

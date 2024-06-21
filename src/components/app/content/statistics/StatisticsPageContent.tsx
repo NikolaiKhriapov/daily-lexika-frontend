@@ -6,7 +6,7 @@ import { PiBookThin } from 'react-icons/pi';
 import styled from 'styled-components';
 import { useDisclosure } from '@chakra-ui/react';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
@@ -22,7 +22,7 @@ export default function StatisticsPageContent() {
   const { isOpen: isOpenStatsWords, onOpen: onOpenStatsWords, onClose: onCloseStatsWords } = useDisclosure();
 
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: statistics, isFetching, isError, refetch } = useGetStatisticsQuery();
 
   useEffect(() => {

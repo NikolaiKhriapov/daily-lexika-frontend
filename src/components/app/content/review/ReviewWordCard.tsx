@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styled from 'styled-components';
 import { useBreakpointValue, useColorMode } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Size } from '@utils/constants';
 import { addShakeKeyframes } from '@utils/functions';
@@ -26,7 +26,7 @@ export default function ReviewWordCard(props: Props) {
   const { reviewWord = null, isFlipped, setFlipped, setUnlocked, isThrown, isShaking, setShaking, pressButton, isLoading } = props;
 
   const { colorMode } = useColorMode();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [deltaX, setDeltaX] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
   const [isFollowingSwipe, setFollowingSwipe] = useState(false);

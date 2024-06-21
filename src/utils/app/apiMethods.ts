@@ -24,9 +24,9 @@ export const ApiEndpointsReviews = {
   processReviewAction: (reviewId: number, answer: boolean | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
 };
 
-const URL_USERS = `${BASE_URL}/user`;
+const URL_USERS = `${BASE_URL}/users`;
 export const ApiEndpointsUsers = {
-  getUserInfo: () => `${URL_USERS}/info`,
+  getUser: () => `${URL_USERS}/info`,
   updateUserInfo: () => `${URL_USERS}/info`,
   updatePassword: () => `${URL_USERS}/password`,
   deleteAccount: () => `${URL_USERS}`,

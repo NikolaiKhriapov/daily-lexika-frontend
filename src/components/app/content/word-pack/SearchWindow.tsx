@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import {
   useAddAllWordsFromWordPackToCustomWordPackMutation,
@@ -33,7 +33,7 @@ export default function SearchWindow(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();

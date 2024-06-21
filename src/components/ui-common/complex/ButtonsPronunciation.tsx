@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Locale } from '@utils/constants';
 import { WordDto } from '@utils/types';
@@ -12,7 +12,7 @@ type Props = {
 export default function ButtonsPronunciation(props: Props) {
   const { word } = props;
 
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [engDialect, setEngDialect] = useState(Locale.EN_US);
 
   const userRole = user!.role!;

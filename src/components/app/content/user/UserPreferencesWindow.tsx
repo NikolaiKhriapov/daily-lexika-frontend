@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
+import { useGetUserQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
 import { RoleName, RoleNameBase } from '@utils/app/constants';
 import { Size } from '@utils/constants';
 import { Language, UserDto } from '@utils/types';
@@ -19,7 +19,7 @@ export default function UserPreferencesWindow(props: Props) {
 
   const { colorMode, setColorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
   const [selectedColorMode, setSelectedColorMode] = useState(colorMode);
   const [selectedTranslationLanguage, setSelectedTranslationLanguage] = useState(user!.translationLanguage!);

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Language } from '@utils/types';
 
 import i18n from '../../../i18n';
 
 export default function LanguageProvider({ children }: any) {
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
 
   useEffect(() => {
     if (user) {

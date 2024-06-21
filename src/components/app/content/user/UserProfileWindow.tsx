@@ -6,7 +6,7 @@ import { Avatar, Stack, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import {
-  useDeleteAccountMutation, useGetUserInfoQuery, useUpdatePasswordMutation, useUpdateUserInfoMutation,
+  useDeleteAccountMutation, useGetUserQuery, useUpdatePasswordMutation, useUpdateUserInfoMutation,
 } from '@store/api/userAPI';
 import { ButtonType, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -31,7 +31,7 @@ export default function UserProfileWindow(props: Props) {
   const passwordCurrentRef = useRef<string>('');
   const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenChangePasswordButton, onOpen: onOpenChangePasswordButton, onClose: onCloseChangePasswordButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountButton, onOpen: onOpenDeleteAccountButton, onClose: onCloseDeleteAccountButton } = useDisclosure();
   const { isOpen: isOpenDeleteAccountAlertDialog, onOpen: onOpenDeleteAccountAlertDialog, onClose: onCloseDeleteAccountAlertDialog } = useDisclosure();

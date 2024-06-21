@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useColorMode } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetWordOfTheDayQuery } from '@store/api/wordsAPI';
 import { RoleName } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
@@ -13,7 +13,7 @@ import WordCard from '@components/app/content/review/WordCard';
 export default function WordOfTheDayComponent() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: wordOfTheDay } = useGetWordOfTheDayQuery();
   const [isFlipped, setFlipped] = useState(false);
 

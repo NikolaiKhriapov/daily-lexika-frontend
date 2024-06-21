@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { errorNotification } from '@services/app/popup-notification';
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
+import { useGetUserQuery, useUpdateUserInfoMutation } from '@store/api/userAPI';
 import { ButtonType, Size } from '@utils/constants';
 import { Language } from '@utils/types';
 import Button from '@components/ui-common/basic/Button';
@@ -12,7 +12,7 @@ import WordDataHelper from '@helpers/WordDataHelper';
 
 export default function TranslationLanguageSelectionWindow() {
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
   const onClick = (language: Language) => {

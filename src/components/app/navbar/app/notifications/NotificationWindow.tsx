@@ -1,4 +1,4 @@
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Size } from '@utils/constants';
 import { NotificationDto } from '@utils/types';
 import Text from '@components/ui-common/basic/Text';
@@ -14,7 +14,7 @@ type Props = {
 export default function NotificationWindow(props: Props) {
   const { selectedNotification, onClose } = props;
 
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
 
   if (!user) return <></>;
 

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -22,7 +22,7 @@ export default function WordsScrollableContainer(props: Props) {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { colorMode } = useColorMode();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [selectedWord, setSelectedWord] = useState<number | null>();
   const [visibleWords, setVisibleWords] = useState<WordDto[]>([]);

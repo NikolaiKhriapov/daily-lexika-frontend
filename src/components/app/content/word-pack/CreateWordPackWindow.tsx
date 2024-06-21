@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Size } from '@utils/constants';
 import { WordPackDto } from '@utils/types';
@@ -20,7 +20,7 @@ export default function CreateWordPackWindow(props: Props) {
   const { isOpen, onClose } = props;
 
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [createCustomWordPack, { isLoading: isLoadingCreateCustomWordPack }] = useCreateCustomWordPackMutation();
 

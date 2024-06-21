@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button as ChakraButton, ColorMode, MenuDivider, useColorMode } from '@chakra-ui/react';
 import { useReadNotificationMutation } from '@store/api/notificationsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -26,7 +26,7 @@ export default function NotificationsWindow(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [readNotification] = useReadNotificationMutation();
   const [selectedNotification, setSelectedNotification] = useState<NotificationDto | null>(null);
 

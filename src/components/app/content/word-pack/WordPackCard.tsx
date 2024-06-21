@@ -4,7 +4,7 @@ import { TbCards } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useDeleteCustomWordPackMutation } from '@store/api/wordPacksAPI';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -34,7 +34,7 @@ export default function WordPackCard(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenPreviewButton, onOpen: onOpenPreviewButton, onClose: onClosePreviewButton } = useDisclosure();
   const { isOpen: isOpenCreateButton, onOpen: onOpenCreateButton, onClose: onCloseCreateButton } = useDisclosure();
   const { isOpen: isOpenDeleteButton, onOpen: onOpenDeleteButton, onClose: onCloseDeleteButton } = useDisclosure();

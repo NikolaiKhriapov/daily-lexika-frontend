@@ -4,7 +4,7 @@ import { FiBell } from 'react-icons/fi';
 import styled from 'styled-components';
 import { ColorMode, Menu, MenuButton, MenuDivider, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { useGetAllNotificationsQuery, useReadNotificationMutation } from '@store/api/notificationsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Breakpoint, ButtonType, FontWeight, Size } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { theme } from '@utils/theme';
@@ -23,7 +23,7 @@ import LocaleHelper from '@helpers/LocaleHelper';
 export default function NotificationsComponent() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: allNotifications = [] } = useGetAllNotificationsQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [readNotification] = useReadNotificationMutation();

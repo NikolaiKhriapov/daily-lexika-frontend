@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Divider, Tab, TabList, TabPanel, TabPanels, Tabs, useBreakpointValue } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetWordByWordDataIdQuery } from '@store/api/wordsAPI';
 import { RoleName } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
@@ -27,7 +27,7 @@ export default function WordDetailedInfoDrawer(props: Props) {
   const { isOpen, onClose, wordData, word, selectedWordDataId } = props;
 
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: wordFromQuery } = useGetWordByWordDataIdQuery(wordData.id, { skip: word !== undefined || wordData.id !== selectedWordDataId });
 
   const wordDto = word || wordFromQuery;

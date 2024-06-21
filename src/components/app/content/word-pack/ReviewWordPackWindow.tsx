@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
 import { Spinner, useBreakpointValue } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetPageOfWordsForWordPackQuery, wordPacksAPI } from '@store/api/wordPacksAPI';
 import { useAppDispatch } from '@store/hooks/hooks';
 import { Breakpoint, Size } from '@utils/constants';
@@ -29,7 +29,7 @@ export default function ReviewWordPackWindow(props: Props) {
 
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [page, setPage] = useState(0);
   const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
 

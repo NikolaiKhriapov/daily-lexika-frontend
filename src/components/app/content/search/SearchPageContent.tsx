@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetAllWordDataQuery } from '@store/api/wordDataAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
@@ -17,7 +17,7 @@ import WordDataHelper from '@helpers/WordDataHelper';
 export default function SearchPageContent() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [searchQuery, setSearchQuery] = useState<string>('');

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Avatar, ColorMode, Menu, MenuButton, useColorMode, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@context/app/AuthContext';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { EmailLinks } from '@utils/app/constants';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
@@ -20,7 +20,7 @@ export default function ProfileComponent() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenProfile, onOpen: onOpenProfile, onClose: onCloseProfile } = useDisclosure();
   const { isOpen: isOpenPreferences, onOpen: onOpenPreferences, onClose: onClosePreferences } = useDisclosure();
 

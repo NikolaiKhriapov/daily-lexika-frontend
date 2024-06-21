@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetAllReviewsQuery } from '@store/api/reviewsAPI';
 import { useGetStatisticsQuery } from '@store/api/statisticsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, Page } from '@utils/constants';
 import { mediaBreakpointUp, nonHighlightableTap, nonSelectableText } from '@utils/functions';
@@ -27,7 +27,7 @@ export default function AppLayout(props: Props) {
   const { page, title, description, children } = props;
 
   const { colorMode } = useColorMode();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
   useGetStatisticsQuery();

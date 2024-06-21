@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { successNotification } from '@services/app/popup-notification';
 import { useProcessReviewActionMutation } from '@store/api/reviewsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { Breakpoint, ButtonType } from '@utils/constants';
 import { mediaBreakpointUp } from '@utils/functions';
 import { ReviewDto, Status, WordDto } from '@utils/types';
@@ -25,7 +25,7 @@ export default function StartReviewWindow(props: Props) {
   const { review, isOpen, onClose } = props;
 
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const [processReviewAction, { isLoading }] = useProcessReviewActionMutation();
   const [reviewWord, setReviewWord] = useState<WordDto | null>(null);
   const [isModalVisible, setModalVisible] = useState(true);

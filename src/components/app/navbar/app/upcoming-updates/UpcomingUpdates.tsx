@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { AppInfo, RoleNameBase } from '@utils/app/constants';
 import { Breakpoint, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
@@ -16,7 +16,7 @@ import Text from '@components/ui-common/basic/Text';
 export default function UpcomingUpdates() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
 
   if (!user) return <Spinner />;
 

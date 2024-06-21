@@ -4,7 +4,7 @@ import { IoMdMic } from 'react-icons/io';
 import styled from 'styled-components';
 import { Modal } from '@chakra-ui/modal';
 import { ColorMode, ModalBody, ModalContent, ModalOverlay, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { RoleName } from '@utils/app/constants';
 import { Locale, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
@@ -20,7 +20,7 @@ export default function SpeechRecognitionComponent(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');

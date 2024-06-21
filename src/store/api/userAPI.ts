@@ -5,9 +5,9 @@ import { AccountDeletionRequest, PasswordUpdateRequest, UserDto } from '@utils/t
 
 export const userAPI = API.injectEndpoints({
   endpoints: (builder) => ({
-    getUserInfo: builder.query<UserDto, void>({
+    getUser: builder.query<UserDto, void>({
       query: () => ({
-        url: ApiEndpointsUsers.getUserInfo(),
+        url: ApiEndpointsUsers.getUser(),
         method: QueryMethod.GET,
       }),
       providesTags: ['User'],
@@ -19,14 +19,14 @@ export const userAPI = API.injectEndpoints({
         body: userDTO,
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
-        const patchResult = dispatch(userAPI.util?.updateQueryData('getUserInfo', undefined, (draft) => {
+        const patchResult = dispatch(userAPI.util?.updateQueryData('getUser', undefined, (draft) => {
           if (draft) {
             draft.name = args.name;
           }
         }));
         try {
           const { data: updatedUserInfo } = await queryFulfilled;
-          dispatch(userAPI.util?.updateQueryData('getUserInfo', undefined, (draft) => {
+          dispatch(userAPI.util?.updateQueryData('getUser', undefined, (draft) => {
             if (draft) {
               Object.assign(draft, updatedUserInfo);
             }
@@ -55,7 +55,7 @@ export const userAPI = API.injectEndpoints({
 });
 
 export const {
-  useGetUserInfoQuery,
+  useGetUserQuery,
   useUpdateUserInfoMutation,
   useUpdatePasswordMutation,
   useDeleteAccountMutation,

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@store/api/wordPacksAPI';
 import { Breakpoint, FontWeight, Size } from '@utils/constants';
 import { borderStyles, mediaBreakpointUp } from '@utils/functions';
@@ -29,7 +29,7 @@ export default function StatsReviewWindow(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 

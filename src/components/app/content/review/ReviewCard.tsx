@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import { errorNotification, successNotification } from '@services/app/popup-notification';
 import { useDeleteReviewMutation, useRefreshReviewMutation } from '@store/api/reviewsAPI';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { ButtonType, FontWeight, Size } from '@utils/constants';
 import { theme } from '@utils/theme';
 import { placeholderReview, ReviewDto, Status } from '@utils/types';
@@ -32,7 +32,7 @@ export default function ReviewCard(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenStartButton, onOpen: onOpenStartButton, onClose: onCloseStartButton } = useDisclosure();
   const { isOpen: isOpenChangeButton, onOpen: onOpenChangeButton, onClose: onCloseChangeButton } = useDisclosure();
   const { isOpen: isOpenRemoveButton, onOpen: onOpenRemoveButton, onClose: onCloseRemoveButton } = useDisclosure();

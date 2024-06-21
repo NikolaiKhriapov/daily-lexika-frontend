@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useBreakpointValue, useDisclosure } from '@chakra-ui/react';
-import { useGetUserInfoQuery } from '@store/api/userAPI';
+import { useGetUserQuery } from '@store/api/userAPI';
 import { EmailLinks, RoleName } from '@utils/app/constants';
 import { FontWeight } from '@utils/constants';
 import { WordDto } from '@utils/types';
@@ -32,7 +32,7 @@ type Props = {
 export default function WordCard(props: Props) {
   const { cardHeight, cardWidth, word = null, wordDataSize, borderColor, bgColor, isFlipped, setFlipped, setUnlocked, title, infoGap, withSpeechRecognition = true } = props;
 
-  const { data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserQuery();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
 
   if (!user || !user.role || !word) return <ReviewWordPlaceholderContainer $height={cardHeight} />;
