@@ -1,0 +1,49 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@admin/components/*": ["apps/admin/src/components/*"],
+      "@admin/context/*": ["apps/admin/src/context/*"],
+      "@admin/helpers/*": ["apps/admin/src/helpers/*"],
+      "@admin/public": ["apps/admin/public/*"],
+      "@admin/store/*": ["apps/admin/src/store/*"],
+      "@admin/utils/*": ["apps/admin/src/utils/*"],
+
+      "@daily-lexika/components/*": ["apps/daily-lexika/src/components/*"],
+      "@daily-lexika/context/*": ["apps/daily-lexika/src/context/*"],
+      "@daily-lexika/helpers/*": ["apps/daily-lexika/src/helpers/*"],
+      "@daily-lexika/public": ["apps/daily-lexika/public/*"],
+      "@daily-lexika/store/*": ["apps/daily-lexika/src/store/*"],
+      "@daily-lexika/utils/*": ["apps/daily-lexika/src/utils/*"],
+
+      "@landing-yekaterina/components/*": ["apps/landing-yekaterina/src/components/*"],
+      "@landing-yekaterina/context/*": ["apps/landing-yekaterina/src/context/*"],
+      "@landing-yekaterina/helpers/*": ["apps/landing-yekaterina/src/helpers/*"],
+      "@landing-yekaterina/public": ["apps/landing-yekaterina/public/*"],
+      "@landing-yekaterina/store/*": ["apps/landing-yekaterina/src/store/*"],
+      "@landing-yekaterina/utils/*": ["apps/landing-yekaterina/src/utils/*"],
+
+      "@library/admin": ["library/src/admin/index.ts"],
+      "@library/daily-lexika": ["library/src/daily-lexika/index.ts"],
+      "@library/shared/context": ["library/src/shared/context/index.ts"],
+      "@library/shared/icons": ["library/src/shared/icons/index.ts"],
+      "@library/shared/services": ["library/src/shared/services/index.ts"],
+      "@library/shared/ui": ["library/src/shared/ui/index.ts"],
+      "@library/shared/utils": ["library/src/shared/utils/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

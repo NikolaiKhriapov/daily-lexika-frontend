@@ -1,0 +1,4 @@
+export enum RoleName {
+  USER_ENGLISH = 'USER_ENGLISH',
+  USER_CHINESE = 'USER_CHINESE',
+}

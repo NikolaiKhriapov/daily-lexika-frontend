@@ -1,0 +1,25 @@
+{
+  "name": "Admin",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "./favicon.ico",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./favicon.ico",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "./favicon.ico",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "background_color": "white",
+  "theme_color": "white"
+}
