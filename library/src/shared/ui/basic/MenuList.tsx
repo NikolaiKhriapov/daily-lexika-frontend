@@ -1,0 +1,20 @@
+import React from 'react';
+import styled from 'styled-components';
+import { ColorMode, MenuList as ChakraMenuList, MenuListProps, useColorMode } from '@chakra-ui/react';
+import { theme } from '../../utils/utils/theme';
+
+export function MenuList({ children, ...rest }: MenuListProps) {
+  const { colorMode } = useColorMode();
+
+  return (
+    <MenuListStyled $colorMode={colorMode} {...rest}>
+      {children}
+    </MenuListStyled>
+  );
+}
+
+const MenuListStyled = styled(ChakraMenuList)<{ $colorMode: ColorMode }>`
+  margin: 0 15px;
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].bgColor} !important;
+  box-shadow: ${({ $colorMode }) => theme.stylesToDelete[$colorMode].boxShadow} !important;
+`;

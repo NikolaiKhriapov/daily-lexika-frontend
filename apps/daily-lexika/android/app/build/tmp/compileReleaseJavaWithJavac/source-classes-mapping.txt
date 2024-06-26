@@ -1,0 +1,8 @@
+com/dailylexika/twa/BuildConfig.java
+ com.dailylexika.twa.BuildConfig
+com/dailylexika/twa/DelegationService.java
+ com.dailylexika.twa.DelegationService
+com/dailylexika/twa/Application.java
+ com.dailylexika.twa.Application
+com/dailylexika/twa/LauncherActivity.java
+ com.dailylexika.twa.LauncherActivity

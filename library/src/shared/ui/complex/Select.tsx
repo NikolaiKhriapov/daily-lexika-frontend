@@ -1,0 +1,32 @@
+import React from 'react';
+import { Field, FieldProps } from 'formik';
+import { Box, FormLabel, Select as ChakraSelect, SelectProps } from '@chakra-ui/react';
+import { theme } from '../../utils/utils/theme';
+
+interface Props extends SelectProps {
+  name: string;
+  label: string;
+}
+
+export function Select(props: Props) {
+  const { name, label, children, ...rest } = props;
+
+  return (
+    <Box>
+      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <Field name={name}>
+        {({ field }: FieldProps) => (
+          <ChakraSelect
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            value={field.value}
+            focusBorderColor={theme.colors.gray['400']}
+            {...rest}
+          >
+            {children}
+          </ChakraSelect>
+        )}
+      </Field>
+    </Box>
+  );
+}
