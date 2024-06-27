@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery, useUpdateUserInfoMutation } from '@daily-lexika/store/api/userAPI';
-import { Language } from '../../../../../../library/src/daily-lexika/dtos/types';
 import { errorNotification } from '@library/shared/services';
 import { Button, ButtonType, Modal,Text } from '@library/shared/ui';
 import { Size } from '@library/shared/utils';
+import { Language } from '@library/daily-lexika';
 
 export default function TranslationLanguageSelectionWindow() {
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { Platform } from '../types';
+import { Platform } from '../../enumerations/Platform';
 
 export interface RegistrationRequest {
   name: string;

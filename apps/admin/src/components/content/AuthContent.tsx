@@ -6,10 +6,10 @@ import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
 import { AuthContext } from '@admin/context/AuthContext';
 import ValidationHelper from '@admin/helpers/ValidationHelper';
 import { useLoginMutation } from '@admin/store/api/authAPI';
-import { AuthenticationRequest } from '@admin/utils/types';
 import { errorNotification } from '@library/shared/services';
 import { Heading, InputFieldsWithButton, TextInput } from '@library/shared/ui';
 import { borderStyles, Breakpoint, mediaBreakpointUp , Size , theme } from '@library/shared/utils';
+import { AuthenticationRequest } from '@library/admin';
 
 export default function AuthContent() {
   const { colorMode } = useColorMode();

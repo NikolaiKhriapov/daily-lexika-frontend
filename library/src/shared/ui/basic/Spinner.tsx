@@ -1,5 +1,5 @@
 import { Spinner as ChakraSpinner } from '@chakra-ui/react';
-import { Size } from '../../utils/constants/constants';
+import { Size } from '@library/shared/utils';
 
 type Props = {
   size?: Size;

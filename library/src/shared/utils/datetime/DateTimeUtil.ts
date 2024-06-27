@@ -3,7 +3,7 @@ import { Locale } from '../locale/enumerations';
 export class DateTimeUtil {
   private static OPTIONS_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
 
-  public static convertDateToLocaleDateString(date: Date, locale: string) {
+  public static convertDateToLocaleDateString(date: Date, locale: Locale) {
     return date.toLocaleDateString(locale, this.OPTIONS_DATE_TIME_FORMAT);
   }
 
