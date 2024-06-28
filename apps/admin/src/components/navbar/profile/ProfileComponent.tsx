@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Avatar, Menu, MenuButton } from '@chakra-ui/react';
+import { Avatar, Menu, MenuButton, useDisclosure } from '@chakra-ui/react';
 import { AuthContext } from '@admin/context/AuthContext';
 import { useGetUserQuery } from '@admin/store/api/userAPI';
 import { MenuDivider, MenuItem, MenuList, Text } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp, theme } from '@library/shared/utils';
+import UserPreferencesWindow from '@admin/components/content/user/UserPreferencesWindow';
 
 export default function ProfileComponent() {
   const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
   const { data: user } = useGetUserQuery();
+  const { isOpen: isOpenPreferences, onOpen: onOpenPreferences, onClose: onClosePreferences } = useDisclosure();
 
   return (
     <Menu>
@@ -22,6 +24,9 @@ export default function ProfileComponent() {
           {user?.name}<br />
           {user?.email}
         </MenuText>
+        <MenuDivider />
+        <MenuItem onClick={onOpenPreferences}>{t('ProfileComponent.preferences')}</MenuItem>
+        {isOpenPreferences && <UserPreferencesWindow isOpen={isOpenPreferences} onClose={onClosePreferences} />}
         <MenuDivider />
         <MenuItem onClick={logout}>{t('ProfileComponent.logout')}</MenuItem>
       </MenuList>

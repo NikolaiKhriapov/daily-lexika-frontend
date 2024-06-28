@@ -5,6 +5,8 @@ export * from './dtos/flashcards/WordDataDto';
 export * from './dtos/flashcards/WordDto';
 export * from './dtos/flashcards/WordPackDto';
 
+export * from './dtos/log/LogDto';
+
 export * from './dtos/notification/NotificationDto';
 
 export * from './dtos/user/AccountDeletionRequest';

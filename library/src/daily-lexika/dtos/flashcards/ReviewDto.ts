@@ -1,5 +1,5 @@
-import { WordPackDto } from './WordPackDto';
 import { WordDto } from './WordDto';
+import { WordPackDto } from './WordPackDto';
 
 export interface ReviewDto {
   id?: number;

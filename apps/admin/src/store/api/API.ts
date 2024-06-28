@@ -10,6 +10,7 @@ export const API = createApi({
   tagTypes: [
     'User',
     'DailyLexikaUsers',
+    'DailyLexikaLogs',
   ],
   endpoints: () => ({}),
 });

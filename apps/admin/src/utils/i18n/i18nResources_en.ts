@@ -28,13 +28,28 @@ export const resourcesEn = {
       title: 'Users',
       description: 'Users',
     },
+    logs: {
+      title: 'Logs',
+      description: 'Logs',
+    }
   },
 
   AppSidebar: {
     Users: 'Users',
+    Logs: 'Logs',
+  },
+
+  UserPreferencesWindow: {
+    header: 'Preferences',
+    colorScheme: {
+      label: 'Color scheme',
+      light: 'Light',
+      dark: 'Dark',
+    },
   },
 
   ProfileComponent: {
+    preferences: 'Preferences',
     logout: 'Log out',
   },
 

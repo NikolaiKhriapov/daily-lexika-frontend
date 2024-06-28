@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TbCards } from 'react-icons/tb';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -16,6 +15,8 @@ import {
   Size,
   theme,
 } from '@library/shared/utils';
+import { FaUsers } from 'react-icons/fa6';
+import { GoHistory } from 'react-icons/go';
 
 type Props = {
   page?: Page;
@@ -29,7 +30,8 @@ export default function AppSidebar(props: Props) {
   const { isStandalone } = useContext(AppInstallationContext);
 
   const sidebarMainDailyLexikaItems = [
-    { name: t('AppSidebar.Users'), route: Page.USERS, icon: TbCards, selected: page === Page.USERS },
+    { name: t('AppSidebar.Users'), route: Page.USERS, icon: FaUsers, selected: page === Page.USERS },
+    { name: t('AppSidebar.Logs'), route: Page.LOGS, icon: GoHistory, selected: page === Page.LOGS },
   ];
 
   return (
