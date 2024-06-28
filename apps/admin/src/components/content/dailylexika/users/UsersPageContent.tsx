@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { useGetPageOfUsersQuery } from '@admin/store/api/dailyLexikaUserAPI';
+import { DateTimeUtil, Locale, Sort } from '@library/shared/utils';
 import { Heading, TableFilters, TablePagesPanel } from '@library/shared/ui';
-import { DateTimeUtil, Sort } from '@library/shared/utils';
 
 export default function UsersPageContent() {
   const [page, setPage] = useState(0);
@@ -38,7 +38,7 @@ export default function UsersPageContent() {
                 <Td>{user.id}</Td>
                 <Td>{user.email}</Td>
                 <Td>{user.role}</Td>
-                <Td>{DateTimeUtil.convertOffsetDateTimeToDateString(user.dateOfRegistration)}</Td>
+                <Td>{DateTimeUtil.convertOffsetDateTimeToDateString(user.dateOfRegistration!, Locale.EN_US)}</Td>
                 <Td>{user.interfaceLanguage}</Td>
                 <Td>{user.translationLanguage}</Td>
               </Tr>

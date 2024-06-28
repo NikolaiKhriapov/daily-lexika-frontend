@@ -1,4 +1,5 @@
-import { Category, Platform } from '../types';
+import { Category } from '../../enumerations/Category';
+import { Platform } from '../../enumerations/Platform';
 
 export interface WordPackDto {
   name: string;

@@ -38,3 +38,4 @@ out
 dist
 .gitignore
 /package-lock.json
+/.nx/

@@ -1,5 +1,5 @@
-import { Status } from '../types';
 import { WordDataDto } from './WordDataDto';
+import { Status } from '../../enumerations/Status';
 
 export interface WordDto {
   id: number;

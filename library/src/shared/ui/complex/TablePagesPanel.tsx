@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { RxDoubleArrowLeft, RxDoubleArrowRight } from 'react-icons/rx';
 import styled from 'styled-components';
 import { ColorMode, Select, useColorMode } from '@chakra-ui/react';
 import { borderStyles, Breakpoint, mediaBreakpointUp, PageResponse,theme } from '@library/shared/utils';
@@ -49,21 +50,21 @@ export function TablePagesPanel<T>(props: Props<T>) {
     <Container>
       <PageButtonsContainer>
         <PageButton $colorMode={colorMode} onClick={() => onClickPage(0)}>
-          <IoIosArrowBack /><IoIosArrowBack />
+          <RxDoubleArrowLeft />
         </PageButton>
         <PageButton $colorMode={colorMode} onClick={onClickPreviousPage}>
           <IoIosArrowBack />
         </PageButton>
         {pageNumbersToShow.map((pageNumber) => (
           <PageButton key={pageNumber} $colorMode={colorMode} $isActive={pageNumber === pageResponse.number} onClick={() => onClickPage(pageNumber)}>
-            <TextStyled $isActive={pageNumber === pageResponse.number}>{pageNumber + 1}</TextStyled>
+            <TextStyled>{pageNumber + 1}</TextStyled>
           </PageButton>
         ))}
         <PageButton $colorMode={colorMode} onClick={onClickNextPage}>
           <IoIosArrowForward />
         </PageButton>
         <PageButton $colorMode={colorMode} onClick={() => onClickPage(pageResponse.totalPages - 1)}>
-          <IoIosArrowForward /><IoIosArrowForward />
+          <RxDoubleArrowRight />
         </PageButton>
       </PageButtonsContainer>
       <PagesContainer>
@@ -118,15 +119,14 @@ const PageButton = styled.div<{ $colorMode: ColorMode; $isActive?: boolean }>`
   border: ${({ $colorMode }) => borderStyles($colorMode)};
   border-radius: ${theme.stylesToDelete.borderRadius};
   cursor: pointer;
-  background-color: ${({ $isActive, $colorMode }) => ($isActive && theme.colors[$colorMode].background2)};
+  background-color: ${({ $isActive, $colorMode }) => ($isActive && theme.colors[$colorMode].background)};
 
   &:hover {
-    background-color: ${({ $isActive, $colorMode }) => ($isActive ? theme.colors[$colorMode].background2 : theme.colors[$colorMode].background)};
+    background-color: ${({ $colorMode }) => theme.colors[$colorMode].background};
   }
 `;
 
-const TextStyled = styled(Text)<{ $isActive?: boolean }>`
-  color: ${({ $isActive }) => ($isActive && 'white')};
+const TextStyled = styled(Text)`
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
