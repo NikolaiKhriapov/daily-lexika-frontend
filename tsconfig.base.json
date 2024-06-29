@@ -29,6 +29,13 @@
       "@daily-lexika/store/*": ["apps/daily-lexika/src/store/*"],
       "@daily-lexika/utils/*": ["apps/daily-lexika/src/utils/*"],
 
+      "@daily-budget/components/*": ["apps/daily-budget/src/components/*"],
+      "@daily-budget/context/*": ["apps/daily-budget/src/context/*"],
+      "@daily-budget/helpers/*": ["apps/daily-budget/src/helpers/*"],
+      "@daily-budget/public": ["apps/daily-budget/public/*"],
+      "@daily-budget/store/*": ["apps/daily-budget/src/store/*"],
+      "@daily-budget/utils/*": ["apps/daily-budget/src/utils/*"],
+
       "@landing-yekaterina/components/*": ["apps/landing-yekaterina/src/components/*"],
       "@landing-yekaterina/context/*": ["apps/landing-yekaterina/src/context/*"],
       "@landing-yekaterina/helpers/*": ["apps/landing-yekaterina/src/helpers/*"],
@@ -38,6 +45,7 @@
 
       "@library/admin": ["library/src/admin/index.ts"],
       "@library/daily-lexika": ["library/src/daily-lexika/index.ts"],
+      "@library/daily-budget": ["library/src/daily-budget/index.ts"],
       "@library/shared/context": ["library/src/shared/context/index.ts"],
       "@library/shared/icons": ["library/src/shared/icons/index.ts"],
       "@library/shared/services": ["library/src/shared/services/index.ts"],

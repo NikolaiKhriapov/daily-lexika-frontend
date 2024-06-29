@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useColorMode } from '@chakra-ui/react';
+import { BadgeOrStreakCount } from '@daily-lexika/components/ui/BadgeOrStreakCount';
 import { WordDto } from '@library/daily-lexika';
-import { BadgeOrStreakCount,ProgressBar, Skeleton, Text } from '@library/shared/ui';
+import { ProgressBar, Skeleton, Text } from '@library/shared/ui';
 import { FontWeight, Size } from '@library/shared/utils';
 
 interface Props {

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBreakpointValue } from '@chakra-ui/react';
 import WordsScrollableContainer from '@daily-lexika/components/app/content/words/WordsScrollableContainer';
+import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/SkeletonWrapper';
 import { useGetPageOfWordsByStatusQuery, wordsAPI } from '@daily-lexika/store/api/wordsAPI';
 import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
 import { Status } from '@library/daily-lexika';
-import { Modal, SkeletonType,SkeletonWrapper } from '@library/shared/ui';
+import { Modal } from '@library/shared/ui';
 import { Size } from '@library/shared/utils';
 
 type Props = {

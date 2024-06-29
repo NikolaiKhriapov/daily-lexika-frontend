@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery, useUpdateUserInfoMutation } from '@daily-lexika/store/api/userAPI';
 import { Language } from '@library/daily-lexika';
 import { errorNotification } from '@library/shared/services';
 import { Button, ButtonType, Modal,Text } from '@library/shared/ui';
-import { Size } from '@library/shared/utils';
+import { Size, StringUtil } from '@library/shared/utils';
 
 export default function InterfaceLanguageSelectionWindow() {
   const { data: user } = useGetUserQuery();
@@ -37,7 +36,7 @@ export default function InterfaceLanguageSelectionWindow() {
               <Button
                 key={index}
                 buttonType={ButtonType.SUBMIT}
-                buttonText={WordDataHelper.toSentenceCase(language)}
+                buttonText={StringUtil.toSentenceCase(language)}
                 onClick={() => onClick(language)}
               />
             ))}

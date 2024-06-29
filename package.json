@@ -17,6 +17,10 @@
     "serve:daily-lexika": "nx serve daily-lexika --hostname=0.0.0.0 --port 3000",
     "lint:daily-lexika": "nx lint daily-lexika",
 
+    "build:daily-budget": "nx build daily-budget",
+    "serve:daily-budget": "nx serve daily-budget --hostname=0.0.0.0 --port 3001",
+    "lint:daily-budget": "nx lint daily-budget",
+
     "build:landing-yekaterina": "nx build landing-yekaterina",
     "serve:landing-yekaterina": "nx serve landing-yekaterina --hostname=0.0.0.0 --port 4000",
     "lint:landing-yekaterina": "nx lint landing-yekaterina"
@@ -36,8 +40,6 @@
     "@swc/cli": "~0.3.12",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
-    "@types/react": "18.3.1",
-    "@types/react-scroll": "^1.8.10",
     "axios": "^1.6.2",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.3",
@@ -73,6 +75,7 @@
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "@types/react-is": "18.3.0",
+    "@types/react-scroll": "^1.8.10",
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "^7.3.0",
     "@typescript-eslint/parser": "^7.3.0",

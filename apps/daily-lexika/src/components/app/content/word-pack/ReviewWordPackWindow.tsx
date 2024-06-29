@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import { CopyIcon } from '@chakra-ui/icons';
 import { Spinner, useBreakpointValue } from '@chakra-ui/react';
 import WordsScrollableContainer from '@daily-lexika/components/app/content/words/WordsScrollableContainer';
+import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/SkeletonWrapper';
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { useGetPageOfWordsForWordPackQuery, wordPacksAPI } from '@daily-lexika/store/api/wordPacksAPI';
 import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
 import { WordPackDto } from '@library/daily-lexika';
-import { Modal, SkeletonType,SkeletonWrapper, Text } from '@library/shared/ui';
+import { Modal, Text } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp,Size } from '@library/shared/utils';
 
 type Props = {

@@ -1,19 +1,18 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
-import { borderStyles, nonHighlightableTap, nonSelectableText } from '../../utils/ui/functions';
-import { theme } from '../../utils/utils/theme';
+import { borderStyles, nonHighlightableTap, nonSelectableText, theme } from '@library/shared/utils';
 
 type Props = {
   face: ReactNode;
-  back: ReactNode;
+  back?: ReactNode;
   height: string | { base: string, sm: string, xl: string };
   width: string | { base: string, sm: string, xl: string };
   padding: string;
   borderColor?: string;
   bgColor: string;
-  isFlipped: boolean;
-  setFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  isFlipped?: boolean;
+  setFlipped?: React.Dispatch<React.SetStateAction<boolean>>;
   setUnlocked?: any;
 };
 
@@ -26,16 +25,17 @@ export function Card(props: Props) {
     padding,
     borderColor = '',
     bgColor,
-    isFlipped,
+    isFlipped = false,
     setFlipped,
     setUnlocked,
   } = props;
 
   const { colorMode } = useColorMode();
+  const isFlippable = !!back;
 
   return (
     <Container
-      $isFlipped={isFlipped}
+      $isFlipped={isFlippable ? isFlipped : false}
       $colorMode={colorMode}
       $height={height}
       $width={width}
@@ -43,14 +43,12 @@ export function Card(props: Props) {
       $borderColor={borderColor}
       $bgColor={bgColor}
       onClick={() => {
-        setFlipped(!isFlipped);
-        if (setUnlocked) {
-          setUnlocked(true);
-        }
+        if (isFlippable && setFlipped) setFlipped(!isFlipped);
+        if (setUnlocked) setUnlocked(true);
       }}
     >
       {!isFlipped && face}
-      {isFlipped && back}
+      {isFlipped && back && back}
     </Container>
   );
 }

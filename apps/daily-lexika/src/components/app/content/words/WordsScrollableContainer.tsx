@@ -5,8 +5,9 @@ import WordDetailedInfoDrawer from '@daily-lexika/components/app/content/words/W
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { WordDto } from '@library/daily-lexika';
-import { BadgeOrStreakCount,Spinner, Text } from '@library/shared/ui';
+import { Spinner, Text } from '@library/shared/ui';
 import { borderStyles, Breakpoint, mediaBreakpointUp, PageResponse, Size, theme } from '@library/shared/utils';
+import { BadgeOrStreakCount } from '@daily-lexika/components/ui/BadgeOrStreakCount';
 
 type Props = {
   pageResponse: PageResponse<WordDto>;

@@ -1,9 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Skeleton, Swiper, SwiperSlide } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp } from '@library/shared/utils';
-
-import { Skeleton } from '../basic/Skeleton';
-import { Swiper,SwiperSlide } from './Swiper';
 
 export enum SkeletonType {
   REVIEW_CARD = 'REVIEW_CARD',

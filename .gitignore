@@ -33,8 +33,7 @@ out
 *.ipr
 
 /apps/daily-lexika/android/.idea/
-/apps/daily-lexika/.env
-/apps/admin/.env
+**/.env
 dist
 .gitignore
 /package-lock.json

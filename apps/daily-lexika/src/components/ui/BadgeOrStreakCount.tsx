@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BadgeStreakCount } from '@daily-lexika/components/ui/BadgeStreakCount';
 import { Status, WordDto } from '@library/daily-lexika';
-
-import { StatusBadge } from '../basic/StatusBadge';
-import { BadgeStreakCount } from './BadgeStreakCount';
+import { StatusBadge } from '@library/shared/ui';
 
 type Props = {
   word: WordDto;

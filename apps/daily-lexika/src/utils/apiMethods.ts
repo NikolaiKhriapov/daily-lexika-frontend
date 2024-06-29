@@ -8,6 +8,14 @@ export const ApiEndpointsAuthorization = {
   login: () => `${URL_AUTH}/login`,
 };
 
+const URL_USERS = `${BASE_URL}/users`;
+export const ApiEndpointsUsers = {
+  getUser: () => `${URL_USERS}/info`,
+  updateUserInfo: () => `${URL_USERS}/info`,
+  updatePassword: () => `${URL_USERS}/password`,
+  deleteAccount: () => `${URL_USERS}`,
+};
+
 const URL_NOTIFICATIONS = `${BASE_URL}/notifications`;
 export const ApiEndpointsNotifications = {
   getAllNotifications: () => `${URL_NOTIFICATIONS}`,
@@ -22,14 +30,6 @@ export const ApiEndpointsReviews = {
   refreshReview: (reviewId: number) => `${URL_REVIEWS}/refresh/${reviewId}`,
   deleteReview: (reviewId: number) => `${URL_REVIEWS}/${reviewId}`,
   processReviewAction: (reviewId: number, answer: boolean | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
-};
-
-const URL_USERS = `${BASE_URL}/users`;
-export const ApiEndpointsUsers = {
-  getUser: () => `${URL_USERS}/info`,
-  updateUserInfo: () => `${URL_USERS}/info`,
-  updatePassword: () => `${URL_USERS}/password`,
-  deleteAccount: () => `${URL_USERS}`,
 };
 
 const URL_STATISTICS = `${BASE_URL}/statistics`;
