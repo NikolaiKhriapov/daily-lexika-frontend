@@ -1,6 +1,7 @@
 import { Status } from '@library/daily-lexika';
 
-export const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
+// export const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
+export const BASE_URL = '';
 
 const URL_AUTH = `${BASE_URL}/auth`;
 export const ApiEndpointsAuthorization = {
