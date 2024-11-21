@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
-import { detectOS } from '@chakra-ui/utils';
+import { detect } from 'detect-browser';
 
 let deferredPrompt: any;
 
@@ -27,6 +27,8 @@ type Props = {
 
 function AppInstallationProvider(props: Props) {
   const { children } = props;
+  const browser = detect();
+
   const [isPwaInstallable, setPwaInstallable] = useState(false);
 
   /* not Apple */
@@ -44,8 +46,10 @@ function AppInstallationProvider(props: Props) {
   const [isIosOrMacOs, setIosOrMacOs] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
 
-  const checkIsIos = () => detectOS('iOS');
-  const checkIsMacOs = () => detectOS('Mac');
+  const checkIsIos = () => browser?.os === 'iOS';
+  const checkIsMacOs = () => browser?.os === 'Mac OS';
+  // const checkIsIos = () => detectOS('iOS');
+  // const checkIsMacOs = () => detectOS('Mac');
 
   useEffect(() => {
     setIos(checkIsIos());

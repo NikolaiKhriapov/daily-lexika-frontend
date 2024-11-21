@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { useRadio, UseRadioProps } from '@chakra-ui/radio';
 import { Box, ColorMode, useColorMode } from '@chakra-ui/react';
-import { borderStyles, nonHighlightableTap } from '../../utils/ui/functions';
-import { theme } from '../../utils/utils/theme';
+import { borderStyles, nonHighlightableTap, theme } from '@library/shared/utils';
 
 export function RadioItem(props: UseRadioProps) {
   const { name } = props;

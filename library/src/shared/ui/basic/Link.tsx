@@ -1,7 +1,6 @@
 import React from 'react';
-import { LinkProps } from '@chakra-ui/layout/dist/link';
-import { Link as ChakraLink } from '@chakra-ui/react';
-import { theme } from '../../utils/utils/theme';
+import { Link as ChakraLink, LinkProps } from '@chakra-ui/react';
+import { theme } from '@library/shared/utils';
 
 export function Link({ children, ...rest }: LinkProps) {
   return (
