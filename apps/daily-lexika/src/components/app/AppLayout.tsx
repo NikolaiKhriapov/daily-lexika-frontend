@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -13,6 +13,7 @@ import { useGetStatisticsQuery } from '@daily-lexika/store/api/statisticsAPI';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
 import { Page } from '@daily-lexika/utils/Pages';
+import { AppInstallationContext } from '@library/shared/context';
 import { Breakpoint, mediaBreakpointUp, nonHighlightableTap, nonSelectableText, theme } from '@library/shared/utils';
 
 type Props = {
@@ -30,6 +31,16 @@ export default function AppLayout(props: Props) {
   useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
   useGetStatisticsQuery();
+
+  const { isIos } = useContext(AppInstallationContext);
+
+  useEffect(() => {
+    if (isIos) {
+      if (window.location.search.indexOf('forceReload=true') === -1) {
+        window.location.replace(`${window.location.href}?forceReload=true`);
+      }
+    }
+  }, [isIos]);
 
   return (
     <>

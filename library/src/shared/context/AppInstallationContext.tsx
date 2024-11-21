@@ -7,6 +7,7 @@ type ContextProps = {
   deferredPrompt: any;
   isPwaInstallable: boolean;
   setPwaInstallable: any;
+  isIos: boolean;
   isIosOrMacOs: boolean;
   isStandalone: boolean;
 };
@@ -15,6 +16,7 @@ const AppInstallationContext = createContext<ContextProps>({
   deferredPrompt: null,
   isPwaInstallable: false,
   setPwaInstallable: () => {},
+  isIos: false,
   isIosOrMacOs: false,
   isStandalone: true,
 });
@@ -48,6 +50,7 @@ function AppInstallationProvider(props: Props) {
   useEffect(() => {
     setIos(checkIsIos());
     setMacOs(checkIsMacOs());
+    setIos(isIos);
     setIosOrMacOs(isIos || isMacOs);
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsStandalone(true);
@@ -55,7 +58,7 @@ function AppInstallationProvider(props: Props) {
   }, [isIos, isMacOs]);
 
   return (
-    <AppInstallationContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIosOrMacOs, isStandalone }}>
+    <AppInstallationContext.Provider value={{ deferredPrompt, isPwaInstallable, setPwaInstallable, isIos, isIosOrMacOs, isStandalone }}>
       {children}
     </AppInstallationContext.Provider>
   );
