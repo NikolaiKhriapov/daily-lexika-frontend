@@ -54,7 +54,6 @@ function AppInstallationProvider(props: Props) {
   useEffect(() => {
     setIos(checkIsIos());
     setMacOs(checkIsMacOs());
-    setIos(isIos);
     setIosOrMacOs(isIos || isMacOs);
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsStandalone(true);
