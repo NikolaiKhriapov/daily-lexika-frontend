@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Text } from '@library/shared/ui';
 import { DateTimeUtil, Size } from '@library/shared/utils';
-
-import { Text } from '../basic/Text';
 
 export function Countdown() {
   const [timeRemaining, setTimeRemaining] = useState(DateTimeUtil.getTimeUntilMidnightUtcPlusDays(0));

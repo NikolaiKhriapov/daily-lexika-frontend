@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 import CreateOrUpdateReviewWindow from '@daily-lexika/components/app/content/review/CreateOrUpdateReviewWindow';
 import StartReviewWindow from '@daily-lexika/components/app/content/review/StartReviewWindow';
+import { Countdown } from '@daily-lexika/components/ui/Countdown';
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useDeleteReviewMutation, useRefreshReviewMutation } from '@daily-lexika/store/api/reviewsAPI';
@@ -13,7 +14,7 @@ import { ReviewDto, Status } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import {
   AlertDialog, Button, ButtonsContainer, ButtonType, ButtonUnavailable, ButtonWithIcon, ButtonWithIconType, Card,
-  Countdown, Skeleton, Text
+  Skeleton, Text
 } from '@library/shared/ui';
 import { FontWeight, Size, theme } from '@library/shared/utils';
 

@@ -33,6 +33,7 @@ out
 *.ipr
 
 */.idea/
+**/.env
 dist
 .gitignore
 /.nx/

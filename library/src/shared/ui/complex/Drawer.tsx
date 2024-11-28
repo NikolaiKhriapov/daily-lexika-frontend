@@ -82,7 +82,7 @@ export function Drawer(props: Props) {
         closing={closing}
       >
         <DrawerHeaderStyled fontSize={Size.XL}>
-          <DrawerLineContainer><DrawerLine /></DrawerLineContainer>
+          <DrawerLineContainer><DrawerLine $colorMode={colorMode} /></DrawerLineContainer>
           {header}
         </DrawerHeaderStyled>
         <DrawerBodyStyled>{body}</DrawerBodyStyled>
@@ -131,13 +131,13 @@ const DrawerLineContainer = styled.div`
   cursor: pointer;
 `;
 
-const DrawerLine = styled.div`
+const DrawerLine = styled.div<{ $colorMode: ColorMode }>`
   display: flex;
   height: 5px;
   width: 40%;
   border-radius: 5px;
   margin: 5px;
-  background-color: white;
+  background-color: ${({ $colorMode }) => theme.colors[$colorMode].buttonColor};
 `;
 
 const DrawerBodyStyled = styled(DrawerBody)`

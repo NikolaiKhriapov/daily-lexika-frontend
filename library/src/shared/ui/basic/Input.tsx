@@ -1,7 +1,6 @@
 import React from 'react';
 import { Input as ChakraInput, InputProps, useColorMode } from '@chakra-ui/react';
-import { borderStyles } from '../../utils/ui/functions';
-import { theme } from '../../utils/utils/theme';
+import { borderStyles, theme } from '@library/shared/utils';
 
 export function Input({ children, ...rest }: InputProps) {
   const { colorMode } = useColorMode();

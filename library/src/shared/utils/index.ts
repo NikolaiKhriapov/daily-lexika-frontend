@@ -13,4 +13,5 @@ export * from './ui/enumerations';
 export * from './ui/functions'
 
 export * from './utils/fonts';
+export * from './utils/StringUtil';
 export * from './utils/theme';

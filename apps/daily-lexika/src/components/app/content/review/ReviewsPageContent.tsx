@@ -5,6 +5,7 @@ import { useBreakpointValue } from '@chakra-ui/react';
 import FloatingArrowButton, { ArrowDirection } from '@daily-lexika/components/app/content/review/FloatingArrowButton';
 import ReviewCard from '@daily-lexika/components/app/content/review/ReviewCard';
 import WordOfTheDayComponent from '@daily-lexika/components/app/navbar/word-of-the-day/WordOfTheDayComponent';
+import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/SkeletonWrapper';
 import { useGetAllReviewsQuery } from '@daily-lexika/store/api/reviewsAPI';
 import { useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
 import { useGetWordOfTheDayQuery } from '@daily-lexika/store/api/wordsAPI';
@@ -12,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '@daily-lexika/store/hooks/hooks'
 import { setSlideUp } from '@daily-lexika/store/reducers/reviewsPageTransitionSlice';
 import { Page } from '@daily-lexika/utils/Pages';
 import {
-  ErrorComponent, Heading, IndexPageContainer, SkeletonType, SkeletonWrapper, Swiper, SwiperSlide, Text
+  ErrorComponent, Heading, IndexPageContainer, Swiper, SwiperSlide, Text
 } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp,Size } from '@library/shared/utils';
 

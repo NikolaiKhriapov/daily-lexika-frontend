@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import FloatingArrowButton, { ArrowDirection } from '@daily-lexika/components/app/content/review/FloatingArrowButton';
 import FloatingPlusButton from '@daily-lexika/components/app/content/word-pack/FloatingPlusButton';
 import WordPackCard from '@daily-lexika/components/app/content/word-pack/WordPackCard';
+import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/SkeletonWrapper';
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import { useGetAllReviewsQuery } from '@daily-lexika/store/api/reviewsAPI';
 import { useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
@@ -12,7 +13,7 @@ import { setSlideDown } from '@daily-lexika/store/reducers/reviewsPageTransition
 import { Page } from '@daily-lexika/utils/Pages';
 import { Category } from '@library/daily-lexika';
 import {
-  ErrorComponent, Heading, IndexPageContainer, SkeletonType, SkeletonWrapper, Swiper, SwiperSlide
+  ErrorComponent, Heading, IndexPageContainer, Swiper, SwiperSlide
 } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp,Size  } from '@library/shared/utils';
 

@@ -8,10 +8,11 @@ import { useDisclosure } from '@chakra-ui/react';
 import StatsCard from '@daily-lexika/components/app/content/statistics/StatsCard';
 import StatsReviewCard from '@daily-lexika/components/app/content/statistics/StatsReviewCard';
 import StatsWordsKnownWindow from '@daily-lexika/components/app/content/statistics/StatsWordsKnownWindow';
+import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/SkeletonWrapper';
 import { useGetStatisticsQuery } from '@daily-lexika/store/api/statisticsAPI';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { RoleName } from '@library/daily-lexika';
-import { ErrorComponent, Heading, SkeletonType, SkeletonWrapper, Text } from '@library/shared/ui';
+import { ErrorComponent, Heading, Text } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp,Size } from '@library/shared/utils';
 
 export default function StatisticsPageContent() {

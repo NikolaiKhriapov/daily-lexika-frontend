@@ -79,10 +79,6 @@ export default class WordDataHelper {
     return 0;
   }
 
-  public static toSentenceCase(value: string) {
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-  }
-
   public static checkAgainstSearchQuery(wordData: WordDataDto, searchQuery: string, user: UserDto) {
     switch (user.role) {
       case RoleName.USER_ENGLISH: return wordData.nameEnglish.toLowerCase().startsWith(searchQuery.toLowerCase());
