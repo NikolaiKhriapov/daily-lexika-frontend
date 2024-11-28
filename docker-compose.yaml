@@ -1,0 +1,44 @@
+services:
+
+  daily-lexika:
+    build:
+      context: .
+      dockerfile: ./apps/daily-lexika/Dockerfile
+    platform: linux/amd64
+    container_name: nikolai-frontend-daily-lexika
+#    image: kolyakhryapov/nikolai-frontend-daily-lexika:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+    platform: linux/amd64
+    container_name: nikolai-frontend-admin
+#    image: kolyakhryapov/nikolai-frontend-admin:latest
+    restart: unless-stopped
+    ports:
+      - "3080:3080"
+    env_file:
+      - .env
+    environment:
+      - PORT=3080
+
+  landing-yekaterina:
+    build:
+      context: .
+      dockerfile: ./apps/landing-yekaterina/Dockerfile
+    platform: linux/amd64
+    container_name: nikolai-frontend-landing-yekaterina
+#    image: kolyakhryapov/nikolai-frontend-landing-yekaterina:latest
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000

@@ -1,21 +1,18 @@
 import { Status } from '@library/daily-lexika';
 
-// export const BASE_URL = `${process.env.NEXT_PUBLIC_URL as string}/api/v1`;
-export const BASE_URL = '';
-
-const URL_AUTH = `${BASE_URL}/auth`;
+const URL_AUTH = `/auth`;
 export const ApiEndpointsAuthorization = {
   register: () => `${URL_AUTH}/register`,
   login: () => `${URL_AUTH}/login`,
 };
 
-const URL_NOTIFICATIONS = `${BASE_URL}/notifications`;
+const URL_NOTIFICATIONS = `/notifications`;
 export const ApiEndpointsNotifications = {
   getAllNotifications: () => `${URL_NOTIFICATIONS}`,
   readNotification: (notificationId: number) => `${URL_NOTIFICATIONS}/read/${notificationId}`,
 };
 
-const URL_REVIEWS = `${BASE_URL}/flashcards/reviews`;
+const URL_REVIEWS = `/flashcards/reviews`;
 export const ApiEndpointsReviews = {
   getAllReviews: () => `${URL_REVIEWS}`,
   createReview: () => `${URL_REVIEWS}`,
@@ -25,7 +22,7 @@ export const ApiEndpointsReviews = {
   processReviewAction: (reviewId: number, answer: boolean | null = null) => `${URL_REVIEWS}/${reviewId}/action${answer !== null ? `?answer=${answer}` : ''}`,
 };
 
-const URL_USERS = `${BASE_URL}/users`;
+const URL_USERS = `/users`;
 export const ApiEndpointsUsers = {
   getUser: () => `${URL_USERS}/info`,
   updateUserInfo: () => `${URL_USERS}/info`,
@@ -33,12 +30,12 @@ export const ApiEndpointsUsers = {
   deleteAccount: () => `${URL_USERS}`,
 };
 
-const URL_STATISTICS = `${BASE_URL}/statistics`;
+const URL_STATISTICS = `/statistics`;
 export const ApiEndpointsStatistics = {
   getStatistics: () => `${URL_STATISTICS}`,
 };
 
-const URL_WORD_PACKS = `${BASE_URL}/flashcards/word-packs`;
+const URL_WORD_PACKS = `/flashcards/word-packs`;
 export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
   getPageOfWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
@@ -49,14 +46,14 @@ export const ApiEndpointsWordPacks = {
   removeWordFromCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/remove-word/${wordId}`,
 };
 
-const URL_WORDS = `${BASE_URL}/flashcards/words`;
+const URL_WORDS = `/flashcards/words`;
 export const ApiEndpointsWords = {
   getPageOfWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
   getWordOfTheDay: () => `${URL_WORDS}/word-of-the-day`,
   getWordByWordDataId: (wordDataId: number) => `${URL_WORDS}/by-word-data/${wordDataId}`,
 };
 
-const URL_WORD_DATA = `${BASE_URL}/flashcards/word-data`;
+const URL_WORD_DATA = `/flashcards/word-data`;
 export const ApiEndpointsWordData = {
   getAllWordData: () => `${URL_WORD_DATA}`,
 };

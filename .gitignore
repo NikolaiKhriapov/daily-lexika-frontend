@@ -4,7 +4,7 @@
 node_modules
 
 # IDEs and editors
-/.idea
+*/.idea
 
 # misc
 /.sass-cache
@@ -32,11 +32,10 @@ out
 *.iml
 *.ipr
 
-/apps/daily-lexika/android/.idea/
-/apps/daily-lexika/.env
-/apps/admin/.env
+*/.idea/
 dist
 .gitignore
-/package-lock.json
 /.nx/
 *.env
+/apps/daily-lexika/android/.idea/
+/.idea/
