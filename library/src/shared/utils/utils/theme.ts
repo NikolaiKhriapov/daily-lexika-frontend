@@ -21,8 +21,8 @@ const customColors = {
     alert: '#F56565',
     cardAddNew: '#F7FAFC',
     selectedItemBg: '#E3E8EF',
-    skeletonStart: '#D6DBE1',
-    skeletonEnd: '#CCD0D6',
+    skeletonStart: '#F7FAFC',
+    skeletonEnd: 'rgb(255,255,255)',
   },
   dark: {
     background: 'rgb(10,10,10)',
