@@ -103,7 +103,7 @@ const DrawerContentStyled = styled(DrawerContent)<{
   border-radius: 20px 20px 0 0;
   height: 70vh;
   transform: ${({ translateY }) => translateY && `translateY(${translateY}px)`} !important;
-  transition: ${({ closing, translateY }) => ((closing || translateY === 0) && 'transform 0.3s ease')} !important;
+  transition: ${({ closing }) => ((closing) && 'transform 0.3s ease')} !important;
   ${nonHighlightableTap};
   ${nonSelectableText};
 

@@ -27,20 +27,10 @@ export default function UserPreferencesWindow(props: Props) {
     light: t('UserPreferencesWindow.colorScheme.light'),
     dark: t('UserPreferencesWindow.colorScheme.dark'),
   };
-  const availableInterfaceLanguages = {
+  const availableLanguages = {
     [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
     [Language.RUSSIAN]: t('UserPreferencesWindow.language.russian'),
     [Language.CHINESE]: t('UserPreferencesWindow.language.chinese'),
-  };
-  const availableTranslationLanguages = {
-    [RoleName.USER_ENGLISH]: {
-      [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
-      [Language.RUSSIAN]: t('UserPreferencesWindow.language.russian'),
-    },
-    [RoleName.USER_CHINESE]: {
-      [Language.ENGLISH]: t('UserPreferencesWindow.language.english'),
-      [Language.CHINESE]: t('UserPreferencesWindow.language.chinese'),
-    },
   };
 
   const handleChangeInfo = (userUpdatedInfoDTO: UserDto, setSubmitting?: any) => {
@@ -88,7 +78,7 @@ export default function UserPreferencesWindow(props: Props) {
             validateOnMount
             initialValues={selectedInterfaceLanguage}
             onSubmit={() => handleChangeInfo({ ...user, interfaceLanguage: selectedInterfaceLanguage })}
-            selectElements={Object.entries(availableInterfaceLanguages).map(([language, text], index) => (
+            selectElements={Object.entries(availableLanguages).map(([language, text], index) => (
               <option key={index} value={language}>{text}</option>
             ))}
           />
@@ -104,7 +94,7 @@ export default function UserPreferencesWindow(props: Props) {
             validateOnMount
             initialValues={selectedTranslationLanguage}
             onSubmit={() => handleChangeInfo({ ...user, translationLanguage: selectedTranslationLanguage })}
-            selectElements={Object.entries(availableTranslationLanguages[user!.role! as RoleName]).map(([language, text], index) => (
+            selectElements={Object.entries(availableLanguages).map(([language, text], index) => (
               <option key={index} value={language}>{text}</option>
             ))}
           />

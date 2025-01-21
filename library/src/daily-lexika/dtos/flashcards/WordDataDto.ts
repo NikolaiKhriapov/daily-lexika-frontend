@@ -7,7 +7,7 @@ export interface WordDataDto {
   nameEnglish: string;
   nameRussian: string;
   definition: string;
-  examples: string[];
+  examples: { [key: string]: string }[];
   listOfWordPackNames: string[];
   platform: Platform;
 }

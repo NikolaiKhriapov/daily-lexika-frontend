@@ -68,28 +68,23 @@ export default function WordDetailedInfoDrawer(props: Props) {
                 )}
               </TabPanel>
               <TabPanel>
-                {user.role === RoleName.USER_ENGLISH && wordData.examples.map((example, index) => (
-                  <>
-                    <Text key={index}>{example}</Text>
+                {!wordData.examples && <ComingSoon key='coming-soon' type={ComingSoonType.TEXT} />}
+                {user.role === RoleName.USER_ENGLISH && wordData.examples && wordData.examples.map((example, idx) => (
+                  <React.Fragment key={`ch-${idx}`}>
+                    <Text isCentered>{example.en}</Text>
+                    {user.translationLanguage === Language.CHINESE && <Text isCentered>{example.ch}</Text>}
+                    {user.translationLanguage === Language.RUSSIAN && <Text isCentered>{example.ru}</Text>}
                     <Divider marginY={3} />
-                  </>
+                  </React.Fragment>
                 ))}
-                {user.role === RoleName.USER_CHINESE && wordData.examples.map((example, idx) => (
-                  example === '[TODO]'
-                    ? <ComingSoon key={idx} type={ComingSoonType.TEXT} />
-                    : (
-                      <>
-                        <Text key={idx} size={Size.XL} isCentered>{((idx + 1) % 5 === 1 && example)}</Text>{/* Chinese */}
-                        <Text key={idx} size={Size.SM} isCentered>{((idx + 5) % 5 === 1 && example)}</Text>{/* Pinyin */}
-                        {user.translationLanguage === Language.ENGLISH && (
-                          <Text key={idx} isCentered>{((idx + 4) % 5 === 1 && example)}</Text>
-                        )}
-                        {user.translationLanguage === Language.RUSSIAN && (
-                          <Text key={idx}>{((idx + 3) % 5 === 1 && example)}</Text>
-                        )}
-                        {(idx + 2) % 5 === 1 && <Divider marginY={3} />}
-                      </>
-                    )
+                {user.role === RoleName.USER_CHINESE && wordData.examples && wordData.examples.map((example, idx) => (
+                  <React.Fragment key={`ch-${idx}`}>
+                    <Text size={Size.XL} isCentered>{example.ch}</Text>
+                    <Text size={Size.SM} isCentered>{example.pinyin}</Text>
+                    {user.translationLanguage === Language.ENGLISH && <Text isCentered>{example.en}</Text>}
+                    {user.translationLanguage === Language.RUSSIAN && <Text isCentered>{example.ru}</Text>}
+                    <Divider marginY={3} />
+                  </React.Fragment>
                 ))}
               </TabPanel>
             </TabPanelsStyled>
