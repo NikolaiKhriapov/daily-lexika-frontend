@@ -15,7 +15,7 @@ RUN find /app/dist -name "*.map" -type f -delete && \
     rm -rf /app/node_modules
 
 # Step 2: Production stage
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 WORKDIR /app
 

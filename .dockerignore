@@ -1,6 +1,6 @@
 # Ignore node_modules and build artifacts
 node_modules
-dist
+#dist
 .nx
 */.next
 *.log

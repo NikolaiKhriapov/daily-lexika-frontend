@@ -24,10 +24,23 @@ export function ButtonsPronunciation(props: Props) {
       const voices = window.speechSynthesis.getVoices();
       const maleVoices = voices.filter((voice) => voice.name.includes('Male') && voice.lang.includes(lang));
       const femaleVoices = voices.filter((voice) => voice.name.includes('Female') && voice.lang.includes(lang));
-      const randomVoice = Math.random() < 0.5 ? maleVoices[getRandomInt(0, maleVoices.length - 1)] : femaleVoices[getRandomInt(0, femaleVoices.length - 1)];
+
+      let randomVoice;
+      if (maleVoices.length > 0 && femaleVoices.length > 0) {
+        randomVoice = Math.random() < 0.5
+          ? maleVoices[getRandomInt(0, maleVoices.length - 1)]
+          : femaleVoices[getRandomInt(0, femaleVoices.length - 1)];
+      } else if (voices.length > 0) {
+        const matchingVoices = voices.filter(voice => voice.lang.includes(lang));
+        if (matchingVoices.length > 0) {
+          [randomVoice] = matchingVoices;
+        }
+      }
 
       const utterance = new SpeechSynthesisUtterance(word.wordDataDto.nameEnglish);
-      utterance.voice = randomVoice;
+      if (randomVoice) {
+        utterance.voice = randomVoice;
+      }
       utterance.lang = lang;
       window.speechSynthesis.speak(utterance);
     }

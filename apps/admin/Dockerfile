@@ -11,8 +11,7 @@ RUN npm ci --omit=dev --force
 COPY . .
 RUN npm run build:admin --configuration=production
 
-RUN find /app/dist -name "*.map" -type f -delete && \
-    rm -rf /app/node_modules
+RUN find /app/dist/apps/admin -name "*.map" -type f -delete && rm -rf /app/node_modules
 
 # Step 2: Production stage
 FROM node:20-alpine as runner
