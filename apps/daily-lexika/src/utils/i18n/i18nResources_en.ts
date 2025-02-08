@@ -344,4 +344,14 @@ export const resourcesEn = {
     input: 'Start typing a word...',
     message: 'When searching for a word, please keep in mind that Daily Lexika is primarily designed to help you prepare for exams like {0}, it is not a dictionary app. Our database contains around {1} officially recommended words.',
   },
+
+  ButtonsPronunciation: {
+    header: 'Chinese Voice Unavailable on Your Device',
+    text: 'It seems Chinese voice support is not installed on your device. Please follow these simple steps:',
+    step1: '1. Open your device’s Settings and search for "Text-to-Speech.',
+    step2: '2. Tap the gear icon next to "Preferred engine".',
+    step3: '3. Select "Chinese Simplified" or "cmn (China)".',
+    step4: '4. Tap "Install voice data" and choose your preferred voice.',
+    step5: '5. Restart the app.',
+  },
 };

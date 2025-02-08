@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { RoleName, WordDto } from '@library/daily-lexika';
-import { ButtonWithIcon, ButtonWithIconType } from '@library/shared/ui';
-import { Locale } from '@library/shared/utils';
+import { ButtonWithIcon, ButtonWithIconType, Modal, Text } from '@library/shared/ui';
+import { Locale, Size } from '@library/shared/utils';
 
 type Props = {
   word: WordDto;
@@ -10,10 +12,11 @@ type Props = {
 
 export function ButtonsPronunciation(props: Props) {
   const { word } = props;
-
+  const { t } = useTranslation();
   const { data: user } = useGetUserQuery();
   const [engDialect, setEngDialect] = useState(Locale.EN_US);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const availableVoices = window.speechSynthesis.getVoices();
@@ -87,6 +90,12 @@ export function ButtonsPronunciation(props: Props) {
         }
       }
 
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid && !randomVoice) {
+        setShowModal(true);
+        return;
+      }
+
       const utterance = new SpeechSynthesisUtterance(word.wordDataDto.nameChinese);
       utterance.lang = lang;
       if (randomVoice) {
@@ -114,5 +123,36 @@ export function ButtonsPronunciation(props: Props) {
     }
   };
 
-  return <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={onClick} />;
+  return (
+    <>
+      <ButtonWithIcon type={ButtonWithIconType.AUDIO} onClick={onClick} />
+      {showModal && (
+        <Modal
+          size={Size.MD}
+          width='490px'
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          header={(
+            <Text>{t('ButtonsPronunciation.header')}</Text>
+          )}
+          body={(
+            <ContentContainer>
+              <Text>{t('ButtonsPronunciation.text')}</Text>
+              <Text>{t('ButtonsPronunciation.step1')}</Text>
+              <Text>{t('ButtonsPronunciation.step2')}</Text>
+              <Text>{t('ButtonsPronunciation.step3')}</Text>
+              <Text>{t('ButtonsPronunciation.step4')}</Text>
+              <Text>{t('ButtonsPronunciation.step5')}</Text>
+            </ContentContainer>
+          )}
+        />
+      )}
+    </>
+  );
 }
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
