@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
-import { BiMessageSquareError } from 'react-icons/bi';
 import { CiEdit, CiSquareMinus, CiSquarePlus } from 'react-icons/ci';
 import { GoTrash } from 'react-icons/go';
 import { HiOutlineSpeakerWave } from 'react-icons/hi2';
 import { IoMdMic } from 'react-icons/io';
+import { MdBugReport } from 'react-icons/md';
 import { SlRefresh } from 'react-icons/sl';
 import { VscInfo } from 'react-icons/vsc';
 import styled from 'styled-components';
@@ -53,7 +53,7 @@ export function ButtonWithIcon(props: Props) {
     [ButtonWithIconType.MICROPHONE]: <IoMdMic size={20} />,
     [ButtonWithIconType.MICROPHONE_GREEN]: <IoMdMic size={20} color='green' />,
     [ButtonWithIconType.MICROPHONE_RED]: <IoMdMic size={20} color='red' />,
-    [ButtonWithIconType.ERROR]: <BiMessageSquareError size={20} />,
+    [ButtonWithIconType.ERROR]: <MdBugReport size={20} />,
   };
 
   return (
