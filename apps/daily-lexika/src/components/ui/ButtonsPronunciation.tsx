@@ -70,9 +70,15 @@ export function ButtonsPronunciation(props: Props) {
           ? maleVoices[getRandomInt(0, maleVoices.length - 1)]
           : femaleVoices[getRandomInt(0, femaleVoices.length - 1)];
       } else if (availableVoices.length > 0) {
-        const googleVoices = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Google"));
-        if (googleVoices.length > 0) {
-          [randomVoice] = googleVoices;
+        const voicesForDesktopChrome = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Google"));
+        const voicesForSafari = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Tingting"));
+        const voicesForAndroid = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Ting-Ting"));
+        if (voicesForDesktopChrome.length > 0) {
+          [randomVoice] = voicesForDesktopChrome;
+        } else if (voicesForSafari.length > 0) {
+          [randomVoice] = voicesForSafari;
+        } else if (voicesForAndroid.length > 0) {
+          [randomVoice] = voicesForAndroid;
         } else {
           const matchingVoices = availableVoices.filter(voice => voice.lang.includes(lang));
           if (matchingVoices.length > 0) {
