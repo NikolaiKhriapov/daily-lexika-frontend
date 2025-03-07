@@ -75,7 +75,9 @@ export function ButtonsPronunciation(props: Props) {
       } else if (availableVoices.length > 0) {
         const voicesForDesktopChrome = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Google"));
         const voicesForSafari = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Tingting"));
-        const voicesForAndroid = availableVoices.filter(voice => voice.lang.includes(lang) && voice.name.includes("Ting-Ting"));
+        const voicesForAndroid = availableVoices.filter(
+          voice => voice.lang.includes(lang) && (voice.name.includes("Ting-Ting") || voice.name.toLowerCase().includes("chinese"))
+        );
         if (voicesForDesktopChrome.length > 0) {
           [randomVoice] = voicesForDesktopChrome;
         } else if (voicesForSafari.length > 0) {
@@ -91,7 +93,7 @@ export function ButtonsPronunciation(props: Props) {
       }
 
       const isAndroid = /Android/i.test(navigator.userAgent);
-      if (isAndroid && !randomVoice) {
+      if (isAndroid && voices.length === 0) {
         setShowModal(true);
         return;
       }

@@ -3,14 +3,6 @@ import { Language, RoleName, UserDto, WordDataDto, WordDto } from '@library/dail
 import { TFunction } from 'i18next';
 
 export default class WordDataHelper {
-  public static getAvailableTranslationLanguages(user: UserDto) {
-    switch (user.role) {
-      case RoleName.USER_ENGLISH: return [Language.ENGLISH, Language.RUSSIAN];
-      case RoleName.USER_CHINESE: return [Language.ENGLISH, Language.CHINESE];
-      default: return [];
-    }
-  }
-
   public static getWordDataNameByUserRole(wordData: WordDataDto, user: UserDto) {
     switch (user.role) {
       case RoleName.USER_ENGLISH: return wordData.nameEnglish;

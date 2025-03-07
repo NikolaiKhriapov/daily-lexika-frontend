@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery, useUpdateUserInfoMutation } from '@daily-lexika/store/api/userAPI';
 import { Language } from '@library/daily-lexika';
 import { errorNotification } from '@library/shared/services';
@@ -37,7 +36,7 @@ export default function TranslationLanguageSelectionWindow() {
             <Text isCentered>{t('TranslationLanguageSelectionWindow.messageLineTwo')}</Text>
           </TextContainer>
           <ButtonsContainer>
-            {WordDataHelper.getAvailableTranslationLanguages(user).map((language, index) => (
+            {Object.values(Language).map((language, index) => (
               <Button
                 key={index}
                 buttonType={ButtonType.SUBMIT}
