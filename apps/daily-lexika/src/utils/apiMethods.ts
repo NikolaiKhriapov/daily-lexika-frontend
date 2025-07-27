@@ -38,17 +38,14 @@ export const ApiEndpointsStatistics = {
 const URL_WORD_PACKS = `/flashcards/word-packs`;
 export const ApiEndpointsWordPacks = {
   getAllWordPacks: () => `${URL_WORD_PACKS}`,
-  getPageOfWordsForWordPack: (wordPackName: string, page: number, size: number) => `${URL_WORD_PACKS}/${wordPackName}/words?page=${page}&size=${size}`,
   createCustomWordPack: () => `${URL_WORD_PACKS}`,
   deleteCustomWordPack: (wordPackName: string) => `${URL_WORD_PACKS}/${wordPackName}`,
-  addWordToCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/add-word/${wordId}`,
-  addAllWordsFromWordPackToCustomWordPack: (wordPackNameTo: string, wordPackNameFrom: string) => `${URL_WORD_PACKS}/${wordPackNameTo}/add-words-from-wordpack/${wordPackNameFrom}`,
-  removeWordFromCustomWordPack: (wordPackName: string, wordId: number) => `${URL_WORD_PACKS}/${wordPackName}/remove-word/${wordId}`,
 };
 
 const URL_WORDS = `/flashcards/words`;
 export const ApiEndpointsWords = {
   getPageOfWordsByStatus: (status: Status, page: number, size: number) => `${URL_WORDS}/status/${status}?page=${page}&size=${size}`,
+  getPageOfWordsByWordPackName: (wordPackName: string, page: number, size: number) => `${URL_WORDS}/word-pack/${wordPackName}?page=${page}&size=${size}`,
   getWordOfTheDay: () => `${URL_WORDS}/word-of-the-day`,
   getWordByWordDataId: (wordDataId: number) => `${URL_WORDS}/by-word-data/${wordDataId}`,
 };
@@ -56,4 +53,7 @@ export const ApiEndpointsWords = {
 const URL_WORD_DATA = `/flashcards/word-data`;
 export const ApiEndpointsWordData = {
   getAllWordData: () => `${URL_WORD_DATA}`,
+  addCustomWordPackToWordData: (wordDataId: number, wordPackName: string) => `${wordDataId}/add-word-pack/${wordPackName}`,
+  addCustomWordPackToWordDataByWordPackName: (wordPackNameToBeAdded: string, wordPackNameOriginal: string) => `${URL_WORD_DATA}/${wordPackNameOriginal}/add-word-pack-to-word-data/${wordPackNameToBeAdded}`,
+  removeCustomWordPackFromWordData: (wordDataId: number, wordPackName: string) => `${URL_WORD_DATA}/${wordDataId}/remove-word-pack/${wordPackName}`,
 };

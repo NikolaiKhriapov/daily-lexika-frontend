@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
-import { useGetAllWordDataQuery } from '@daily-lexika/store/api/wordDataAPI';
 import {
-  useAddAllWordsFromWordPackToCustomWordPackMutation, useAddWordToCustomWordPackMutation, useGetAllWordPacksQuery,
-  useRemoveWordFromCustomWordPackMutation,
+  useAddCustomWordPackToWordDataByWordPackNameMutation,
+  useAddCustomWordPackToWordDataMutation,
+  useGetAllWordDataQuery,
+  useRemoveCustomWordPackFromWordDataMutation,
+} from '@daily-lexika/store/api/wordDataAPI';
+import {
+  useGetAllWordPacksQuery,
 } from '@daily-lexika/store/api/wordPacksAPI';
 import { Category, WordDataDto, WordPackDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
@@ -28,9 +32,9 @@ export default function SearchWindow(props: Props) {
   const { data: user } = useGetUserQuery();
   const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
-  const [addWordToCustomWordPack] = useAddWordToCustomWordPackMutation();
-  const [removeWordFromCustomWordPack] = useRemoveWordFromCustomWordPackMutation();
-  const [addAllWordsFromWordPackToCustomWordPack, { isLoading: isLoadingAddAllWords }] = useAddAllWordsFromWordPackToCustomWordPackMutation();
+  const [addCustomWordPackToWordData] = useAddCustomWordPackToWordDataMutation();
+  const [removeCustomWordPackFromWordData] = useRemoveCustomWordPackFromWordDataMutation();
+  const [addCustomWordPackToWordDataByWordPackName, { isLoading: isLoadingAddAllWords }] = useAddCustomWordPackToWordDataByWordPackNameMutation();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
   const [isDisabled, setDisabled] = useState<number | null>(null);
@@ -39,20 +43,20 @@ export default function SearchWindow(props: Props) {
 
   const modalWidth = useBreakpointValue({ base: '450px', md: 'auto' });
 
-  const handleAddWordToCustomWordPack = (wordDataDto: WordDataDto) => {
+  const handleAddCustomWordPackToWordData = (wordDataDto: WordDataDto) => {
     setDisabled(wordDataDto.id);
     setOpenAddOrRemoveWord(null);
-    addWordToCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
+    addCustomWordPackToWordData({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
       .unwrap()
       .then(() => successNotification(t('SearchWindow.successMessage.addWord')))
       .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
 
-  const handleRemoveWordFromCustomWordPack = (wordDataDTO: WordDataDto) => {
+  const handleRemoveCustomWordPackFromWordData = (wordDataDTO: WordDataDto) => {
     setDisabled(wordDataDTO.id);
     setOpenAddOrRemoveWord(null);
-    removeWordFromCustomWordPack({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
+    removeCustomWordPackFromWordData({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
       .unwrap()
       .then(() => successNotification(t('SearchWindow.successMessage.removeWord')))
       .catch((error) => errorNotification('', error))
@@ -84,9 +88,9 @@ export default function SearchWindow(props: Props) {
     }
   };
 
-  const onClickAddAllWordsFromWordPackToCustomWordPack = (wordPackName: string) => {
+  const onClickAddCustomWordPackToWordDataByWordPackName = (wordPackName: string) => {
     setValueLoading(wordPackName);
-    addAllWordsFromWordPackToCustomWordPack({ wordPackNameTo: wordPack.name, wordPackNameFrom: wordPackName })
+    addCustomWordPackToWordDataByWordPackName({ wordPackNameTo: wordPack.name, wordPackNameFrom: wordPackName })
       .unwrap()
       .then(() => setValueLoading(''));
   };
@@ -122,7 +126,7 @@ export default function SearchWindow(props: Props) {
                             <WordPackNameBadge
                               key={oneWordPack.name}
                               $colorMode={colorMode}
-                              onClick={() => onClickAddAllWordsFromWordPackToCustomWordPack(oneWordPack.name)}
+                              onClick={() => onClickAddCustomWordPackToWordDataByWordPackName(oneWordPack.name)}
                             >
                               {t('SearchWindow.addAllWordsFromWordPackButton')} {WordDataHelper.getOriginalWordPackName(oneWordPack.name, user)}
                               {isLoadingAddAllWords && valueLoading === oneWordPack.name && <Spinner size={Size.SM} />}
@@ -155,14 +159,14 @@ export default function SearchWindow(props: Props) {
                         {!isWordAlreadyAddedToWordPack(wordDataDto) && (
                           <ButtonWithIcon
                             type={ButtonWithIconType.ADD_WORD}
-                            onClick={() => handleAddWordToCustomWordPack(wordDataDto)}
+                            onClick={() => handleAddCustomWordPackToWordData(wordDataDto)}
                             isDisabled={isDisabled === wordDataDto.id}
                           />
                         )}
                         {isWordAlreadyAddedToWordPack(wordDataDto) && (
                           <ButtonWithIcon
                             type={ButtonWithIconType.REMOVE_WORD}
-                            onClick={() => handleRemoveWordFromCustomWordPack(wordDataDto)}
+                            onClick={() => handleRemoveCustomWordPackFromWordData(wordDataDto)}
                             isDisabled={isDisabled === wordDataDto.id}
                           />
                         )}

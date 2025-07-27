@@ -8,7 +8,7 @@ import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/Skele
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
-import { useGetPageOfWordsForWordPackQuery, wordPacksAPI } from '@daily-lexika/store/api/wordPacksAPI';
+import { useGetPageOfWordsByWordPackNameQuery, wordsAPI } from '@daily-lexika/store/api/wordsAPI';
 import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
 import { WordPackDto } from '@library/daily-lexika';
 import { Modal, Text } from '@library/shared/ui';
@@ -29,10 +29,10 @@ export default function ReviewWordPackWindow(props: Props) {
   const { t } = useTranslation();
   const { data: user } = useGetUserQuery();
   const [page, setPage] = useState(0);
-  const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsForWordPackQuery({ wordPackName: wordPack.name, page, size: pageSize });
+  const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsByWordPackNameQuery({ wordPackName: wordPack.name, page, size: pageSize });
 
-  dispatch(wordPacksAPI.util.prefetch('getPageOfWordsForWordPack', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
-  dispatch(wordPacksAPI.util.prefetch('getPageOfWordsForWordPack', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
+  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackName', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
+  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackName', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
 
   const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
 
