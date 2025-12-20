@@ -112,7 +112,13 @@ export const resourcesRu = {
           label: 'Имя пользователя',
           placeholder: '@username',
         },
+        email: {
+          label: 'Email',
+          placeholder: 'name@example.com',
+        },
       },
+      cityLabel: 'Город проживания',
+      cityPlaceholder: 'Ваш город',
       languageLevelLabel: 'Примерный уровень языка',
       languageLevelPlaceholder: 'Выберите уровень',
       buttonText: 'Отправить',
@@ -121,6 +127,7 @@ export const resourcesRu = {
       telegram: 'Telegram',
       whatsapp: 'WhatsApp',
       instagram: 'Instagram',
+      email: 'Email',
     },
     languageLevels: {
       unknown: 'Не знаю свой уровень',
@@ -130,6 +137,32 @@ export const resourcesRu = {
       b2: 'B2 – Upper intermediate',
       c1: 'C1 – Advanced',
       c2: 'C2 – Proficient',
+    },
+  },
+  consultation: {
+    description: {
+      line1:
+        'Консультация поможет вам преодолеть сложности в преподавании языка.',
+      line2:
+        'На сессии мы проведем аудит ваших материалов и структуры урока и повысим вашу уверенность в качестве преподавания.',
+    },
+    topicsTitle: 'Чем я могу помочь (примеры тем):',
+    topics: [
+      'Разработка четкого учебного плана и структуры курса.',
+      'Практические советы по работе.',
+      'Интерактивные инструменты и ресурсы для вовлечения студентов.',
+      'Как мотивировать "сложных" учеников и работать с "выгоранием".',
+      'Основы ценообразования и привлечения частных студентов.',
+    ],
+    formatTitle: 'Формат:',
+    formatItems: [
+      'Индивидуальная онлайн-сессия 1 на 1 в Zoom.',
+      'Длительность: 60 минут.',
+      'Стоимость: 15 000 тг/ 3000 руб.',
+    ],
+    cta: {
+      line2:
+        'Чтобы записаться на консультацию, заполните форму справа, подробно описав свой запрос.',
     },
   },
   faq: {

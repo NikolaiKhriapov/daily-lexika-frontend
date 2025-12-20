@@ -68,7 +68,7 @@ export const resourcesEn = {
       line1:
         'A trial lesson is a great opportunity to get acquainted, determine your current level, discuss your goals, and choose the right study program.',
       line2:
-        'To sign up for a trial lesson, please fill out the form below. After you submit your request, I will contact you to agree on a convenient time. If you have any questions about downloading the app or anything else, please feel free to contact me!',
+        'To sign up for a trial lesson, please fill out the form to the right. After you submit your request, I will contact you to agree on a convenient time. If you have any questions about downloading the app or anything else, please feel free to contact me!',
     },
     infoTitle: 'What You Need to Know',
     infoItems: [
@@ -112,7 +112,13 @@ export const resourcesEn = {
           label: 'Username',
           placeholder: '@username',
         },
+        email: {
+          label: 'Email',
+          placeholder: 'name@example.com',
+        },
       },
+      cityLabel: 'City of residence',
+      cityPlaceholder: 'Your city',
       languageLevelLabel: 'Approximate language level',
       languageLevelPlaceholder: 'Choose a level',
       buttonText: 'Send',
@@ -121,6 +127,7 @@ export const resourcesEn = {
       telegram: 'Telegram',
       whatsapp: 'WhatsApp',
       instagram: 'Instagram',
+      email: 'Email',
     },
     languageLevels: {
       unknown: 'I do not know my level',
@@ -130,6 +137,32 @@ export const resourcesEn = {
       b2: 'B2 - Upper intermediate',
       c1: 'C1 - Advanced',
       c2: 'C2 - Proficient',
+    },
+  },
+  consultation: {
+    description: {
+      line1:
+        'A consultation will help you overcome challenges in language teaching.',
+      line2:
+        'During the session we will review your materials and lesson structure and increase your confidence in teaching quality.',
+    },
+    topicsTitle: 'How I can help (sample topics):',
+    topics: [
+      'Building a clear study plan and course structure.',
+      'Practical teaching advice.',
+      'Interactive tools and resources to engage students.',
+      'How to motivate "difficult" students and work with burnout.',
+      'Pricing basics and attracting private students.',
+    ],
+    formatTitle: 'Format:',
+    formatItems: [
+      'One-on-one online Zoom session.',
+      'Duration: 60 minutes.',
+      'Price: 15,000 KZT / 3,000 RUB.',
+    ],
+    cta: {
+      line2:
+        'To book a consultation, please fill out the form to the right and describe your request in detail.',
     },
   },
   faq: {

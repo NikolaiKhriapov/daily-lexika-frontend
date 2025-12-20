@@ -18,6 +18,7 @@ export default function SectionDemoClass() {
       contactMethod: '',
       contactId: '',
       languageLevel: '',
+      city: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().trim().required(' '),
@@ -42,6 +43,10 @@ export default function SectionDemoClass() {
     [ContactMethod.INSTAGRAM]: {
       label: t('demoClass.form.contactId.instagram.label'),
       placeholder: t('demoClass.form.contactId.instagram.placeholder'),
+    },
+    [ContactMethod.EMAIL]: {
+      label: t('demoClass.form.contactId.email.label'),
+      placeholder: t('demoClass.form.contactId.email.placeholder'),
     },
   };
 
@@ -102,6 +107,7 @@ export default function SectionDemoClass() {
                   <option value={ContactMethod.TELEGRAM}>{t('demoClass.contactMethods.telegram')}</option>
                   <option value={ContactMethod.WHATSAPP}>{t('demoClass.contactMethods.whatsapp')}</option>
                   <option value={ContactMethod.INSTAGRAM}>{t('demoClass.contactMethods.instagram')}</option>
+                  <option value={ContactMethod.EMAIL}>{t('demoClass.contactMethods.email')}</option>
                 </Select>
                 {selectedContactMethod && (
                   <TextInput
@@ -111,6 +117,12 @@ export default function SectionDemoClass() {
                     placeholder={contactIdMapping[selectedContactMethod].placeholder}
                   />
                 )}
+                <TextInput
+                  label={t('demoClass.form.cityLabel')}
+                  name="city"
+                  type="text"
+                  placeholder={t('demoClass.form.cityPlaceholder')}
+                />
                 <Select
                   id="languageLevel"
                   name="languageLevel"

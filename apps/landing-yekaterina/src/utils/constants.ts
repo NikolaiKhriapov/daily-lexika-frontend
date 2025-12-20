@@ -16,6 +16,7 @@ export enum ContactMethod {
   TELEGRAM = 'Telegram',
   WHATSAPP = 'WhatsApp',
   INSTAGRAM = 'Instagram',
+  EMAIL = 'Email',
 }
 
 export enum LanguageLevel {
@@ -29,8 +30,9 @@ export enum LanguageLevel {
 }
 
 export interface DemoSubmitRequest {
-  phoneNumber: string;
+  name: string;
   contactMethod: string;
+  contactId: string;
   languageLevel: string;
-  timesPerWeek: number;
+  city: string;
 }
