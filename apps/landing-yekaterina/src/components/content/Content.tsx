@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SectionConsultationForTeachers from '@landing-yekaterina/components/content/section-consultation/SectionConsultationForTeachers';
-// import SectionDemoClass from '@landing-yekaterina/components/content/section-demo-class/SectionDemoClass';
+import SectionDemoClass from '@landing-yekaterina/components/content/section-demo-class/SectionDemoClass';
 import SectionDiscounts from '@landing-yekaterina/components/content/section-discounts/SectionDiscounts';
 import SectionFaq from '@landing-yekaterina/components/content/section-faq/SectionFaq';
 import SectionFeedback from '@landing-yekaterina/components/content/section-feedback/SectionFeedback';
@@ -16,11 +16,11 @@ export default function Content() {
       heading: 'Екатерина Щербакова',
       content: <SectionIntro />,
     },
-    // {
-    //   id: SectionId.DEMO_CLASS,
-    //   heading: 'Бесплатное пробное занятие',
-    //   content: <SectionDemoClass />,
-    // },
+    {
+      id: SectionId.DEMO_CLASS,
+      heading: 'Бесплатное пробное занятие',
+      content: <SectionDemoClass />,
+    },
     {
       id: SectionId.CONSULTATION,
       heading: 'Консультации для преподавателей',

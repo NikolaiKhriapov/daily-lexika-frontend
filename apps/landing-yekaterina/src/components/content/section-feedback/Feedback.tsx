@@ -26,7 +26,7 @@ export default function Section4FeedbackFromStudents(props: FeedbackProps) {
           <Text fontWeight={FontWeight.SEMIBOLD}>{durationOfStudy}</Text>
         </BioInfo>
       </BioContainer>
-      <Text isCentered size={Size.LG} fontStyle="italic">&quot;{text}&quot;</Text>
+      <Text isCentered size={Size.MD} lineHeight="1.3" fontStyle="italic">&quot;{text}&quot;</Text>
     </Container>
   );
 }
@@ -35,11 +35,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  gap: 20px;
+  gap: 12px;
   border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
   border-radius: 30px;
-  width: 400px;
-  height: 380px;
+  width: 500px;
+  height: 450px;
   background-color: ${theme.colors.light.bgColor};
   padding: 30px;
 `;
@@ -53,10 +53,13 @@ const BioContainer = styled.div`
 const BioInfo = styled.div`
   display: flex;
   flex-direction: column;
+  & > * {
+    line-height: 1.3;
+  }
 `;
 
 const AvatarStyled = styled(Avatar)`
-  height: 70px !important;
-  width: 70px !important;
-  margin: 15px 15px;
+  height: 60px !important;
+  width: 60px !important;
+  margin: 0 15px 0 5px;
 `;
