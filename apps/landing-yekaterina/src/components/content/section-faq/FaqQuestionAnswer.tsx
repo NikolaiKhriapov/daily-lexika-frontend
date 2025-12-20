@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaAngleDown } from 'react-icons/fa6';
 import styled from 'styled-components';
 import { Text } from '@library/shared/ui';
 import { FontWeight, Size, theme } from '@library/shared/utils';
 
-export type FaqQuestionAnswerProps = {
+export type FaqItem = {
   question: string;
   answer: string;
 };
 
+export type FaqQuestionAnswerProps = FaqItem & {
+  isVisible: boolean;
+  onToggle: () => void;
+};
+
 export default function FaqQuestionAnswer(props: FaqQuestionAnswerProps) {
-  const { question, answer } = props;
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const { question, answer, isVisible, onToggle } = props;
 
   return (
     <Container>
-      <QuestionAndIcon onClick={toggleVisibility}>
+      <QuestionAndIcon onClick={onToggle}>
         <Text fontWeight={FontWeight.SEMIBOLD} size={Size.LG}>{question}</Text>
         <OpenIcon $isVisible={isVisible} />
       </QuestionAndIcon>
       <Answer $isVisible={isVisible}>
-        <Text fontWeight={FontWeight.SEMIBOLD}>{answer}</Text>
+        <Text fontWeight={FontWeight.NORMAL}>{answer}</Text>
       </Answer>
     </Container>
   );
@@ -46,7 +47,7 @@ const QuestionAndIcon = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 20px 35px;
+  padding: 15px 35px;
 `;
 
 const OpenIcon = styled(FaAngleDown)<{ $isVisible: boolean }>`
