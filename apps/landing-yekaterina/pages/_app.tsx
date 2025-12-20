@@ -8,6 +8,12 @@ import { theme } from '@library/shared/utils';
 
 import i18n from '../src/i18n';
 
+const lightColorModeManager = {
+  type: 'localStorage' as const,
+  get: () => 'light' as const,
+  set: () => {},
+};
+
 export default function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
   useEffect(() => {
     const storedLocale = getStoredLocale();
@@ -21,7 +27,7 @@ export default function MyApp({ Component, pageProps }: { Component: any; pagePr
   return (
     <>
       <GlobalStyle />
-      <ChakraProvider theme={theme}>
+      <ChakraProvider theme={theme} colorModeManager={lightColorModeManager}>
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>

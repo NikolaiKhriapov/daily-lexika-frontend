@@ -13,10 +13,10 @@ export default function MyDocument() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="theme-color" content={theme.colors.dark.background} />
+        <meta name="theme-color" content={theme.colors.light.background} />
       </Head>
       <body>
-        <ColorModeScript initialColorMode={theme.initialColorMode} />
+        <ColorModeScript initialColorMode="light" />
         <Main />
         <NextScript />
       </body>
