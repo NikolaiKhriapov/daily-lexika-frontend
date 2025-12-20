@@ -40,3 +40,4 @@ dist
 *.env
 /apps/daily-lexika/android/.idea/
 /.idea/
+/.workflowdocs/

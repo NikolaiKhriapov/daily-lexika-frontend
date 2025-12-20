@@ -12,6 +12,13 @@ export const wordsAPI = API.injectEndpoints({
       }),
       providesTags: ['PageOfWordsByStatus'],
     }),
+    getPageOfWordsByWordPackName: builder.query<PageResponse<WordDto>, { wordPackName: string, page: number, size: number }>({
+      query: ({ wordPackName, page, size }) => ({
+        url: ApiEndpointsWords.getPageOfWordsByWordPackName(wordPackName, page, size),
+        method: QueryMethod.GET,
+      }),
+      providesTags: ['PageOfWordsByWordPackName'],
+    }),
     getWordOfTheDay: builder.query<WordDto, void>({
       query: () => ({
         url: ApiEndpointsWords.getWordOfTheDay(),
@@ -29,6 +36,7 @@ export const wordsAPI = API.injectEndpoints({
 
 export const {
   useGetPageOfWordsByStatusQuery,
+  useGetPageOfWordsByWordPackNameQuery,
   useGetWordOfTheDayQuery,
   useGetWordByWordDataIdQuery,
 } = wordsAPI;
