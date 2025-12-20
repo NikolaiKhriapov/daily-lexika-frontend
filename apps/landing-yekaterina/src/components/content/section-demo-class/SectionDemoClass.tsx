@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Box } from '@chakra-ui/react';
 import { ContactMethod, DemoSubmitRequest, LanguageLevel } from '@landing-yekaterina/utils/constants';
 import { Heading, InputFieldsWithButton, Select, Text, TextInput } from '@library/shared/ui';
-import { borderStyles, FontWeight, Size, theme } from '@library/shared/utils';
+import { borderStyles, Breakpoint, FontWeight, Size, theme } from '@library/shared/utils';
 
 export default function SectionDemoClass() {
   const [selectedContactMethod, setSelectedContactMethod] = useState<ContactMethod>();
@@ -43,31 +43,59 @@ export default function SectionDemoClass() {
     },
   };
 
+  const infoItems = [
+    {
+      title: 'Платформа',
+      text: 'Для урока необходимо заранее скачать приложение Zoom.',
+    },
+    {
+      title: 'Подключение',
+      text: 'Ссылку на занятие вы получаете за несколько минут до начала.',
+    },
+    {
+      title: 'Длительность',
+      text: '15–30 минут.',
+    },
+    {
+      title: 'Оборудование',
+      text: 'Вам потребуется телефон, планшет или компьютер с рабочей камерой и микрофоном.',
+    },
+    {
+      title: 'Условия',
+      text: 'Рекомендую выбрать тихое место с хорошим интернет-соединением.',
+    },
+  ];
+
   return (
     <Container>
       <DemoClassBlock1>
-        <TextContainer>
-          <Text isCentered size={Size.MD} fontWeight={FontWeight.MEDIUM}>
-            На пробном занятии мы можем познакомиться, определить Ваш уровень знания языка, выбрать программу обучения
-            и ответить на все интересующие Вас вопросы. Вам понадобится компьютер, планшет или телефон с работающей
-            камерой и микрофоном. Рекомендую выбрать тихое место с хорошим интернетом.
+        <TextCard>
+          <Text size={Size.MD} fontWeight={FontWeight.MEDIUM}>
+            Пробное занятие это возможность познакомиться, определить ваш текущий уровень, обсудить ваши цели и
+            выбрать программу обучения.
           </Text>
-        </TextContainer>
-        <YoutubeVideoContainer>
-          <iframe
-            width="705"
-            height="397"
-            src="https://www.youtube.com/embed/SjoNY306q1A?si=zNt9o0hZl46ItdKZ"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </YoutubeVideoContainer>
+          <Text size={Size.MD}>
+            Чтобы записаться на пробное занятие, пожалуйста, заполните форму справа. После заявки я свяжусь с вами для
+            согласования удобного времени. Если у вас появятся вопросы по скачиванию или чему-либо еще, пожалуйста,
+            пишите! ✨
+          </Text>
+        </TextCard>
+        <InfoCard>
+          <Heading size={Size.MD}>Что нужно знать</Heading>
+          <InfoList>
+            {infoItems.map((item) => (
+              <InfoListItem key={item.title}>
+                <Text as="span" fontWeight={FontWeight.MEDIUM}>{item.title}:</Text>{' '}
+                <Text as="span">{item.text}</Text>
+              </InfoListItem>
+            ))}
+          </InfoList>
+        </InfoCard>
       </DemoClassBlock1>
       <DemoClassBlock2>
         <DemoSubmitForm>
           <Heading isCentered size={Size.LG}>Оставить заявку</Heading>
-          <Space $height={35} />
+          <AutoSpacer />
           <InputFieldsWithButton
             validateOnMount
             initialValues={demoSubmitForm.initialValues}
@@ -126,43 +154,75 @@ export default function SectionDemoClass() {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: stretch;
+  gap: 30px;
   width: 100%;
+
+  @media (max-width: ${Breakpoint.LG}) {
+    flex-direction: column;
+  }
 `;
 
 const DemoClassBlock1 = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-  border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
-  border-radius: 30px;
-  width: 706px;
-  background-color: ${theme.colors.light.bgColor};
-  padding: 20px;
-`;
-
-const YoutubeVideoContainer = styled.div`
-  display: flex;
-  border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
-  border-radius: 30px;
-  overflow: hidden;
-  width: fit-content;
+  gap: 20px;
 `;
 
 const DemoClassBlock2 = styled.div`
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-self: stretch;
+
+  @media (max-width: ${Breakpoint.LG}) {
+    width: 100%;
+  }
+`;
+
+const TextCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: ${theme.stylesToDelete.borderWidth} ${theme.stylesToDelete.borderStyle} ${theme.colors.light.borderColor};
+  border-radius: 30px;
+  background-color: ${theme.colors.light.bgColor};
+  padding: 24px;
+`;
+
+const InfoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: ${borderStyles('light')};
+  border-radius: 30px;
+  background-color: ${theme.colors.light.bgColor};
+  padding: 24px;
 `;
 
 const DemoSubmitForm = styled(Box)`
-  width: 480px;
   padding: 30px;
   background-color: ${theme.colors.light.bgColor};
   border: ${borderStyles('light')};
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+`;
+
+const InfoList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 20px;
+`;
+
+const InfoListItem = styled.li`
+  line-height: 1.5;
 `;
 
 const InputElements = styled.div`
@@ -171,7 +231,7 @@ const InputElements = styled.div`
   gap: 25px;
 `;
 
-const Space = styled.div<{ $height: number }>`
-  display: flex;
-  height: ${({ $height }) => `${$height}px`};
+const AutoSpacer = styled.div`
+  flex: 1 1 auto;
+  min-height: 20px;
 `;
