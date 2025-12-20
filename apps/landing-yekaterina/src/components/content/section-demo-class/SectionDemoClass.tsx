@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import { Box } from '@chakra-ui/react';
@@ -9,6 +10,7 @@ import { borderStyles, Breakpoint, FontWeight, Size, theme } from '@library/shar
 export default function SectionDemoClass() {
   const [selectedContactMethod, setSelectedContactMethod] = useState<ContactMethod>();
   const [selectedLanguageLevel, setSelectedLanguageLevel] = useState<LanguageLevel>();
+  const { t } = useTranslation();
 
   const demoSubmitForm = {
     initialValues: {
@@ -30,58 +32,37 @@ export default function SectionDemoClass() {
 
   const contactIdMapping = {
     [ContactMethod.TELEGRAM]: {
-      label: 'Имя пользователя или номер телефона',
-      placeholder: '@username / +7(777)777-77-77',
+      label: t('demoClass.form.contactId.telegram.label'),
+      placeholder: t('demoClass.form.contactId.telegram.placeholder'),
     },
     [ContactMethod.WHATSAPP]: {
-      label: 'Номер телефона',
-      placeholder: '+7(777)777-77-77',
+      label: t('demoClass.form.contactId.whatsapp.label'),
+      placeholder: t('demoClass.form.contactId.whatsapp.placeholder'),
     },
     [ContactMethod.INSTAGRAM]: {
-      label: 'Имя пользователя',
-      placeholder: '@username',
+      label: t('demoClass.form.contactId.instagram.label'),
+      placeholder: t('demoClass.form.contactId.instagram.placeholder'),
     },
   };
 
-  const infoItems = [
-    {
-      title: 'Платформа',
-      text: 'Для урока необходимо заранее скачать приложение Zoom.',
-    },
-    {
-      title: 'Подключение',
-      text: 'Ссылку на занятие вы получаете за несколько минут до начала.',
-    },
-    {
-      title: 'Длительность',
-      text: '15–30 минут.',
-    },
-    {
-      title: 'Оборудование',
-      text: 'Вам потребуется телефон, планшет или компьютер с рабочей камерой и микрофоном.',
-    },
-    {
-      title: 'Условия',
-      text: 'Рекомендую выбрать тихое место с хорошим интернет-соединением.',
-    },
-  ];
+  const infoItems = t('demoClass.infoItems', { returnObjects: true }) as Array<{
+    title: string;
+    text: string;
+  }>;
 
   return (
     <Container>
       <DemoClassBlock1>
         <TextCard>
           <Text size={Size.MD} fontWeight={FontWeight.MEDIUM}>
-            Пробное занятие это возможность познакомиться, определить ваш текущий уровень, обсудить ваши цели и
-            выбрать программу обучения.
+            {t('demoClass.description.line1')}
           </Text>
           <Text size={Size.MD}>
-            Чтобы записаться на пробное занятие, пожалуйста, заполните форму справа. После заявки я свяжусь с вами для
-            согласования удобного времени. Если у вас появятся вопросы по скачиванию или чему-либо еще, пожалуйста,
-            пишите! ✨
+            {t('demoClass.description.line2')}
           </Text>
         </TextCard>
         <InfoCard>
-          <Heading size={Size.MD}>Что нужно знать</Heading>
+          <Heading size={Size.MD}>{t('demoClass.infoTitle')}</Heading>
           <InfoList>
             {infoItems.map((item) => (
               <InfoListItem key={item.title}>
@@ -94,7 +75,7 @@ export default function SectionDemoClass() {
       </DemoClassBlock1>
       <DemoClassBlock2>
         <DemoSubmitForm>
-          <Heading isCentered size={Size.LG}>Оставить заявку</Heading>
+          <Heading isCentered size={Size.LG}>{t('demoClass.form.title')}</Heading>
           <AutoSpacer />
           <InputFieldsWithButton
             validateOnMount
@@ -103,19 +84,24 @@ export default function SectionDemoClass() {
             onSubmit={demoSubmitForm.handleOnSubmit}
             inputElements={(
               <InputElements>
-                <TextInput label="Имя" name="name" type="text" placeholder="Имя" />
+                <TextInput
+                  label={t('demoClass.form.nameLabel')}
+                  name="name"
+                  type="text"
+                  placeholder={t('demoClass.form.namePlaceholder')}
+                />
                 <Select
                   id="contactMethod"
                   name="contactMethod"
-                  label="Способ связи"
-                  placeholder="Выберите способ связи"
+                  label={t('demoClass.form.contactMethodLabel')}
+                  placeholder={t('demoClass.form.contactMethodPlaceholder')}
                   value={selectedContactMethod || ''}
                   onChange={(e) => setSelectedContactMethod(e.target.value as ContactMethod)}
                   isRequired
                 >
-                  <option value={ContactMethod.TELEGRAM}>Telegram</option>
-                  <option value={ContactMethod.WHATSAPP}>WhatsApp</option>
-                  <option value={ContactMethod.INSTAGRAM}>Instagram</option>
+                  <option value={ContactMethod.TELEGRAM}>{t('demoClass.contactMethods.telegram')}</option>
+                  <option value={ContactMethod.WHATSAPP}>{t('demoClass.contactMethods.whatsapp')}</option>
+                  <option value={ContactMethod.INSTAGRAM}>{t('demoClass.contactMethods.instagram')}</option>
                 </Select>
                 {selectedContactMethod && (
                   <TextInput
@@ -128,23 +114,23 @@ export default function SectionDemoClass() {
                 <Select
                   id="languageLevel"
                   name="languageLevel"
-                  label="Примерный уровень языка"
-                  placeholder="Выберите уровень"
+                  label={t('demoClass.form.languageLevelLabel')}
+                  placeholder={t('demoClass.form.languageLevelPlaceholder')}
                   value={selectedLanguageLevel || ''}
                   onChange={(e) => setSelectedLanguageLevel(e.target.value as LanguageLevel)}
                   isRequired
                 >
-                  <option value={LanguageLevel.UNKNOWN}>Не знаю свой уровень</option>
-                  <option value={LanguageLevel.A1}>A1 – Beginner</option>
-                  <option value={LanguageLevel.A2}>A2 – Pre-intermediate</option>
-                  <option value={LanguageLevel.B1}>B1 – Intermediate</option>
-                  <option value={LanguageLevel.B2}>B2 – Upper intermediate</option>
-                  <option value={LanguageLevel.C1}>C1 – Advanced</option>
-                  <option value={LanguageLevel.C2}>C2 – Proficient</option>
+                  <option value={LanguageLevel.UNKNOWN}>{t('demoClass.languageLevels.unknown')}</option>
+                  <option value={LanguageLevel.A1}>{t('demoClass.languageLevels.a1')}</option>
+                  <option value={LanguageLevel.A2}>{t('demoClass.languageLevels.a2')}</option>
+                  <option value={LanguageLevel.B1}>{t('demoClass.languageLevels.b1')}</option>
+                  <option value={LanguageLevel.B2}>{t('demoClass.languageLevels.b2')}</option>
+                  <option value={LanguageLevel.C1}>{t('demoClass.languageLevels.c1')}</option>
+                  <option value={LanguageLevel.C2}>{t('demoClass.languageLevels.c2')}</option>
                 </Select>
               </InputElements>
             )}
-            buttonText="Отправить"
+            buttonText={t('demoClass.form.buttonText')}
           />
         </DemoSubmitForm>
       </DemoClassBlock2>

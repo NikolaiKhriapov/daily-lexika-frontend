@@ -1,30 +1,32 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsChatText } from 'react-icons/bs';
 import { RxCross1 } from 'react-icons/rx';
 import Image from 'next/image';
 import styled from 'styled-components';
 import MessengerIconLink from '@landing-yekaterina/components/content/floating-chat/MessengerIconLink';
 import { useAppDispatch, useAppSelector } from '@landing-yekaterina/store/hooks/hooks';
+import { toggleVisibility } from '@landing-yekaterina/store/reducers/floatingChatSlice';
 import { InstagramLogo, TelegramLogo, WhatsappLogo } from '@library/shared/icons';
 import { theme } from '@library/shared/utils';
-import { toggleVisibility } from '@landing-yekaterina/store/reducers/floatingChatSlice';
 
 export default function FloatingChat() {
   const dispatch = useAppDispatch();
   const { isVisible } = useAppSelector((state) => state.floatingChatSlice);
+  const { t } = useTranslation();
 
   const messengerLinkMapping = [
     {
       href: "https://t.me/katerinachsherbakova",
-      icon: <Image src={TelegramLogo} width={60} height={60} alt="logo-telegram" />,
+      icon: <Image src={TelegramLogo} width={60} height={60} alt={t('floatingChat.telegramAlt')} />,
     },
     {
       href: "https://wa.me/+79856494364",
-      icon: <Image src={WhatsappLogo} width={60} height={60} alt="logo-whatsapp" />,
+      icon: <Image src={WhatsappLogo} width={60} height={60} alt={t('floatingChat.whatsappAlt')} />,
     },
     {
       href: "https://www.instagram.com/katerinachsherbakova",
-      icon: <Image src={InstagramLogo} width={40} height={40} alt="logo-instagram" />,
+      icon: <Image src={InstagramLogo} width={40} height={40} alt={t('floatingChat.instagramAlt')} />,
     },
   ];
 

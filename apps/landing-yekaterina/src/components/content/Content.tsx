@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import SectionConsultationForTeachers from '@landing-yekaterina/components/content/section-consultation/SectionConsultationForTeachers';
 import SectionDemoClass from '@landing-yekaterina/components/content/section-demo-class/SectionDemoClass';
@@ -10,35 +11,37 @@ import { SectionId } from '@landing-yekaterina/utils/constants';
 import { Heading } from '@library/shared/ui';
 
 export default function Content() {
+  const { t } = useTranslation();
+
   const sectionMapping = [
     {
       id: SectionId.INTRO,
-      heading: 'Екатерина Щербакова',
+      heading: t('headings.intro'),
       content: <SectionIntro />,
     },
     {
       id: SectionId.DEMO_CLASS,
-      heading: 'Бесплатное пробное занятие',
+      heading: t('headings.demoClass'),
       content: <SectionDemoClass />,
     },
     {
       id: SectionId.CONSULTATION,
-      heading: 'Консультации для преподавателей',
+      heading: t('headings.consultation'),
       content: <SectionConsultationForTeachers />,
     },
     {
       id: SectionId.FEEDBACK,
-      heading: 'Отзывы от студентов',
+      heading: t('headings.feedback'),
       content: <SectionFeedback />,
     },
     {
       id: SectionId.DISCOUNTS,
-      heading: 'Скидки за приглашенных студентов',
+      heading: t('headings.discounts'),
       content: <SectionDiscounts />,
     },
     {
       id: SectionId.FAQ,
-      heading: 'Часто задаваемые вопросы',
+      heading: t('headings.faq'),
       content: <SectionFaq />,
     },
   ];
@@ -63,7 +66,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 80px 100px 80px;
+  padding: 20px 80px 100px 80px;
 `;
 
 const Section = styled.div`

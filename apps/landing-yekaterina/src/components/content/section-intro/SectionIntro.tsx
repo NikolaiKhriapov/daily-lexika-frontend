@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaAngleDown } from 'react-icons/fa6';
 import styled from 'styled-components';
 import { Heading, Text } from '@library/shared/ui';
@@ -6,41 +7,21 @@ import { borderStyles, Breakpoint, FontWeight, Size, theme } from '@library/shar
 
 export default function SectionIntro() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const qaItems = [
-    {
-      title: 'Образование и достижения',
-      items: ['окончила бакалавриат на китайском языке', 'IELTS 7.5', 'HSK 5'],
-    },
-    {
-      title: 'Опыт преподавания',
-      items: [
-        'английский язык — с 2017 года',
-        'китайский язык — с 2023 года',
-        'работаю со взрослыми и детьми, с нуля и до уверенного уровня',
-      ],
-    },
-    {
-      title: 'Методика',
-      items: ['коммуникативный подход', 'упор на разговорную практику', 'индивидуальная адаптация программы'],
-    },
-    {
-      title: 'Результаты студентов',
-      items: [
-        'свободное общение с иностранными коллегами',
-        'переезд и учёба за границей',
-        'успешное развитие карьерных и личных возможностей',
-      ],
-    },
-  ];
+  const { t } = useTranslation();
+
+  const qaItems = t('intro.qaItems', { returnObjects: true }) as Array<{
+    title: string;
+    items: string[];
+  }>;
 
   return (
     <Container>
       <IntroCard>
         <Text size={Size.MD} fontWeight={FontWeight.MEDIUM}>
-          Меня зовут Катерина, я преподаватель английского и китайского языков.
+          {t('intro.card.line1')}
         </Text>
         <Text size={Size.MD}>
-          Живу в Китае с 2017 года, поэтому хорошо понимаю как особенности изучения языка, так и культурные нюансы.
+          {t('intro.card.line2')}
         </Text>
       </IntroCard>
       <IntroLayout>
@@ -68,7 +49,7 @@ export default function SectionIntro() {
         <RightColumn>
           <VideoFrame>
             <iframe
-              title="YouTube video player"
+              title={t('intro.videoTitle')}
               src="https://www.youtube.com/embed/SjoNY306q1A?si=zNt9o0hZl46ItdKZ"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
