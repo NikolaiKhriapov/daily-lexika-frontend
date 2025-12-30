@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import NotificationsComponent from '@daily-lexika/components/app/navbar/notifications/NotificationsComponent';
 import ProfileComponent from '@daily-lexika/components/app/navbar/profile/ProfileComponent';
-import { AppInfo } from '@daily-lexika/utils/constants';
 import { AppInstallationContext } from '@library/shared/context';
 import { AppInstallComponent } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp, theme } from '@library/shared/utils';
@@ -18,14 +17,9 @@ export default function AppNavbar() {
         <Section>
           {!isStandalone && (
             <ContainerMobileAndTablet>
-              <AppInstallComponent
-                withPwa
-                withGooglePlay
-                linkGooglePlay={AppInfo.LINK_GOOGLE_PLAY}
-              />
+              <AppInstallComponent withPwa />
             </ContainerMobileAndTablet>
           )}
-          {/* <UpcomingUpdatesComponent /> */}
         </Section>
         <Section>
           <NotificationsComponent />

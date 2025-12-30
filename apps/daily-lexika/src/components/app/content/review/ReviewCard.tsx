@@ -43,9 +43,11 @@ export default function ReviewCard(props: Props) {
   const requestRefreshReview = () => {
     refreshReview(review.id!)
       .unwrap()
-      .then(() => {
-        successNotification(t('ReviewCard.reviewRefreshed'));
-        setFlipped(false);
+      .then((updatedReview) => {
+        if (updatedReview) {
+          successNotification(t('ReviewCard.reviewRefreshed'));
+          setFlipped(false);
+        }
       })
       .catch((error) => errorNotification('', error));
   };

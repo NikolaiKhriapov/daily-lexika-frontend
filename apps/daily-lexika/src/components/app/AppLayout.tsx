@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -8,8 +8,6 @@ import TranslationLanguageSelectionWindow from '@daily-lexika/components/app/con
 import AppFooter from '@daily-lexika/components/app/footer/AppFooter';
 import AppNavbar from '@daily-lexika/components/app/navbar/AppNavbar';
 import AppSidebar from '@daily-lexika/components/app/sidebar/AppSidebar';
-import { useGetAllReviewsQuery } from '@daily-lexika/store/api/reviewsAPI';
-import { useGetStatisticsQuery } from '@daily-lexika/store/api/statisticsAPI';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
 import { Page } from '@daily-lexika/utils/Pages';
@@ -27,9 +25,7 @@ export default function AppLayout(props: Props) {
 
   const { colorMode } = useColorMode();
   const { data: user } = useGetUserQuery();
-  useGetAllReviewsQuery();
   useGetAllWordPacksQuery();
-  useGetStatisticsQuery();
 
   return (
     <>

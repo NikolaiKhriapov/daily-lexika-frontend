@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import { useGetUserQuery, useUpdateUserInfoMutation } from '@daily-lexika/store/api/userAPI';
-import { Language, RoleName, UserDto } from '@library/daily-lexika';
+import { Language, UserDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import { Modal, SelectWithButton } from '@library/shared/ui';
 import { Size } from '@library/shared/utils';

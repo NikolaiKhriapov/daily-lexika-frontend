@@ -53,7 +53,7 @@ export const ApiEndpointsWords = {
 const URL_WORD_DATA = `/flashcards/word-data`;
 export const ApiEndpointsWordData = {
   getAllWordData: () => `${URL_WORD_DATA}`,
-  addCustomWordPackToWordData: (wordDataId: number, wordPackName: string) => `${wordDataId}/add-word-pack/${wordPackName}`,
+  addCustomWordPackToWordData: (wordDataId: number, wordPackName: string) => `${URL_WORD_DATA}/${wordDataId}/add-word-pack/${wordPackName}`,
   addCustomWordPackToWordDataByWordPackName: (wordPackNameToBeAdded: string, wordPackNameOriginal: string) => `${URL_WORD_DATA}/${wordPackNameOriginal}/add-word-pack-to-word-data/${wordPackNameToBeAdded}`,
   removeCustomWordPackFromWordData: (wordDataId: number, wordPackName: string) => `${URL_WORD_DATA}/${wordDataId}/remove-word-pack/${wordPackName}`,
 };

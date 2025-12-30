@@ -54,20 +54,32 @@ export const reviewsAPI = API.injectEndpoints({
         }
       },
     }),
-    refreshReview: builder.mutation<ReviewDto, number>({
+    refreshReview: builder.mutation<ReviewDto | null, number>({
       query: (reviewId) => ({
         url: ApiEndpointsReviews.refreshReview(reviewId),
         method: QueryMethod.PATCH,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
-          const { data: updatedReview } = await queryFulfilled;
-          dispatch(reviewsAPI.util?.updateQueryData('getAllReviews', undefined, (draft) => {
-            const review = draft?.find((item) => item.id === arg);
-            if (review) {
-              Object.assign(review, updatedReview);
-            }
-          }));
+          const { data: updatedReview, meta } = await queryFulfilled;
+          const responseStatus = (meta as { response?: { status?: number } })?.response?.status;
+          if (responseStatus === 204) {
+            dispatch(reviewsAPI.util?.updateQueryData('getAllReviews', undefined, (draft) => {
+              const reviewIndex = draft?.findIndex((item) => item.id === arg) ?? -1;
+              if (reviewIndex !== -1) {
+                draft?.splice(reviewIndex, 1);
+              }
+            }));
+            return;
+          }
+          if (updatedReview) {
+            dispatch(reviewsAPI.util?.updateQueryData('getAllReviews', undefined, (draft) => {
+              const review = draft?.find((item) => item.id === arg);
+              if (review) {
+                Object.assign(review, updatedReview);
+              }
+            }));
+          }
         } catch (error) {
           console.log(error);
         }

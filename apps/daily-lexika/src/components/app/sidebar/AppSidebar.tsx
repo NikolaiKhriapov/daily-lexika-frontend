@@ -6,7 +6,6 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
 import WordOfTheDayComponent from '@daily-lexika/components/app/navbar/word-of-the-day/WordOfTheDayComponent';
-import { AppInfo } from '@daily-lexika/utils/constants';
 import { Page } from '@daily-lexika/utils/Pages';
 import { AppInstallationContext } from '@library/shared/context';
 import { AppInstallComponent, ComingSoon, ComingSoonType, Text } from '@library/shared/ui';
@@ -64,11 +63,7 @@ export default function AppSidebar(props: Props) {
       <ContainerDesktop><WordOfTheDayComponent /></ContainerDesktop>
       {!isStandalone && (
         <ContainerDesktop>
-          <AppInstallComponent
-            withPwa
-            withGooglePlay
-            linkGooglePlay={AppInfo.LINK_GOOGLE_PLAY}
-          />
+          <AppInstallComponent withPwa />
         </ContainerDesktop>
       )}
     </Container>
