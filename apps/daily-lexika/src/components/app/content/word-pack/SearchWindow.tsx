@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
@@ -7,16 +7,18 @@ import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import {
   useAddCustomWordPackToWordDataByWordPackNameMutation,
   useAddCustomWordPackToWordDataMutation,
-  useGetAllWordDataQuery,
   useRemoveCustomWordPackFromWordDataMutation,
+  useSearchWordDataQuery,
+  wordDataAPI,
 } from '@daily-lexika/store/api/wordDataAPI';
 import {
   useGetAllWordPacksQuery,
 } from '@daily-lexika/store/api/wordPacksAPI';
+import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
 import { Category, WordDataDto, WordPackDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import { ButtonWithIcon, ButtonWithIconType, Modal, SearchInput, Spinner, Text } from '@library/shared/ui';
-import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme } from '@library/shared/utils';
+import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme, useDebouncedValue } from '@library/shared/utils';
 
 type Props = {
   isOpen: boolean;
@@ -29,26 +31,50 @@ export default function SearchWindow(props: Props) {
 
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const { data: user } = useGetUserQuery();
-  const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [addCustomWordPackToWordData] = useAddCustomWordPackToWordDataMutation();
   const [removeCustomWordPackFromWordData] = useRemoveCustomWordPackFromWordDataMutation();
   const [addCustomWordPackToWordDataByWordPackName, { isLoading: isLoadingAddAllWords }] = useAddCustomWordPackToWordDataByWordPackNameMutation();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
   const [isDisabled, setDisabled] = useState<number | null>(null);
   const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
   const [valueLoading, setValueLoading] = useState<string>('');
 
   const modalWidth = useBreakpointValue({ base: '450px', md: 'auto' });
 
+  const SEARCH_LIMIT = 100;
+  const SEARCH_DEBOUNCE_MS = 300;
+
+  const trimmedQuery = searchQuery.trim();
+  const debouncedQuery = useDebouncedValue(trimmedQuery, SEARCH_DEBOUNCE_MS);
+  const shouldSkipSearch = debouncedQuery.length < 1;
+  const isDebouncing = trimmedQuery.length > 0 && trimmedQuery !== debouncedQuery;
+  const { data: searchResult = [], isFetching: isSearching } = useSearchWordDataQuery(
+    { query: debouncedQuery, limit: SEARCH_LIMIT },
+    { skip: shouldSkipSearch },
+  );
+
+  const updateSearchCache = (updatedWordData: WordDataDto, query: string) => {
+    if (query.length < 1) return;
+    dispatch(wordDataAPI.util.updateQueryData('searchWordData', { query, limit: SEARCH_LIMIT }, (draft) => {
+      const wordData = draft?.find((item) => item.id === updatedWordData.id);
+      if (wordData) {
+        Object.assign(wordData, updatedWordData);
+      }
+    }));
+  };
+
   const handleAddCustomWordPackToWordData = (wordDataDto: WordDataDto) => {
     setDisabled(wordDataDto.id);
     setOpenAddOrRemoveWord(null);
     addCustomWordPackToWordData({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
       .unwrap()
-      .then(() => successNotification(t('SearchWindow.successMessage.addWord')))
+      .then((updatedWordData) => {
+        updateSearchCache(updatedWordData, debouncedQuery);
+        successNotification(t('SearchWindow.successMessage.addWord'));
+      })
       .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
@@ -58,29 +84,16 @@ export default function SearchWindow(props: Props) {
     setOpenAddOrRemoveWord(null);
     removeCustomWordPackFromWordData({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
       .unwrap()
-      .then(() => successNotification(t('SearchWindow.successMessage.removeWord')))
+      .then((updatedWordData) => {
+        updateSearchCache(updatedWordData, debouncedQuery);
+        successNotification(t('SearchWindow.successMessage.removeWord'));
+      })
       .catch((error) => errorNotification('', error))
       .finally(() => setDisabled(null));
   };
 
-  useEffect(() => {
-    if (allWordData) {
-      setSearchResult(allWordData);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (allWordData) {
-      if (searchQuery.trim() !== '') {
-        setSearchResult(allWordData.filter((wordData) => WordDataHelper.checkAgainstSearchQuery(wordData, searchQuery, user!)));
-      } else {
-        setSearchResult(allWordData.slice(0, 50));
-      }
-    }
-  }, [searchQuery]);
-
   const isWordAlreadyAddedToWordPack = (wordData: WordDataDto) =>
-    allWordData.some((wordDataDTO) => wordDataDTO.id === wordData.id && wordDataDTO.listOfWordPackNames.includes(wordPack.name));
+    wordData.listOfWordPackNames.includes(wordPack.name);
 
   const onClickWordData = (wordDataId: number) => {
     if (isDisabled !== wordDataId) {
@@ -108,11 +121,11 @@ export default function SearchWindow(props: Props) {
           <SearchInput
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            isLoading={isLoadingAllWordData}
+            isLoading={isSearching || isDebouncing}
           />
           <WordInfoContainer>
             {
-              searchQuery === '' || isLoadingAllWordData
+              trimmedQuery.length < 1
                 ? (
                   <>
                     <Text fontWeight={FontWeight.MEDIUM} isCentered opacity="50%" style={{ width: '90%' }}>

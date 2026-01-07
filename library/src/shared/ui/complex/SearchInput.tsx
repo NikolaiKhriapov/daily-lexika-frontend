@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import { Size, theme } from '@library/shared/utils';
@@ -18,10 +18,6 @@ export function SearchInput(props: Props) {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    setSearchQuery('');
-  }, [isLoading]);
-
   return (
     <InputGroup size="md">
       <Input
@@ -31,7 +27,6 @@ export function SearchInput(props: Props) {
         width={{ base: '100%', md: '500px' }}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        isDisabled={isLoading}
         backgroundColor={theme.colors[colorMode].background2}
       />
       <InputRightElement width="2.9rem">

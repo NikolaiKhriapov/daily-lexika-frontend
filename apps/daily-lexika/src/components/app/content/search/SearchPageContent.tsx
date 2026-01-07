@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import WordDetailedInfoDrawer from '@daily-lexika/components/app/content/words/WordDetailedInfoDrawer';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
-import { useGetAllWordDataQuery } from '@daily-lexika/store/api/wordDataAPI';
-import { WordDataDto } from '@library/daily-lexika';
-import { SearchInput,Spinner, Text } from '@library/shared/ui';
-import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme } from '@library/shared/utils';
+import { useSearchWordDataQuery } from '@daily-lexika/store/api/wordDataAPI';
+import { SearchInput, Spinner, Text } from '@library/shared/ui';
+import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme, useDebouncedValue } from '@library/shared/utils';
 
 export default function SearchPageContent() {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const { data: user } = useGetUserQuery();
-  const { data: allWordData = [], isLoading: isLoadingAllWordData } = useGetAllWordDataQuery();
   const { isOpen: isOpenDetails, onOpen: onOpenDetails, onClose: onCloseDetails } = useDisclosure();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<WordDataDto[]>([]);
   const [selectedWordDataId, setSelectedWordDataId] = useState<number>();
 
-  useEffect(() => {
-    if (allWordData) {
-      setSearchResult(allWordData);
-    }
-  }, []);
+  const SEARCH_LIMIT = 100;
+  const SEARCH_DEBOUNCE_MS = 300;
 
-  useEffect(() => {
-    if (allWordData) {
-      if (searchQuery.trim() !== '') {
-        setSearchResult(allWordData.filter((wordData) => WordDataHelper.checkAgainstSearchQuery(wordData, searchQuery, user!)));
-      } else {
-        setSearchResult(allWordData.slice(0, 100));
-      }
-    }
-  }, [searchQuery]);
+  const trimmedQuery = searchQuery.trim();
+  const debouncedQuery = useDebouncedValue(trimmedQuery, SEARCH_DEBOUNCE_MS);
+  const shouldSkipSearch = debouncedQuery.length < 1;
+  const isDebouncing = trimmedQuery.length > 0 && trimmedQuery !== debouncedQuery;
+  const { data: searchResult = [], isFetching: isSearching } = useSearchWordDataQuery(
+    { query: debouncedQuery, limit: SEARCH_LIMIT },
+    { skip: shouldSkipSearch },
+  );
+
+  const shouldShowPlaceholder = trimmedQuery.length < 1;
 
   const onClickWordData = (wordDataId: number) => {
     setSelectedWordDataId(wordDataId);
@@ -48,11 +43,11 @@ export default function SearchPageContent() {
       <SearchInput
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        isLoading={isLoadingAllWordData}
+        isLoading={isSearching || isDebouncing}
       />
       <WordInfoContainer>
         {
-          searchQuery === '' || isLoadingAllWordData
+          shouldShowPlaceholder
             ? (
               <Text fontWeight={FontWeight.MEDIUM} isCentered opacity='50%' style={{ width: '90%' }}>
                 {WordDataHelper.getSearchInfoText(user, t)}

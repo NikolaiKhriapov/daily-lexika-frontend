@@ -58,28 +58,6 @@ export default class WordDataHelper {
     return wordPackName;
   }
 
-  public static removeAccent(str: string) {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
-
-  public static sortWordDataChineseByTranscription(a: WordDataDto, b: WordDataDto) {
-    const nameA = WordDataHelper.removeAccent(a.transcription).toLowerCase();
-    const nameB = WordDataHelper.removeAccent(b.transcription).toLowerCase();
-
-    if (nameA < nameB) return -1;
-    if (nameA > nameB) return 1;
-    return 0;
-  }
-
-  public static checkAgainstSearchQuery(wordData: WordDataDto, searchQuery: string, user: UserDto) {
-    switch (user.role) {
-      case RoleName.USER_ENGLISH: return wordData.nameEnglish.toLowerCase().startsWith(searchQuery.toLowerCase());
-      case RoleName.USER_CHINESE: return WordDataHelper.removeAccent(wordData.nameChinese).toLowerCase().includes(searchQuery.toLowerCase())
-        || WordDataHelper.removeAccent(wordData.transcription).toLowerCase().startsWith(searchQuery.toLowerCase());
-      default: return null;
-    }
-  }
-
   public static getSearchInfoText(user: UserDto, t: TFunction<"translation", undefined>) {
     const appDataMapping = {
       [RoleName.USER_ENGLISH]: { totalWords: DbInfo.WORDS_EN, exams: DbInfo.EXAMS_EN },
