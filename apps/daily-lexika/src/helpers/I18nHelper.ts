@@ -10,8 +10,8 @@ export default class I18nHelper {
     return translation;
   }
 
-  public static getWordPackNameTranslated(wordPackName: string, user: UserDto, t: TFunction<"translation", undefined>) {
-    const originalWordPackName = WordDataHelper.getOriginalWordPackName(wordPackName, user);
+  public static getWordPackNameTranslated(wordPackName: string, t: TFunction<"translation", undefined>) {
+    const originalWordPackName = WordDataHelper.getOriginalWordPackName(wordPackName);
     const prefix = 'database.wordPacks.name.';
     const translation = t(`${prefix}${originalWordPackName}`);
     if (translation.startsWith(prefix)) return originalWordPackName;

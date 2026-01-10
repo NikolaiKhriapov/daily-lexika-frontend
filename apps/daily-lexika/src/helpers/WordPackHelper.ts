@@ -1,7 +1,7 @@
-import { Language, UserDto, WordPackDto } from '@library/daily-lexika';
+import { Language, UserDto, WordPackUserDto } from '@library/daily-lexika';
 
 export default class WordPackHelper {
-  public static getDescriptionForLanguage(wordPack: WordPackDto, user: UserDto) {
+  public static getDescriptionForLanguage(wordPack: WordPackUserDto, user: UserDto) {
     if (!wordPack.description.includes('\n')) {
       return wordPack.description;
     }

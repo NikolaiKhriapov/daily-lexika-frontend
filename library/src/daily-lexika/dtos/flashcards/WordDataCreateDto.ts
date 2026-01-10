@@ -1,7 +1,6 @@
 import { Platform } from '../../enumerations/Platform';
 
-export interface WordDataDto {
-  id: number;
+export interface WordDataCreateDto {
   nameChinese: string;
   transcription: string;
   nameEnglish: string;
@@ -9,6 +8,5 @@ export interface WordDataDto {
   definition: string;
   examples: { [key: string]: string }[];
   listOfWordPackIds: number[];
-  wordOfTheDayDate?: string;
   platform: Platform;
 }

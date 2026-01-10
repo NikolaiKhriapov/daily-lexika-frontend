@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaBookOpen, FaLayerGroup, FaUsers } from 'react-icons/fa6';
+import { GoHistory } from 'react-icons/go';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ColorMode, useColorMode } from '@chakra-ui/react';
@@ -15,8 +17,6 @@ import {
   Size,
   theme,
 } from '@library/shared/utils';
-import { FaUsers } from 'react-icons/fa6';
-import { GoHistory } from 'react-icons/go';
 
 type Props = {
   page?: Page;
@@ -31,6 +31,8 @@ export default function AppSidebar(props: Props) {
 
   const sidebarMainDailyLexikaItems = [
     { name: t('AppSidebar.Users'), route: Page.USERS, icon: FaUsers, selected: page === Page.USERS },
+    { name: t('AppSidebar.WordData'), route: Page.WORD_DATA, icon: FaBookOpen, selected: page === Page.WORD_DATA },
+    { name: t('AppSidebar.WordPacks'), route: Page.WORD_PACKS, icon: FaLayerGroup, selected: page === Page.WORD_PACKS },
     { name: t('AppSidebar.Logs'), route: Page.LOGS, icon: GoHistory, selected: page === Page.LOGS },
   ];
 

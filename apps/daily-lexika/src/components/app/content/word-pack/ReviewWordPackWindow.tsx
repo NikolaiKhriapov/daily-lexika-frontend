@@ -8,16 +8,16 @@ import { SkeletonType, SkeletonWrapper } from '@daily-lexika/components/ui/Skele
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
-import { useGetPageOfWordsByWordPackNameQuery, wordsAPI } from '@daily-lexika/store/api/wordsAPI';
+import { useGetPageOfWordsByWordPackIdQuery, wordsAPI } from '@daily-lexika/store/api/wordsAPI';
 import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
-import { WordPackDto } from '@library/daily-lexika';
+import { WordPackUserDto } from '@library/daily-lexika';
 import { Modal, Text } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp,Size } from '@library/shared/utils';
 
 type Props = {
   isOpen: boolean;
   onClose: any;
-  wordPack: WordPackDto;
+  wordPack: WordPackUserDto;
 };
 
 const pageSize = 20;
@@ -29,10 +29,10 @@ export default function ReviewWordPackWindow(props: Props) {
   const { t } = useTranslation();
   const { data: user } = useGetUserQuery();
   const [page, setPage] = useState(0);
-  const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsByWordPackNameQuery({ wordPackName: wordPack.name, page, size: pageSize });
+  const { data: pageResponse, isLoading: isLoadingPageResponse } = useGetPageOfWordsByWordPackIdQuery({ wordPackId: wordPack.id!, page, size: pageSize });
 
-  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackName', { wordPackName: wordPack.name, page: page + 1, size: pageSize }, { force: false }));
-  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackName', { wordPackName: wordPack.name, page: page + 2, size: pageSize }, { force: false }));
+  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackId', { wordPackId: wordPack.id!, page: page + 1, size: pageSize }, { force: false }));
+  dispatch(wordsAPI.util.prefetch('getPageOfWordsByWordPackId', { wordPackId: wordPack.id!, page: page + 2, size: pageSize }, { force: false }));
 
   const modalWidth = useBreakpointValue({ base: '475px', md: 'min-content' });
 
@@ -44,7 +44,7 @@ export default function ReviewWordPackWindow(props: Props) {
       width={modalWidth}
       isOpen={isOpen}
       onClose={onClose}
-      header={I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
+      header={I18nHelper.getWordPackNameTranslated(wordPack.name, t)}
       body={(
         <Container>
           <TotalWords>

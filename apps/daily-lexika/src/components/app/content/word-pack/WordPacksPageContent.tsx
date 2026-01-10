@@ -24,9 +24,9 @@ export default function WordPacksPageContent() {
   const { data: allWordPacks = [], isLoading, isError } = useGetAllWordPacksQuery();
   const { data: allReviews } = useGetAllReviewsQuery();
 
-  const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackDto) => wordPackDto.category)));
+  const wordPackCategories = Array.from(new Set(allWordPacks.map((wordPackUserDto) => wordPackUserDto.category)));
   const wordPacksDtoByCategory = (category: Category) => allWordPacks
-    .filter((wordPackDto) => wordPackDto.category.toLowerCase() === category.toLowerCase());
+    .filter((wordPackUserDto) => wordPackUserDto.category.toLowerCase() === category.toLowerCase());
   const wordPackCategoriesStandard = wordPackCategories
     .filter((wordPackCategory) => wordPackCategory.toLowerCase() !== Category.CUSTOM.toLowerCase());
 
@@ -50,9 +50,9 @@ export default function WordPacksPageContent() {
               <Heading size={Size.LG} isCentered>{I18nHelper.getWordPackCategoryTranslated(category, t)}</Heading>
             </HeadingContainer>
             <Swiper>
-              {wordPacksDtoByCategory(category).map((wordPackDto) => (
-                <SwiperSlide key={wordPackDto.name}>
-                  <WordPackCard wordPack={wordPackDto} />
+              {wordPacksDtoByCategory(category).map((wordPackUserDto) => (
+                <SwiperSlide key={wordPackUserDto.name}>
+                  <WordPackCard wordPack={wordPackUserDto} />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -64,9 +64,9 @@ export default function WordPacksPageContent() {
               <Heading size={Size.LG} isCentered>{I18nHelper.getWordPackCategoryTranslated(Category.CUSTOM, t)}</Heading>
             </HeadingContainer>
             <Swiper>
-              {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackDto) => (
-                <SwiperSlide key={wordPackDto.name}>
-                  <WordPackCard wordPack={wordPackDto} />
+              {wordPacksDtoByCategory(Category.CUSTOM).map((wordPackUserDto) => (
+                <SwiperSlide key={wordPackUserDto.name}>
+                  <WordPackCard wordPack={wordPackUserDto} />
                 </SwiperSlide>
               ))}
             </Swiper>
