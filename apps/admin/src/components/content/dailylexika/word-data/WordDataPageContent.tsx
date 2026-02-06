@@ -111,7 +111,7 @@ const toWordDataPayload = (values: WordDataFormValues): WordDataCreateDto => {
 
 const toWordDataPatchPayload = (values: WordDataFormValues): WordDataPatchDto => {
   const payload = toWordDataPayload(values);
-  const { platform: _platform, ...patchPayload } = payload;
+  const { platform, ...patchPayload } = payload;
   return patchPayload;
 };
 

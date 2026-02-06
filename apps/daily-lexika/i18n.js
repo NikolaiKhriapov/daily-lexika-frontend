@@ -1,8 +1,9 @@
 import { initReactI18next } from 'react-i18next';
-import { resourcesEn } from '@daily-lexika/utils/i18n/i18nResources_en';
-import { resourcesRu } from '@daily-lexika/utils/i18n/i18nResources_ru';
-import { resourcesZh } from '@daily-lexika/utils/i18n/i18nResources_zh';
 import i18n from 'i18next';
+
+import { resourcesEn } from './src/utils/i18n/i18nResources_en';
+import { resourcesRu } from './src/utils/i18n/i18nResources_ru';
+import { resourcesZh } from './src/utils/i18n/i18nResources_zh';
 
 i18n
   .use(initReactI18next)

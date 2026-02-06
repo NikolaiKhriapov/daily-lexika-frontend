@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { useGetPageOfUsersQuery } from '@admin/store/api/dailyLexikaUserAPI';
-import { DateTimeUtil, Locale, Sort } from '@library/shared/utils';
 import { Heading, TableFilters, TablePagesPanel } from '@library/shared/ui';
+import { DateTimeUtil, Locale, Sort } from '@library/shared/utils';
 
 export default function UsersPageContent() {
   const [page, setPage] = useState(0);

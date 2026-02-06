@@ -1,5 +1,5 @@
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
-import { Category, UserDto } from '@library/daily-lexika';
+import { Category } from '@library/daily-lexika';
 import { TFunction } from 'i18next';
 
 export default class I18nHelper {
