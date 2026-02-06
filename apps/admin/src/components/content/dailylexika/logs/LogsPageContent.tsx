@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { useGetPageOfLogsQuery } from '@admin/store/api/dailyLexikaLogAPI';
-import { DateTimeUtil, Locale, Sort } from '@library/shared/utils';
 import { Heading, TableFilters, TablePagesPanel } from '@library/shared/ui';
+import { DateTimeUtil, Locale, Sort } from '@library/shared/utils';
 
 export default function LogsPageContent() {
   const [page, setPage] = useState(0);

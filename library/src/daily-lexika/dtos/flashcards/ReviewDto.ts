@@ -1,12 +1,13 @@
 import { WordDto } from './WordDto';
-import { WordPackDto } from './WordPackDto';
+import { WordPackUserDto } from './WordPackUserDto';
 
 export interface ReviewDto {
   id?: number;
   userId?: number;
   maxNewWordsPerDay: number;
   maxReviewWordsPerDay: number;
-  wordPackDto: WordPackDto;
+  wordPackId: number;
+  wordPackDto: WordPackUserDto;
   listOfWordDto?: WordDto[];
   actualSize: number;
   dateLastCompleted?: string;

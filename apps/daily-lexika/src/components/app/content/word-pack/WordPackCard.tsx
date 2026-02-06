@@ -12,7 +12,7 @@ import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { useDeleteCustomWordPackMutation } from '@daily-lexika/store/api/wordPacksAPI';
 import { placeholderWordPack } from '@daily-lexika/utils/placeholderEntities';
-import { Category, WordPackDto } from '@library/daily-lexika';
+import { Category, WordPackUserDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import {
   AlertDialog, Button, ButtonsContainer, ButtonType, ButtonUnavailable, ButtonWithIcon, ButtonWithIconType, Card,
@@ -21,7 +21,7 @@ import {
 import { FontWeight, Size, theme } from '@library/shared/utils';
 
 type Props = {
-  wordPack: WordPackDto;
+  wordPack: WordPackUserDto;
 };
 
 export default function WordPackCard(props: Props) {
@@ -42,7 +42,7 @@ export default function WordPackCard(props: Props) {
 
   const handleDeleteCustomWordPack = () => {
     onCloseDeleteButton();
-    deleteWordPack(wordPack.name)
+    deleteWordPack(wordPack.id!)
       .unwrap()
       .then(() => successNotification(t('WordPackCard.AlertDialog.successMessage')))
       .catch((error) => errorNotification('', error));
@@ -79,9 +79,9 @@ export default function WordPackCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
+              {I18nHelper.getWordPackNameTranslated(wordPack.name, t)}
             </Text>
-            {wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name, user)) && (
+            {wordPacksUnderDevelopment.includes(WordDataHelper.getOriginalWordPackName(wordPack.name)) && (
               <UnderDevelopmentIcon tooltipText={t('WordPackCard.underDevelopmentMessage')} />
             )}
           </WordPackNameContainer>

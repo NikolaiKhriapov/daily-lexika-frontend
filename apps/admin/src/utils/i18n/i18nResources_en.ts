@@ -31,12 +31,22 @@ export const resourcesEn = {
     logs: {
       title: 'Logs',
       description: 'Logs',
-    }
+    },
+    wordData: {
+      title: 'Word Data',
+      description: 'Word Data',
+    },
+    wordPacks: {
+      title: 'Word Packs',
+      description: 'Word Packs',
+    },
   },
 
   AppSidebar: {
     Users: 'Users',
     Logs: 'Logs',
+    WordData: 'Word Data',
+    WordPacks: 'Word Packs',
   },
 
   UserPreferencesWindow: {

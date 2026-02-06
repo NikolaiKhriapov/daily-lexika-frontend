@@ -1,5 +1,5 @@
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
-import { Category, UserDto } from '@library/daily-lexika';
+import { Category } from '@library/daily-lexika';
 import { TFunction } from 'i18next';
 
 export default class I18nHelper {
@@ -10,8 +10,8 @@ export default class I18nHelper {
     return translation;
   }
 
-  public static getWordPackNameTranslated(wordPackName: string, user: UserDto, t: TFunction<"translation", undefined>) {
-    const originalWordPackName = WordDataHelper.getOriginalWordPackName(wordPackName, user);
+  public static getWordPackNameTranslated(wordPackName: string, t: TFunction<"translation", undefined>) {
+    const originalWordPackName = WordDataHelper.getOriginalWordPackName(wordPackName);
     const prefix = 'database.wordPacks.name.';
     const translation = t(`${prefix}${originalWordPackName}`);
     if (translation.startsWith(prefix)) return originalWordPackName;

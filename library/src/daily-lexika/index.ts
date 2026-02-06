@@ -1,9 +1,14 @@
 export * from './dtos/flashcards/ReviewDto';
 export * from './dtos/flashcards/ReviewStatisticsDto';
 export * from './dtos/flashcards/StatisticsDto';
+export * from './dtos/flashcards/WordDataCreateDto';
 export * from './dtos/flashcards/WordDataDto';
+export * from './dtos/flashcards/WordDataPatchDto';
 export * from './dtos/flashcards/WordDto';
+export * from './dtos/flashcards/WordPackCreateDto';
 export * from './dtos/flashcards/WordPackDto';
+export * from './dtos/flashcards/WordPackPatchDto';
+export * from './dtos/flashcards/WordPackUserDto';
 
 export * from './dtos/log/LogDto';
 

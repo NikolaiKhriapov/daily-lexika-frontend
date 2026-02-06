@@ -2,12 +2,12 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import styled from 'styled-components';
 import { ColorMode, useColorMode, useDisclosure } from '@chakra-ui/react';
 import WordDetailedInfoDrawer from '@daily-lexika/components/app/content/words/WordDetailedInfoDrawer';
+import { BadgeOrStreakCount } from '@daily-lexika/components/ui/BadgeOrStreakCount';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { WordDto } from '@library/daily-lexika';
 import { Spinner, Text } from '@library/shared/ui';
 import { borderStyles, Breakpoint, mediaBreakpointUp, PageResponse, Size, theme } from '@library/shared/utils';
-import { BadgeOrStreakCount } from '@daily-lexika/components/ui/BadgeOrStreakCount';
 
 type Props = {
   pageResponse: PageResponse<WordDto>;

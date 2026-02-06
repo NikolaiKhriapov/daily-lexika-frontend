@@ -5,7 +5,7 @@ import { ColorMode, useBreakpointValue, useColorMode } from '@chakra-ui/react';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import {
-  useAddCustomWordPackToWordDataByWordPackNameMutation,
+  useAddCustomWordPackToWordDataByWordPackIdMutation,
   useAddCustomWordPackToWordDataMutation,
   useRemoveCustomWordPackFromWordDataMutation,
   useSearchWordDataQuery,
@@ -15,7 +15,7 @@ import {
   useGetAllWordPacksQuery,
 } from '@daily-lexika/store/api/wordPacksAPI';
 import { useAppDispatch } from '@daily-lexika/store/hooks/hooks';
-import { Category, WordDataDto, WordPackDto } from '@library/daily-lexika';
+import { Category, WordDataDto, WordPackUserDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import { ButtonWithIcon, ButtonWithIconType, Modal, SearchInput, Spinner, Text } from '@library/shared/ui';
 import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme, useDebouncedValue } from '@library/shared/utils';
@@ -23,7 +23,7 @@ import { borderStyles, Breakpoint, FontWeight, mediaBreakpointUp, Size, theme, u
 type Props = {
   isOpen: boolean;
   onClose: any;
-  wordPack: WordPackDto;
+  wordPack: WordPackUserDto;
 };
 
 export default function SearchWindow(props: Props) {
@@ -36,7 +36,7 @@ export default function SearchWindow(props: Props) {
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const [addCustomWordPackToWordData] = useAddCustomWordPackToWordDataMutation();
   const [removeCustomWordPackFromWordData] = useRemoveCustomWordPackFromWordDataMutation();
-  const [addCustomWordPackToWordDataByWordPackName, { isLoading: isLoadingAddAllWords }] = useAddCustomWordPackToWordDataByWordPackNameMutation();
+  const [addCustomWordPackToWordDataByWordPackId, { isLoading: isLoadingAddAllWords }] = useAddCustomWordPackToWordDataByWordPackIdMutation();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isDisabled, setDisabled] = useState<number | null>(null);
   const [isOpenAddOrRemoveWord, setOpenAddOrRemoveWord] = useState<number | null>(null);
@@ -69,7 +69,7 @@ export default function SearchWindow(props: Props) {
   const handleAddCustomWordPackToWordData = (wordDataDto: WordDataDto) => {
     setDisabled(wordDataDto.id);
     setOpenAddOrRemoveWord(null);
-    addCustomWordPackToWordData({ wordPackName: wordPack.name, wordDataId: wordDataDto.id })
+    addCustomWordPackToWordData({ wordPackId: wordPack.id!, wordDataId: wordDataDto.id })
       .unwrap()
       .then((updatedWordData) => {
         updateSearchCache(updatedWordData, debouncedQuery);
@@ -82,7 +82,7 @@ export default function SearchWindow(props: Props) {
   const handleRemoveCustomWordPackFromWordData = (wordDataDTO: WordDataDto) => {
     setDisabled(wordDataDTO.id);
     setOpenAddOrRemoveWord(null);
-    removeCustomWordPackFromWordData({ wordPackName: wordPack.name, wordDataId: wordDataDTO.id })
+    removeCustomWordPackFromWordData({ wordPackId: wordPack.id!, wordDataId: wordDataDTO.id })
       .unwrap()
       .then((updatedWordData) => {
         updateSearchCache(updatedWordData, debouncedQuery);
@@ -93,7 +93,7 @@ export default function SearchWindow(props: Props) {
   };
 
   const isWordAlreadyAddedToWordPack = (wordData: WordDataDto) =>
-    wordData.listOfWordPackNames.includes(wordPack.name);
+    wordData.listOfWordPackIds.includes(wordPack.id!);
 
   const onClickWordData = (wordDataId: number) => {
     if (isDisabled !== wordDataId) {
@@ -101,9 +101,9 @@ export default function SearchWindow(props: Props) {
     }
   };
 
-  const onClickAddCustomWordPackToWordDataByWordPackName = (wordPackName: string) => {
-    setValueLoading(wordPackName);
-    addCustomWordPackToWordDataByWordPackName({ wordPackNameTo: wordPack.name, wordPackNameFrom: wordPackName })
+  const onClickAddCustomWordPackToWordDataByWordPackId = (wordPackId: number) => {
+    setValueLoading(String(wordPackId));
+    addCustomWordPackToWordDataByWordPackId({ wordPackIdTo: wordPack.id!, wordPackIdFrom: wordPackId })
       .unwrap()
       .then(() => setValueLoading(''));
   };
@@ -139,10 +139,10 @@ export default function SearchWindow(props: Props) {
                             <WordPackNameBadge
                               key={oneWordPack.name}
                               $colorMode={colorMode}
-                              onClick={() => onClickAddCustomWordPackToWordDataByWordPackName(oneWordPack.name)}
+                              onClick={() => onClickAddCustomWordPackToWordDataByWordPackId(oneWordPack.id!)}
                             >
-                              {t('SearchWindow.addAllWordsFromWordPackButton')} {WordDataHelper.getOriginalWordPackName(oneWordPack.name, user)}
-                              {isLoadingAddAllWords && valueLoading === oneWordPack.name && <Spinner size={Size.SM} />}
+                              {t('SearchWindow.addAllWordsFromWordPackButton')} {WordDataHelper.getOriginalWordPackName(oneWordPack.name)}
+                              {isLoadingAddAllWords && valueLoading === String(oneWordPack.id) && <Spinner size={Size.SM} />}
                             </WordPackNameBadge>
                           ))
                       }

@@ -47,14 +47,7 @@ export default class WordDataHelper {
     return transcription.split(', ');
   }
 
-  public static getOriginalWordPackName(wordPackName: string, user: UserDto | null) {
-    const postfix = `__${user?.id}`;
-    const prefixEn = 'EN__';
-    const prefixCh = 'CH__';
-
-    if (user && wordPackName.endsWith(postfix)) wordPackName = wordPackName.replace(postfix, '');
-    if (user && (wordPackName.startsWith(prefixEn))) wordPackName = wordPackName.replace(prefixEn, '');
-    if (user && (wordPackName.startsWith(prefixCh))) wordPackName = wordPackName.replace(prefixCh, '');
+  public static getOriginalWordPackName(wordPackName: string) {
     return wordPackName;
   }
 

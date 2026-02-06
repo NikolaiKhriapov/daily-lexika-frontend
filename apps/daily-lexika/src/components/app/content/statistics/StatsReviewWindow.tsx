@@ -26,7 +26,7 @@ export default function StatsReviewWindow(props: Props) {
   const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
 
-  const wordPack = allWordPacks.find((item) => item.name === reviewStatisticsDTO.wordPackName);
+  const wordPack = allWordPacks.find((item) => item.id === reviewStatisticsDTO.wordPackId);
 
   if (!user) return <Spinner />;
 
@@ -36,7 +36,7 @@ export default function StatsReviewWindow(props: Props) {
       width='360px'
       isOpen={isOpen}
       onClose={onClose}
-      header={I18nHelper.getWordPackNameTranslated(reviewStatisticsDTO.wordPackName, user, t)}
+      header={I18nHelper.getWordPackNameTranslated(wordPack?.name ?? '', t)}
       body={(
         <>
           <PackProgress $colorMode={colorMode}>

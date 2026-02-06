@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
 import { useCreateCustomWordPackMutation, useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
-import { WordPackDto } from '@library/daily-lexika';
+import { WordPackUserDto } from '@library/daily-lexika';
 import { InputFieldsWithButton, Modal, Text, TextInput } from '@library/shared/ui';
 import { Size } from '@library/shared/utils';
 
@@ -29,13 +29,13 @@ export default function CreateWordPackWindow(props: Props) {
   const validationSchema = Yup.object({
     name: Yup.string().trim().required(' ')
       .test((value) => {
-        const allWordPackNames = allWordPacks.map((wordPack) => WordDataHelper.getOriginalWordPackName(wordPack.name, user!));
+        const allWordPackNames = allWordPacks.map((wordPack) => WordDataHelper.getOriginalWordPackName(wordPack.name));
         return !allWordPackNames.includes(value) && !value.includes(';');
       }),
     description: Yup.string().trim().required(' '),
   });
 
-  const handleOnSubmit = (wordPack: WordPackDto) => {
+  const handleOnSubmit = (wordPack: WordPackUserDto) => {
     onClose();
     createCustomWordPack(wordPack);
   };

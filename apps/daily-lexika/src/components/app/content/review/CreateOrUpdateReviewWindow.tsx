@@ -10,7 +10,7 @@ import WordDataHelper from '@daily-lexika/helpers/WordDataHelper';
 import WordPackHelper from '@daily-lexika/helpers/WordPackHelper';
 import { useCreateReviewMutation, useUpdateReviewMutation } from '@daily-lexika/store/api/reviewsAPI';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
-import { ReviewDto, WordPackDto } from '@library/daily-lexika';
+import { ReviewDto, WordPackUserDto } from '@library/daily-lexika';
 import { errorNotification, successNotification } from '@library/shared/services';
 import { InputFieldsWithButton, Modal, Spinner, Text, TextInput } from '@library/shared/ui';
 import { DateTimeUtil, Size } from '@library/shared/utils';
@@ -18,7 +18,7 @@ import { DateTimeUtil, Size } from '@library/shared/utils';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  wordPack: WordPackDto;
+  wordPack: WordPackUserDto;
   review?: ReviewDto;
   setDisabledButton: Dispatch<SetStateAction<boolean>>;
 };
@@ -36,6 +36,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
   const initialValues = {
     maxNewWordsPerDay: review?.maxNewWordsPerDay || 5,
     maxReviewWordsPerDay: review?.maxReviewWordsPerDay || 20,
+    wordPackId: wordPack.id!,
     wordPackDto: wordPack,
   };
 
@@ -50,13 +51,13 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
     if (review) {
       updateReview({ reviewId: review!.id!, reviewDTO })
         .unwrap()
-        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewUpdated'), `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewUpdated'), `${WordDataHelper.getOriginalWordPackName(wordPack.name)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     } else {
       createReview(reviewDTO)
         .unwrap()
-        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewSaved'), `${WordDataHelper.getOriginalWordPackName(wordPack.name, user)} was successfully saved`))
+        .then(() => successNotification(t('CreateOrUpdateReviewWindow.reviewSaved'), `${WordDataHelper.getOriginalWordPackName(wordPack.name)} was successfully saved`))
         .catch((error) => errorNotification('', error))
         .finally(() => setDisabledButton(false));
     }
@@ -78,7 +79,7 @@ export default function CreateOrUpdateReviewWindow(props: Props) {
       width='450px'
       isOpen={isOpen}
       onClose={onClose}
-      header={I18nHelper.getWordPackNameTranslated(wordPack.name, user, t)}
+      header={I18nHelper.getWordPackNameTranslated(wordPack.name, t)}
       body={(
         <>
           <TotalWords>
