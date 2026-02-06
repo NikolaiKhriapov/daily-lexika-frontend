@@ -4,14 +4,17 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=development
+ENV NX_DAEMON=false
 ARG NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL
 ARG NEXT_PUBLIC_ADMIN_BASE_URL
 
 COPY package*.json ./
-RUN npm ci --omit=dev --force
+RUN npm ci
 
 COPY . .
-RUN if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
+RUN npx nx reset && \
+    if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
       export NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL="$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL"; \
     fi; \
     if [ -n "$NEXT_PUBLIC_ADMIN_BASE_URL" ]; then \
@@ -19,12 +22,17 @@ RUN if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
     fi; \
     npm run build:landing-yekaterina --configuration=production
 
-RUN find /app/dist/apps/landing-yekaterina -name "*.map" -type f -delete && rm -rf /app/node_modules
+RUN if [ -d /app/dist/apps/landing-yekaterina ]; then \
+      find /app/dist/apps/landing-yekaterina -name "*.map" -type f -delete; \
+    fi; \
+    rm -rf /app/node_modules
 
 # Step 2: Production stage
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 WORKDIR /app
+
+ENV NODE_ENV=production
 
 COPY --from=builder app/dist/apps/landing-yekaterina/.next/standalone .
 COPY --from=builder app/dist/apps/landing-yekaterina/.next/static dist/apps/landing-yekaterina/.next/static
