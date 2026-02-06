@@ -19,7 +19,10 @@ RUN if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
     fi; \
     npm run build:admin --configuration=production
 
-RUN find /app/dist/apps/admin -name "*.map" -type f -delete && rm -rf /app/node_modules
+RUN if [ -d /app/dist/apps/admin ]; then \
+      find /app/dist/apps/admin -name "*.map" -type f -delete; \
+    fi; \
+    rm -rf /app/node_modules
 
 # Step 2: Production stage
 FROM node:20-alpine as runner

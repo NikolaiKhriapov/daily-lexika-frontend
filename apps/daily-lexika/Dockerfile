@@ -19,7 +19,9 @@ RUN if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
     fi; \
     npm run build:daily-lexika --configuration=production
 
-RUN find /app/dist/apps/daily-lexika -name "*.map" -type f -delete && \
+RUN if [ -d /app/dist/apps/daily-lexika ]; then \
+      find /app/dist/apps/daily-lexika -name "*.map" -type f -delete; \
+    fi; \
     rm -rf /app/node_modules
 
 # Step 2: Production stage
