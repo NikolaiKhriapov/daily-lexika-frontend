@@ -15,7 +15,7 @@ export const API = createApi({
     'Statistics',
     'WordData',
     'PageOfWordsByStatus',
-    'PageOfWordsByWordPackName',
+    'PageOfWordsByWordPackId',
   ],
   endpoints: () => ({}),
 });

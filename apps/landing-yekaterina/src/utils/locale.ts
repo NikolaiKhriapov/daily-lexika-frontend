@@ -7,9 +7,8 @@ export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]['code'];
 
 const LOCALE_STORAGE_KEY = 'landing-yekaterina-locale';
 
-export const isSupportedLocale = (locale?: string | null): locale is SupportedLocale => {
-  return locale === 'en' || locale === 'ru';
-};
+export const isSupportedLocale = (locale?: string | null): locale is SupportedLocale =>
+  locale === 'en' || locale === 'ru';
 
 export const normalizeLocale = (locale: string): SupportedLocale => {
   const base = locale.toLowerCase().split('-')[0];

@@ -11,6 +11,8 @@ export const API = createApi({
     'User',
     'DailyLexikaUsers',
     'DailyLexikaLogs',
+    'DailyLexikaWordData',
+    'DailyLexikaWordPacks',
   ],
   endpoints: () => ({}),
 });

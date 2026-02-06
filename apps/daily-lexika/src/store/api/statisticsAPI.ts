@@ -12,7 +12,7 @@ export const statisticsAPI = API.injectEndpoints({
       }),
       transformResponse: (response: StatisticsDto) => {
         response.listOfReviewStatisticsDto
-          .sort((a, b) => a.wordPackName.localeCompare(b.wordPackName));
+          .sort((a, b) => a.wordPackId - b.wordPackId);
         return response;
       },
       providesTags: ['Statistics'],

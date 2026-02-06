@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Avatar, Menu, MenuButton, useDisclosure } from '@chakra-ui/react';
+import UserPreferencesWindow from '@admin/components/content/user/UserPreferencesWindow';
 import { AuthContext } from '@admin/context/AuthContext';
 import { useGetUserQuery } from '@admin/store/api/userAPI';
 import { MenuDivider, MenuItem, MenuList, Text } from '@library/shared/ui';
 import { Breakpoint, mediaBreakpointUp, theme } from '@library/shared/utils';
-import UserPreferencesWindow from '@admin/components/content/user/UserPreferencesWindow';
 
 export default function ProfileComponent() {
   const { t } = useTranslation();

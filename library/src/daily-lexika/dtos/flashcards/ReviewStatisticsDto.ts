@@ -1,6 +1,6 @@
 export interface ReviewStatisticsDto {
   reviewId: number;
-  wordPackName: string;
+  wordPackId: number;
   wordsNew: number;
   wordsInReview: number;
   wordsKnown: number;

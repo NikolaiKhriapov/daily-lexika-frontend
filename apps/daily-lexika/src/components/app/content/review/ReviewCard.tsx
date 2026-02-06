@@ -92,7 +92,7 @@ export default function ReviewCard(props: Props) {
         <ContentsContainer>
           <WordPackNameContainer>
             <Text size={Size.XXL} fontWeight={FontWeight.MEDIUM} isCentered>
-              {I18nHelper.getWordPackNameTranslated(review.wordPackDto.name, user, t)}
+              {I18nHelper.getWordPackNameTranslated(review.wordPackDto.name, t)}
             </Text>
           </WordPackNameContainer>
           <WordsCountContainer>

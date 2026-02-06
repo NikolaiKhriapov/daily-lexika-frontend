@@ -1,0 +1,15 @@
+services:
+  daily-lexika:
+    build:
+      context: .
+      dockerfile: ./apps/daily-lexika/Dockerfile
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+
+  landing-yekaterina:
+    build:
+      context: .
+      dockerfile: ./apps/landing-yekaterina/Dockerfile

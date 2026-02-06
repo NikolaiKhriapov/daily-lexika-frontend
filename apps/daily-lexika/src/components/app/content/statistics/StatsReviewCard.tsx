@@ -4,6 +4,7 @@ import { ColorMode, Stat, useColorMode, useDisclosure } from '@chakra-ui/react';
 import StatsReviewWindow from '@daily-lexika/components/app/content/statistics/StatsReviewWindow';
 import I18nHelper from '@daily-lexika/helpers/I18nHelper';
 import { useGetUserQuery } from '@daily-lexika/store/api/userAPI';
+import { useGetAllWordPacksQuery } from '@daily-lexika/store/api/wordPacksAPI';
 import { ReviewStatisticsDto } from '@library/daily-lexika';
 import { ProgressBar, Spinner, Text } from '@library/shared/ui';
 import { borderStyles, FontWeight, nonHighlightableTap, Size, theme } from '@library/shared/utils';
@@ -19,6 +20,7 @@ export default function StatsReviewCard(props: Props) {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const { data: user } = useGetUserQuery();
+  const { data: allWordPacks = [] } = useGetAllWordPacksQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const wordsTotal = reviewStatistics.wordsNew + reviewStatistics.wordsInReview + reviewStatistics.wordsKnown;
@@ -28,6 +30,8 @@ export default function StatsReviewCard(props: Props) {
     inReviewAndKnown: reviewStatistics && Math.floor(wordsTotal < 1 ? 0 : ((reviewStatistics.wordsInReview + reviewStatistics.wordsKnown) / wordsTotal) * 100),
   };
 
+  const wordPack = allWordPacks.find((item) => item.id === reviewStatistics.wordPackId);
+
   if (!user) return <Spinner />;
 
   return (
@@ -35,7 +39,7 @@ export default function StatsReviewCard(props: Props) {
       <Container $colorMode={colorMode} onClick={onOpen}>
         <WordPackNameAndInfoButton>
           <Text size={Size.LG} fontWeight={FontWeight.SEMIBOLD}>
-            {I18nHelper.getWordPackNameTranslated(reviewStatistics.wordPackName, user, t)}
+            {I18nHelper.getWordPackNameTranslated(wordPack?.name ?? '', t)}
           </Text>
         </WordPackNameAndInfoButton>
         <Stats>
