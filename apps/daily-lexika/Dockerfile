@@ -5,6 +5,7 @@ WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=development
+ENV NX_DAEMON=false
 ARG NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL
 ARG NEXT_PUBLIC_ADMIN_BASE_URL
 
@@ -12,7 +13,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
+RUN npx nx reset && \
+    if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
       export NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL="$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL"; \
     fi; \
     if [ -n "$NEXT_PUBLIC_ADMIN_BASE_URL" ]; then \
