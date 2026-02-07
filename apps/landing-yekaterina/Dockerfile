@@ -40,3 +40,4 @@ COPY --from=builder app/dist/apps/landing-yekaterina/.next/static dist/apps/land
 COPY --from=builder app/dist/apps/landing-yekaterina/public apps/landing-yekaterina/public
 
 ENTRYPOINT ["node", "apps/landing-yekaterina/server.js"]
+
