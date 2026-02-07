@@ -2,14 +2,26 @@ services:
   daily-lexika:
     build:
       context: .
-      dockerfile: ./apps/daily-lexika/Dockerfile
+      dockerfile: ./Dockerfile
+      args:
+        APP_NAME: daily-lexika
+        NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL: ${NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL}
+        NEXT_PUBLIC_ADMIN_BASE_URL: ${NEXT_PUBLIC_ADMIN_BASE_URL}
 
   admin:
     build:
       context: .
-      dockerfile: ./apps/admin/Dockerfile
+      dockerfile: ./Dockerfile
+      args:
+        APP_NAME: admin
+        NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL: ${NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL}
+        NEXT_PUBLIC_ADMIN_BASE_URL: ${NEXT_PUBLIC_ADMIN_BASE_URL}
 
   landing-yekaterina:
     build:
       context: .
-      dockerfile: ./apps/landing-yekaterina/Dockerfile
+      dockerfile: ./Dockerfile
+      args:
+        APP_NAME: landing-yekaterina
+        NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL: ${NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL}
+        NEXT_PUBLIC_ADMIN_BASE_URL: ${NEXT_PUBLIC_ADMIN_BASE_URL}
