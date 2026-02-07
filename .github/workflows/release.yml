@@ -146,5 +146,4 @@ jobs:
             export APP_TAG COMPOSE_PROFILES DOCKERHUB_NAMESPACE
             docker compose pull
             docker compose up -d --remove-orphans
-            docker image prune -f --filter "until=168h"
-
+            docker image prune -af
