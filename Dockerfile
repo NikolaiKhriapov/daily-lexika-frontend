@@ -7,7 +7,6 @@ FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=development
 ENV NX_DAEMON=false
 
 ARG APP_NAME
@@ -24,6 +23,7 @@ COPY apps/landing-yekaterina/package.json apps/landing-yekaterina/package.json
 RUN npm ci
 
 COPY . .
+ENV NODE_ENV=production
 RUN npx nx reset && \
     if [ -n "$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL" ]; then \
       export NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL="$NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL"; \
