@@ -18,7 +18,9 @@ RUN test -n "$APP_NAME"
 
 COPY package*.json ./
 COPY nx.json tsconfig.base.json ./
-COPY apps/*/package.json apps/*/package.json
+COPY apps/admin/package.json apps/admin/package.json
+COPY apps/daily-lexika/package.json apps/daily-lexika/package.json
+COPY apps/landing-yekaterina/package.json apps/landing-yekaterina/package.json
 RUN npm ci
 
 COPY . .
