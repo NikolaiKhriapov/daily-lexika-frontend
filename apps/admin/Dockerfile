@@ -10,6 +10,8 @@ ARG NEXT_PUBLIC_DAILY_LEXIKA_BASE_URL
 ARG NEXT_PUBLIC_ADMIN_BASE_URL
 
 COPY package*.json ./
+COPY nx.json tsconfig.base.json ./
+COPY apps/*/package.json apps/*/package.json
 RUN npm ci
 
 COPY . .
@@ -24,11 +26,10 @@ RUN npx nx reset && \
 
 RUN if [ -d /app/dist/apps/admin ]; then \
       find /app/dist/apps/admin -name "*.map" -type f -delete; \
-    fi; \
-    rm -rf /app/node_modules
+    fi
 
 # Step 2: Production stage
-FROM node:20-alpine as runner
+FROM node:20-alpine AS runner
 
 WORKDIR /app
 
